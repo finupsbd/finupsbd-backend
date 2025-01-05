@@ -6,7 +6,7 @@ const getAllUser = async () => {
   return result;
 };
 
-const meProfile = async (user: Record<string, unknown>) => {
+const meProfile = async (user: Record<string, unknown> | undefined) => {
   const result = await prisma.user.findUnique({
     where: {email: user?.email as string},
     select: {

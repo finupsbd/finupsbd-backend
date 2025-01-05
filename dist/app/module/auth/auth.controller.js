@@ -13,10 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const auth_service_1 = require("./auth.service");
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
+const config_1 = require("../../../config");
 const signUp = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.signUp(req.body);
     res.status(http_status_codes_1.StatusCodes.CREATED).json({
@@ -38,11 +41,16 @@ const validatePin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
 }));
 const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.login(req.body);
+    const { refreshToken, accessToken } = result;
+    res.cookie('refreshToken', refreshToken, {
+        secure: config_1.ConfigFile.NODE_ENV === 'production',
+        httpOnly: true,
+    });
     res.status(http_status_codes_1.StatusCodes.OK).json({
         success: true,
         message: 'User login successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,
-        data: result,
+        data: { accessToken },
     });
 }));
 const forgetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,9 +58,23 @@ const forgetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.OK, 'check your email for verification!', result);
 }));
 const resetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
     const result = yield auth_service_1.AuthServices.resetPassword(req.body);
     (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.OK, 'Password Reset successfully please login', result);
+}));
+const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.cookies;
+    const result = yield auth_service_1.AuthServices.refreshToken(refreshToken);
+    (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.OK, 'Access Token is retrieve', result);
+}));
+const logout = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+    const { refreshToken } = req.cookies;
+    if (token) {
+        res.clearCookie(refreshToken);
+        // blacklistedTokens.add(token)    
+        (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.OK, 'logout Successfully', {});
+    }
 }));
 exports.AuthController = {
     signUp,
@@ -60,4 +82,6 @@ exports.AuthController = {
     login,
     forgetPassword,
     resetPassword,
+    refreshToken,
+    logout,
 };

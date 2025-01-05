@@ -12,6 +12,8 @@ router.post('/validate-pin', validateRequest(UserValidation.verifyPinValidationS
 router.post('/login', validateRequest(UserValidation.loginValidationSchema), AuthController.login)
 router.post('/forget-password', validateRequest(UserValidation.forgetPasswordValidationSchema),AuthController.forgetPassword)
 router.post('/reset-password', validateRequest(UserValidation.resetPasswordValidationSchema),AuthController.resetPassword)
+router.post('/refresh-token', AuthController.refreshToken)
+router.post('/logout', AuthController.logout)
 
 
 

@@ -5,7 +5,7 @@ import { UserServices } from "./user.service"
 
 
 const getAllUsers = catchAsync(async (req, res) => {
-
+    console.log(req.cookies);
     const result = await UserServices.getAllUser()
     
     res.status(StatusCodes.OK).json({
@@ -20,8 +20,8 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 
   const meProfile = catchAsync(async (req, res) => {
-   
-    const result = await UserServices.meProfile(req.user)
+    const user = req.user
+    const result = await UserServices.meProfile(user)
     
     res.status(StatusCodes.OK).json({
         success: true, 

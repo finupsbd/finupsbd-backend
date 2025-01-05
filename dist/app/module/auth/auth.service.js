@@ -13,11 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthServices = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const app_1 = require("../../../app");
 const passwordHash_1 = require("../../utils/passwordHash");
 const sendEmail_1 = __importDefault(require("../../utils/sendEmail"));
 const tokenGenerate_1 = require("../../utils/tokenGenerate");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const config_1 = require("../../../config");
 //Sign up User
 const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(payload);
@@ -89,7 +91,8 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         role: user === null || user === void 0 ? void 0 : user.role,
         email: user === null || user === void 0 ? void 0 : user.email,
     };
-    const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '30d');
+    const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '1d');
+    const refreshToken = (0, tokenGenerate_1.refreshTokenGenerate)(jwtPayload, '365d');
     yield app_1.prisma.user.update({
         where: {
             email: user === null || user === void 0 ? void 0 : user.email,
@@ -100,6 +103,7 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     }); // last login tracking
     return {
         accessToken,
+        refreshToken,
     };
 });
 const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -195,10 +199,36 @@ const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* (
     yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
     return {};
 });
+const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!token) {
+        throw new Error('You are unauthorized');
+    }
+    const decode = (yield jsonwebtoken_1.default.verify(token, config_1.ConfigFile.JWT_REFRESH_SECRET));
+    const user = yield app_1.prisma.user.findUnique({ where: { email: decode.email } });
+    if (!user) {
+        throw new Error('Your not Found');
+    }
+    if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
+        throw new Error('You are not valid user');
+    }
+    if (!(user === null || user === void 0 ? void 0 : user.emailVerified)) {
+        throw new Error('You are not valid user');
+    }
+    const jwtPayload = {
+        userId: user === null || user === void 0 ? void 0 : user.id,
+        role: user === null || user === void 0 ? void 0 : user.role,
+        email: user === null || user === void 0 ? void 0 : user.email,
+    };
+    const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '1d');
+    return {
+        accessToken
+    };
+});
 exports.AuthServices = {
     signUp,
     validatePin,
     login,
     forgetPassword,
     resetPassword,
+    refreshToken,
 };

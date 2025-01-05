@@ -16,10 +16,15 @@ const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../../config");
 const app_1 = require("../../app");
+const commonTypes_1 = require("../types/commonTypes");
 const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        const token = req.headers.authorization;
+        var _a;
+        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
         if (!token) {
+            throw new Error("You are unauthorized");
+        }
+        if (commonTypes_1.blacklistedTokens.has(token)) {
             throw new Error("You are unauthorized");
         }
         const decode = yield jsonwebtoken_1.default.verify(token, config_1.ConfigFile.JWT_ACCESS_SECRET);

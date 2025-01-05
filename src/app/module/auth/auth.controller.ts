@@ -1,7 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 import { AuthServices } from './auth.service';
 import sendResponce from '../../utils/sendResponce';
+import { ConfigFile } from '../../../config';
+import { blacklistedTokens } from '../../types/commonTypes';
+
 
 const signUp = catchAsync(async (req, res) => {
   const result = await AuthServices.signUp(req.body);
@@ -29,11 +34,18 @@ const validatePin = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const result = await AuthServices.login(req.body);
 
+  const { refreshToken, accessToken } = result;
+
+  res.cookie('refreshToken', refreshToken, {
+    secure: ConfigFile.NODE_ENV === 'production',
+    httpOnly: true,
+  });
+
   res.status(StatusCodes.OK).json({
     success: true,
     message: 'User login successfully',
     statusCode: StatusCodes.OK,
-    data: result,
+    data: { accessToken },
   });
 });
 
@@ -49,7 +61,6 @@ const forgetPassword = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-    console.log(req.body);
   const result = await AuthServices.resetPassword(req.body);
 
   sendResponce(
@@ -60,10 +71,31 @@ const resetPassword = catchAsync(async (req, res) => {
   );
 });
 
+const refreshToken = catchAsync(async (req, res) => {
+  const { refreshToken } = req.cookies;
+
+  const result = await AuthServices.refreshToken(refreshToken);
+
+  sendResponce(res, StatusCodes.OK, 'Access Token is retrieve', result);
+});
+
+const logout = catchAsync(async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  const {refreshToken} = req.cookies
+  if (token) {
+    res.clearCookie(refreshToken)
+    // blacklistedTokens.add(token)    
+
+    sendResponce(res, StatusCodes.OK, 'logout Successfully', {});
+  }
+});
+
 export const AuthController = {
   signUp,
   validatePin,
   login,
   forgetPassword,
   resetPassword,
+  refreshToken,
+  logout,
 };

@@ -11,12 +11,16 @@ const emiCalculator = catchAsync(async (req, res) => {
 
     // Format response
     const result = {
-      "Disbursement Date": new Date(disbursementDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
-      "Loan Amount": loanAmount.toLocaleString("en-US", { style: "currency", currency: "BDT" }),
-      "Number of Schedule": numberOfMonths,
-      "Interest Rate": `${interestRate.toFixed(2)} %`,
-      "EMI Amount": emi.toFixed(2),
-    };
+        "Disbursement Date": new Date(disbursementDate).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+        "Loan Amount": loanAmount.toLocaleString("en-US", { style: "currency", currency: "BDT" }),
+        "Number of Schedule": numberOfMonths,
+        "Interest Rate": `${interestRate.toFixed(2)} %`,
+        "EMI Amount": emi.toFixed(2),
+      };
 
 
     res.status(StatusCodes.OK).json({

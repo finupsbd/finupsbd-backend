@@ -17,6 +17,7 @@ const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const user_service_1 = require("./user.service");
 const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.cookies);
     const result = yield user_service_1.UserServices.getAllUser();
     res.status(http_status_codes_1.StatusCodes.OK).json({
         success: true,
@@ -26,7 +27,8 @@ const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
     });
 }));
 const meProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.meProfile(req.user);
+    const user = req.user;
+    const result = yield user_service_1.UserServices.meProfile(user);
     res.status(http_status_codes_1.StatusCodes.OK).json({
         success: true,
         message: "User login successfully",

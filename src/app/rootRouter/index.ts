@@ -16,6 +16,10 @@ const moduleRouter = [
         route: UserRouter
     },
     {
+        path: '/bank', 
+        route: UserRouter
+    },
+    {
         path: '/public', 
         route: PublicRouter
     },

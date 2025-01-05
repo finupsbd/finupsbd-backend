@@ -14,4 +14,6 @@ router.post('/validate-pin', (0, validateRequest_1.default)(user_validation_1.Us
 router.post('/login', (0, validateRequest_1.default)(user_validation_1.UserValidation.loginValidationSchema), auth_controller_1.AuthController.login);
 router.post('/forget-password', (0, validateRequest_1.default)(user_validation_1.UserValidation.forgetPasswordValidationSchema), auth_controller_1.AuthController.forgetPassword);
 router.post('/reset-password', (0, validateRequest_1.default)(user_validation_1.UserValidation.resetPasswordValidationSchema), auth_controller_1.AuthController.resetPassword);
+router.post('/refresh-token', auth_controller_1.AuthController.refreshToken);
+router.post('/logout', auth_controller_1.AuthController.logout);
 exports.AuthRouter = router;

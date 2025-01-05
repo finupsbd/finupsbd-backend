@@ -1,11 +1,18 @@
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { prisma } from '../../../app';
 import { passwordHash } from '../../utils/passwordHash';
 import sendEmail from '../../utils/sendEmail';
-import { accessTokenGenerate } from '../../utils/tokenGenerate';
+import {
+  accessTokenGenerate,
+  refreshTokenGenerate,
+} from '../../utils/tokenGenerate';
 import { TUser } from '../user/user.interface';
 import bcrypt from 'bcrypt';
+import { ConfigFile } from '../../../config';
 
 //Sign up User
+
+
 const signUp = async (payload: TUser) => {
   console.log(payload);
   payload.password = await passwordHash(payload.password);
@@ -101,7 +108,8 @@ const login = async (payload: { email: string; password: string }) => {
     email: user?.email,
   };
 
-  const accessToken = accessTokenGenerate(jwtPayload, '30d');
+  const accessToken = accessTokenGenerate(jwtPayload, '1d');
+  const refreshToken = refreshTokenGenerate(jwtPayload, '365d');
 
   await prisma.user.update({
     where: {
@@ -111,8 +119,10 @@ const login = async (payload: { email: string; password: string }) => {
       lastLogin: new Date(),
     },
   }); // last login tracking
+
   return {
     accessToken,
+    refreshToken,
   };
 };
 
@@ -126,9 +136,7 @@ const forgetPassword = async (payload: { email: string }) => {
   }
 
   if (!user.emailVerified) {
-    throw new Error(
-      'Your email is not verified. Please verify your email'
-    );
+    throw new Error('Your email is not verified. Please verify your email');
   }
 
   if (!user?.isActive) {
@@ -174,7 +182,7 @@ const resetPassword = async (payload: {
   email: string;
 }) => {
   const { email } = payload;
-console.log({email, passwordHash});
+  console.log({ email, passwordHash });
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user) {
@@ -191,11 +199,11 @@ console.log({email, passwordHash});
     throw new Error('Your account is inactive. Please contact support.');
   }
 
-  const passwordHashing = await passwordHash(payload?.newPassword) ;
+  const passwordHashing = await passwordHash(payload?.newPassword);
 
   await prisma.user.update({
     where: { email },
-    data: { password: passwordHashing},
+    data: { password: passwordHashing },
   });
 
   const emailSubject = 'Password Changed';
@@ -230,9 +238,44 @@ console.log({email, passwordHash});
 
 `;
 
-
   await sendEmail(email, emailSubject, bodyText);
   return {};
+};
+
+const refreshToken = async (token: string) => {
+
+  if (!token) {
+    throw new Error('You are unauthorized');
+  }
+  const decode = (await jwt.verify(token,ConfigFile.JWT_REFRESH_SECRET as string)) as JwtPayload
+
+  const user = await prisma.user.findUnique({ where: { email: decode.email } });
+
+  if (!user) {
+    throw new Error('Your not Found');
+  }
+
+  if (!user?.isActive) {
+    throw new Error('You are not valid user');
+  }
+
+  if (!user?.emailVerified) {
+    throw new Error('You are not valid user');
+  }
+
+  const jwtPayload = {
+    userId: user?.id,
+    role: user?.role,
+    email: user?.email,
+  };
+
+  const accessToken = accessTokenGenerate(jwtPayload, '1d');
+
+
+  return {
+    accessToken
+  };
+  
 };
 
 export const AuthServices = {
@@ -241,4 +284,5 @@ export const AuthServices = {
   login,
   forgetPassword,
   resetPassword,
+  refreshToken,
 };

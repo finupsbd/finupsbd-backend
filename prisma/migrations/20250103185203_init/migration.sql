@@ -24,17 +24,16 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
-CREATE TABLE "Profile" (
+CREATE TABLE "profile" (
     "id" SERIAL NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "bio" TEXT,
     "avatar" TEXT,
-    "phone" TEXT,
     "address" TEXT,
     "userId" INTEGER NOT NULL,
 
-    CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "profile_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -50,10 +49,7 @@ CREATE INDEX "users_email_idx" ON "users"("email");
 CREATE INDEX "users_phone_idx" ON "users"("phone");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Profile_phone_key" ON "Profile"("phone");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
+CREATE UNIQUE INDEX "profile_userId_key" ON "profile"("userId");
 
 -- AddForeignKey
-ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "profile" ADD CONSTRAINT "profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

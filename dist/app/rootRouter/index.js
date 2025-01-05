@@ -19,6 +19,10 @@ const moduleRouter = [
         route: user_route_1.UserRouter
     },
     {
+        path: '/bank',
+        route: user_route_1.UserRouter
+    },
+    {
         path: '/public',
         route: emi_route_1.PublicRouter
     },

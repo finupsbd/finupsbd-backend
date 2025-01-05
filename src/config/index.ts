@@ -14,4 +14,5 @@ export const ConfigFile = {
     NODE_MAILER_PASS: process.env.NODE_MAILER_PASS, 
     JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET, 
     JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET, 
+    SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD, 
 }

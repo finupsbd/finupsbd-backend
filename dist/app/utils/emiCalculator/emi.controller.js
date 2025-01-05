@@ -22,7 +22,11 @@ const emiCalculator = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         (Math.pow(1 + monthlyRate, numberOfMonths) - 1);
     // Format response
     const result = {
-        "Disbursement Date": new Date(disbursementDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+        "Disbursement Date": new Date(disbursementDate).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        }),
         "Loan Amount": loanAmount.toLocaleString("en-US", { style: "currency", currency: "BDT" }),
         "Number of Schedule": numberOfMonths,
         "Interest Rate": `${interestRate.toFixed(2)} %`,
