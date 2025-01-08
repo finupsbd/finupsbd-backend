@@ -10,19 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const app_1 = require("../../../app");
 const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield app_1.prisma.user.findMany();
     return result;
 });
 const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield app_1.prisma.user.findUnique({
+    const result = yield app_1.prisma.user.findFirst({
         where: { email: user === null || user === void 0 ? void 0 : user.email },
         select: {
             name: true,
             email: true,
             phone: true,
-            role: true
+            role: true,
+            profile: true
         }
     });
     return result;

@@ -1,13 +1,18 @@
-import express from "express"
-import { UserController } from "./user.controller"
-import auth from "../../middleware/auth"
+import express from 'express';
+import { UserController } from './user.controller';
+import auth from '../../middleware/auth';
 
-const router = express.Router()
+const router = express.Router();
 
+router.get(
+  '/',
+  auth('USER', 'ADMIN', 'SUPER_ADMIN'),
+  UserController.getAllUsers
+);
+router.get(
+  '/my-profile',
+  auth('USER', 'ADMIN', 'SUPER_ADMIN'),
+  UserController.meProfile
+);
 
-
-router.get('/', auth("USER"), UserController.getAllUsers)
-router.get('/my-profile', auth("USER", "ADMIN", "SUPER_USER"), UserController.meProfile)
-
-
-export const UserRouter = router
+export const UserRouter = router;

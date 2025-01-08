@@ -8,4 +8,6 @@ model Bank {
     interestRate  String
     monthlyEmi    String
     totalAmount   String
+
+    @@map("banks")
 }

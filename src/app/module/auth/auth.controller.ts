@@ -5,7 +5,6 @@ import catchAsync from '../../utils/catchAsync';
 import { AuthServices } from './auth.service';
 import sendResponce from '../../utils/sendResponce';
 import { ConfigFile } from '../../../config';
-import { blacklistedTokens } from '../../types/commonTypes';
 
 
 const signUp = catchAsync(async (req, res) => {

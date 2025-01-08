@@ -8,6 +8,6 @@ const express_1 = __importDefault(require("express"));
 const user_controller_1 = require("./user.controller");
 const auth_1 = __importDefault(require("../../middleware/auth"));
 const router = express_1.default.Router();
-router.get('/', (0, auth_1.default)("USER"), user_controller_1.UserController.getAllUsers);
-router.get('/my-profile', (0, auth_1.default)("USER", "ADMIN", "SUPER_USER"), user_controller_1.UserController.meProfile);
+router.get('/', (0, auth_1.default)('USER', 'ADMIN', 'SUPER_ADMIN'), user_controller_1.UserController.getAllUsers);
+router.get('/my-profile', (0, auth_1.default)('USER', 'ADMIN', 'SUPER_ADMIN'), user_controller_1.UserController.meProfile);
 exports.UserRouter = router;

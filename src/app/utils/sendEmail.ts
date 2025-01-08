@@ -11,10 +11,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (
-  toEmail: string,
-  emailSubject: string,
-  bodyText: string,
+const sendEmail = async (toEmail: string, emailSubject: string, bodyText: string,
   // html: string,
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from '../../../app';
 
 const getAllUser = async () => {
@@ -6,14 +7,15 @@ const getAllUser = async () => {
   return result;
 };
 
-const meProfile = async (user: Record<string, unknown> | undefined) => {
-  const result = await prisma.user.findUnique({
+const meProfile = async (user: any) => {
+  const result = await prisma.user.findFirst({
     where: {email: user?.email as string},
     select: {
       name: true, 
       email: true, 
       phone: true,
-      role: true 
+      role: true, 
+      profile: true
     }
   });
 
