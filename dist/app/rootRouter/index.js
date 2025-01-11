@@ -11,6 +11,7 @@ const emi_route_1 = require("../utils/emiCalculator/emi.route");
 const newsLetter_route_1 = require("../module/public/newsLetter/newsLetter.route");
 const bank_route_1 = require("../module/bank/bank.route");
 const profile_route_1 = require("../module/user/profile/profile.route");
+const blog_route_1 = require("../module/blog/blog.route");
 const router = express_1.default.Router();
 const moduleRouter = [
     {
@@ -36,6 +37,10 @@ const moduleRouter = [
     {
         path: '/news-letter',
         route: newsLetter_route_1.NewsLetterRouter
+    },
+    {
+        path: '/blogs',
+        route: blog_route_1.BlogRouter
     },
 ];
 moduleRouter.forEach(item => router.use(item.path, item.route));

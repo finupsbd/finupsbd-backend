@@ -1,5 +1,5 @@
 model Bank {
-    id            Int    @id @default(autoincrement())
+    id            String @id @default(uuid())
     bankId        String
     bankName      String
     amount        String

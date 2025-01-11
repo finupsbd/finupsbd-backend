@@ -5,6 +5,7 @@ import { PublicRouter } from '../utils/emiCalculator/emi.route'
 import { NewsLetterRouter } from '../module/public/newsLetter/newsLetter.route'
 import { BankRouter } from '../module/bank/bank.route'
 import { ProfileRouter } from '../module/user/profile/profile.route'
+import { BlogRouter } from '../module/blog/blog.route'
 const router = express.Router()
 
 
@@ -33,6 +34,10 @@ const moduleRouter = [
     {
         path: '/news-letter', 
         route: NewsLetterRouter
+    }, 
+    {
+        path: '/blogs', 
+        route: BlogRouter
     }, 
 ]
 
