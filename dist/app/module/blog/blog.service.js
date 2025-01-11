@@ -10,8 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogService = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const app_1 = require("../../../app");
-const createBlog = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const sendImageToCloud_1 = require("../../utils/sendImageToCloud");
+const createBlog = (payload, file) => __awaiter(void 0, void 0, void 0, function* () {
+    const coverImage = yield (0, sendImageToCloud_1.sendImageToCloud)(file === null || file === void 0 ? void 0 : file.path);
+    payload.coverImage = coverImage === null || coverImage === void 0 ? void 0 : coverImage.secure_url;
     const result = yield app_1.prisma.blog.create({ data: payload });
     return result;
 });
@@ -23,8 +27,8 @@ const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
             content: true,
             category: true,
             tags: true,
-            coverImage: true
-        }
+            coverImage: true,
+        },
     });
     return result;
 });
@@ -35,8 +39,19 @@ const updateBlog = (payload, id) => __awaiter(void 0, void 0, void 0, function* 
     });
     return result;
 });
+const deleteBlog = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExistBlog = yield app_1.prisma.blog.findFirst({
+        where: { id },
+    });
+    if (!isExistBlog) {
+        throw new Error('Delete Blog Already. thank you');
+    }
+    const result = yield app_1.prisma.blog.delete({ where: { id } });
+    return result;
+});
 exports.BlogService = {
     createBlog,
     updateBlog,
     getAllBlogs,
+    deleteBlog,
 };

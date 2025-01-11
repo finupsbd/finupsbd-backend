@@ -14,7 +14,7 @@
     slug: string;
     content: string;
     userId: string;
-    publishedDate?: Date;
+    publishedDate?: Date | undefined;
     status: "DRAFT" |  "PUBLISHED" | "ARCHIVED";
     excerpt?: string;
     category?: string;

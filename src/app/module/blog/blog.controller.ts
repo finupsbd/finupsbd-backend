@@ -1,10 +1,15 @@
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import { BlogService } from "./blog.service";
+import { BlogValidationSchema } from "./blog.validation";
 
 
 const createBlog = catchAsync(async (req, res) => {
-    const result = await BlogService.createBlog(req.body)
+  const payload = BlogValidationSchema.parse(JSON.parse(req.body.data))
+  const file = req.file
+
+
+    const result = await BlogService.createBlog(payload, file)
 
     
     res.status(StatusCodes.CREATED).json({
@@ -40,10 +45,24 @@ const updateBlog = catchAsync(async (req, res) => {
     });
   });
 
+const deleteBlog = catchAsync(async (req, res) => {
+    const blogId = req.params?.id
+    await BlogService.deleteBlog(blogId)
+
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: 'Blog Deleted Successfully',
+      statusCode: StatusCodes.OK,
+      data: {},
+    });
+  });
+
   
 export const BlogController = {
     createBlog,
     updateBlog, 
-    getAllBlogs
+    getAllBlogs, 
+    deleteBlog
   };
   

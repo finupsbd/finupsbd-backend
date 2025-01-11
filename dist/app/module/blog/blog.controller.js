@@ -16,8 +16,11 @@ exports.BlogController = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const blog_service_1 = require("./blog.service");
+const blog_validation_1 = require("./blog.validation");
 const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_service_1.BlogService.createBlog(req.body);
+    const payload = blog_validation_1.BlogValidationSchema.parse(JSON.parse(req.body.data));
+    const file = req.file;
+    const result = yield blog_service_1.BlogService.createBlog(payload, file);
     res.status(http_status_codes_1.StatusCodes.CREATED).json({
         success: true,
         message: 'Blog create successfully',
@@ -45,8 +48,20 @@ const updateBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
+const deleteBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const blogId = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
+    yield blog_service_1.BlogService.deleteBlog(blogId);
+    res.status(http_status_codes_1.StatusCodes.OK).json({
+        success: true,
+        message: 'Blog Deleted Successfully',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: {},
+    });
+}));
 exports.BlogController = {
     createBlog,
     updateBlog,
-    getAllBlogs
+    getAllBlogs,
+    deleteBlog
 };
