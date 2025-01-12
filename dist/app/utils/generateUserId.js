@@ -38,17 +38,6 @@ function generateUserId() {
             // If no users exist, start with the first ID
             newUserId = '250112001';
         }
-        console.log(newUserId);
         return newUserId;
     });
 }
-// const currentYear = new Date().getFullYear().toString().slice(-2); // Last 2 digits of the year
-// const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, "0"); // Month in 2 digits
-// const currentDate = new Date().getDate().toString().padStart(2, "0"); // Date in 2 digits
-// // Increment padded to 3 digits
-// const incrementValue = increment.toString().padStart(3, "0");
-// // Combine year, month, date, and increment
-// const userUnkId = `${currentYear}${currentMonth}${currentDate}${incrementValue}`;
-//     console.log(userUnkId);
-// // Ensure the length is under 8 digits by trimming if necessary
-// // userUnkId = userUnkId.slice(0, 8);

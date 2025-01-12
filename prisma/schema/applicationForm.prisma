@@ -1,4 +1,157 @@
+enum Status {
+    PENDING
+    IN_PROGRESS
+    APPROVE
+    REJECT
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    OTHER
+}
+
+enum MaritalStatus {
+    SINGLE
+    MARRIED
+    DIVORCED
+    WIDOWED
+}
+
+model PropertyDetails {
+    id               Int          @id @default(autoincrement())
+    typeOfProperty   PropertyType
+    approximateValue Float
+}
+
+enum OwnershipStatus {
+    OWNED
+    RENTED
+    OTHER
+}
+
+enum PropertyType {
+    RESIDENTIAL
+    COMMERCIAL
+    LAND
+}
+
+model Address {
+    id                Int             @id @default(autoincrement())
+    houseFlatNo       String
+    streetRoad        String
+    areaLocality      String
+    city              String
+    district          String
+    postalCode        String
+    ownershipStatus   OwnershipStatus
+    lengthOfStayYears Int
+}
+
+enum EmploymentStatus {
+    SALARIED
+    SELF_EMPLOYED
+    BUSINESS_OWNER
+    UNEMPLOYED
+}
+
+model EmploymentFinancialInfo {
+    id                         Int              @id @default(autoincrement())
+    employmentStatus           EmploymentStatus
+    jobTitle                   String?
+    employerName               String?
+    department                 String?
+    officeAddress              String?
+    contactDetails             String?
+    businessName               String?
+    businessRegistrationNumber String?
+    employmentTenureYears      Int?
+    monthlyGrossIncome         Float
+    otherSourcesOfIncome       String?
+    totalMonthlyExpenses       Float
+    profession                 String?
+    taxIdentificationNumber    String?
+    currentCreditScore         Float?
+    userId                     String
+    user                       User             @relation(fields: [userId], references: [id])
+}
+
+model LoanApplication {
+    id                   Int      @id @default(autoincrement())
+    loanType             String
+    loanAmountRequested  Float
+    purposeOfLoan        String
+    preferredLoanTenure  Int
+    proposedEMIStartDate DateTime
+    repaymentPreferences String
+}
+
+
+model ExistingLoan {
+  id               Int      @id @default(autoincrement())
+  lenderName       String
+  loanBalance      Float
+  monthlyEMI       Float
+  remainingTenure  Int
+  loanApplication  LoanApplication @relation(fields: [loanApplicationId], references: [id])
+  loanApplicationId Int
+}
+
+model CreditCard {
+  id                    Int      @id @default(autoincrement())
+  cardIssuer            String
+  currentBalance        Float
+  minimumMonthlyPayment Float
+}
+
+
+model Liability {
+  id               Int      @id @default(autoincrement())
+  type             String
+  balance          Float
+  emi              Float
+}
+
+
+model CoApplicant {
+  id               Int      @id @default(autoincrement())
+  fullName         String
+  relationship     String
+  employment       String
+  monthlyIncome    Float
+}
+
+
+
+
+
 model ApplicationForm {
-    id            String @id @default(uuid())
-    applicationId String @default("0")
+    id                        String                  @id @default(uuid())
+    applicationId             String                  @default("0")
+    fullName                  String
+    fatherName                String
+    motherName                String
+    spouseName                String?
+    dateOfBirth               DateTime
+    placeOfBirth              String
+    gender                    Gender?
+    maritalStatus             MaritalStatus
+    nid                       String
+    birthRegistration         String?
+    mobileNumber              String
+    alternateNumber           String?
+    emailAddress              String
+    socialMediaLink           String[]
+    permanentAddress          Address
+    currentResidentialAddress Address?
+    propertyDetails           PropertyDetails?
+    employmentFinancialInfo   EmploymentFinancialInfo
+    loanRequest               LoanApplication
+    existingLoans             ExistingLoan[]
+    creditCards               CreditCard[]
+    otherLiabilities          Liability[]
+    coApplicant               CoApplicant?
+    status                    Status                  @default(PENDING)
+    createdAt                 DateTime                @default(now())
+    updatedAt                 DateTime                @updatedAt
 }
