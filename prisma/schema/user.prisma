@@ -6,6 +6,7 @@ enum Role {
 
 model User {
   id                  String    @id @default(uuid())
+  userId              String?
   name                String?
   email               String    @unique
   phone               String    @unique

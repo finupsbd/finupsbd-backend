@@ -25,7 +25,7 @@ const transporter = nodemailer_1.default.createTransport({
 });
 const sendEmail = (toEmail, emailSubject, bodyText) => __awaiter(void 0, void 0, void 0, function* () {
     const info = yield transporter.sendMail({
-        from: "shamimrezabd67@gmail.com", // sender address
+        from: config_1.ConfigFile.NODE_MAILER_EMAIL, // sender address
         to: toEmail, // list of receivers
         subject: emailSubject, // Subject line
         text: bodyText, // plain text body

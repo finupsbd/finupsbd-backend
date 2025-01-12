@@ -9,6 +9,7 @@ import {
 import { TUser } from '../user/user.interface';
 import bcrypt from 'bcrypt';
 import { ConfigFile } from '../../../config';
+import { generateUserId } from '../../utils/generateUserId';
 
 //Sign up User
 
@@ -21,8 +22,9 @@ const signUp = async (payload: TUser) => {
   const pin = Math.floor(100000 + Math.random() * 900000).toString();
   const pinExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
   payload.pin = pin;
-  payload.pinExpiry = pinExpiry;
-
+  payload.pinExpiry = pinExpiry
+  payload.userId = await generateUserId()
+  console.log(payload);
   const result = await prisma.user.create({ data: payload });
 
   const MailSubject = 'Your PIN for Verification';
@@ -44,6 +46,10 @@ const signUp = async (payload: TUser) => {
 
   return 'Send Your pin Check your email! Thank you';
 };
+
+
+
+
 
 const validatePin = async (payload: { email: string; pin: string }) => {
   const { email, pin } = payload;
@@ -67,6 +73,118 @@ const validatePin = async (payload: { email: string; pin: string }) => {
     where: { email },
     data: { emailVerified: true },
   });
+
+  const emailSubject = 'Your PIN for Verification';
+  const bodyText = `
+   <head>
+      <style>
+        body {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          color: #333;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+        .email-container {
+          width: 100%;
+          background-color: #f4f4f4;
+          padding: 20px 0;
+        }
+        .email-content {
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          padding: 40px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+          text-align: center;
+          padding-bottom: 20px;
+        }
+        .email-header h2 {
+          color: #007BFF;
+          font-size: 28px;
+          margin: 0;
+        }
+        .email-body {
+          font-size: 16px;
+          line-height: 1.6;
+          color: #333;
+        }
+        .cta-button {
+          display: inline-block;
+          background-color: #007BFF;
+          color: #ffffff;
+          padding: 12px 24px;
+          text-decoration: none;
+          font-size: 16px;
+          border-radius: 4px;
+          margin-top: 20px;
+        }
+        .footer {
+          text-align: center;
+          padding-top: 30px;
+          font-size: 12px;
+          color: #777;
+        }
+        .footer a {
+          color: #007BFF;
+          text-decoration: none;
+        }
+        .social-icons img {
+          width: 24px;
+          margin: 0 10px;
+        }
+        @media (max-width: 600px) {
+          .email-content {
+            padding: 20px;
+          }
+          .email-header h2 {
+            font-size: 24px;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <table role="presentation" class="email-container">
+        <tr>
+          <td align="center">
+            <table role="presentation" class="email-content">
+              <tr class="email-header">
+                <td>
+                  <h2>Welcome to FinupsBd, ${user.name}!</h2>
+                </td>
+              </tr>
+              <tr class="email-body">
+                <td>
+                  <p>Dear ${user.name},</p>
+                  <p>Thank you for joining <strong>FinupsBd</strong>! your userID: <strong></strong>! We are thrilled to have you as part of our community.</p>
+                  <p>At FinupsBd, we strive to provide you with top-notch services and a seamless experience. Our team is here to assist you every step of the way, ensuring your journey with us is smooth and successful.</p>
+                  <p>To get started, feel free to explore our platform, and if you need any assistance, don't hesitate to reach out to our support team.</p>
+                  <a href="https://finupsbd.com/get-started" class="cta-button">Get Started</a>
+                </td>
+              </tr>
+              <tr class="footer">
+                <td>
+                  <p>&copy; ${new Date().getFullYear()} FinupsBd. All rights reserved.</p>
+                  <p>1234 Business St., Suite 567, City, Country</p>
+                  <div class="social-icons">
+                    <a href="https://facebook.com/finupsbd"><img src="facebook-icon.png" alt="Facebook"></a>
+                    <a href="https://twitter.com/finupsbd"><img src="twitter-icon.png" alt="Twitter"></a>
+                    <a href="https://linkedin.com/company/finupsbd"><img src="linkedin-icon.png" alt="LinkedIn"></a>
+                  </div>
+                  <p><a href="https://finupsbd.com/unsubscribe">Unsubscribe</a></p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+`;
+  await sendEmail(email, emailSubject, bodyText);
+
 
   return {};
 };

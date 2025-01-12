@@ -17,7 +17,7 @@ const sendEmail = async (toEmail: string, emailSubject: string, bodyText: string
 
 ) => {
   const info = await transporter.sendMail({
-    from: "shamimrezabd67@gmail.com", // sender address
+    from: ConfigFile.NODE_MAILER_EMAIL, // sender address
     to: toEmail, // list of receivers
     subject: emailSubject, // Subject line
     text: bodyText, // plain text body

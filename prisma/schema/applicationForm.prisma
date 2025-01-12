@@ -1,0 +1,4 @@
+model ApplicationForm {
+    id            String @id @default(uuid())
+    applicationId String @default("0")
+}
