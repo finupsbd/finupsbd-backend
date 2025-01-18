@@ -14,7 +14,9 @@ const rootRouter_1 = require("./app/rootRouter");
 const DB_1 = __importDefault(require("./app/DB"));
 const passport_1 = __importDefault(require("passport"));
 const app = (0, express_1.default)();
-exports.prisma = new client_1.PrismaClient();
+exports.prisma = new client_1.PrismaClient({
+    log: ['query', 'info', 'warn', 'error'],
+});
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
@@ -23,7 +25,7 @@ app.use((0, cors_1.default)({
 }));
 (0, DB_1.default)();
 app.use(passport_1.default.initialize());
-app.use('/api/v1', rootRouter_1.RootRouter);
+app.use('/v1', rootRouter_1.RootRouter);
 app.get('/', (req, res) => {
     res.send({ message: 'Server is running' });
 });

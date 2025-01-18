@@ -27,6 +27,8 @@ const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
             profile: true
         }
     });
+    if (!result)
+        throw new Error("User not found");
     return result;
 });
 exports.UserServices = {

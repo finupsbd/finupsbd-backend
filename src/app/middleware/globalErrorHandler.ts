@@ -21,7 +21,7 @@ const globalErrorHandler = (
   //Prisma Validation Error handle
   if (err?.name === 'PrismaClientKnownRequestError') {
     newMessage = `Validation Error from (${err?.meta?.modelName}) model `;
-    error = err?.meta;
+    error = err;
   }
 
   //generics error handle

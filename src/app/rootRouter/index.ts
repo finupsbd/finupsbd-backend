@@ -6,6 +6,8 @@ import { NewsLetterRouter } from '../module/public/newsLetter/newsLetter.route'
 import { BankRouter } from '../module/bank/bank.route'
 import { ProfileRouter } from '../module/user/profile/profile.route'
 import { BlogRouter } from '../module/blog/blog.route'
+// import { ApplicationRouter } from '../module/applicationForm/applicationForm.route'
+import { OpenAiRouter } from '../module/openai/openai.route'
 const router = express.Router()
 
 
@@ -27,6 +29,10 @@ const moduleRouter = [
         path: '/bank', 
         route: BankRouter
     },
+    // {
+    //     path: '/application-form', 
+    //     route: ApplicationRouter
+    // },
     {
         path: '/public', 
         route: PublicRouter
@@ -39,6 +45,10 @@ const moduleRouter = [
         path: '/blogs', 
         route: BlogRouter
     }, 
+    {
+        path: '/openai', 
+        route: OpenAiRouter
+    }
 ]
 
 

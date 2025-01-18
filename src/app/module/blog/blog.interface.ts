@@ -9,7 +9,7 @@
   
   // Blog Model Interface
   export interface TBlog {
-    id: string;
+    id?: string;
     title: string;
     slug: string;
     content: string;
@@ -27,13 +27,3 @@
     language?: string;
     permissions?: string;
   }
-  
-  // Comment Model Interface
-//   export interface Comment {
-//     id: number;
-//     content: string;
-//     blogId: number;
-//     blog: Blog; // Relationship with Blog
-//     createdAt: Date;
-//     updatedAt: Date;
-//   }

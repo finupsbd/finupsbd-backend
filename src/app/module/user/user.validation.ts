@@ -1,57 +1,52 @@
 import { z } from 'zod';
 
+export const emailSchema = z
+  .string()
+  .email('Invalid email format')
+  .min(1, 'Email is required');
+
+export const passwordSchema = z
+  .string()
+  .min(6, 'Password must be at least 6 characters long');
+
+export const phoneSchema = z
+  .string()
+  .min(1, 'Phone is required')
+  .regex(/^\d{11}$/, 'Phone number must be 11 digits');
+
+
+
 
 const createUserValidationSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email format').min(1, 'Email is required'),
-  phone: z
-    .string()
-    .min(1, 'Phone is required')
-    .regex(/^\d{11}$/, 'Phone number must be 11 digits'),
-  password: z.string().min(6, 'Password must be at least 6 characters long'),
-  profile: z.object({}).optional()
+  email: emailSchema,
+  phone: phoneSchema,
+  password: passwordSchema,
+  profile: z.object({}).optional(),
 });
 
-
 const verifyPinValidationSchema = z.object({
-  email: z.string().email('Invalid email format').min(1, 'Email is required'),
-  // phone: z
-  //   .string()
-  //   .min(1, 'Phone is required')
-  //   .regex(/^\d{11}$/, 'Phone number must be 11 digits'),
+  email: emailSchema,
+  // phone: phoneSchema,
   pin: z.string().min(6, 'Password must be at least 6 characters long'),
 });
 
-
 const loginValidationSchema = z.object({
-  email: z.string().email('Invalid email format').min(1, 'Email is required'),
-  // phone: z
-  //   .string()
-  //   .min(1, 'Phone is required')
-  //   .regex(/^\d{11}$/, 'Phone number must be 11 digits'),
-  password: z.string().min(6, 'Password must be at least 6 characters long'),
+  email: emailSchema,
+  // phone: phoneSchema,
+  password: passwordSchema,
 });
 
-
 const forgetPasswordValidationSchema = z.object({
-  email: z.string().email('Invalid email format').min(1,'Email is required'),
-  // phone: z
-  //   .string()
-  //   .min(1, 'Phone is required')
-  //   .regex(/^\d{11}$/, 'Phone number must be 11 digits'),
-
+  email: emailSchema,
+  // phone: phoneSchema,
 });
 
 const resetPasswordValidationSchema = z.object({
-  email: z.string().email('Invalid email format').min(1,'Email is required'),
-  newPassword: z.string().min(6, 'Password must be at least 6 characters long'),
-  // phone: z
-  //   .string()
-  //   .min(1, 'Phone is required')
-  //   .regex(/^\d{11}$/, 'Phone number must be 11 digits'),
-
+  email: emailSchema,
+  newPassword: passwordSchema
+  // phone: phoneSchema,
 });
-
 
 // password = z
 //   .string()
@@ -65,12 +60,10 @@ const resetPasswordValidationSchema = z.object({
 //     message: 'Password must not contain spaces', // No spaces allowed
 //   });
 
-
-
 export const UserValidation = {
-    createUserValidationSchema, 
-    verifyPinValidationSchema, 
-    loginValidationSchema, 
-    forgetPasswordValidationSchema,
-    resetPasswordValidationSchema
-}
+  createUserValidationSchema,
+  verifyPinValidationSchema,
+  loginValidationSchema,
+  forgetPasswordValidationSchema,
+  resetPasswordValidationSchema,
+};

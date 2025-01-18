@@ -26,6 +26,8 @@ model Blog {
     permissions     String     @default("public")
     createdAt       DateTime   @default(now())
     updatedAt       DateTime   @updatedAt
+
+    @@map("blogs")
 }
 
 // model Comment {

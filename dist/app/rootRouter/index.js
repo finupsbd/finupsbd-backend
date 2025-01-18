@@ -12,6 +12,8 @@ const newsLetter_route_1 = require("../module/public/newsLetter/newsLetter.route
 const bank_route_1 = require("../module/bank/bank.route");
 const profile_route_1 = require("../module/user/profile/profile.route");
 const blog_route_1 = require("../module/blog/blog.route");
+// import { ApplicationRouter } from '../module/applicationForm/applicationForm.route'
+const openai_route_1 = require("../module/openai/openai.route");
 const router = express_1.default.Router();
 const moduleRouter = [
     {
@@ -30,6 +32,10 @@ const moduleRouter = [
         path: '/bank',
         route: bank_route_1.BankRouter
     },
+    // {
+    //     path: '/application-form', 
+    //     route: ApplicationRouter
+    // },
     {
         path: '/public',
         route: emi_route_1.PublicRouter
@@ -42,6 +48,10 @@ const moduleRouter = [
         path: '/blogs',
         route: blog_route_1.BlogRouter
     },
+    {
+        path: '/openai',
+        route: openai_route_1.OpenAiRouter
+    }
 ];
 moduleRouter.forEach(item => router.use(item.path, item.route));
 exports.RootRouter = router;

@@ -1,3 +1,11 @@
+/* eslint-disable no-unused-vars */
+
+export enum UserRole {
+  USER = "USER",
+  ADMIN = "ADMIN",
+  SUPER_ADMIN = "SUPER_ADMIN",
+}
+
 
 
 export type TUser = {
@@ -8,6 +16,6 @@ export type TUser = {
   password: string;
   pin: string;
   pinExpiry: Date;
-  role?: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
+  role?: UserRole;
   isActive?: boolean;
 };

@@ -12,7 +12,9 @@ import passport from 'passport';
 
 
 const app: Application = express();
-export const prisma = new PrismaClient()
+export const prisma = new PrismaClient({
+  log: ['query', 'info', 'warn', 'error'],
+})
 
 app.use(cookieParser())
 app.use(express.json());
@@ -26,7 +28,7 @@ seedSuperAdmin()
 
 app.use(passport.initialize());
 
-app.use('/api/v1', RootRouter)
+app.use('/v1', RootRouter)
 
 
 

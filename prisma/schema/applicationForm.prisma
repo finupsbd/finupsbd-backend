@@ -1,157 +1,323 @@
-enum Status {
-    PENDING
-    IN_PROGRESS
-    APPROVE
-    REJECT
-}
+// enum Status {
+//     PENDING
+//     IN_PROGRESS
+//     APPROVED
+//     REJECTED
+// }
 
-enum Gender {
-    MALE
-    FEMALE
-    OTHER
-}
+// enum AppGender {
+//     MALE
+//     FEMALE
+//     OTHER
+// }
 
-enum MaritalStatus {
-    SINGLE
-    MARRIED
-    DIVORCED
-    WIDOWED
-}
+// enum MaritalStatus {
+//     SINGLE
+//     MARRIED
+//     DIVORCED
+//     WIDOWED
+// }
 
-model PropertyDetails {
-    id               Int          @id @default(autoincrement())
-    typeOfProperty   PropertyType
-    approximateValue Float
-}
+// enum OwnershipStatus {
+//     OWNED
+//     RENTED
+//     LEASED
+//     OTHER
+// }
 
-enum OwnershipStatus {
-    OWNED
-    RENTED
-    OTHER
-}
+// enum PropertyType {
+//     RESIDENTIAL
+//     COMMERCIAL
+//     LAND
+// }
 
-enum PropertyType {
-    RESIDENTIAL
-    COMMERCIAL
-    LAND
-}
+// enum EmploymentStatus {
+//     SALARIED
+//     SELF_EMPLOYED
+//     BUSINESS_OWNER
+// }
 
-model Address {
-    id                Int             @id @default(autoincrement())
-    houseFlatNo       String
-    streetRoad        String
-    areaLocality      String
-    city              String
-    district          String
-    postalCode        String
-    ownershipStatus   OwnershipStatus
-    lengthOfStayYears Int
-}
+// model ApplicationForm {
+//     id                        String                   @id @default(uuid())
+//     applicationId             String
+//     fullName                  String
+//     fatherName                String
+//     motherName                String
+//     spouseName                String?
+//     dateOfBirth               String?
+//     placeOfBirth              String
+//     gender                    AppGender?
+//     maritalStatus             MaritalStatus
+//     nid                       String
+//     birthRegistration         String?
+//     mobileNumber              String
+//     alternateNumber           String?
+//     emailAddress              String
+//     socialMediaLink           String[]
+//     status                    Status                   @default(PENDING)
+//     propertyDetails           PropertyDetails?         @relation(fields: [propertyDetailsId], references: [id])
+//     employmentFinancialInfo   EmploymentFinancialInfo? @relation(fields: [employmentFinancialInfoId], references: [id])
+//     existingLoans             ExistingLoan?            @relation(fields: [existingLoanId], references: [id])
+//     creditCards               CreditCard?              @relation(fields: [creditCardId], references: [id])
+//     otherLiabilities          Liability?               @relation(fields: [liabilityId], references: [id])
+//     coApplicant               CoApplicant?             @relation(fields: [coApplicantId], references: [id])
+//     loanApplication           LoanApplication?         @relation(fields: [loanApplicationId], references: [id])
+//     Address                   Address?                 @relation(fields: [addressId], references: [id])
+//     addressId                 String?
+//     employmentFinancialInfoId String?
+//     user                      User?                    @relation(fields: [userId], references: [id])
+//     userId                    String
+//     createdAt                 DateTime                 @default(now())
+//     updatedAt                 DateTime                 @updatedAt
+//     propertyDetailsId         String?
+//     existingLoanId            String
+//     creditCardId              String
+//     liabilityId               String
+//     coApplicantId             String
+//     loanApplicationId         String
 
-enum EmploymentStatus {
-    SALARIED
-    SELF_EMPLOYED
-    BUSINESS_OWNER
-    UNEMPLOYED
-}
+//     @@index([applicationId, status])
+//     @@map("applicationFrom")
+// }
 
-model EmploymentFinancialInfo {
-    id                         Int              @id @default(autoincrement())
-    employmentStatus           EmploymentStatus
-    jobTitle                   String?
-    employerName               String?
-    department                 String?
-    officeAddress              String?
-    contactDetails             String?
-    businessName               String?
-    businessRegistrationNumber String?
-    employmentTenureYears      Int?
-    monthlyGrossIncome         Float
-    otherSourcesOfIncome       String?
-    totalMonthlyExpenses       Float
-    profession                 String?
-    taxIdentificationNumber    String?
-    currentCreditScore         Float?
-    userId                     String
-    user                       User             @relation(fields: [userId], references: [id])
-}
+// model Address {
+//     id                String            @id @default(uuid())
+//     houseFlatNo       String
+//     streetRoad        String
+//     areaLocality      String
+//     city              String
+//     district          String
+//     postalCode        String
+//     ownershipStatus   String
+//     lengthOfStayYears Int
+//     addressType       String
+//     user              User?             @relation(fields: [userId], references: [id])
+//     userId            String?
+//     ApplicationForm   ApplicationForm[]
+// }
+
+// model EmploymentFinancialInfo {
+//     id                         String            @id @default(uuid())
+//     employmentStatus           EmploymentStatus
+//     jobTitle                   String?
+//     employerName               String?
+//     department                 String?
+//     officeAddress              String?
+//     contactDetails             String?
+//     businessName               String?
+//     businessRegistrationNumber String?
+//     employmentTenureYears      Int?
+//     monthlyGrossIncome         Float
+//     otherSourcesOfIncome       String?
+//     totalMonthlyExpenses       Float
+//     profession                 String?
+//     taxIdentificationNumber    String?
+//     currentCreditScore         Float?
+//     ApplicationForm            ApplicationForm[]
+// }
+
+// model LoanApplication {
+//     id                   String            @id @default(uuid())
+//     loanType             String
+//     loanAmountRequested  Float
+//     purposeOfLoan        String
+//     preferredLoanTenure  Int
+//     proposedEMIStartDate DateTime?
+//     repaymentPreferences String
+//     ApplicationForm      ApplicationForm[]
+// }
+
+// model ExistingLoan {
+//     id              String            @id @default(uuid())
+//     lenderName      String
+//     loanBalance     Float
+//     monthlyEMI      Float
+//     remainingTenure Int
+//     ApplicationForm ApplicationForm[]
+// }
+
+// model PropertyDetails {
+//     id               String            @id @default(uuid())
+//     typeOfProperty   PropertyType
+//     approximateValue Float
+//     ApplicationForm  ApplicationForm[]
+// }
+
+// model CreditCard {
+//     id                    String            @id @default(uuid())
+//     cardIssuer            String
+//     currentBalance        Float
+//     minimumMonthlyPayment Float
+//     ApplicationForm       ApplicationForm[]
+// }
+
+// model Liability {
+//     id              String            @id @default(uuid())
+//     type            String
+//     balance         Float
+//     emi             Float
+//     ApplicationForm ApplicationForm[]
+// }
+
+// model CoApplicant {
+//     id              String            @id @default(uuid())
+//     fullName        String
+//     relationship    String
+//     employment      String
+//     monthlyIncome   Float
+//     ApplicationForm ApplicationForm[]
+// }
+
 
 model LoanApplication {
-    id                   Int      @id @default(autoincrement())
-    loanType             String
-    loanAmountRequested  Float
-    purposeOfLoan        String
-    preferredLoanTenure  Int
-    proposedEMIStartDate DateTime
-    repaymentPreferences String
+  id                   String          @id @default(uuid()) // Unique identifier
+  userId               String          // User creating the application
+  user                 User            @relation(fields: [userId], references: [id])
+
+  // Personal Information
+  fullName             String
+  fatherName           String
+  motherName           String
+  spouseName           String?
+  dateOfBirth          DateTime
+  placeOfBirth         String
+  maritalStatus        MaritalStatus
+  gender               AppGender
+  nid                  String
+  birthRegistration    String?
+  mobileNumber         String
+  alternateNumber      String?
+  emailAddress         String
+  socialMediaProfiles  String[]
+
+  // Residential Information
+//   permanentAddress     Address         @relation(fields: [permanentAddressId], references: [id])
+  permanentAddressId   String
+//   currentAddress       Address?        @relation(fields: [currentAddressId], references: [id])
+  currentAddressId     String?
+
+  // Employment & Financial Information
+  employmentStatus     EmploymentStatus
+  jobTitle             String?
+  employerName         String?
+  department           String?
+  officeAddress        String?
+  contactDetails       String?
+  businessName         String?
+  businessRegistration String?
+  employmentTenure     Int?
+  monthlyGrossIncome   Float
+  totalMonthlyExpenses Float
+  otherIncomeSources   String?
+  taxIdentification    String?
+  creditScore          Float?
+
+  // Loan Request Details
+  loanType             String
+  loanAmountRequested  Float
+  loanPurpose          String
+  loanTenure           Int
+  proposedEMIStartDate DateTime?
+  repaymentPreference  String
+
+  // Existing Financial Obligations
+//   existingLoans        ExistingLoan[]
+//   creditCards          CreditCard[]
+//   otherLiabilities     Liability[]
+//   coApplicants         CoApplicant[]
+
+  // Document Uploads
+  documentUploads      String[]        // URLs for uploaded documents
+
+  // Consent & Declaration
+  consentGiven         Boolean         @default(false)
+  privacyAgreement     Boolean         @default(false)
+  nonDisclosure        Boolean         @default(false)
+  declarationAccuracy  Boolean         @default(false)
+  digitalSignature     String
+  signatureDate        DateTime
+  
+ // Data Security
+  encryptionStandards  Boolean         @default(false)      // Encryption Standards
+  twoFactorAuth        Boolean         @default(false)      // Two-Factor Authentication
+  roleBasedAccess      Boolean         @default(false)      // Role-Based Access Control
+  dataRetentionPolicy  Boolean         @default(false)      // Data Retention Policy
+  withdrawalRights     Boolean         @default(false)      // Right to Withdraw or Update
+  // Metadata
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
 }
 
 
+model Address {
+  id                 String   @id @default(uuid())
+  houseFlatNo        String
+  streetRoad         String
+  areaLocality       String
+  city               String
+  district           String
+  postalCode         String
+  ownershipStatus    OwnershipStatus
+  lengthOfStayYears  Int
+}
+
 model ExistingLoan {
-  id               Int      @id @default(autoincrement())
-  lenderName       String
-  loanBalance      Float
-  monthlyEMI       Float
-  remainingTenure  Int
-  loanApplication  LoanApplication @relation(fields: [loanApplicationId], references: [id])
-  loanApplicationId Int
+  id              String   @id @default(uuid())
+  lenderName      String
+  loanBalance     Float
+  monthlyEMI      Float
+  remainingTenure Int
 }
 
 model CreditCard {
-  id                    Int      @id @default(autoincrement())
+  id                    String   @id @default(uuid())
   cardIssuer            String
   currentBalance        Float
   minimumMonthlyPayment Float
 }
 
-
 model Liability {
-  id               Int      @id @default(autoincrement())
-  type             String
-  balance          Float
-  emi              Float
+  id      String   @id @default(uuid())
+  type    String
+  balance Float
+  emi     Float
 }
-
 
 model CoApplicant {
-  id               Int      @id @default(autoincrement())
-  fullName         String
-  relationship     String
-  employment       String
-  monthlyIncome    Float
+  id              String   @id @default(uuid())
+  fullName        String
+  relationship    String
+  employment      String
+  monthlyIncome   Float
+}
+
+enum AppGender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+enum OwnershipStatus {
+  OWNED
+  RENTED
+  LEASED
+  OTHER
+}
+
+enum EmploymentStatus {
+  SALARIED
+  SELF_EMPLOYED
+  BUSINESS_OWNER
+  UNEMPLOYED
 }
 
 
 
 
-
-model ApplicationForm {
-    id                        String                  @id @default(uuid())
-    applicationId             String                  @default("0")
-    fullName                  String
-    fatherName                String
-    motherName                String
-    spouseName                String?
-    dateOfBirth               DateTime
-    placeOfBirth              String
-    gender                    Gender?
-    maritalStatus             MaritalStatus
-    nid                       String
-    birthRegistration         String?
-    mobileNumber              String
-    alternateNumber           String?
-    emailAddress              String
-    socialMediaLink           String[]
-    permanentAddress          Address
-    currentResidentialAddress Address?
-    propertyDetails           PropertyDetails?
-    employmentFinancialInfo   EmploymentFinancialInfo
-    loanRequest               LoanApplication
-    existingLoans             ExistingLoan[]
-    creditCards               CreditCard[]
-    otherLiabilities          Liability[]
-    coApplicant               CoApplicant?
-    status                    Status                  @default(PENDING)
-    createdAt                 DateTime                @default(now())
-    updatedAt                 DateTime                @updatedAt
-}

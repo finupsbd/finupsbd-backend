@@ -18,7 +18,7 @@ const meProfile = async (user: any) => {
       profile: true
     }
   });
-
+  if (!result) throw new Error("User not found");
   return result;
 };
 
