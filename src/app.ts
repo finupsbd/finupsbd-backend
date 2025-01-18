@@ -9,12 +9,12 @@ import seedSuperAdmin from './app/DB';
 import passport from 'passport';
 
 
-
-
-const app: Application = express();
 export const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
 })
+
+const app: Application = express();
+
 
 app.use(cookieParser())
 app.use(express.json());
