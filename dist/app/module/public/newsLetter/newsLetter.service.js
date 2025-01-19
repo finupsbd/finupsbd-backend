@@ -35,12 +35,12 @@ const createNewsLetter = (payload) => __awaiter(void 0, void 0, void 0, function
     <p>To make the most of your subscription, be sure to check your inbox regularly for our updates.</p>
     <p>Meanwhile, here are a few quick links to help you get started:</p>
     <ul style="line-height: 1.8; color: #555;">
-      <li><a href="[Link to Website]" style="color: #4CAF50; text-decoration: none;">Visit Our Website</a></li>
+      <li><a href="[https://www.finupsbd.com/]" style="color: #4CAF50; text-decoration: none;">Visit Our Website</a></li>
       <li><a href="[Link to Blog or Resources]" style="color: #4CAF50; text-decoration: none;">Explore Our Blog</a></li>
       <li><a href="[Link to Contact Page]" style="color: #4CAF50; text-decoration: none;">Contact Us</a></li>
     </ul>
     <p>If you have any questions or need assistance, feel free to reach out to us at 
-      <a href="mailto:your-email@gmail.com" style="color: #4CAF50; text-decoration: none;">your-email@gmail.com</a>.
+      <a href="mailto:your-email@gmail.com" style="color: #4CAF50; text-decoration: none;">finupsbd@gmail.com</a>.
     </p>
     <p>Thank you for choosing FinupsBD. We look forward to keeping you informed and inspired!</p>
     <p>Best regards,</p>
