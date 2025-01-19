@@ -27,7 +27,7 @@ app.use((0, cors_1.default)({
 app.use(passport_1.default.initialize());
 app.use('/v1', rootRouter_1.RootRouter);
 app.get('/', (req, res) => {
-    res.send({ message: 'Server is running' });
+    res.send({ message: 'finupsBD server is running!' });
 });
 app.use(globalErrorHandler_1.default); //  global Error handler 
 app.use(notFound_1.default); //  user request route not found handler

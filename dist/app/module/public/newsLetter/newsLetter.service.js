@@ -58,6 +58,11 @@ const createNewsLetter = (payload) => __awaiter(void 0, void 0, void 0, function
     yield (0, sendEmail_1.default)(email, 'Subscription Successful!', bodyText);
     return result;
 });
+const getAllEmail = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield app_1.prisma.newsLetter.findMany();
+    return result;
+});
 exports.NewsLetterService = {
     createNewsLetter,
+    getAllEmail
 };

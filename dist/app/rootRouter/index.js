@@ -35,7 +35,7 @@ const moduleRouter = [
     // {
     //     path: '/application-form', 
     //     route: ApplicationRouter
-    // },
+    // }
     {
         path: '/public',
         route: emi_route_1.PublicRouter

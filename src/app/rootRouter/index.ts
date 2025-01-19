@@ -32,7 +32,7 @@ const moduleRouter = [
     // {
     //     path: '/application-form', 
     //     route: ApplicationRouter
-    // },
+    // }
     {
         path: '/public', 
         route: PublicRouter

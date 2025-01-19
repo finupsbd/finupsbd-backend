@@ -20,11 +20,21 @@ const createNewsLetter = (0, catchAsync_1.default)((req, res) => __awaiter(void 
     const result = yield newsLetter_service_1.NewsLetterService.createNewsLetter(req.body);
     res.status(http_status_codes_1.StatusCodes.CREATED).json({
         success: true,
-        message: 'You have been successfully registered.',
+        message: 'You have been successfully create',
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         data: result,
     });
 }));
+const getAllEmail = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield newsLetter_service_1.NewsLetterService.getAllEmail();
+    res.status(http_status_codes_1.StatusCodes.OK).json({
+        success: true,
+        message: 'Get all news letter',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result,
+    });
+}));
 exports.NewsLetterController = {
-    createNewsLetter
+    createNewsLetter,
+    getAllEmail
 };

@@ -7,7 +7,7 @@ const createNewsLetter = catchAsync(async (req, res) => {
   
     res.status(StatusCodes.CREATED).json({
       success: true,
-      message: 'You have been successfully registered.',
+      message: 'You have been successfully create',
       statusCode: StatusCodes.CREATED,
       data: result,
     });

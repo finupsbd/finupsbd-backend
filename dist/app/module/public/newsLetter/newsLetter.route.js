@@ -10,4 +10,5 @@ const validateRequest_1 = __importDefault(require("../../../middleware/validateR
 const newsLetter_validation_1 = require("./newsLetter.validation");
 const router = express_1.default.Router();
 router.post('/', (0, validateRequest_1.default)(newsLetter_validation_1.NewsLetterValidation.createNewsLetterValidationSchema), newsLetter_controller_1.NewsLetterController.createNewsLetter);
+router.get('/', newsLetter_controller_1.NewsLetterController.getAllEmail);
 exports.NewsLetterRouter = router;
