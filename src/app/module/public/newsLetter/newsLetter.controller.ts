@@ -13,7 +13,19 @@ const createNewsLetter = catchAsync(async (req, res) => {
     });
   });
 
+const getAllEmail = catchAsync(async (req, res) => {
+    const result = await NewsLetterService.getAllEmail();
+  
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: 'Get all news letter',
+      statusCode: StatusCodes.OK,
+      data: result,
+    });
+  });
+
 
   export const NewsLetterController = {
-    createNewsLetter
+    createNewsLetter, 
+    getAllEmail
   }

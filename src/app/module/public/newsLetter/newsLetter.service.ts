@@ -50,6 +50,14 @@ const createNewsLetter = async (payload: { name: string; email: string }) => {
   return result;
 };
 
+
+const getAllEmail = async () => {
+  const result = await prisma.newsLetter.findMany(); 
+  return result
+}
+
+
 export const NewsLetterService = {
   createNewsLetter,
+  getAllEmail
 };

@@ -10,5 +10,6 @@ router.post(
   validateRequest(NewsLetterValidation.createNewsLetterValidationSchema),
   NewsLetterController.createNewsLetter
 );
+router.get('/', NewsLetterController.getAllEmail);
 
 export const NewsLetterRouter = router;
