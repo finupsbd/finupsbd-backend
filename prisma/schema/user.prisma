@@ -18,13 +18,14 @@ model User {
   resetPasswordExpiry DateTime? // Expiry for password reset token
   role                Role              @default(USER)
   profile             Profile?
-  blogPost            Blog[]
   emailVerified       Boolean           @default(false)
   isActive            Boolean           @default(true)
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
   lastLogin           DateTime?
+   blogPost            Blog[]
   loanApplication     LoanApplication[]
+  Bank                Bank[]
 
   @@index([email]) // Index for email
   @@index([phone]) // Index for phone

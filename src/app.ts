@@ -19,8 +19,8 @@ export const prisma = new PrismaClient({
 app.use(cookieParser())
 app.use(express.json());
 app.use(cors({
-    origin: '*',                // domain link hare when deploy this app
-    credentials: true,
+    origin: '*', 
+    credentials: true         
 }))
 seedSuperAdmin()
 
