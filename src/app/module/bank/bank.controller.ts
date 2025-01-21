@@ -42,7 +42,7 @@ const updateBookInfo = catchAsync(async(req, res) => {
 
     res.status(StatusCodes.OK).json({
           success: true,
-          message: 'Retrieve All Bank Info Successfully',
+          message: 'Retrieve all bank Info Successfully',
           statusCode: StatusCodes.OK,
           data: result,
         });

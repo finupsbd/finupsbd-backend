@@ -48,7 +48,7 @@ const updateBookInfo = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     const result = yield bank_service_1.BankInfoService.updateBankInfo(payload, file, req.params.id);
     res.status(http_status_codes_1.StatusCodes.OK).json({
         success: true,
-        message: 'Retrieve All Bank Info Successfully',
+        message: 'Retrieve all bank Info Successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,
         data: result,
     });
