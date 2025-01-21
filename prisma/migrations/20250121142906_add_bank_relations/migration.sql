@@ -1,7 +1,4 @@
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('PENDING', 'IN_PROGRESS', 'APPROVED', 'REJECTED');
-
--- CreateEnum
 CREATE TYPE "AppGender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
 
 -- CreateEnum
@@ -9,9 +6,6 @@ CREATE TYPE "MaritalStatus" AS ENUM ('SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED')
 
 -- CreateEnum
 CREATE TYPE "OwnershipStatus" AS ENUM ('OWNED', 'RENTED', 'LEASED', 'OTHER');
-
--- CreateEnum
-CREATE TYPE "PropertyType" AS ENUM ('RESIDENTIAL', 'COMMERCIAL', 'LAND');
 
 -- CreateEnum
 CREATE TYPE "EmploymentStatus" AS ENUM ('SALARIED', 'SELF_EMPLOYED', 'BUSINESS_OWNER', 'UNEMPLOYED');
@@ -26,37 +20,61 @@ CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN', 'SUPER_ADMIN');
 CREATE TYPE "Gender" AS ENUM ('male', 'female', 'other');
 
 -- CreateTable
-CREATE TABLE "ApplicationForm" (
+CREATE TABLE "LoanApplication" (
     "id" TEXT NOT NULL,
-    "applicationId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "fullName" TEXT NOT NULL,
     "fatherName" TEXT NOT NULL,
     "motherName" TEXT NOT NULL,
     "spouseName" TEXT,
-    "dateOfBirth" TEXT,
+    "dateOfBirth" TIMESTAMP(3) NOT NULL,
     "placeOfBirth" TEXT NOT NULL,
-    "gender" "AppGender",
     "maritalStatus" "MaritalStatus" NOT NULL,
+    "gender" "AppGender" NOT NULL,
     "nid" TEXT NOT NULL,
     "birthRegistration" TEXT,
     "mobileNumber" TEXT NOT NULL,
     "alternateNumber" TEXT,
     "emailAddress" TEXT NOT NULL,
-    "socialMediaLink" TEXT[],
-    "status" "Status" NOT NULL DEFAULT 'PENDING',
-    "addressId" TEXT,
-    "employmentFinancialInfoId" TEXT,
-    "userId" TEXT NOT NULL,
+    "socialMediaProfiles" TEXT[],
+    "permanentAddressId" TEXT NOT NULL,
+    "currentAddressId" TEXT,
+    "employmentStatus" "EmploymentStatus" NOT NULL,
+    "jobTitle" TEXT,
+    "employerName" TEXT,
+    "department" TEXT,
+    "officeAddress" TEXT,
+    "contactDetails" TEXT,
+    "businessName" TEXT,
+    "businessRegistration" TEXT,
+    "employmentTenure" INTEGER,
+    "monthlyGrossIncome" DOUBLE PRECISION NOT NULL,
+    "totalMonthlyExpenses" DOUBLE PRECISION NOT NULL,
+    "otherIncomeSources" TEXT,
+    "taxIdentification" TEXT,
+    "creditScore" DOUBLE PRECISION,
+    "loanType" TEXT NOT NULL,
+    "loanAmountRequested" DOUBLE PRECISION NOT NULL,
+    "loanPurpose" TEXT NOT NULL,
+    "loanTenure" INTEGER NOT NULL,
+    "proposedEMIStartDate" TIMESTAMP(3),
+    "repaymentPreference" TEXT NOT NULL,
+    "documentUploads" TEXT[],
+    "consentGiven" BOOLEAN NOT NULL DEFAULT false,
+    "privacyAgreement" BOOLEAN NOT NULL DEFAULT false,
+    "nonDisclosure" BOOLEAN NOT NULL DEFAULT false,
+    "declarationAccuracy" BOOLEAN NOT NULL DEFAULT false,
+    "digitalSignature" TEXT NOT NULL,
+    "signatureDate" TIMESTAMP(3) NOT NULL,
+    "encryptionStandards" BOOLEAN NOT NULL DEFAULT false,
+    "twoFactorAuth" BOOLEAN NOT NULL DEFAULT false,
+    "roleBasedAccess" BOOLEAN NOT NULL DEFAULT false,
+    "dataRetentionPolicy" BOOLEAN NOT NULL DEFAULT false,
+    "withdrawalRights" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "propertyDetailsId" TEXT,
-    "existingLoanId" TEXT NOT NULL,
-    "creditCardId" TEXT NOT NULL,
-    "liabilityId" TEXT NOT NULL,
-    "coApplicantId" TEXT NOT NULL,
-    "loanApplicationId" TEXT NOT NULL,
 
-    CONSTRAINT "ApplicationForm_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "LoanApplication_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -68,47 +86,10 @@ CREATE TABLE "Address" (
     "city" TEXT NOT NULL,
     "district" TEXT NOT NULL,
     "postalCode" TEXT NOT NULL,
-    "ownershipStatus" TEXT NOT NULL,
+    "ownershipStatus" "OwnershipStatus" NOT NULL,
     "lengthOfStayYears" INTEGER NOT NULL,
-    "addressType" TEXT NOT NULL,
-    "userId" TEXT,
 
     CONSTRAINT "Address_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "EmploymentFinancialInfo" (
-    "id" TEXT NOT NULL,
-    "employmentStatus" "EmploymentStatus" NOT NULL,
-    "jobTitle" TEXT,
-    "employerName" TEXT,
-    "department" TEXT,
-    "officeAddress" TEXT,
-    "contactDetails" TEXT,
-    "businessName" TEXT,
-    "businessRegistrationNumber" TEXT,
-    "employmentTenureYears" INTEGER,
-    "monthlyGrossIncome" DOUBLE PRECISION NOT NULL,
-    "otherSourcesOfIncome" TEXT,
-    "totalMonthlyExpenses" DOUBLE PRECISION NOT NULL,
-    "profession" TEXT,
-    "taxIdentificationNumber" TEXT,
-    "currentCreditScore" DOUBLE PRECISION,
-
-    CONSTRAINT "EmploymentFinancialInfo_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "LoanApplication" (
-    "id" TEXT NOT NULL,
-    "loanType" TEXT NOT NULL,
-    "loanAmountRequested" DOUBLE PRECISION NOT NULL,
-    "purposeOfLoan" TEXT NOT NULL,
-    "preferredLoanTenure" INTEGER NOT NULL,
-    "proposedEMIStartDate" TIMESTAMP(3),
-    "repaymentPreferences" TEXT NOT NULL,
-
-    CONSTRAINT "LoanApplication_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -120,15 +101,6 @@ CREATE TABLE "ExistingLoan" (
     "remainingTenure" INTEGER NOT NULL,
 
     CONSTRAINT "ExistingLoan_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "PropertyDetails" (
-    "id" TEXT NOT NULL,
-    "typeOfProperty" "PropertyType" NOT NULL,
-    "approximateValue" DOUBLE PRECISION NOT NULL,
-
-    CONSTRAINT "PropertyDetails_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -165,20 +137,62 @@ CREATE TABLE "CoApplicant" (
 -- CreateTable
 CREATE TABLE "banks" (
     "id" TEXT NOT NULL,
-    "bankId" TEXT NOT NULL,
     "bankName" TEXT NOT NULL,
     "amount" TEXT NOT NULL,
+    "coverImage" TEXT,
     "periodMonths" TEXT NOT NULL,
     "processingFee" TEXT NOT NULL,
     "interestRate" TEXT NOT NULL,
     "monthlyEmi" TEXT NOT NULL,
     "totalAmount" TEXT NOT NULL,
+    "eligibleLoan" TEXT NOT NULL,
+    "userId" TEXT,
 
     CONSTRAINT "banks_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Blog" (
+CREATE TABLE "Features" (
+    "id" TEXT NOT NULL,
+    "loanAmount" TEXT NOT NULL,
+    "minimumAmount" TEXT NOT NULL,
+    "maximumAmount" TEXT NOT NULL,
+    "loanTenure" TEXT NOT NULL,
+    "minimumYear" TEXT NOT NULL,
+    "maximumYear" TEXT NOT NULL,
+    "bankId" TEXT NOT NULL,
+
+    CONSTRAINT "Features_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Eligibility" (
+    "id" TEXT NOT NULL,
+    "condition" TEXT NOT NULL,
+    "offer" TEXT NOT NULL,
+    "minimumIncome" TEXT NOT NULL,
+    "minimumExperience" TEXT NOT NULL,
+    "ageRequirement" TEXT NOT NULL,
+    "bankId" TEXT NOT NULL,
+
+    CONSTRAINT "Eligibility_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "FeesCharges" (
+    "id" TEXT NOT NULL,
+    "processingFee" TEXT NOT NULL,
+    "earlySettlementFee" TEXT NOT NULL,
+    "prepaymentFee" TEXT NOT NULL,
+    "LoanReSchedulingFee" TEXT NOT NULL,
+    "penalCharge" TEXT NOT NULL,
+    "bankId" TEXT NOT NULL,
+
+    CONSTRAINT "FeesCharges_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "blogs" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
@@ -199,7 +213,7 @@ CREATE TABLE "Blog" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Blog_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "blogs_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -250,6 +264,15 @@ CREATE TABLE "profiles" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Features_bankId_key" ON "Features"("bankId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Eligibility_bankId_key" ON "Eligibility"("bankId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "FeesCharges_bankId_key" ON "FeesCharges"("bankId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "newsLetter_email_key" ON "newsLetter"("email");
 
 -- CreateIndex
@@ -263,6 +286,12 @@ CREATE INDEX "users_email_idx" ON "users"("email");
 
 -- CreateIndex
 CREATE INDEX "users_phone_idx" ON "users"("phone");
+
+-- CreateIndex
+CREATE INDEX "users_role_idx" ON "users"("role");
+
+-- CreateIndex
+CREATE INDEX "users_isActive_idx" ON "users"("isActive");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "profiles_userId_key" ON "profiles"("userId");

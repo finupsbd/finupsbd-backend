@@ -17,20 +17,20 @@ const bankInfo = async (payload: TBank, file: any) => {
       monthlyEmi: payload.monthlyEmi,
       totalAmount: payload.totalAmount,
       eligibleLoan: payload.eligibleLoan,
-      Features: {
+      features: {
         create: payload.features,
       },
       eligibility: {
         create: payload.eligibility,
       },
-      FeesCharges: {
+      feesCharges: {
         create: payload.feesCharges,
       },
     },
     include: {
-      Features: true,
+      features: true,
       eligibility: true,
-      FeesCharges: true,
+      feesCharges: true,
     },
   });
 
@@ -40,9 +40,9 @@ const bankInfo = async (payload: TBank, file: any) => {
 const getAllBankInfo = async () => {
   const result = await prisma.bank.findMany({
     include: {
-      Features: true,
+      features: true,
       eligibility: true,
-      FeesCharges: true,
+      feesCharges: true,
     },
   });
   return result;
@@ -65,13 +65,13 @@ const updateBankInfo = async (payload: TBank, file: any, id: string) => {
       monthlyEmi: payload.monthlyEmi,
       totalAmount: payload.totalAmount,
       eligibleLoan: payload.eligibleLoan,
-      Features: {
+      features: {
         create: payload.features,
       },
       eligibility: {
         create: payload.eligibility,
       },
-      FeesCharges: {
+      feesCharges: {
         create: payload.feesCharges,
       },
     },
@@ -85,20 +85,20 @@ const updateBankInfo = async (payload: TBank, file: any, id: string) => {
       monthlyEmi: payload.monthlyEmi,
       totalAmount: payload.totalAmount,
       eligibleLoan: payload.eligibleLoan,
-      Features: {
+      features: {
         update: payload.features,
       },
       eligibility: {
         update: payload.eligibility,
       },
-      FeesCharges: {
+      feesCharges: {
         update: payload.feesCharges,
       },
     }, 
     include: {
-      Features: true,
+      features: true,
       eligibility: true,
-      FeesCharges: true,
+      feesCharges: true,
     }
   });
 

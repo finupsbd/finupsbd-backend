@@ -27,20 +27,20 @@ const bankInfo = (payload, file) => __awaiter(void 0, void 0, void 0, function* 
             monthlyEmi: payload.monthlyEmi,
             totalAmount: payload.totalAmount,
             eligibleLoan: payload.eligibleLoan,
-            Features: {
+            features: {
                 create: payload.features,
             },
             eligibility: {
                 create: payload.eligibility,
             },
-            FeesCharges: {
+            feesCharges: {
                 create: payload.feesCharges,
             },
         },
         include: {
-            Features: true,
+            features: true,
             eligibility: true,
-            FeesCharges: true,
+            feesCharges: true,
         },
     });
     return result;
@@ -48,9 +48,9 @@ const bankInfo = (payload, file) => __awaiter(void 0, void 0, void 0, function* 
 const getAllBankInfo = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield app_1.prisma.bank.findMany({
         include: {
-            Features: true,
+            features: true,
             eligibility: true,
-            FeesCharges: true,
+            feesCharges: true,
         },
     });
     return result;
@@ -71,13 +71,13 @@ const updateBankInfo = (payload, file, id) => __awaiter(void 0, void 0, void 0, 
             monthlyEmi: payload.monthlyEmi,
             totalAmount: payload.totalAmount,
             eligibleLoan: payload.eligibleLoan,
-            Features: {
+            features: {
                 create: payload.features,
             },
             eligibility: {
                 create: payload.eligibility,
             },
-            FeesCharges: {
+            feesCharges: {
                 create: payload.feesCharges,
             },
         },
@@ -91,20 +91,20 @@ const updateBankInfo = (payload, file, id) => __awaiter(void 0, void 0, void 0, 
             monthlyEmi: payload.monthlyEmi,
             totalAmount: payload.totalAmount,
             eligibleLoan: payload.eligibleLoan,
-            Features: {
+            features: {
                 update: payload.features,
             },
             eligibility: {
                 update: payload.eligibility,
             },
-            FeesCharges: {
+            feesCharges: {
                 update: payload.feesCharges,
             },
         },
         include: {
-            Features: true,
+            features: true,
             eligibility: true,
-            FeesCharges: true,
+            feesCharges: true,
         }
     });
     return bankResult; // Return the updated or created bank record
