@@ -1,41 +1,41 @@
-// enum Status {
-//     PENDING
-//     IN_PROGRESS
-//     APPROVED
-//     REJECTED
-// }
+enum Status {
+    PENDING
+    IN_PROGRESS
+    APPROVED
+    REJECTED
+}
 
-// enum AppGender {
-//     MALE
-//     FEMALE
-//     OTHER
-// }
+enum AppGender {
+    MALE
+    FEMALE
+    OTHER
+}
 
-// enum MaritalStatus {
-//     SINGLE
-//     MARRIED
-//     DIVORCED
-//     WIDOWED
-// }
+enum MaritalStatus {
+    SINGLE
+    MARRIED
+    DIVORCED
+    WIDOWED
+}
 
-// enum OwnershipStatus {
-//     OWNED
-//     RENTED
-//     LEASED
-//     OTHER
-// }
+enum OwnershipStatus {
+    OWNED
+    RENTED
+    LEASED
+    OTHER
+}
 
-// enum PropertyType {
-//     RESIDENTIAL
-//     COMMERCIAL
-//     LAND
-// }
+enum PropertyType {
+    RESIDENTIAL
+    COMMERCIAL
+    LAND
+}
 
-// enum EmploymentStatus {
-//     SALARIED
-//     SELF_EMPLOYED
-//     BUSINESS_OWNER
-// }
+enum EmploymentStatus {
+    SALARIED
+    SELF_EMPLOYED
+    BUSINESS_OWNER
+}
 
 // model ApplicationForm {
 //     id                        String                   @id @default(uuid())

@@ -38,7 +38,13 @@ const bankInfo = async (payload: TBank, file: any) => {
 };
 
 const getAllBankInfo = async () => {
-  const result = await prisma.bank.findMany()
+  const result = await prisma.bank.findMany({
+    include: {
+      features: true,      // Correctly references Features model
+      eligibility: true,   // Correctly references Eligibility model
+      feesCharges: true,   // Correctly references FeesCharges model
+    },
+  })
   return result;
 };
 
