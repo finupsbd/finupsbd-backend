@@ -24,7 +24,6 @@ model User {
   updatedAt           DateTime          @updatedAt
   lastLogin           DateTime?
    blogPost            Blog[]
-  loanApplication     LoanApplication[]
   Bank                Bank[]
 
   @@index([email]) // Index for email

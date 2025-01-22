@@ -22,6 +22,7 @@ const createBlog = (payload, file) => __awaiter(void 0, void 0, void 0, function
 const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield app_1.prisma.blog.findMany({
         select: {
+            id: true,
             title: true,
             slug: true,
             content: true,

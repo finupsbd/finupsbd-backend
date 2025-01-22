@@ -14,6 +14,7 @@ const createBlog = async (payload: TBlog, file: any) => {
 const getAllBlogs = async () => {
   const result = await prisma.blog.findMany({
     select: {
+      id: true,
       title: true,
       slug: true,
       content: true,

@@ -46,13 +46,7 @@ const bankInfo = (payload, file) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 const getAllBankInfo = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield app_1.prisma.bank.findMany({
-        include: {
-            features: true,
-            eligibility: true,
-            feesCharges: true,
-        },
-    });
+    const result = yield app_1.prisma.bank.findMany();
     return result;
 });
 const updateBankInfo = (payload, file, id) => __awaiter(void 0, void 0, void 0, function* () {

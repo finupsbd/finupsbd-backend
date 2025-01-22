@@ -10,9 +10,9 @@ export interface TBank {
     monthlyEmi: string;
     totalAmount: string;
     eligibleLoan: string;
-    features?: TFeatures | undefined; // Optional relation to Features
-    eligibility?: TEligibility| undefined; // Optional relation to Eligibility
-    feesCharges?: TFeesCharges | undefined; // Optional relation to FeesCharges
+    features?: TFeatures  // Optional relation to Features
+    eligibility?: TEligibility // Optional relation to Eligibility
+    feesCharges?: TFeesCharges  // Optional relation to FeesCharges
   }
   
   // Features model type
