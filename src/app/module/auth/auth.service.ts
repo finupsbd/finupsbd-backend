@@ -1,4 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
+
 import { prisma } from '../../../app';
 import { passwordHash } from '../../utils/passwordHash';
 import sendEmail from '../../utils/sendEmail';
@@ -10,23 +11,61 @@ import { TUser } from '../user/user.interface';
 import bcrypt from 'bcrypt';
 import { ConfigFile } from '../../../config';
 import { generateUserId } from '../../utils/generateUserId';
+import AppError from '../../error/AppError';
+import { StatusCodes } from 'http-status-codes';
+
+
+
 
 //Sign up User
 
-
 const signUp = async (payload: TUser) => {
-  console.log(payload);
+  const { email} = payload;
   payload.password = await passwordHash(payload.password);
 
   //   const pin = crypto.randomBytes(3).toString('hex'); // 6-digit PIN
   const pin = Math.floor(100000 + Math.random() * 900000).toString();
   const pinExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
   payload.pin = pin;
-  payload.pinExpiry = pinExpiry
-  payload.userId = await generateUserId()
+  payload.pinExpiry = pinExpiry;
+  payload.userId = await generateUserId();
   console.log(payload);
-  const result = await prisma.user.create({ data: payload });
 
+  const userIsExist = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (userIsExist) {
+    console.log(userIsExist);
+    if (userIsExist && userIsExist.emailVerified === false) {
+      const sendOtp = await prisma.user.update({where: {email}, data: {pin: pin, pinExpiry: pinExpiry}});
+      const MailSubject = 'Your PIN for Verification';
+      const MailText = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="color: #333; text-align: center; font-size: 24px; margin-bottom: 20px;">Your Verification PIN Code</h2>
+        <p style="font-size: 16px; color: #555;">Hello ${userIsExist?.name}</p>
+        <p style="font-size: 16px; color: #555;">Your PIN code for verification is:</p>
+        <h2 style="color: #007BFF; font-size: 36px; font-weight: bold; text-align: center; margin: 20px 0;">${sendOtp.pin}</h2>
+        <p style="font-size: 16px; color: #555;"><strong>🔒 Security Note:</strong> This PIN is valid for <strong>15 minutes</strong> only. Please do not share it with anyone.</p>
+        <p style="font-size: 16px; color: #555;">If you did not request this PIN, please ignore this email or contact our support team immediately.</p>
+        <p style="font-size: 16px; color: #555;">Thank you,</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">PinUpsDB</p>
+      </div>
+    </div>
+  `;
+      await sendEmail(payload?.email, MailSubject, MailText);
+      // phoneOtpSend(phone, "send message")
+      throw new Error('Check your email for verification PIN thank you');
+    }
+    if(userIsExist.emailVerified){
+      throw new AppError(StatusCodes.CONFLICT,'You have already verified user. Please login thank you');
+    }
+  }
+
+  const result = await prisma.user.create({ data: payload });
   const MailSubject = 'Your PIN for Verification';
   const MailText = `
   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
@@ -44,12 +83,10 @@ const signUp = async (payload: TUser) => {
 `;
   await sendEmail(payload?.email, MailSubject, MailText);
 
+  // phoneOtpSend(phone, "send message")
+
   return 'Send Your pin Check your email! Thank you';
 };
-
-
-
-
 
 const validatePin = async (payload: { email: string; pin: string }) => {
   const { email, pin } = payload;
@@ -184,6 +221,7 @@ const validatePin = async (payload: { email: string; pin: string }) => {
     </body>
 `;
   await sendEmail(email, emailSubject, bodyText);
+
 
 
   return {};
@@ -361,11 +399,13 @@ const resetPassword = async (payload: {
 };
 
 const refreshToken = async (token: string) => {
-
   if (!token) {
     throw new Error('You are unauthorized');
   }
-  const decode = (await jwt.verify(token,ConfigFile.JWT_REFRESH_SECRET as string)) as JwtPayload
+  const decode = (await jwt.verify(
+    token,
+    ConfigFile.JWT_REFRESH_SECRET as string
+  )) as JwtPayload;
 
   const user = await prisma.user.findUnique({ where: { email: decode.email } });
 
@@ -389,11 +429,9 @@ const refreshToken = async (token: string) => {
 
   const accessToken = accessTokenGenerate(jwtPayload, '1d');
 
-
   return {
-    accessToken
+    accessToken,
   };
-  
 };
 
 export const AuthServices = {

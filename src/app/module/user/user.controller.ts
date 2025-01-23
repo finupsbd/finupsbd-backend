@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes"
 import catchAsync from "../../utils/catchAsync"
 import { UserServices } from "./user.service"
+import sendResponses from "../../utils/sendResponce";
 
 
 
@@ -8,9 +9,10 @@ const getAllUsers = catchAsync(async (req, res) => {
     console.log(req.cookies);
     const result = await UserServices.getAllUser()
     
-    res.status(StatusCodes.OK).json({
+
+    sendResponses(res, {
         success: true, 
-        message: " retrieve all user  successfully.",
+        message: "retrieve all user  successfully.",
         statusCode: StatusCodes.OK,
         data: result
     })
@@ -22,8 +24,9 @@ const getAllUsers = catchAsync(async (req, res) => {
   const meProfile = catchAsync(async (req, res) => {
     const user = req.user
     const result = await UserServices.meProfile(user)
-    
-    res.status(StatusCodes.OK).json({
+
+
+    sendResponses(res, {
         success: true, 
         message: "User login successfully",
         statusCode: StatusCodes.OK,
