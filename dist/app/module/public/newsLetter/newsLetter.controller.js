@@ -16,9 +16,10 @@ exports.NewsLetterController = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../../utils/catchAsync"));
 const newsLetter_service_1 = require("./newsLetter.service");
+const sendResponce_1 = __importDefault(require("../../../utils/sendResponce"));
 const createNewsLetter = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield newsLetter_service_1.NewsLetterService.createNewsLetter(req.body);
-    res.status(http_status_codes_1.StatusCodes.CREATED).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'You have been successfully create',
         statusCode: http_status_codes_1.StatusCodes.CREATED,
@@ -27,7 +28,7 @@ const createNewsLetter = (0, catchAsync_1.default)((req, res) => __awaiter(void 
 }));
 const getAllEmail = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield newsLetter_service_1.NewsLetterService.getAllEmail();
-    res.status(http_status_codes_1.StatusCodes.OK).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Get all news letter',
         statusCode: http_status_codes_1.StatusCodes.OK,

@@ -21,9 +21,11 @@ const tokenGenerate_1 = require("../../utils/tokenGenerate");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = require("../../../config");
 const generateUserId_1 = require("../../utils/generateUserId");
+const AppError_1 = __importDefault(require("../../error/AppError"));
+const http_status_codes_1 = require("http-status-codes");
 //Sign up User
 const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload);
+    const { email } = payload;
     payload.password = yield (0, passwordHash_1.passwordHash)(payload.password);
     //   const pin = crypto.randomBytes(3).toString('hex'); // 6-digit PIN
     const pin = Math.floor(100000 + Math.random() * 900000).toString();
@@ -32,6 +34,38 @@ const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     payload.pinExpiry = pinExpiry;
     payload.userId = yield (0, generateUserId_1.generateUserId)();
     console.log(payload);
+    const userIsExist = yield app_1.prisma.user.findUnique({
+        where: {
+            email,
+        },
+    });
+    if (userIsExist) {
+        console.log(userIsExist);
+        if (userIsExist && userIsExist.emailVerified === false) {
+            const sendOtp = yield app_1.prisma.user.update({ where: { email }, data: { pin: pin, pinExpiry: pinExpiry } });
+            const MailSubject = 'Your PIN for Verification';
+            const MailText = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="color: #333; text-align: center; font-size: 24px; margin-bottom: 20px;">Your Verification PIN Code</h2>
+        <p style="font-size: 16px; color: #555;">Hello ${userIsExist === null || userIsExist === void 0 ? void 0 : userIsExist.name}</p>
+        <p style="font-size: 16px; color: #555;">Your PIN code for verification is:</p>
+        <h2 style="color: #007BFF; font-size: 36px; font-weight: bold; text-align: center; margin: 20px 0;">${sendOtp.pin}</h2>
+        <p style="font-size: 16px; color: #555;"><strong>🔒 Security Note:</strong> This PIN is valid for <strong>15 minutes</strong> only. Please do not share it with anyone.</p>
+        <p style="font-size: 16px; color: #555;">If you did not request this PIN, please ignore this email or contact our support team immediately.</p>
+        <p style="font-size: 16px; color: #555;">Thank you,</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">PinUpsDB</p>
+      </div>
+    </div>
+  `;
+            yield (0, sendEmail_1.default)(payload === null || payload === void 0 ? void 0 : payload.email, MailSubject, MailText);
+            // phoneOtpSend(phone, "send message")
+            throw new Error('Check your email for verification PIN thank you');
+        }
+        if (userIsExist.emailVerified) {
+            throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, 'You have already verified user. Please login thank you');
+        }
+    }
     const result = yield app_1.prisma.user.create({ data: payload });
     const MailSubject = 'Your PIN for Verification';
     const MailText = `
@@ -49,6 +83,7 @@ const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
   </div>
 `;
     yield (0, sendEmail_1.default)(payload === null || payload === void 0 ? void 0 : payload.email, MailSubject, MailText);
+    // phoneOtpSend(phone, "send message")
     return 'Send Your pin Check your email! Thank you';
 });
 const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -334,7 +369,7 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     };
     const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '1d');
     return {
-        accessToken
+        accessToken,
     };
 });
 exports.AuthServices = {

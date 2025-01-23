@@ -1,18 +1,16 @@
-// import express from 'express';
-// import { ApplicationController } from './applicationForm.controller';
-// import auth from '../../middleware/auth';
-// import validateRequest from '../../middleware/validateRequest';
-// import { ApplicationFromValidation } from './applicationForm.validation';
-
-// const route = express.Router();
-
-// route.post(
-//   '/',
-//   auth('USER'),
-//   validateRequest(ApplicationFromValidation.applicationFormValidationSchema),
-//   ApplicationController.createApplicationForm
-// );
+import express from 'express';
+import { ApplicationController } from './applicationForm.controller';
 
 
+const route = express.Router();
 
-// export const ApplicationRouter = route;
+route.post(
+  '/',
+  // validateRequest(
+  //   ApplicationValidationSchema.CreateApplicationValidationSchema
+  // ),
+  ApplicationController.createApplicationForm
+);
+route.get('/', ApplicationController.getAllApplicationForm);
+
+export const ApplicationRouter = route;

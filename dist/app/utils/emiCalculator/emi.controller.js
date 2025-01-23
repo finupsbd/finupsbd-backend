@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PublicController = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../catchAsync"));
+const sendResponce_1 = __importDefault(require("../sendResponce"));
 const emiCalculator = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { loanAmount, interestRate, numberOfMonths, disbursementDate } = req.body;
     const monthlyRate = interestRate / 12 / 100; // Convert annual rate to monthly rate
@@ -22,23 +23,26 @@ const emiCalculator = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         (Math.pow(1 + monthlyRate, numberOfMonths) - 1);
     // Format response
     const result = {
-        "Disbursement Date": new Date(disbursementDate).toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
+        'Disbursement Date': new Date(disbursementDate).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
         }),
-        "Loan Amount": loanAmount.toLocaleString("en-US", { style: "currency", currency: "BDT" }),
-        "Number of Schedule": numberOfMonths,
-        "Interest Rate": `${interestRate.toFixed(2)} %`,
-        "EMI Amount": emi.toFixed(2),
+        'Loan Amount': loanAmount.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'BDT',
+        }),
+        'Number of Schedule': numberOfMonths,
+        'Interest Rate': `${interestRate.toFixed(2)} %`,
+        'EMI Amount': emi.toFixed(2),
     };
-    res.status(http_status_codes_1.StatusCodes.OK).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
-        message: "Emi Calculate Successfully",
+        message: 'Emi Calculate Successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,
-        data: result
+        data: result,
     });
 }));
 exports.PublicController = {
-    emiCalculator
+    emiCalculator,
 };

@@ -20,22 +20,21 @@ const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const config_1 = require("../../../config");
 const signUp = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.signUp(req.body);
-    res.status(http_status_codes_1.StatusCodes.CREATED).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
-        message: 'You have been successfully registered.',
+        message: result,
         statusCode: http_status_codes_1.StatusCodes.CREATED,
-        data: result,
+        data: {},
     });
 }));
 const validatePin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.validatePin(req.body);
-    //   res.status(StatusCodes.CREATED).json({
-    //     success: true,
-    //     message: 'User verify successfully please Login',
-    //     statusCode: StatusCodes.CREATED,
-    //     data: result,
-    //   });
-    (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.CREATED, 'User verify successfully', result);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'User verify successfully please Login',
+        statusCode: http_status_codes_1.StatusCodes.CREATED,
+        data: result,
+    });
 }));
 const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.login(req.body);
@@ -44,7 +43,7 @@ const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, 
         secure: config_1.ConfigFile.NODE_ENV === 'production',
         httpOnly: true,
     });
-    res.status(http_status_codes_1.StatusCodes.OK).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'User login successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -53,16 +52,31 @@ const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, 
 }));
 const forgetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.forgetPassword(req.body);
-    (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.OK, 'check your email for verification!', result);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Check your email for verification!',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
 }));
 const resetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.resetPassword(req.body);
-    (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.OK, 'Password Reset successfully please login', result);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Password Reset successfully please login',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
 }));
 const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.cookies;
     const result = yield auth_service_1.AuthServices.refreshToken(refreshToken);
-    (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.OK, 'Access Token is retrieve', result);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Access Token is retrieve',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
 }));
 const logout = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -70,8 +84,13 @@ const logout = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0,
     const { refreshToken } = req.cookies;
     if (token) {
         res.clearCookie(refreshToken);
-        // blacklistedTokens.add(token)    
-        (0, sendResponce_1.default)(res, http_status_codes_1.StatusCodes.OK, 'logout Successfully', {});
+        // blacklistedTokens.add(token)
+        (0, sendResponce_1.default)(res, {
+            success: true,
+            message: 'logout Successfully',
+            statusCode: http_status_codes_1.StatusCodes.OK,
+            data: {}
+        });
     }
 }));
 exports.AuthController = {

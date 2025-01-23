@@ -12,22 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileController = void 0;
-const http_status_codes_1 = require("http-status-codes");
-const catchAsync_1 = __importDefault(require("../../../utils/catchAsync"));
-const profile_service_1 = require("./profile.service");
-const sendResponce_1 = __importDefault(require("../../../utils/sendResponce"));
-const createProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.user;
-    const profileInfo = req.body;
-    const result = yield profile_service_1.ProfileServices.createProfile(profileInfo, user);
-    (0, sendResponce_1.default)(res, {
-        success: true,
-        message: "Profile create successfully",
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        data: result
+const axios_1 = __importDefault(require("axios"));
+// Alpha sms https://www.sms.net.bd/api 
+const phoneOtpSend = (phone, message) => __awaiter(void 0, void 0, void 0, function* () {
+    const config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://api.sms.net.bd/sendsms',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+            "api_key": "YOUR_API_KEY",
+            "msg": message,
+            "to": phone
+        })
+    };
+    axios_1.default.request(config)
+        .then((response) => {
+        console.log(JSON.stringify(response.data));
+    })
+        .catch((error) => {
+        console.log(error);
     });
-}));
-exports.ProfileController = {
-    createProfile
-};
+});
+exports.default = phoneOtpSend;

@@ -1,152 +1,129 @@
-// /* eslint-disable no-unused-vars */
+export type Status = 'PENDING' | 'IN_PROGRESS' | 'APPROVE' | 'REJECT';
+export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+export type MaritalStatus = 'SINGLE' | 'MARRIED' | 'DIVORCED' | 'WIDOWED';
+export type OwnershipStatus = 'OWNED' | 'RENTED' | 'LEASED' | 'OTHER';
+export type PropertyType = 'RESIDENTIAL' | 'COMMERCIAL' | 'LAND';
+export type EmploymentStatus = 'SALARIED' | 'SELF_EMPLOYED' | 'BUSINESS_OWNER';
+export type LoanType = 'PERSONAL' | 'HOME' | 'CAR' | 'BUSINESS' | 'EDUCATION' | 'OTHER';
+export type DocumentType = 'PASSPORT_PHOTO' | 'NATIONAL_ID' | 'BIRTH_CERTIFICATE' | 'INCOME_PROOF' | 'BANK_STATEMENT' | 'TIN_CERTIFICATE' | 'EMPLOYMENT_PROOF' | 'UTILITY_BILL' | 'PROPERTY_DOCUMENT' | 'SUPPORTING_DOCUMENT';
 
-// export enum TStatus {
-//     PENDING = "PENDING",
-//     IN_PROGRESS = "IN_PROGRESS",
-//     APPROVED = "APPROVED",
-//     REJECTED = "REJECTED",
-//   }
-  
-//   export enum TAppGender {
-//     MALE = "MALE",
-//     FEMALE = "FEMALE",
-//     OTHER = "OTHER",
-//   }
-  
-//   export enum TMaritalStatus {
-//     SINGLE = "SINGLE",
-//     MARRIED = "MARRIED",
-//     DIVORCED = "DIVORCED",
-//     WIDOWED = "WIDOWED",
-//   }
-  
-//   export enum TOwnershipStatus {
-//     OWNED = "OWNED",
-//     RENTED = "RENTED",
-//     LEASED = "LEASED",
-//     OTHER = "OTHER",
-//   }
-  
-//   export enum TPropertyType {
-//     RESIDENTIAL = "RESIDENTIAL",
-//     COMMERCIAL = "COMMERCIAL",
-//     LAND = "LAND",
-//   }
-  
-//   export enum TEmploymentStatus {
-//     SALARIED = "SALARIED",
-//     SELF_EMPLOYED = "SELF_EMPLOYED",
-//     BUSINESS_OWNER = "BUSINESS_OWNER",
-//     UNEMPLOYED = "UNEMPLOYED",
-//   }
-  
-//   export interface TApplicationForm {
-//     id: string;
-//     applicationId: string;
-//     userId: string;
-//     fullName: string;
-//     fatherName: string;
-//     motherName: string;
-//     spouseName?: string;
-//     dateOfBirth?: string;
-//     placeOfBirth: string;
-//     gender?: TAppGender;
-//     maritalStatus: TMaritalStatus;
-//     nid: string;
-//     birthRegistration?: string;
-//     mobileNumber: string;
-//     alternateNumber?: string;
-//     emailAddress: string;
-//     socialMediaLink: string[];
-//     propertyDetails?: TPropertyDetails;
-//     employmentFinancialInfo: TEmploymentFinancialInfo;
-//     existingLoans?: TExistingLoan;
-//     creditCards?: TCreditCard;
-//     otherLiabilities?: TLiability;
-//     coApplicant?: TCoApplicant;
-//     status: TStatus;
-//     loanApplication?: TLoanApplication;
-//     address?: TAddress;
-//   }
-  
-//   export interface TPropertyDetails {
-//     id: string;
-//     typeOfProperty: TPropertyType;
-//     approximateValue: number;
-//   }
-  
-//   export interface TEmploymentFinancialInfo {
-//     id: string;
-//     employmentStatus: TEmploymentStatus;
-//     jobTitle?: string;
-//     employerName?: string;
-//     department?: string;
-//     officeAddress?: string;
-//     contactDetails?: string;
-//     businessName?: string;
-//     businessRegistrationNumber?: string;
-//     employmentTenureYears?: number;
-//     monthlyGrossIncome: number;
-//     otherSourcesOfIncome?: string;
-//     totalMonthlyExpenses: number;
-//     profession?: string;
-//     taxIdentificationNumber?: string;
-//     currentCreditScore?: number;
+export interface ApplicationForm {
+    id: string;
+    userId: string;
+    applicationId: string;
+    status: Status;
+    userInfo: ApplicationUserInfo;
+    address: Address;
+    employmentFinancialInfo: EmploymentFinancialInfo;
+    loanSpecifications: LoanRequestSpecifications;
+    financialObligations: FinancialObligation[];
+    uploadedDocuments: DocumentFile[];
+  }
 
-//   }
-  
-//   export interface TLoanApplication {
-//     id: string;
-//     loanType: string;
-//     loanAmountRequested: number;
-//     purposeOfLoan: string;
-//     preferredLoanTenure: number;
-//     proposedEMIStartDate: string;
-//     repaymentPreferences: string;
+  export interface ApplicationUserInfo {
+    id: string;
+    fullName: string;
+    fatherName: string;
+    motherName: string;
+    spouseName?: string;
+    dateOfBirth: string;
+    placeOfBirth: string;
+    gender: Gender;
+    maritalStatus: MaritalStatus;
+    nid: string;
+    birthRegistration: string | null;
+    mobileNumber: string;
+    alternateNumber?: string;
+    emailAddress: string;
+    socialMediaLinks: string[];
+    propertyType: PropertyType;
+    approximateValue: number;
+    applicationFormId?: string;
+    applicationForm?: TFullApplicationForm
+  }
 
-//   }
-  
-//   export interface TExistingLoan {
-//     id: string;
-//     lenderName: string;
-//     loanBalance: number;
-//     monthlyEMI: number;
-//     remainingTenure: number;
+  export interface Address {
+    id: string;
+    houseFlatNo: string;
+    streetRoad: string;
+    areaLocality: string;
+    city: string;
+    district: string;
+    postalCode: string;
+    lengthOfStayYears: number;
+    ownershipStatus: OwnershipStatus;
+    applicationFormId?: string;
+    applicationForm?: TFullApplicationForm
+    
+  }
 
-//   }
-  
-//   export interface TCreditCard {
-//     id: string;
-//     cardIssuer: string;
-//     currentBalance: number;
-//     minimumMonthlyPayment: number;
+  export interface EmploymentFinancialInfo {
+    id: string;
+    employmentStatus: EmploymentStatus;
+    jobTitle: string;
+    employerName: string;
+    officeAddress: string;
+    department: string;
+    contactDetails: string;
+    businessName?: string;
+    businessRegistrationNumber?: string;
+    employmentTenureYears: number;
+    monthlyGrossIncome: number;
+    otherSourcesOfIncome?: string;
+    totalMonthlyExpenses: number;
+    profession: string;
+    taxIdentificationNumber?: string;
+    currentCreditScore?: number;
+    applicationFormId?: string;
+    applicationForm?: TFullApplicationForm
+  }
 
-//   }
-  
-//   export interface TLiability {
-//     id: string;
-//     type: string;
-//     balance: number;
-//     emi: number;
-//   }
-  
-//   export interface TCoApplicant {
-//     id: string;
-//     fullName: string;
-//     relationship: string;
-//     employment: string;
-//     monthlyIncome: number;
-//   }
-  
-//   export interface TAddress {
-//     id: string;
-//     houseFlatNo: string;
-//     streetRoad: string;
-//     areaLocality: string;
-//     city: string;
-//     district: string;
-//     postalCode: string;
-//     ownershipStatus: TOwnershipStatus;
-//     lengthOfStayYears: number;
-//     addressType: string;
-//   }
+  export interface LoanRequestSpecifications {
+    id: string;
+    loanType: LoanType;
+    loanAmountRequested: number;
+    purposeOfLoan: string;
+    preferredLoanTenure: number;
+    proposedEMIStartDate: Date | null;
+    repaymentPreferences: string;
+    applicationFormId?: string;
+    applicationForm?: TFullApplicationForm
+  }
+
+  export interface FinancialObligation {
+    id: string;
+    lenderName: string;
+    loanBalance: number;
+    monthlyEMI: number;
+    remainingTenure: number;
+    cardIssuer?: string;
+    currentBalance?: number;
+    minimumMonthlyPayment?: number;
+    obligationType: string;
+    balance: number;
+    emi: number;
+    applicationFormId?: string;
+    applicationForm?: TFullApplicationForm
+  }
+
+  export interface DocumentFile {
+    id: number;
+    type: DocumentType;
+    filePath: string;
+    uploadedAt: Date;
+    fileSizeMB?: number;
+    fileType?: string;
+    applicationFormId?: string;
+    applicationForm?: TFullApplicationForm
+  }
+
+
+  export interface TFullApplicationForm extends ApplicationForm {
+    userInfo: ApplicationUserInfo;
+    currentAddress: Address;
+    permanentAddress: Address;
+    employmentFinancialInfo: EmploymentFinancialInfo;
+    loanSpecifications: LoanRequestSpecifications;
+    financialObligations: FinancialObligation[];
+    uploadedDocuments: DocumentFile[];
+  }

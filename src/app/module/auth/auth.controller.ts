@@ -36,12 +36,13 @@ const login = catchAsync(async (req, res) => {
     httpOnly: true,
   });
 
-  res.status(StatusCodes.OK).json({
+
+  sendResponce(res, {
     success: true,
     message: 'User login successfully',
     statusCode: StatusCodes.OK,
     data: { accessToken },
-  });
+  })
 });
 
 const forgetPassword = catchAsync(async (req, res) => {

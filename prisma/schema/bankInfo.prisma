@@ -9,7 +9,7 @@ model Bank {
     monthlyEmi    String
     totalAmount   String
     eligibleLoan  String
-    user          User?        @relation(fields: [userId], references: [id])
+    user          User?        @relation(fields: [userId], references: [id] )
     userId        String?
     eligibility   Eligibility?
     feesCharges   FeesCharges?

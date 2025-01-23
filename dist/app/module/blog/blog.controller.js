@@ -17,11 +17,12 @@ const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const blog_service_1 = require("./blog.service");
 const blog_validation_1 = require("./blog.validation");
+const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = blog_validation_1.BlogValidationSchema.parse(JSON.parse(req.body.data));
     const file = req.file;
     const result = yield blog_service_1.BlogService.createBlog(payload, file);
-    res.status(http_status_codes_1.StatusCodes.CREATED).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Blog create successfully',
         statusCode: http_status_codes_1.StatusCodes.CREATED,
@@ -30,7 +31,7 @@ const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 }));
 const getAllBlogs = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield blog_service_1.BlogService.getAllBlogs();
-    res.status(http_status_codes_1.StatusCodes.OK).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Blogs retrieve successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -41,7 +42,7 @@ const updateBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     var _a;
     const blogId = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
     const result = yield blog_service_1.BlogService.updateBlog(req.body, blogId);
-    res.status(http_status_codes_1.StatusCodes.OK).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Update Blog Successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -52,7 +53,7 @@ const deleteBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     var _a;
     const blogId = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
     yield blog_service_1.BlogService.deleteBlog(blogId);
-    res.status(http_status_codes_1.StatusCodes.OK).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Blog Deleted Successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,

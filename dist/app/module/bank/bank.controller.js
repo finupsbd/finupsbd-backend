@@ -17,15 +17,16 @@ const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const bank_service_1 = require("./bank.service");
 const bank_validation_1 = require("./bank.validation");
+const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const createBankInfo = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = bank_validation_1.BankValidationSchema.bankInfoValidateSchema.parse(JSON.parse(req.body.data));
     console.log(payload);
     const file = req.file;
     if (!file) {
-        throw new Error("Please upload a file");
+        throw new Error('Please upload a file');
     }
     const result = yield bank_service_1.BankInfoService.bankInfo(payload, file);
-    res.status(http_status_codes_1.StatusCodes.CREATED).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Bank Info Create Successfully',
         statusCode: http_status_codes_1.StatusCodes.CREATED,
@@ -34,7 +35,7 @@ const createBankInfo = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
 }));
 const getallBankInfo = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield bank_service_1.BankInfoService.getAllBankInfo();
-    res.status(http_status_codes_1.StatusCodes.OK).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Retrieve All Bank Info Successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -46,7 +47,7 @@ const updateBookInfo = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     console.log(payload);
     const file = req.file;
     const result = yield bank_service_1.BankInfoService.updateBankInfo(payload, file, req.params.id);
-    res.status(http_status_codes_1.StatusCodes.OK).json({
+    (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Retrieve all bank Info Successfully',
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -56,5 +57,5 @@ const updateBookInfo = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
 exports.BankInfoController = {
     createBankInfo,
     getallBankInfo,
-    updateBookInfo
+    updateBookInfo,
 };
