@@ -18,7 +18,8 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const applicationForm_service_1 = require("./applicationForm.service");
 const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield applicationForm_service_1.ApplicationFromService.createApplicationForm(req.body);
+    const user = req.user;
+    const result = yield applicationForm_service_1.ApplicationFromService.createApplicationForm(req.body, user);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Application Create successfully',
@@ -35,7 +36,27 @@ const getAllApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(
         data: result,
     });
 }));
+const applicationTracking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield applicationForm_service_1.ApplicationFromService.applicationTracking(req.body);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Application track successfully',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result,
+    });
+}));
+const applicationForget = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield applicationForm_service_1.ApplicationFromService.applicationForget(req.body);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: `Weve sent your tracking ID to your registered email  Mobile Number +88 `,
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result,
+    });
+}));
 exports.ApplicationController = {
     createApplicationForm,
-    getAllApplicationForm
+    getAllApplicationForm,
+    applicationTracking,
+    applicationForget
 };

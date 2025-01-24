@@ -1,0 +1,74 @@
+{
+    gender : "male",
+    dateOfBirth: "1990-01-01", 
+    YourProfession: "Software Engineer" 
+    residenceType : "rental" 
+    jobLocation = Salaried | Business Owner  
+                  Salaried = {
+                        companyName: string 
+                        companyType: string 
+                        yourJobStatus: string 
+                        currentJobExperience: number 
+                        TotalJobExperienceCurrent: number  
+                        yourSalaryType:  BankAccount | cash | Cheque
+                                    bankAccount: {
+                                        YourSalaryType: string 
+                                        Bank name: string 
+                                        YourSalaryAmountBDT: number 
+                                        SalaryDepositToBankTnLast7Months: number 
+                                        YourSalaryType:string 
+                                    }
+                                    cash: {
+                                        YourSalaryType: string     
+                                        YourSalaryAmountBDT: number 
+                                    }
+                                    cheque: {
+                                        chequeType: string     
+                                        YourSalaryAmountBDT: number 
+                                    } 
+
+                    } 
+                    BusinessOwner : {
+                          YourCompanyType: PrivateLtd | Partnership | Proprietorship
+                                            PrivateLtd:  {
+                                                SharePortion(%): number,  
+                                                YourBusinessCategory: string, 
+                                                YourBusinessType: string, 
+                                            }
+                                            Partnership:  {
+                                                YourBusinessCategory: string, 
+                                                YourBusinessType: string, 
+                                            }
+                    }   
+               
+
+    rentalIncome: boolean  true | false
+                  true: {
+                    HouseType: {
+                        tinShedHouse: boolean, 
+                        SemiPaka: boolean, 
+                        BuildingWithPlan: boolean, 
+                        BuildingWithoutPlan: boolean, 
+
+                    }
+                  },
+    haveAnyLoan: boolean  true | false 
+                  true: {
+                     NumberOfLoan: number, 
+                     LoanType: 
+                     BankName: 
+                     EMIAmount(BDT): 
+                     InterestRate: boolean   
+                 },   
+    haveAnyCreditCard: boolean  true | false 
+                    true: {
+                        numberOfCard: number, 
+                        cardType: 
+                        bankName: string   
+                        cardLimit(BDT): 
+                    }
+    lastOneEarBankTransaction(BDT): number 
+    TradeLicenseAge:  number 
+    AreTradeLicense&OfficeAddressSame?: balance    
+ 
+}   

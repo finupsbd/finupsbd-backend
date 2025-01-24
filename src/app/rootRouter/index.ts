@@ -30,7 +30,7 @@ const moduleRouter = [
         route: BankRouter
     },
     {
-        path: '/application-form', 
+        path: '/application', 
         route: ApplicationRouter
     },
     {

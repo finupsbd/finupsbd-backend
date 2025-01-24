@@ -58,7 +58,7 @@ const signUp = async (payload: TUser) => {
   `;
       await sendEmail(payload?.email, MailSubject, MailText);
       // phoneOtpSend(phone, "send message")
-      throw new Error('Check your email for verification PIN thank you');
+      throw new AppError(200,'Check your email for verification PIN thank you');
     }
     if(userIsExist.emailVerified){
       throw new AppError(StatusCodes.CONFLICT,'You have already verified user. Please login thank you');

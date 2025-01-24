@@ -49,8 +49,9 @@ model Profile {
   avatar           String? // URL to profile picture
   address          String?
   city             String
-  user             User       @relation(fields: [userId], references: [id])
-  userId           String     @unique
+  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String     @unique
 
   @@map("profiles")
 }
+

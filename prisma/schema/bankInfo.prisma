@@ -1,19 +1,20 @@
 model Bank {
-    id            String       @id @default(uuid())
-    bankName      String
-    amount        String
-    coverImage    String?
-    periodMonths  String
-    processingFee String
-    interestRate  String
-    monthlyEmi    String
-    totalAmount   String
-    eligibleLoan  String
-    user          User?        @relation(fields: [userId], references: [id] )
-    userId        String?
-    eligibility   Eligibility?
-    feesCharges   FeesCharges?
-    features      Features?
+    id              String            @id @default(uuid())
+    bankName        String
+    amount          String
+    coverImage      String?
+    periodMonths    String
+    processingFee   String
+    interestRate    String
+    monthlyEmi      String
+    totalAmount     String
+    eligibleLoan    String
+    user            User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId          String?
+    eligibility     Eligibility?
+    feesCharges     FeesCharges?
+    features        Features?
+    ApplicationForm ApplicationForm[]
 
     @@map("banks")
 }
@@ -26,7 +27,7 @@ model Features {
     loanTenure    String
     minimumYear   String
     maximumYear   String
-    bank          Bank     @relation(fields: [bankId], references: [id])
+    bank          Bank     @relation(fields: [bankId], references: [id], onDelete: Cascade)
     bankId        String   @unique
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt()
@@ -39,7 +40,7 @@ model Eligibility {
     minimumIncome     String
     minimumExperience String
     ageRequirement    String
-    bank              Bank   @relation(fields: [bankId], references: [id])
+    bank              Bank   @relation(fields: [bankId], references: [id], onDelete: Cascade)
     bankId            String @unique
 }
 
@@ -50,6 +51,6 @@ model FeesCharges {
     prepaymentFee       String
     LoanReSchedulingFee String
     penalCharge         String
-    bank                Bank   @relation(fields: [bankId], references: [id])
+    bank                Bank   @relation(fields: [bankId], references: [id], onDelete: Cascade)
     bankId              String @unique
 }

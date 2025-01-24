@@ -63,9 +63,9 @@ model ApplicationForm {
   id                        String                     @id @default(uuid())
   applicationId             String                     @unique
   User                      User?                      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                    String?                    @unique
-  createdAt                 DateTime                   @default(now())
-  updatedAt                 DateTime                   @updatedAt
+  userId                    String?
+  bank                      Bank?                      @relation(fields: [appliedBankId], references: [id], onDelete: Cascade)
+  appliedBankId             String?
   status                    Status                     @default(PENDING)
   userInfo                  ApplicationUserInfo?
   address                   Address?
@@ -79,7 +79,9 @@ model ApplicationForm {
   permanentAddressId        String?
   employmentFinancialInfoId String?
   loanSpecificationsId      String?
-
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+  @@index([applicationId])
   @@map("applicationFrom")
 }
 
@@ -165,7 +167,7 @@ model FinancialObligation {
   balance               Float
   emi                   Float
   applicationForm       ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
-  applicationFormId     String          @unique
+  applicationFormId     String
 }
 
 model DocumentFile {
@@ -176,5 +178,5 @@ model DocumentFile {
   fileSizeMB        Float?
   fileType          String?
   applicationForm   ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
-  applicationFormId String          @unique
+  applicationFormId String
 }
