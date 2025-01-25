@@ -60,7 +60,7 @@ const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
   `;
             yield (0, sendEmail_1.default)(payload === null || payload === void 0 ? void 0 : payload.email, MailSubject, MailText);
             // phoneOtpSend(phone, "send message")
-            throw new Error('Check your email for verification PIN thank you');
+            throw new AppError_1.default(200, 'Check your email for verification PIN thank you');
         }
         if (userIsExist.emailVerified) {
             throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, 'You have already verified user. Please login thank you');

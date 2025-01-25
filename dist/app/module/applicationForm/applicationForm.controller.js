@@ -49,14 +49,14 @@ const applicationForget = (0, catchAsync_1.default)((req, res) => __awaiter(void
     const result = yield applicationForm_service_1.ApplicationFromService.applicationForget(req.body);
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: `Weve sent your tracking ID to your registered email  Mobile Number +88 `,
+        message: `We have sent your tracking ID to your registered Email: ${result.userEmail} Mobile Number +88${result.maskedPhoneNumber}`,
         statusCode: http_status_codes_1.StatusCodes.OK,
-        data: result,
+        data: {},
     });
 }));
 exports.ApplicationController = {
     createApplicationForm,
     getAllApplicationForm,
     applicationTracking,
-    applicationForget
+    applicationForget,
 };
