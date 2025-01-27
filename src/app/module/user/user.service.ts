@@ -2,7 +2,11 @@
 import { prisma } from '../../../app';
 
 const getAllUser = async () => {
-  const result = await prisma.user.findMany();
+  const result = await prisma.user.findMany({
+    include: {
+      profile: true
+    }
+  });
 
   return result;
 };
@@ -15,8 +19,9 @@ const meProfile = async (user: any) => {
       email: true, 
       phone: true,
       role: true, 
-      profile: true
-    }
+      profile: true,
+    },
+
   });
   if (!result) throw new Error("User not found");
   return result;

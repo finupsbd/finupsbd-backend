@@ -19,6 +19,7 @@ const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const applicationForm_service_1 = require("./applicationForm.service");
 const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
+    console.log(req.body);
     const result = yield applicationForm_service_1.ApplicationFromService.createApplicationForm(req.body, user);
     (0, sendResponce_1.default)(res, {
         success: true,

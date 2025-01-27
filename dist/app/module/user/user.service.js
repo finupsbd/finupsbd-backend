@@ -13,7 +13,11 @@ exports.UserServices = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const app_1 = require("../../../app");
 const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield app_1.prisma.user.findMany();
+    const result = yield app_1.prisma.user.findMany({
+        include: {
+            profile: true
+        }
+    });
     return result;
 });
 const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
@@ -24,8 +28,8 @@ const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
             email: true,
             phone: true,
             role: true,
-            profile: true
-        }
+            profile: true,
+        },
     });
     if (!result)
         throw new Error("User not found");

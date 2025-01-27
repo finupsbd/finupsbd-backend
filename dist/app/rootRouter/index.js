@@ -9,11 +9,12 @@ const auth_route_1 = require("../module/auth/auth.route");
 const user_route_1 = require("../module/user/user.route");
 const emi_route_1 = require("../utils/emiCalculator/emi.route");
 const newsLetter_route_1 = require("../module/public/newsLetter/newsLetter.route");
-const bank_route_1 = require("../module/bank/bank.route");
 const profile_route_1 = require("../module/user/profile/profile.route");
 const blog_route_1 = require("../module/blog/blog.route");
 const openai_route_1 = require("../module/openai/openai.route");
 const applicationForm_route_1 = require("../module/applicationForm/applicationForm.route");
+const personalLoan_route_1 = require("../module/loans/personalLoan/personalLoan.route");
+const eligibilityCheck_route_1 = require("../module/eligibilityCheck/eligibilityCheck.route");
 const router = express_1.default.Router();
 const moduleRouter = [
     {
@@ -27,14 +28,6 @@ const moduleRouter = [
     {
         path: '/profiles',
         route: profile_route_1.ProfileRouter
-    },
-    {
-        path: '/bank',
-        route: bank_route_1.BankRouter
-    },
-    {
-        path: '/application',
-        route: applicationForm_route_1.ApplicationRouter
     },
     {
         path: '/public',
@@ -51,7 +44,19 @@ const moduleRouter = [
     {
         path: '/openai',
         route: openai_route_1.OpenAiRouter
-    }
+    },
+    {
+        path: '/personal-loan',
+        route: personalLoan_route_1.PersonalLoanRouter
+    },
+    {
+        path: '/application',
+        route: applicationForm_route_1.ApplicationRouter
+    },
+    {
+        path: '/eligibility-check',
+        route: eligibilityCheck_route_1.EligibilityCheckRouter
+    },
 ];
 moduleRouter.forEach(item => router.use(item.path, item.route));
 exports.RootRouter = router;

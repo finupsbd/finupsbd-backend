@@ -5,13 +5,13 @@
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "start": "node dist/server.js",
-    "build:server": "node dist/server.js",
-    "prismaBuild": "prisma generate",
     "lint:fix": "eslint src/**/*.ts --fix",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:deploy": "prisma db push"
   },
   "keywords": [],
   "author": "",
@@ -32,12 +32,12 @@
     "@types/passport-google-oauth20": "^2.0.16",
     "eslint": "^9.14.0",
     "globals": "^15.14.0",
-    "prisma": "^6.1.1",
+    "prisma": "^6.2.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.2"
   },
   "dependencies": {
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "^6.2.1",
     "@vendia/serverless-express": "^4.12.6",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",

@@ -45,6 +45,7 @@ const globalErrorHandler = (
       success: false,
       message: 'Invalid input data',
       errors,
+      stack: err.stack, 
     });
   }
 

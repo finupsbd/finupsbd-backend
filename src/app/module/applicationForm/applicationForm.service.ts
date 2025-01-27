@@ -11,7 +11,7 @@ const createApplicationForm = async (
   payload: TFullApplicationForm,
   user: TMiddlewareUser
 ) => {
-  console.log(user);
+console.log(payload);
   payload.userId = user.userId;
   payload.applicationId = (await generateApplicationId()) as string;
 
@@ -25,12 +25,11 @@ const createApplicationForm = async (
       `ApplicationForm with ID ${payload.applicationId} already exists.`
     );
   }
-
   const result = await prisma.applicationForm.create({
     data: {
       applicationId: payload.applicationId,
-      appliedBankId: payload.appliedBankId,
       userId: payload.userId,
+      personalLoanId: payload.personalLoanId,
       userInfo: {
         create: payload.userInfo,
       },
@@ -57,6 +56,10 @@ const createApplicationForm = async (
         },
       },
     },
+    include:{
+      User: true,
+      personalLoan: true
+    }
   });
 
   return result;
@@ -66,7 +69,7 @@ const getAllApplicationForm = async () => {
   const result = await prisma.applicationForm.findMany({
     include: {
       User: true,
-      bank: true,
+      personalLoan: true,
       address: true,
       employmentFinancialInfo: true,
       financialObligations: true,

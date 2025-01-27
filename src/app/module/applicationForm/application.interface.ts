@@ -25,8 +25,8 @@ export type DocumentType =
 export interface ApplicationForm {
   id: string;
   userId: string;
-  appliedBankId: string;
   applicationId: string;
+  personalLoanId?: string
   status: Status;
   userInfo: ApplicationUserInfo;
   address: Address;

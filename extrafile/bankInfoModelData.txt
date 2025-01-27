@@ -1,0 +1,49 @@
+id: fsdfsddsfsdfds-dsfds-fdsf-d-f-dsf-dsf-sdf
+bankUniqueId: 00000000,
+BankName: Eastern Bank PLC,
+bankType: Commercial Bank 
+personalLoan: {
+    eligibility: {
+      "minimumAge": 22,
+      "maximumAge": 65,
+      "lengthOfExperience": 
+      "grossMonthlyIncome": 
+    }, 
+    "features": {
+      "loanAmountRange": "BDT 5,00,000 to 2,00,00,000",
+      "loanToPropertyValue": "Up to 70%",
+      "repaymentTenor": "Maximum 25 years",
+      "minimumAge": 22,
+      "maximumAge": 65,
+      "coApplicantRequirement": "Legal heir/successor of the property as co-applicant",
+      "interestRate": "Competitive",
+      "processingFee": "As per EBL Schedule of Charges",
+      "advancePartialPrepayment": "Allowed",
+      "gracePeriodMoratorium": "Allowed",
+      "lifeInsuranceCoverage": "Optional"
+    },
+    documentsRequired: {
+       "nationalNid": "Clear photocopy of National ID Card",
+       "photographs": "Clear Lab Print photographs - 2 copies",
+       "bankStatement": "Original Bank statement of last 12 months",
+       "tinCertificate": "Copy of e-TIN Certificate and latest tax return acknowledgement copy",
+    }
+},
+creditCards : {
+    
+}
+
+
+
+
+// "scripts": {
+//   "lint": "eslint src/**/*.ts",
+//   "start": "node dist/server.js",
+//   "build:server": "node dist/server.js",
+//   "prismaBuild": "prisma generate",
+//   "lint:fix": "eslint src/**/*.ts --fix",
+//   "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
+//   "build": "tsc",
+//   "test": "echo \"Error: no test specified\" && exit 1",
+//   "format": "prettier . --write"
+// },

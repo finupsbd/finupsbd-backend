@@ -5,27 +5,27 @@ enum Role {
 }
 
 model User {
-  id                  String            @id @default(uuid())
+  id                  String    @id @default(uuid())
   userId              String?
   name                String?
-  email               String            @unique
-  phone               String            @unique
+  email               String    @unique
+  phone               String    @unique
   password            String
   pin                 String?
   pinExpiry           DateTime?
   verificationToken   String? // Token for email verification
   resetPasswordToken  String? // Token for password reset
   resetPasswordExpiry DateTime? // Expiry for password reset token
-  role                Role              @default(USER)
+  role                Role      @default(USER)
   profile             Profile?
-  emailVerified       Boolean           @default(false)
-  isActive            Boolean           @default(true)
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
+  emailVerified       Boolean   @default(false)
+  isActive            Boolean   @default(true)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
   lastLogin           DateTime?
   blogPost            Blog[]
-  Bank                Bank[]
-  ApplicationForm     ApplicationForm[]
+  ApplicationForm ApplicationForm[]
+  PersonalLoan    PersonalLoan[]
 
   @@index([email]) // Index for email
   @@index([phone]) // Index for phone
@@ -50,8 +50,7 @@ model Profile {
   address          String?
   city             String
   user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String     @unique
+  userId           String     @unique
 
   @@map("profiles")
 }
-

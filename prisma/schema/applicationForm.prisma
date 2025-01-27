@@ -64,8 +64,8 @@ model ApplicationForm {
   applicationId             String                     @unique
   User                      User?                      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                    String?
-  bank                      Bank?                      @relation(fields: [appliedBankId], references: [id], onDelete: Cascade)
-  appliedBankId             String?
+  personalLoan              PersonalLoan?              @relation(fields: [personalLoanId], references: [id], onDelete: Cascade) 
+  personalLoanId            String?  
   status                    Status                     @default(PENDING)
   userInfo                  ApplicationUserInfo?
   address                   Address?

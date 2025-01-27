@@ -20,7 +20,7 @@ const generateApplicationId_1 = require("../../utils/generateApplicationId");
 const sendEmail_1 = __importDefault(require("../../utils/sendEmail"));
 const maskedMobileNumber_1 = __importDefault(require("../../utils/maskedMobileNumber"));
 const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(user);
+    console.log(payload);
     payload.userId = user.userId;
     payload.applicationId = (yield (0, generateApplicationId_1.generateApplicationId)());
     const existingForm = yield app_1.prisma.applicationForm.findUnique({
@@ -32,8 +32,8 @@ const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 
     const result = yield app_1.prisma.applicationForm.create({
         data: {
             applicationId: payload.applicationId,
-            appliedBankId: payload.appliedBankId,
             userId: payload.userId,
+            personalLoanId: payload.personalLoanId,
             userInfo: {
                 create: payload.userInfo,
             },
@@ -60,6 +60,10 @@ const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 
                 },
             },
         },
+        include: {
+            User: true,
+            personalLoan: true
+        }
     });
     return result;
 });
@@ -67,7 +71,7 @@ const getAllApplicationForm = () => __awaiter(void 0, void 0, void 0, function* 
     const result = yield app_1.prisma.applicationForm.findMany({
         include: {
             User: true,
-            bank: true,
+            personalLoan: true,
             address: true,
             employmentFinancialInfo: true,
             financialObligations: true,

@@ -155,7 +155,6 @@ const UploadedDocumentsSchema = zod_1.z.object({
 });
 // Main Application Schema
 const CreateApplicationValidationSchema = zod_1.z.object({
-    appliedBankId: zod_1.z.string().min(1, 'Applied bank ID is required'),
     userInfo: UserInfoSchema,
     currentAddress: AddressSchema.optional(),
     permanentAddress: AddressSchema.optional(),

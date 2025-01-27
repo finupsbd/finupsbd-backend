@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "build": {
+      "cache": false,
+      "env": {
+        "PRISMA_GENERATE": "true"
+      }
+    },
+    "builds": [
+      {
+        "src": "dist/server.js",
+        "use": "@vercel/node",
+        "config": {
+          "includeFiles": ["prisma/schema.prisma"]
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "dist/server.js"
+      }
+    ]
+  }
+  

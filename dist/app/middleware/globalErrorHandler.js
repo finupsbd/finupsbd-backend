@@ -36,6 +36,7 @@ const globalErrorHandler = (err, req, res, next) => {
             success: false,
             message: 'Invalid input data',
             errors,
+            stack: err.stack,
         });
     }
     // if (err instanceof Prisma.PrismaClientKnownRequestError) {
