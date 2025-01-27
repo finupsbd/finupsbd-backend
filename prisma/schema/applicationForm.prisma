@@ -64,8 +64,8 @@ model ApplicationForm {
   applicationId             String                     @unique
   User                      User?                      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                    String?
-  personalLoan              PersonalLoan?              @relation(fields: [personalLoanId], references: [id], onDelete: Cascade) 
-  personalLoanId            String?  
+  personalLoan              PersonalLoan?              @relation(fields: [personalLoanId], references: [id], onDelete: Cascade)
+  personalLoanId            String?
   status                    Status                     @default(PENDING)
   userInfo                  ApplicationUserInfo?
   address                   Address?
@@ -81,6 +81,7 @@ model ApplicationForm {
   loanSpecificationsId      String?
   createdAt                 DateTime                   @default(now())
   updatedAt                 DateTime                   @updatedAt
+
   @@index([applicationId])
   @@map("applicationFrom")
 }

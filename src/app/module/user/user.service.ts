@@ -20,6 +20,16 @@ const meProfile = async (user: any) => {
       phone: true,
       role: true, 
       profile: true,
+      ApplicationForm: {
+        include: {
+          User: true,
+          personalLoan: {
+            select: {
+              bankName: true, 
+            }
+          }
+        }
+      }
     },
 
   });

@@ -31,8 +31,8 @@ model Features {
     loanTenure     String
     minimumYear    String
     maximumYear    String
-    personalLoan   PersonalLoan @relation(fields: [PersonalLoanId], references: [id], onDelete: Cascade)
-    PersonalLoanId String       @unique
+    personalLoan   PersonalLoan @relation(fields: [personalLoanId], references: [id], onDelete: Cascade)
+    personalLoanId String       @unique
 }
 
 model Eligibility {
@@ -42,8 +42,8 @@ model Eligibility {
     minimumIncome     String
     minimumExperience String
     ageRequirement    String
-    personalLoan      PersonalLoan @relation(fields: [PersonalLoanId], references: [id], onDelete: Cascade)
-    PersonalLoanId    String       @unique
+    personalLoan      PersonalLoan @relation(fields: [personalLoanId], references: [id], onDelete: Cascade)
+    personalLoanId    String       @unique
 }
 
 model FeesCharges {
@@ -53,6 +53,6 @@ model FeesCharges {
     prepaymentFee       String
     LoanReSchedulingFee String
     penalCharge         String
-    personalLoan        PersonalLoan @relation(fields: [PersonalLoanId], references: [id], onDelete: Cascade)
-    PersonalLoanId      String       @unique
+    personalLoan        PersonalLoan @relation(fields: [personalLoanId], references: [id], onDelete: Cascade)
+    personalLoanId      String       @unique
 }
