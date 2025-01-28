@@ -17,23 +17,16 @@ const globalErrorHandler = (
   next: NextFunction
 ) => {
   let newMessage = "Something went's wrong";
-  let error = {};
+  const error = {};
   let statusCode = StatusCodes.BAD_REQUEST;
 
   //generics error handle
   if (err instanceof AppError) {
     newMessage = err?.message;
     statusCode = err?.statusCode;
-    error = err;
   }
 
-  //generics error handle
-  // if (err instanceof Error) {
-  //   newMessage = err?.message
-  //   statusCode = StatusCodes.BAD_REQUEST
-  //   error = err
-  // }
-
+ 
   //Zod Validation Error handle
   if (err instanceof ZodError) {
     const errors = err.errors.map((e: any) => ({

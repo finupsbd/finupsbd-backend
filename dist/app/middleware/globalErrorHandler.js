@@ -12,20 +12,13 @@ const zod_1 = require("zod");
 const globalErrorHandler = (err, req, res, next) => {
     var _a;
     let newMessage = "Something went's wrong";
-    let error = {};
+    const error = {};
     let statusCode = http_status_codes_1.StatusCodes.BAD_REQUEST;
     //generics error handle
     if (err instanceof AppError_1.default) {
         newMessage = err === null || err === void 0 ? void 0 : err.message;
         statusCode = err === null || err === void 0 ? void 0 : err.statusCode;
-        error = err;
     }
-    //generics error handle
-    // if (err instanceof Error) {
-    //   newMessage = err?.message
-    //   statusCode = StatusCodes.BAD_REQUEST
-    //   error = err
-    // }
     //Zod Validation Error handle
     if (err instanceof zod_1.ZodError) {
         const errors = err.errors.map((e) => ({

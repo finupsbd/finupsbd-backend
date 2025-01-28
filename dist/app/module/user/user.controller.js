@@ -29,6 +29,7 @@ const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
 }));
 const meProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
+    console.log(user);
     const result = yield user_service_1.UserServices.meProfile(user);
     (0, sendResponce_1.default)(res, {
         success: true,

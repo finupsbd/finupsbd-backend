@@ -221,7 +221,7 @@ CREATE TABLE "Features" (
     "loanTenure" TEXT NOT NULL,
     "minimumYear" TEXT NOT NULL,
     "maximumYear" TEXT NOT NULL,
-    "PersonalLoanId" TEXT NOT NULL,
+    "personalLoanId" TEXT NOT NULL,
 
     CONSTRAINT "Features_pkey" PRIMARY KEY ("id")
 );
@@ -234,14 +234,22 @@ CREATE TABLE "Eligibility" (
     "minimumIncome" TEXT NOT NULL,
     "minimumExperience" TEXT NOT NULL,
     "ageRequirement" TEXT NOT NULL,
-    "PersonalLoanId" TEXT NOT NULL,
+    "personalLoanId" TEXT NOT NULL,
 
     CONSTRAINT "Eligibility_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "FeesCharges" (
-    "PersonalLoanId" TEXT NOT NULL
+    "id" TEXT NOT NULL,
+    "processingFee" TEXT NOT NULL,
+    "earlySettlementFee" TEXT NOT NULL,
+    "prepaymentFee" TEXT NOT NULL,
+    "LoanReSchedulingFee" TEXT NOT NULL,
+    "penalCharge" TEXT NOT NULL,
+    "personalLoanId" TEXT NOT NULL,
+
+    CONSTRAINT "FeesCharges_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -304,13 +312,13 @@ CREATE UNIQUE INDEX "LoanRequestSpecifications_applicationFormId_key" ON "LoanRe
 CREATE UNIQUE INDEX "newsLetter_email_key" ON "newsLetter"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Features_PersonalLoanId_key" ON "Features"("PersonalLoanId");
+CREATE UNIQUE INDEX "Features_personalLoanId_key" ON "Features"("personalLoanId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Eligibility_PersonalLoanId_key" ON "Eligibility"("PersonalLoanId");
+CREATE UNIQUE INDEX "Eligibility_personalLoanId_key" ON "Eligibility"("personalLoanId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "FeesCharges_PersonalLoanId_key" ON "FeesCharges"("PersonalLoanId");
+CREATE UNIQUE INDEX "FeesCharges_personalLoanId_key" ON "FeesCharges"("personalLoanId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");

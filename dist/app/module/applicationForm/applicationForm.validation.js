@@ -155,6 +155,7 @@ const UploadedDocumentsSchema = zod_1.z.object({
 });
 // Main Application Schema
 const CreateApplicationValidationSchema = zod_1.z.object({
+    personalLoanId: zod_1.z.string().min(1, 'Personal loan ID is required').optional(),
     userInfo: UserInfoSchema,
     currentAddress: AddressSchema.optional(),
     permanentAddress: AddressSchema.optional(),

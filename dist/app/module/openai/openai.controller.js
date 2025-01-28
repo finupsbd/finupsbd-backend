@@ -15,24 +15,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OpenaiController = void 0;
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const openai_service_1 = require("./openai.service");
-const aiAssistant = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const assistant = yield openai_service_1.OpenaiServices.createAssistant();
-    res.status(200).json({
-        success: true,
-        message: "Assistant created successfully",
-        assistantId: assistant.id,
-    });
-}));
+// const aiAssistant = catchAsync(async (req, res) => {
+//   const assistant = await OpenaiServices.createAssistant() 
+//   res.status(200).json({
+//     success: true,
+//     message: "Assistant created successfully",
+//     assistantId: assistant.id,
+//   });
+// });
 const interactWithAssistant = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { message } = req.body;
     const response = yield openai_service_1.OpenaiServices.interactWithAssistant(id, message);
     res.status(200).json({
         success: true,
-        reply: response.choices[0].message.content,
+        reply: response,
     });
 }));
 exports.OpenaiController = {
-    aiAssistant,
-    interactWithAssistant
+    interactWithAssistant,
 };

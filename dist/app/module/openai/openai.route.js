@@ -7,6 +7,6 @@ exports.OpenAiRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const openai_controller_1 = require("./openai.controller");
 const router = express_1.default.Router();
-router.post('/assistant', openai_controller_1.OpenaiController.aiAssistant);
+// router.post('/assistant', OpenaiController.aiAssistant)
 router.post("/assistant/:id/message", openai_controller_1.OpenaiController.interactWithAssistant);
 exports.OpenAiRouter = router;

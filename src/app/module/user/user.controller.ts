@@ -23,6 +23,7 @@ const getAllUsers = catchAsync(async (req, res) => {
 
   const meProfile = catchAsync(async (req, res) => {
     const user = req.user
+    console.log(user);
     const result = await UserServices.meProfile(user)
 
 

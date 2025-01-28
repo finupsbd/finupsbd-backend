@@ -90,14 +90,14 @@ const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () 
     const { email, pin } = payload;
     const user = yield app_1.prisma.user.findUnique({ where: { email } });
     if (!user) {
-        throw new Error('User not found');
+        throw new AppError_1.default(400, 'User not found');
     }
     const currentTime = new Date();
     if ((user === null || user === void 0 ? void 0 : user.pinExpiry) && (user === null || user === void 0 ? void 0 : user.pinExpiry) < currentTime) {
-        throw new Error('PIN has expired');
+        throw new AppError_1.default(400, 'PIN has expired');
     }
     if ((user === null || user === void 0 ? void 0 : user.pin) !== pin) {
-        throw new Error('Invalid PIN');
+        throw new AppError_1.default(400, 'Invalid PIN');
         // return { success: false, message: 'Invalid PIN' };
     }
     yield app_1.prisma.user.update({
@@ -222,17 +222,17 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield app_1.prisma.user.findUnique({ where: { email } });
     console.log(user);
     if (!user) {
-        throw new Error('User not found');
+        throw new AppError_1.default(404, 'User not found');
     }
     if (!user.emailVerified) {
-        throw new Error('Your email is not verified. Please verify your email before logging in.');
+        throw new AppError_1.default(500, 'Your email is not verified. Please verify your email before logging in.');
     }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
-        throw new Error('Your account is inactive. Please contact support.');
+        throw new AppError_1.default(400, 'Your account is inactive. Please contact support.');
     }
     const passwordCompare = yield bcrypt_1.default.compare(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password);
     if (!passwordCompare) {
-        throw new Error('Invalid password! please input valid password.');
+        throw new AppError_1.default(400, 'Invalid password! please input valid password.');
     }
     const jwtPayload = {
         userId: user === null || user === void 0 ? void 0 : user.id,
@@ -258,13 +258,13 @@ const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
     const { email } = payload;
     const user = yield app_1.prisma.user.findUnique({ where: { email } });
     if (!user) {
-        throw new Error('User not found');
+        throw new AppError_1.default(404, 'User not found');
     }
     if (!user.emailVerified) {
-        throw new Error('Your email is not verified. Please verify your email');
+        throw new AppError_1.default(502, 'Your email is not verified. Please verify your email');
     }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
-        throw new Error('Your account is inactive. Please contact support.');
+        throw new AppError_1.default(502, 'Your account is inactive. Please contact support.');
     }
     //todo forget password
     const pin = Math.floor(100000 + Math.random() * 900000).toString();
@@ -297,16 +297,15 @@ const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
 });
 const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = payload;
-    console.log({ email, passwordHash: passwordHash_1.passwordHash });
     const user = yield app_1.prisma.user.findUnique({ where: { email } });
     if (!user) {
-        throw new Error('User not found');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
     }
     if (!user.emailVerified) {
-        throw new Error('Your email is not verified. Please verify your email before reset your password');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'Your email is not verified. Please verify your email before reset your password');
     }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
-        throw new Error('Your account is inactive. Please contact support.');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
     }
     const passwordHashing = yield (0, passwordHash_1.passwordHash)(payload === null || payload === void 0 ? void 0 : payload.newPassword);
     yield app_1.prisma.user.update({
@@ -349,18 +348,18 @@ const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* (
 });
 const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     if (!token) {
-        throw new Error('You are unauthorized');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'You are unauthorized');
     }
     const decode = (yield jsonwebtoken_1.default.verify(token, config_1.ConfigFile.JWT_REFRESH_SECRET));
     const user = yield app_1.prisma.user.findUnique({ where: { email: decode.email } });
     if (!user) {
-        throw new Error('Your not Found');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User Not Found');
     }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
-        throw new Error('You are not valid user');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'You are not a valid user');
     }
     if (!(user === null || user === void 0 ? void 0 : user.emailVerified)) {
-        throw new Error('You are not valid user');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'You are not valid user');
     }
     const jwtPayload = {
         userId: user === null || user === void 0 ? void 0 : user.id,
