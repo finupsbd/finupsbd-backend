@@ -36,11 +36,8 @@ app.use('/api/v1', RootRouter)
 
 
 
-
-
-
-
-app.get('/', (req: Request, res: Response) => {
+// Production-grade health-check endpoint
+app.get('/', async (req: Request, res: Response) => {
   const currentTimestamp = new Date().toISOString();
   const uptimeSeconds = process.uptime();
   const memoryUsage = process.memoryUsage();
@@ -53,29 +50,43 @@ app.get('/', (req: Request, res: Response) => {
   const arch = process.arch;
   const networkInterfaces = os.networkInterfaces();
 
+  // Check database connectivity via Prisma
+  let dbStatus = 'unknown';
+  try {
+    // A simple query to ensure the DB connection is working
+    await prisma.$queryRaw`SELECT 1`;
+    dbStatus = 'connected';
+  } catch (error) {
+    dbStatus = 'disconnected';
+    console.log(error)
+  }
+
+  // Build the detailed health-check response
   res.status(200).json({
     status: 'success',
-    message: 'finupsBD server is fully operational and healthy.',
+    message: 'Production health check: finupsBD server is operational.',
     timestamp: currentTimestamp,
     uptime: `${uptimeSeconds.toFixed(2)} seconds`,
+    database: dbStatus,
+    environment: process.env.NODE_ENV || 'development',
+    version: process.env.npm_package_version || 'unknown',
+    nodeVersion,
     hostname,
     memoryUsage,
     loadAverage,
-    // For each CPU, return its model, speed, and time spent in various states.
     cpuInfo: cpuInfo.map(cpu => ({
       model: cpu.model,
       speed: cpu.speed,
       times: cpu.times
     })),
-    nodeVersion,
+ 
     platform,
     processId,
     arch,
     networkInterfaces,
-    environment: process.env.NODE_ENV || 'development',
-    version: process.env.npm_package_version || 'unknown'
   });
 });
+
 
 
 
