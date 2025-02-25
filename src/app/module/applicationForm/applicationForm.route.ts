@@ -3,13 +3,17 @@ import { ApplicationController } from './applicationForm.controller';
 import auth from '../../middleware/auth';
 import validateRequest from '../../middleware/validateRequest';
 import { ApplicationValidationSchema } from './applicationForm.validation';
+import { upload } from '../../utils/sendImageToCloud';
 
 
 const route = express.Router();
 
 route.post(
   '/',
-  auth('USER', "ADMIN", "SUPER_ADMIN"),validateRequest(ApplicationValidationSchema.CreateApplicationValidationSchema), ApplicationController.createApplicationForm
+  auth('USER', "ADMIN", "SUPER_ADMIN"), upload.fields([
+    { name: 'passportPhoto', maxCount: 1 },
+    { name: 'nid', maxCount: 1 },
+  ]), validateRequest(ApplicationValidationSchema.CreateApplicationValidationSchema), ApplicationController.createApplicationForm
 );
 route.get('/', ApplicationController.getAllApplicationForm);
 

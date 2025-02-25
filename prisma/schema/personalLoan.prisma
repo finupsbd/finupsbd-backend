@@ -39,9 +39,9 @@ model Eligibility {
     id                String       @id @default(uuid())
     condition         String
     offer             String
-    minimumIncome     String
-    minimumExperience String
-    ageRequirement    String
+    minimumIncome     Int
+    minimumExperience Int
+    ageRequirement    Int
     personalLoan      PersonalLoan @relation(fields: [personalLoanId], references: [id], onDelete: Cascade)
     personalLoanId    String       @unique
 }

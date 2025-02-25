@@ -33,9 +33,9 @@ export interface TPersonalLoan {
     id?: string;
     condition: string;
     offer: string;
-    minimumIncome: string;
-    minimumExperience: string;
-    ageRequirement: string;
+    minimumIncome: number; 
+    minimumExperience: number; 
+    ageRequirement: number;
     bankId?: string; // Foreign key referencing Bank
     bank?: TPersonalLoan; // Related Bank entity
   }

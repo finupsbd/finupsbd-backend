@@ -15,9 +15,9 @@ const featureSchema = zod_1.z.object({
 const eligibilitySchema = zod_1.z.object({
     condition: zod_1.z.string().min(1, 'Condition is required'),
     offer: zod_1.z.string().min(1, 'Offer is required'),
-    minimumIncome: zod_1.z.string().min(1, 'Minimum income is required'),
-    minimumExperience: zod_1.z.string().min(1, 'Minimum experience is required'),
-    ageRequirement: zod_1.z.string().min(1, 'Age requirement is required'),
+    minimumIncome: zod_1.z.number().positive().min(1, 'Minimum income is required'),
+    minimumExperience: zod_1.z.number().positive().min(1, 'Minimum experience is required'),
+    ageRequirement: zod_1.z.number().positive().min(1, 'Age requirement is required'),
 });
 // Define the schema for the fees and charges
 const feesChargesSchema = zod_1.z.object({

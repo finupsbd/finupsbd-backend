@@ -25,6 +25,14 @@ const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 //Sign up User
 const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isAlreadySignUpRequest = yield app_1.prisma.user.findUnique({
+        where: {
+            email: payload.email,
+        },
+    });
+    if (isAlreadySignUpRequest) {
+        return 'allready send pin check email. Thank you';
+    }
     const { email } = payload;
     payload.password = yield (0, passwordHash_1.passwordHash)(payload.password);
     //   const pin = crypto.randomBytes(3).toString('hex'); // 6-digit PIN
@@ -33,7 +41,6 @@ const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     payload.pin = pin;
     payload.pinExpiry = pinExpiry;
     payload.userId = yield (0, generateUserId_1.generateUserId)();
-    console.log(payload);
     const userIsExist = yield app_1.prisma.user.findUnique({
         where: {
             email,
@@ -224,9 +231,11 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!user) {
         throw new AppError_1.default(404, 'User not found');
     }
-    if (!user.emailVerified) {
-        throw new AppError_1.default(500, 'Your email is not verified. Please verify your email before logging in.');
-    }
+    // if (!user.emailVerified) {
+    //   throw new AppError(500,
+    //     'Your email is not verified. Please verify your email before logging in.'
+    //   );
+    // }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
         throw new AppError_1.default(400, 'Your account is inactive. Please contact support.');
     }
@@ -235,6 +244,7 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(400, 'Invalid password! please input valid password.');
     }
     const jwtPayload = {
+        name: user === null || user === void 0 ? void 0 : user.name,
         userId: user === null || user === void 0 ? void 0 : user.id,
         role: user === null || user === void 0 ? void 0 : user.role,
         email: user === null || user === void 0 ? void 0 : user.email,

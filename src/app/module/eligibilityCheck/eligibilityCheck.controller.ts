@@ -8,13 +8,16 @@ import sendResponses from "../../utils/sendResponce";
 
 const eligibilityCheck = catchAsync(async(req, res)=> {
 
-    const result = await EligibilityCheckService.eligibilityCheck(req.body); 
+
+    const query = req.query
+    const result = await EligibilityCheckService.eligibilityCheck(req.body, query); 
+ 
 
     sendResponses(res, {
         success: true,
         message: 'Your Eligibility check successfully',
-        statusCode: StatusCodes.CREATED,
-        data: result,
+        statusCode: StatusCodes.OK,
+        data: result ,
       });
 })
 

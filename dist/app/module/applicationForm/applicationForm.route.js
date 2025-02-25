@@ -9,8 +9,12 @@ const applicationForm_controller_1 = require("./applicationForm.controller");
 const auth_1 = __importDefault(require("../../middleware/auth"));
 const validateRequest_1 = __importDefault(require("../../middleware/validateRequest"));
 const applicationForm_validation_1 = require("./applicationForm.validation");
+const sendImageToCloud_1 = require("../../utils/sendImageToCloud");
 const route = express_1.default.Router();
-route.post('/', (0, auth_1.default)('USER', "ADMIN", "SUPER_ADMIN"), (0, validateRequest_1.default)(applicationForm_validation_1.ApplicationValidationSchema.CreateApplicationValidationSchema), applicationForm_controller_1.ApplicationController.createApplicationForm);
+route.post('/', (0, auth_1.default)('USER', "ADMIN", "SUPER_ADMIN"), sendImageToCloud_1.upload.fields([
+    { name: 'passportPhoto', maxCount: 1 },
+    { name: 'nid', maxCount: 1 },
+]), (0, validateRequest_1.default)(applicationForm_validation_1.ApplicationValidationSchema.CreateApplicationValidationSchema), applicationForm_controller_1.ApplicationController.createApplicationForm);
 route.get('/', applicationForm_controller_1.ApplicationController.getAllApplicationForm);
 route.post('/application-tracking', applicationForm_controller_1.ApplicationController.applicationTracking);
 route.post('/application-forget', applicationForm_controller_1.ApplicationController.applicationForget);

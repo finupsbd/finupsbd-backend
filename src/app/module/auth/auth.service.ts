@@ -20,6 +20,18 @@ import { StatusCodes } from 'http-status-codes';
 //Sign up User
 
 const signUp = async (payload: TUser) => {
+
+  const isAlreadySignUpRequest = await prisma.user.findUnique({
+    where: {
+     email: payload.email,
+    },
+  });
+
+  if(isAlreadySignUpRequest){
+    return 'allready send pin check email. Thank you';
+  }
+
+ 
   const { email} = payload;
   payload.password = await passwordHash(payload.password);
 
@@ -29,7 +41,7 @@ const signUp = async (payload: TUser) => {
   payload.pin = pin;
   payload.pinExpiry = pinExpiry;
   payload.userId = await generateUserId();
-  console.log(payload);
+
 
   const userIsExist = await prisma.user.findUnique({
     where: {
@@ -239,11 +251,11 @@ const login = async (payload: { email: string; password: string }) => {
     throw new AppError(404,'User not found');
   }
 
-  if (!user.emailVerified) {
-    throw new AppError(500,
-      'Your email is not verified. Please verify your email before logging in.'
-    );
-  }
+  // if (!user.emailVerified) {
+  //   throw new AppError(500,
+  //     'Your email is not verified. Please verify your email before logging in.'
+  //   );
+  // }
 
   if (!user?.isActive) {
     throw new AppError(400,'Your account is inactive. Please contact support.');
@@ -259,6 +271,7 @@ const login = async (payload: { email: string; password: string }) => {
   }
 
   const jwtPayload = {
+    name: user?.name,
     userId: user?.id,
     role: user?.role,
     email: user?.email,

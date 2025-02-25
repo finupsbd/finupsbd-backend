@@ -18,11 +18,12 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const eligibilityCheck_service_1 = require("./eligibilityCheck.service");
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const eligibilityCheck = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield eligibilityCheck_service_1.EligibilityCheckService.eligibilityCheck(req.body);
+    const query = req.query;
+    const result = yield eligibilityCheck_service_1.EligibilityCheckService.eligibilityCheck(req.body, query);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Your Eligibility check successfully',
-        statusCode: http_status_codes_1.StatusCodes.CREATED,
+        statusCode: http_status_codes_1.StatusCodes.OK,
         data: result,
     });
 }));

@@ -6,7 +6,6 @@ import { TMiddlewareUser } from '../../types/commonTypes';
 
 const createApplicationForm = catchAsync(async (req, res) => {
   const user = req.user as TMiddlewareUser;
-console.log(req.body);
   const result = await ApplicationFromService.createApplicationForm(
     req.body,
     user

@@ -231,9 +231,9 @@ CREATE TABLE "Eligibility" (
     "id" TEXT NOT NULL,
     "condition" TEXT NOT NULL,
     "offer" TEXT NOT NULL,
-    "minimumIncome" TEXT NOT NULL,
-    "minimumExperience" TEXT NOT NULL,
-    "ageRequirement" TEXT NOT NULL,
+    "minimumIncome" INTEGER NOT NULL,
+    "minimumExperience" INTEGER NOT NULL,
+    "ageRequirement" INTEGER NOT NULL,
     "personalLoanId" TEXT NOT NULL,
 
     CONSTRAINT "Eligibility_pkey" PRIMARY KEY ("id")

@@ -11,7 +11,6 @@ const createApplicationForm = async (
   payload: TFullApplicationForm,
   user: TMiddlewareUser
 ) => {
-console.log(payload);
   payload.userId = user.userId;
   payload.applicationId = (await generateApplicationId()) as string;
 
@@ -25,6 +24,8 @@ console.log(payload);
       `ApplicationForm with ID ${payload.applicationId} already exists.`
     );
   }
+
+  
   const result = await prisma.applicationForm.create({
     data: {
       applicationId: payload.applicationId,

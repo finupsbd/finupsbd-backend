@@ -71,6 +71,8 @@ async function interactWithAssistant(
     Provide a detailed and accurate response. Do not include any additional information make sure every responce should like human. 
   `;
 
+
+
 //   async function main() {
 //     const stream = await openai.chat.completions.create({
 //         model: model,

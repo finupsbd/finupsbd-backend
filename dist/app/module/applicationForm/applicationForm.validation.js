@@ -38,13 +38,26 @@ exports.LoanTypeEnum = zod_1.z.enum(['PERSONAL', 'HOME', 'CAR'], {
         message: 'Loan Type must be one of: PERSONAL, HOME, or CAR',
     }),
 });
-exports.DocumentTypeEnum = zod_1.z.enum(['PASSPORT_PHOTO', 'NATIONAL_ID'], {
+exports.DocumentTypeEnum = zod_1.z.enum([
+    'PASSPORT_PHOTO',
+    'NATIONAL_ID',
+    'BIRTH_CERTIFICATE',
+    'INCOME_PROOF',
+    'BANK_STATEMENT',
+    'TIN_CERTIFICATE',
+    'EMPLOYMENT_PROOF',
+    'UTILITY_BILL',
+    'PROPERTY_DOCUMENT',
+    'SUPPORTING_DOCUMENT',
+], {
     errorMap: () => ({
         message: 'Document type must be either PASSPORT_PHOTO or NATIONAL_ID',
     }),
 });
 // Phone Number Validation
-const PhoneNumberValidation = zod_1.z.string().regex(/^\d{11}$/, 'Mobile number must be a valid 11 digit');
+const PhoneNumberValidation = zod_1.z
+    .string()
+    .regex(/^\d{11}$/, 'Mobile number must be a valid 11 digit');
 // User Info Schema
 const UserInfoSchema = zod_1.z.object({
     fullName: zod_1.z.string().min(1, 'Full Name is required'),
@@ -166,14 +179,14 @@ const CreateApplicationValidationSchema = zod_1.z.object({
 });
 const ApplicationTrackingValidation = zod_1.z.object({
     applicationId: zod_1.z.string().min(1, 'Application ID is required'),
-    phone: PhoneNumberValidation
+    phone: PhoneNumberValidation,
 });
 const ApplicationForgetValidation = zod_1.z.object({
     email: zod_1.z.string().email().min(1, 'Email is required').optional(),
-    phone: PhoneNumberValidation
+    phone: PhoneNumberValidation,
 });
 exports.ApplicationValidationSchema = {
     CreateApplicationValidationSchema,
     ApplicationTrackingValidation,
-    ApplicationForgetValidation
+    ApplicationForgetValidation,
 };

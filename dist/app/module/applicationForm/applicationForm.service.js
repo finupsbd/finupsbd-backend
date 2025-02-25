@@ -20,7 +20,6 @@ const generateApplicationId_1 = require("../../utils/generateApplicationId");
 const sendEmail_1 = __importDefault(require("../../utils/sendEmail"));
 const maskedMobileNumber_1 = __importDefault(require("../../utils/maskedMobileNumber"));
 const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload);
     payload.userId = user.userId;
     payload.applicationId = (yield (0, generateApplicationId_1.generateApplicationId)());
     const existingForm = yield app_1.prisma.applicationForm.findUnique({

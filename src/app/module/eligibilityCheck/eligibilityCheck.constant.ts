@@ -12,4 +12,8 @@ export const cardsTypes = {
   TRAVEL_CARD: 'TRAVEL_CARD',
   GIFT_CARD: 'GIFT_CARD',
 };
+
+export const professionType = {
+  
+}
    

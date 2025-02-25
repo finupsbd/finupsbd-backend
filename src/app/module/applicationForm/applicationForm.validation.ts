@@ -1,12 +1,15 @@
-
 import { z } from 'zod';
 
 // Enums
-export const StatusEnum = z.enum(['PENDING', 'IN_PROGRESS', 'APPROVE', 'REJECT'], {
-  errorMap: () => ({
-    message: 'Status must be one of: PENDING, IN_PROGRESS, APPROVE, or REJECT',
-  }),
-});
+export const StatusEnum = z.enum(
+  ['PENDING', 'IN_PROGRESS', 'APPROVE', 'REJECT'],
+  {
+    errorMap: () => ({
+      message:
+        'Status must be one of: PENDING, IN_PROGRESS, APPROVE, or REJECT',
+    }),
+  }
+);
 
 export const PropertyTypeEnum = z.enum(['RESIDENTIAL', 'COMMERCIAL', 'LAND'], {
   errorMap: () => ({
@@ -20,11 +23,15 @@ export const GenderEnum = z.enum(['MALE', 'FEMALE', 'OTHER'], {
   }),
 });
 
-export const MaritalStatusEnum = z.enum(['SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED'], {
-  errorMap: () => ({
-    message: 'Marital Status must be one of: SINGLE, MARRIED, DIVORCED, or WIDOWED',
-  }),
-});
+export const MaritalStatusEnum = z.enum(
+  ['SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED'],
+  {
+    errorMap: () => ({
+      message:
+        'Marital Status must be one of: SINGLE, MARRIED, DIVORCED, or WIDOWED',
+    }),
+  }
+);
 
 export const OwnershipStatusEnum = z.enum(['OWNED', 'RENTED', 'OTHER'], {
   errorMap: () => ({
@@ -36,7 +43,8 @@ export const EmploymentStatusEnum = z.enum(
   ['SALARIED', 'SELF_EMPLOYED', 'BUSINESS_OWNER', 'UNEMPLOYED'],
   {
     errorMap: () => ({
-      message: 'Employment Status must be one of: SALARIED, SELF_EMPLOYED, BUSINESS_OWNER, or UNEMPLOYED',
+      message:
+        'Employment Status must be one of: SALARIED, SELF_EMPLOYED, BUSINESS_OWNER, or UNEMPLOYED',
     }),
   }
 );
@@ -47,14 +55,30 @@ export const LoanTypeEnum = z.enum(['PERSONAL', 'HOME', 'CAR'], {
   }),
 });
 
-export const DocumentTypeEnum = z.enum(['PASSPORT_PHOTO', 'NATIONAL_ID'], {
-  errorMap: () => ({
-    message: 'Document type must be either PASSPORT_PHOTO or NATIONAL_ID',
-  }),
-});
+export const DocumentTypeEnum = z.enum(
+  [
+    'PASSPORT_PHOTO',
+    'NATIONAL_ID',
+    'BIRTH_CERTIFICATE',
+    'INCOME_PROOF',
+    'BANK_STATEMENT',
+    'TIN_CERTIFICATE',
+    'EMPLOYMENT_PROOF',
+    'UTILITY_BILL',
+    'PROPERTY_DOCUMENT',
+    'SUPPORTING_DOCUMENT',
+  ],
+  {
+    errorMap: () => ({
+      message: 'Document type must be either PASSPORT_PHOTO or NATIONAL_ID',
+    }),
+  }
+);
 
 // Phone Number Validation
-const PhoneNumberValidation = z.string().regex(/^\d{11}$/, 'Mobile number must be a valid 11 digit');
+const PhoneNumberValidation = z
+  .string()
+  .regex(/^\d{11}$/, 'Mobile number must be a valid 11 digit');
 
 // User Info Schema
 const UserInfoSchema = z.object({
@@ -172,7 +196,7 @@ const UploadedDocumentsSchema = z.object({
 
 // Main Application Schema
 const CreateApplicationValidationSchema = z.object({
-  personalLoanId: z.string().min(1, 'Personal loan ID is required').optional(), 
+  personalLoanId: z.string().min(1, 'Personal loan ID is required').optional(),
   userInfo: UserInfoSchema,
   currentAddress: AddressSchema.optional(),
   permanentAddress: AddressSchema.optional(),
@@ -182,30 +206,18 @@ const CreateApplicationValidationSchema = z.object({
   uploadedDocuments: z.array(UploadedDocumentsSchema),
 });
 
+const ApplicationTrackingValidation = z.object({
+  applicationId: z.string().min(1, 'Application ID is required'),
+  phone: PhoneNumberValidation,
+});
 
-
-
-
-  const ApplicationTrackingValidation = z.object({
-    applicationId: z.string().min(1, 'Application ID is required'),
-    phone: PhoneNumberValidation
-  })
-
-  const ApplicationForgetValidation = z.object({
-    email: z.string().email().min(1, 'Email is required').optional(), 
-    phone: PhoneNumberValidation
-  })
-
-
-
-
+const ApplicationForgetValidation = z.object({
+  email: z.string().email().min(1, 'Email is required').optional(),
+  phone: PhoneNumberValidation,
+});
 
 export const ApplicationValidationSchema = {
   CreateApplicationValidationSchema,
-  ApplicationTrackingValidation, 
-  ApplicationForgetValidation
+  ApplicationTrackingValidation,
+  ApplicationForgetValidation,
 };
-
-
-
-

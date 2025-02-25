@@ -2,5 +2,6 @@
     "cSpell.words": [
         "eligibilitytype",
         "Responce"
-    ]
+    ],
+    "postman.settings.dotenv-detection-notification-visibility": false
 }
