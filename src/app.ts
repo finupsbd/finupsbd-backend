@@ -64,7 +64,8 @@ app.get('/', async (req: Request, res: Response) => {
   // Build the detailed health-check response
   res.status(200).json({
     status: 'success',
-    message: 'Production health check: finupsBD server is operational.',
+    message: 'finupsBD server is fully operational and healthy.',
+    ServerCreate: "Reza", 
     timestamp: currentTimestamp,
     uptime: `${uptimeSeconds.toFixed(2)} seconds`,
     database: dbStatus,
