@@ -6,8 +6,11 @@ import { TPersonalLoan } from "./personalLoan.interface";
 
 
 const createPersonalLoan = async (payload: TPersonalLoan, file: any) => {
-  const coverImage = file ? await sendImageToCloud(file?.path) : undefined;
-  payload.coverImage = coverImage?.secure_url || '';
+
+  const coverImage = file ? await sendImageToCloud(file) : undefined;
+  console.log(coverImage)
+  payload.coverImage = coverImage;
+  
   const result = await prisma.personalLoan.create({
     data: {
       bankName: payload.bankName ,
@@ -51,8 +54,8 @@ const getAllPersonalLoan = async () => {
 };
 
 const updatePersonalLoan = async (payload: TPersonalLoan, file: any, id: string) => {
-  const coverImage = file ? await sendImageToCloud(file?.path) : undefined;
-  payload.coverImage = coverImage?.secure_url || '';
+  const coverImage = file ? await sendImageToCloud(file) : undefined;
+  payload.coverImage = coverImage?? undefined;
 
   // Handle the Bank record
   const bankResult = await prisma.personalLoan.upsert({

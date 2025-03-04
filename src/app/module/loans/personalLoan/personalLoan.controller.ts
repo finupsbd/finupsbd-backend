@@ -10,7 +10,7 @@ const createPersonalLoan = catchAsync(async (req, res) => {
     PersonalLoanValidationSchema.createPersonalLoanValidateSchema.parse(
       JSON.parse(req.body.data)
     );
-  const file = req.file;
+  const file = req.file?.buffer;
   if (!file) {
     throw new Error('Please upload a file');
   }
@@ -42,7 +42,7 @@ const updatePersonalLoan = catchAsync(async (req, res) => {
   const payload = PersonalLoanValidationSchema.updatePersonalLoanValidateSchema.parse(
     JSON.parse(req.body.data)
   );
-  const file = req.file;
+  const file = req.file?.buffer;
   const result = await PersonalLoanService.updatePersonalLoan(
     payload as TPersonalLoan,
     file,
