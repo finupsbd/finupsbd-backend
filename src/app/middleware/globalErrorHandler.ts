@@ -17,8 +17,14 @@ const globalErrorHandler = (
   next: NextFunction
 ) => {
   let newMessage = "Something went's wrong";
-  const error = {};
+  let error = {};
   let statusCode = StatusCodes.BAD_REQUEST;
+
+  if (res.headersSent) {
+    newMessage = "Internal Server Error"; 
+    error = err;
+  }
+
 
   //generics error handle
   if (err instanceof AppError) {

@@ -20,6 +20,8 @@ const meProfile = async (user: any) => {
       phone: true,
       role: true, 
       profile: true,
+      isActive: true,
+      emailVerified: true,
       ApplicationForm: {
         include: {
           User: true,

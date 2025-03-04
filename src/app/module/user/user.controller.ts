@@ -6,7 +6,6 @@ import sendResponses from "../../utils/sendResponce";
 
 
 const getAllUsers = catchAsync(async (req, res) => {
-    console.log(req.cookies);
     const result = await UserServices.getAllUser()
     
 

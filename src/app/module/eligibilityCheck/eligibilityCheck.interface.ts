@@ -10,11 +10,11 @@ type TGender = 'MALE' | 'FEMALE' | 'OTHER';
 type SalaryType = 'BANK_ACCOUNT' | 'CASH' | 'CHEQUE';
 
 export type TEligibilityCheck = {
-  loanTypesMain?: TLoneType;
+  LoanType?: TLoneType;
   cardType?: TCardType;
   gender: TGender;
   dateOfBirth: string; // ISO format (e.g., "1990-01-01")
-  profession: 'Salaried' | 'BUSINESS_OWNER';
+  profession: 'SALARIED' | 'BUSINESS_OWNER';
   companyName?: string;
   companyType?: string;
   jobStatus?: string;

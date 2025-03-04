@@ -1,0 +1,61 @@
+model SMELoan {
+    id                 String              @id @default(uuid())
+    bankName           String
+    amount             String
+    coverImage         String?
+    periodMonths       String
+    processingFee      String
+    interestRate       String
+    monthlyEmi         String
+    totalAmount        String
+    eligibleLoan       String
+    loanType           String              @default("CAR_LOAN")
+    isActive           Boolean             @default(true)
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
+    eligibilityId      String?
+    feesChargesId      String?
+    featuresId         String?
+    user               User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId             String?
+    ApplicationForm    ApplicationForm[]
+    FeaturesSMELoan    FeaturesSMELoan?
+    EligibilitySMELoan EligibilitySMELoan?
+    FeesChargesSMELoan FeesChargesSMELoan?
+
+    @@map("smeLoan")
+}
+
+model FeaturesSMELoan {
+    id            String  @id @default(uuid())
+    loanAmount    String
+    minimumAmount String
+    maximumAmount String
+    loanTenure    String
+    minimumYear   String
+    maximumYear   String
+    smeLoan       SMELoan @relation(fields: [smeLoanId], references: [id], onDelete: Cascade)
+    smeLoanId     String  @unique
+}
+
+model EligibilitySMELoan {
+    id                String  @id @default(uuid())
+    condition         String
+    offer             String
+    minimumIncome     Int
+    minimumExperience Int
+    ageRequirement    Int
+    smeLoan           SMELoan @relation(fields: [smeLoanId], references: [id], onDelete: Cascade)
+    smeLoanId         String  @unique
+}
+
+model FeesChargesSMELoan {
+    id                  String  @id @default(uuid())
+    processingFee       String
+    earlySettlementFee  String
+    prepaymentFee       String
+    LoanReSchedulingFee String
+    penalCharge         String
+    smeLoan             SMELoan @relation(fields: [smeLoanId], references: [id], onDelete: Cascade)
+    smeLoanId           String  @unique
+}

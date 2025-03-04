@@ -30,9 +30,9 @@ const auth = (...requiredRoles: string[]) => {
             throw new AppError(StatusCodes.BAD_REQUEST,"You are not valid user")
         }
 
-        if(!user?.emailVerified){
-            throw new AppError(StatusCodes.BAD_REQUEST,"You are not valid user")
-        }
+        // if(!user?.emailVerified){
+        //     throw new AppError(StatusCodes.BAD_REQUEST,"You are not valid user")
+        // }
         
         
         if (requiredRoles && !requiredRoles.includes(decode?.role)) {

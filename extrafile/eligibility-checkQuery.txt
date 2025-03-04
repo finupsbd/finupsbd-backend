@@ -1,0 +1,10 @@
+{{finUpsBD}}/eligibility-check?
+  page=1&
+  limit=10&
+  sortField=interestRate&
+  sortOrder=desc&
+  minLoanAmount=0&
+  maxLoanAmount=500000&
+  minProfitRate=5&
+  maxProfitRate=30&
+  banks=Standard Chartered,The City Bank,Brac Bank

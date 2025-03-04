@@ -9,6 +9,8 @@ import { OpenAiRouter } from '../module/openai/openai.route'
 import { ApplicationRouter } from '../module/applicationForm/applicationForm.route'
 import { PersonalLoanRouter } from '../module/loans/personalLoan/personalLoan.route'
 import { EligibilityCheckRouter } from '../module/eligibilityCheck/eligibilityCheck.route'
+import { HomeLoanRouter } from '../module/loans/homeLoan/homeLoan.route'
+import { CarLoanRouter } from '../module/loans/carLoan/carLoan.route'
 const router = express.Router()
 
 
@@ -42,10 +44,7 @@ const moduleRouter = [
         path: '/openai', 
         route: OpenAiRouter
     },
-    {
-        path: '/personal-loan', 
-        route: PersonalLoanRouter
-    },
+    
     {
         path: '/application', 
         route: ApplicationRouter
@@ -53,6 +52,18 @@ const moduleRouter = [
     {
         path: '/eligibility-check', 
         route: EligibilityCheckRouter
+    },
+    {
+        path: '/personal-loan', 
+        route: PersonalLoanRouter
+    },
+    {
+        path: '/home-loan', 
+        route: HomeLoanRouter
+    },
+    {
+        path: '/car-loan', 
+        route: CarLoanRouter
     },
 ]
 
