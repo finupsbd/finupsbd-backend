@@ -1,74 +1,73 @@
+///////   Salaried 
+
 {
-    gender : "male",
-    dateOfBirth: "1990-01-01", 
-    YourProfession: "Software Engineer" 
-    residenceType : "rental" 
-    jobLocation = Salaried | Business Owner  
-                  Salaried = {
-                        companyName: string 
-                        companyType: string 
-                        yourJobStatus: string 
-                        currentJobExperience: number 
-                        TotalJobExperienceCurrent: number  
-                        yourSalaryType:  BankAccount | cash | Cheque
-                                    bankAccount: {
-                                        YourSalaryType: string 
-                                        Bank name: string 
-                                        YourSalaryAmountBDT: number 
-                                        SalaryDepositToBankTnLast7Months: number 
-                                        YourSalaryType:string 
-                                    }
-                                    cash: {
-                                        YourSalaryType: string     
-                                        YourSalaryAmountBDT: number 
-                                    }
-                                    cheque: {
-                                        chequeType: string     
-                                        YourSalaryAmountBDT: number 
-                                    } 
+    "LoanType": "PERSONAL_LOAN",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "profession": "SALARIED",
+    "expectedLoanTenure": 12,
+    "monthlyIncome": 40000,
+    "jobLocation": "DHAKA", 
+    "haveAnyRentalIncome": true,
+        "selectArea": "Gazipur",
+        "rentalIncome": 40000,
+    "haveAnyLoan": true,
+        "numberOfLoan": 2,
+        "loanType": "HOME_LOAN",
+        "EMIAmountBDT": 15000,
+        "InterestRate": 10.1,
+    "haveAnyCreditCard": true,
+        "numberOfCard": 2,
+        "cardType": "CREDIT_CARD",
+        "cardLimitBDT": 200000, 
+    "secondaryApplicant": false,
+    "name": "reza",
+    "email": "shamimrezaone@gmail.com",
+    "phone": "01910479167"
+}
 
-                    } 
-                    BusinessOwner : {
-                          YourCompanyType: PrivateLtd | Partnership | Proprietorship
-                                            PrivateLtd:  {
-                                                SharePortion(%): number,  
-                                                YourBusinessCategory: string, 
-                                                YourBusinessType: string, 
-                                            }
-                                            Partnership:  {
-                                                YourBusinessCategory: string, 
-                                                YourBusinessType: string, 
-                                            }
-                    }   
-               
 
-    rentalIncome: boolean  true | false
-                  true: {
-                    HouseType: {
-                        tinShedHouse: boolean, 
-                        SemiPaka: boolean, 
-                        BuildingWithPlan: boolean, 
-                        BuildingWithoutPlan: boolean, 
 
-                    }
-                  },
-    haveAnyLoan: boolean  true | false 
-                  true: {
-                     NumberOfLoan: number, 
-                     LoanType: 
-                     BankName: 
-                     EMIAmount(BDT): 
-                     InterestRate: boolean   
-                 },   
-    haveAnyCreditCard: boolean  true | false 
-                    true: {
-                        numberOfCard: number, 
-                        cardType: 
-                        bankName: string   
-                        cardLimit(BDT): 
-                    }
-    lastOneEarBankTransaction(BDT): number 
-    TradeLicenseAge:  number 
-    AreTradeLicense&OfficeAddressSame?: balance    
- 
-}   
+
+
+
+
+
+
+
+
+
+
+
+///// Business owner
+
+{
+    "LoanType": "PERSONAL_LOAN",
+    "gender": "MALE",
+    "dateOfBirth": "1980-01-01",
+    "profession": "BUSINESS_OWNER",
+         "businessOwnerType": "patner",
+         "businessType": "", 
+         "sharePortion": 20, 
+         "tradeLicenseAge": 2,
+    "vehicleType": "CAR",
+    "expectedLoanTenure": 12,
+    "monthlyIncome": 40000,
+    "jobLocation": "DHAKA", 
+    "haveAnyRentalIncome": true,
+        "selectArea": "Gazipur",
+        "rentalIncome": 40000,
+    "haveAnyLoan": true,
+        "numberOfLoan": 2,
+        "loanType": "HOME_LOAN",
+        "EMIAmountBDT": 15000,
+        "InterestRate": 10.1,
+    "haveAnyCreditCard": true,
+        "numberOfCard": 2,
+        "cardType": "CREDIT_CARD",
+        "cardLimitBDT": 200000, 
+    "secondaryApplicant": false,
+    "name": "reza",
+    "email": "shamimrezaone@gmail.com",
+    "phone": "01910479167"
+}

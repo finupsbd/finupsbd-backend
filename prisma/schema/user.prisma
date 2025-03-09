@@ -22,13 +22,13 @@ model User {
   isActive            Boolean           @default(true)
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
-  lastLogin           DateTime?  
+  lastLogin           DateTime?
   blogPost            Blog[]
-  ApplicationForm     ApplicationForm[]
   PersonalLoan        PersonalLoan[]
   HomeLoan            HomeLoan[]
   CarLoan             CarLoan[]
   SMELoan             SMELoan[]
+  ApplicationForm     ApplicationForm[]
 
   @@index([email]) // Index for email
   @@index([phone]) // Index for phone
@@ -38,9 +38,9 @@ model User {
 }
 
 enum UserGender {
-  male
-  female
-  other
+  MALE
+  FEMALE
+  OTHER
 }
 
 model Profile {

@@ -14,8 +14,8 @@ exports.PersonalLoanService = void 0;
 const app_1 = require("../../../../app");
 const sendImageToCloud_1 = require("../../../utils/sendImageToCloud");
 const createPersonalLoan = (payload, file) => __awaiter(void 0, void 0, void 0, function* () {
-    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file === null || file === void 0 ? void 0 : file.path) : undefined;
-    payload.coverImage = (coverImage === null || coverImage === void 0 ? void 0 : coverImage.secure_url) || '';
+    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file) : undefined;
+    payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
     const result = yield app_1.prisma.personalLoan.create({
         data: {
             bankName: payload.bankName,
@@ -56,8 +56,8 @@ const getAllPersonalLoan = () => __awaiter(void 0, void 0, void 0, function* () 
     return result;
 });
 const updatePersonalLoan = (payload, file, id) => __awaiter(void 0, void 0, void 0, function* () {
-    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file === null || file === void 0 ? void 0 : file.path) : undefined;
-    payload.coverImage = (coverImage === null || coverImage === void 0 ? void 0 : coverImage.secure_url) || '';
+    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file) : undefined;
+    payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
     // Handle the Bank record
     const bankResult = yield app_1.prisma.personalLoan.upsert({
         where: { id },

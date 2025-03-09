@@ -9,7 +9,7 @@ model SMELoan {
     monthlyEmi         String
     totalAmount        String
     eligibleLoan       String
-    loanType           String              @default("CAR_LOAN")
+    loanType           String              @default("SME_LOAN")
     isActive           Boolean             @default(true)
     createdAt          DateTime            @default(now())
     updatedAt          DateTime            @updatedAt
@@ -18,7 +18,6 @@ model SMELoan {
     featuresId         String?
     user               User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId             String?
-    ApplicationForm    ApplicationForm[]
     FeaturesSMELoan    FeaturesSMELoan?
     EligibilitySMELoan EligibilitySMELoan?
     FeesChargesSMELoan FeesChargesSMELoan?

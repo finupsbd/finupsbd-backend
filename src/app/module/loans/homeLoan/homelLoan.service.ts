@@ -8,8 +8,8 @@ import { THomeLoan } from "./homeLoan.interface";
 
 
 const createHomeLoan = async (payload: THomeLoan, file: any) => {
-  const coverImage = file ? await sendImageToCloud(file?.path) : undefined;
-  payload.coverImage = coverImage?.secure_url || '';
+  const coverImage = file ? await sendImageToCloud(file) : undefined;
+  payload.coverImage = coverImage?? undefined
   const result = await prisma.homeLoan.create({
     data: {
       bankName: payload.bankName ,
@@ -53,8 +53,8 @@ const getAllHomeLoan = async () => {
 };
 
 const updateHomeLoan = async (payload: THomeLoan, file: any, id: string) => {
-  const coverImage = file ? await sendImageToCloud(file?.path) : undefined;
-  payload.coverImage = coverImage?.secure_url || '';
+  const coverImage = file ? await sendImageToCloud(file) : undefined;
+  payload.coverImage = coverImage?? undefined
 
   // Handle the Bank record
   const result = await prisma.homeLoan.upsert({

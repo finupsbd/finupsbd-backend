@@ -18,7 +18,6 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const user_service_1 = require("./user.service");
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.cookies);
     const result = yield user_service_1.UserServices.getAllUser();
     (0, sendResponce_1.default)(res, {
         success: true,

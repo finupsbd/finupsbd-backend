@@ -1,65 +1,243 @@
-export type Status = 'PENDING' | 'IN_PROGRESS' | 'APPROVE' | 'REJECT';
-export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
-export type MaritalStatus = 'SINGLE' | 'MARRIED' | 'DIVORCED' | 'WIDOWED';
-export type OwnershipStatus = 'OWNED' | 'RENTED' | 'LEASED' | 'OTHER';
-export type PropertyType = 'RESIDENTIAL' | 'COMMERCIAL' | 'LAND';
-export type EmploymentStatus = 'SALARIED' | 'SELF_EMPLOYED' | 'BUSINESS_OWNER';
-export type LoanType =
-  | 'PERSONAL'
-  | 'HOME'
-  | 'CAR'
-  | 'BUSINESS'
-  | 'EDUCATION'
-export type DocumentType =
-  | 'PASSPORT_PHOTO'
-  | 'NATIONAL_ID'
-  | 'BIRTH_CERTIFICATE'
-  | 'INCOME_PROOF'
-  | 'BANK_STATEMENT'
-  | 'TIN_CERTIFICATE'
-  | 'EMPLOYMENT_PROOF'
-  | 'UTILITY_BILL'
-  | 'PROPERTY_DOCUMENT'
-  | 'SUPPORTING_DOCUMENT';
+/* eslint-disable no-unused-vars */
+// export type Status = 'PENDING' | 'IN_PROGRESS' | 'APPROVE' | 'REJECT';
+// export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+// export type MaritalStatus = 'SINGLE' | 'MARRIED' | 'DIVORCED' | 'WIDOWED';
+// export type OwnershipStatus = 'OWNED' | 'RENTED' | 'LEASED' | 'OTHER';
+// export type PropertyType = 'RESIDENTIAL' | 'COMMERCIAL' | 'LAND';
+// export type EmploymentStatus = 'SALARIED' | 'SELF_EMPLOYED' | 'BUSINESS_OWNER';
+// export type LoanType =
+//   | 'PERSONAL'
+//   | 'HOME'
+//   | 'CAR'
+//   | 'BUSINESS'
+//   | 'EDUCATION'
+// export type DocumentType =
+//   | 'PASSPORT_PHOTO'
+//   | 'NATIONAL_ID'
+//   | 'BIRTH_CERTIFICATE'
+//   | 'INCOME_PROOF'
+//   | 'BANK_STATEMENT'
+//   | 'TIN_CERTIFICATE'
+//   | 'EMPLOYMENT_PROOF'
+//   | 'UTILITY_BILL'
+//   | 'PROPERTY_DOCUMENT'
+//   | 'SUPPORTING_DOCUMENT';
 
-export interface ApplicationForm {
-  id: string;
-  userId: string;
-  applicationId: string;
-  personalLoanId?: string
-  status: Status;
-  userInfo: ApplicationUserInfo;
-  address: Address;
-  employmentFinancialInfo: EmploymentFinancialInfo;
-  loanSpecifications: LoanRequestSpecifications;
-  financialObligations: FinancialObligation[];
-  uploadedDocuments: DocumentFile[];
+// export interface ApplicationForm {
+//   id: string;
+//   userId: string;
+//   applicationId: string;
+//   personalLoanId?: string
+//   status: Status;
+//   userInfo: ApplicationUserInfo;
+//   address: Address;
+//   employmentFinancialInfo: EmploymentFinancialInfo;
+//   loanSpecifications: LoanRequestSpecifications;
+//   financialObligations: FinancialObligation[];
+//   uploadedDocuments: DocumentFile[];
+// }
+
+// export interface ApplicationUserInfo {
+//   id: string;
+//   fullName: string;
+//   fatherName: string;
+//   motherName: string;
+//   spouseName?: string;
+//   dateOfBirth: string;
+//   placeOfBirth: string;
+//   gender: Gender;
+//   maritalStatus: MaritalStatus;
+//   nid: string;
+//   birthRegistration: string | null;
+//   mobileNumber: string;
+//   alternateNumber?: string;
+//   emailAddress: string;
+//   socialMediaLinks: string[];
+//   propertyType: PropertyType;
+//   approximateValue: number;
+//   applicationFormId?: string;
+//   applicationForm?: TFullApplicationForm;
+// }
+
+// export interface Address {
+//   id: string;
+//   houseFlatNo: string;
+//   streetRoad: string;
+//   areaLocality: string;
+//   city: string;
+//   district: string;
+//   postalCode: string;
+//   lengthOfStayYears: number;
+//   ownershipStatus: OwnershipStatus;
+//   applicationFormId?: string;
+//   applicationForm?: TFullApplicationForm;
+// }
+
+// export interface EmploymentFinancialInfo {
+//   id: string;
+//   employmentStatus: EmploymentStatus;
+//   jobTitle: string;
+//   employerName: string;
+//   officeAddress: string;
+//   department: string;
+//   contactDetails: string;
+//   businessName?: string;
+//   businessRegistrationNumber?: string;
+//   employmentTenureYears: number;
+//   monthlyGrossIncome: number;
+//   otherSourcesOfIncome?: string;
+//   totalMonthlyExpenses: number;
+//   profession: string;
+//   taxIdentificationNumber?: string;
+//   currentCreditScore?: number;
+//   applicationFormId?: string;
+//   applicationForm?: TFullApplicationForm;
+// }
+
+// export interface LoanRequestSpecifications {
+//   id: string;
+//   loanType: LoanType;
+//   loanAmountRequested: number;
+//   purposeOfLoan: string;
+//   preferredLoanTenure: number;
+//   proposedEMIStartDate: Date | null;
+//   repaymentPreferences: string;
+//   applicationFormId?: string;
+//   applicationForm?: TFullApplicationForm;
+// }
+
+// export interface FinancialObligation {
+//   id: string;
+//   lenderName: string;
+//   loanBalance: number;
+//   monthlyEMI: number;
+//   remainingTenure: number;
+//   cardIssuer?: string;
+//   currentBalance?: number;
+//   minimumMonthlyPayment?: number;
+//   obligationType: string;
+//   balance: number;
+//   emi: number;
+//   applicationFormId?: string;
+//   applicationForm?: TFullApplicationForm;
+// }
+
+// export interface DocumentFile {
+//   id: number;
+//   type: DocumentType;
+//   filePath: string;
+//   uploadedAt: Date;
+//   fileSizeMB?: number;
+//   fileType?: string;
+//   applicationFormId?: string;
+//   applicationForm?: TFullApplicationForm;
+// }
+
+// export interface TFullApplicationForm extends ApplicationForm {
+//   userInfo: ApplicationUserInfo;
+//   currentAddress: Address;
+//   permanentAddress: Address;
+//   employmentFinancialInfo: EmploymentFinancialInfo;
+//   loanSpecifications: LoanRequestSpecifications;
+//   financialObligations: FinancialObligation[];
+//   uploadedDocuments: DocumentFile[];
+// }
+
+
+
+
+
+
+enum Status {
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
 }
 
-export interface ApplicationUserInfo {
-  id: string;
+enum Gender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  OTHER = 'OTHER',
+}
+
+enum MaritalStatus {
+  SINGLE = 'SINGLE',
+  MARRIED = 'MARRIED',
+  DIVORCED = 'DIVORCED',
+  WIDOWED = 'WIDOWED',
+}
+
+enum OwnershipStatus {
+  OWNED = 'OWNED',
+  RENTED = 'RENTED',
+  LEASED = 'LEASED',
+  OTHER = 'OTHER',
+}
+
+enum EmploymentStatus {
+  SALARIED = 'SALARIED',
+  BUSINESS_OWNER = 'BUSINESS_OWNER',
+}
+
+enum LoanType {
+  PERSONAL = 'PERSONAL',
+  HOME = 'HOME',
+  CAR = 'CAR',
+  BUSINESS = 'BUSINESS',
+  EDUCATION = 'EDUCATION',
+  OTHER = 'OTHER',
+}
+
+interface LoanApplication {
+  applicationId: string;
+  userId: string;
+  loanId?: string;
+  status: Status;
+  userInfoId: string;
+  residentialInformationId: string;
+  employmentFinancialInfoId: string;
+  loanSpecificationsId: string;
+  financialObligationsId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  
+  // Relations (optional as they need to be explicitly included)
+  user?: User;
+  userInfo?: UserInfo;
+  residentialInformation?: ResidentialInformation;
+  employmentFinancialInfo?: EmploymentFinancialInfo;
+  loanSpecifications?: LoanSpecifications;
+  financialObligations?: FinancialObligations;
+}
+
+interface UserInfo {
   fullName: string;
   fatherName: string;
   motherName: string;
   spouseName?: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   placeOfBirth: string;
   gender: Gender;
   maritalStatus: MaritalStatus;
-  nid: string;
-  birthRegistration: string | null;
+  birthRegistration?: string;
   mobileNumber: string;
   alternateNumber?: string;
   emailAddress: string;
-  socialMediaLinks: string[];
-  propertyType: PropertyType;
-  approximateValue: number;
-  applicationFormId?: string;
-  applicationForm?: TFullApplicationForm;
+  loanApplication?: LoanApplication;
 }
 
-export interface Address {
-  id: string;
+interface ResidentialInformation {
+  permanentAddressId: string;
+  presentAddressId: string;
+  
+  // Relations
+  permanentAddress?: Address;
+  presentAddress?: Address;
+  loanApplication?: LoanApplication;
+}
+
+interface Address {
   houseFlatNo: string;
   streetRoad: string;
   areaLocality: string;
@@ -68,17 +246,14 @@ export interface Address {
   postalCode: string;
   lengthOfStayYears: number;
   ownershipStatus: OwnershipStatus;
-  applicationFormId?: string;
-  applicationForm?: TFullApplicationForm;
 }
 
-export interface EmploymentFinancialInfo {
-  id: string;
+interface EmploymentFinancialInfo {
   employmentStatus: EmploymentStatus;
   jobTitle: string;
   employerName: string;
   officeAddress: string;
-  department: string;
+  department?: string;
   contactDetails: string;
   businessName?: string;
   businessRegistrationNumber?: string;
@@ -86,27 +261,23 @@ export interface EmploymentFinancialInfo {
   monthlyGrossIncome: number;
   otherSourcesOfIncome?: string;
   totalMonthlyExpenses: number;
-  profession: string;
-  taxIdentificationNumber?: string;
-  currentCreditScore?: number;
-  applicationFormId?: string;
-  applicationForm?: TFullApplicationForm;
+  profession?: string;
+  taxIdentificationNumber: string;
+  currentCreditScore: number;
+  loanApplication?: LoanApplication;
 }
 
-export interface LoanRequestSpecifications {
-  id: string;
-  loanType: LoanType;
+interface LoanSpecifications {
+  existingLoanType: LoanType;
   loanAmountRequested: number;
   purposeOfLoan: string;
   preferredLoanTenure: number;
-  proposedEMIStartDate: Date | null;
+  proposedEMIStartDate: Date;
   repaymentPreferences: string;
-  applicationFormId?: string;
-  applicationForm?: TFullApplicationForm;
+  loanApplication?: LoanApplication;
 }
 
-export interface FinancialObligation {
-  id: string;
+interface FinancialObligations {
   lenderName: string;
   loanBalance: number;
   monthlyEMI: number;
@@ -114,30 +285,17 @@ export interface FinancialObligation {
   cardIssuer?: string;
   currentBalance?: number;
   minimumMonthlyPayment?: number;
-  obligationType: string;
+  type: string;
   balance: number;
   emi: number;
-  applicationFormId?: string;
-  applicationForm?: TFullApplicationForm;
+  fullNameCoApplicant?: string;
+  relationshipToCoApplicant?: string;
+  coApplicantMonthlyIncome?: number;
+  loanApplication?: LoanApplication;
 }
 
-export interface DocumentFile {
-  id: number;
-  type: DocumentType;
-  filePath: string;
-  uploadedAt: Date;
-  fileSizeMB?: number;
-  fileType?: string;
-  applicationFormId?: string;
-  applicationForm?: TFullApplicationForm;
-}
-
-export interface TFullApplicationForm extends ApplicationForm {
-  userInfo: ApplicationUserInfo;
-  currentAddress: Address;
-  permanentAddress: Address;
-  employmentFinancialInfo: EmploymentFinancialInfo;
-  loanSpecifications: LoanRequestSpecifications;
-  financialObligations: FinancialObligation[];
-  uploadedDocuments: DocumentFile[];
+// Assuming you have a User interface elsewhere
+interface User {
+  id: string;
+  // ... other user fields
 }

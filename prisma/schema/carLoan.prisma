@@ -1,25 +1,23 @@
 model CarLoan {
-    id            String   @id @default(uuid())
-    bankName      String
-    amount        String
-    coverImage    String?
-    periodMonths  String
-    processingFee String
-    interestRate  String
-    monthlyEmi    String
-    totalAmount   String
-    eligibleLoan  String
-    loanType      String   @default("CAR_LOAN")
-    isActive      Boolean  @default(true)
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt    
-    eligibilityId String?
-    feesChargesId String?
-    featuresId    String?
-    user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId        String?
-
-    ApplicationForm    ApplicationForm[]
+    id                 String              @id @default(uuid())
+    bankName           String
+    amount             String
+    coverImage         String?
+    periodMonths       String
+    processingFee      String
+    interestRate       String
+    monthlyEmi         String
+    totalAmount        String
+    eligibleLoan       String
+    loanType           String              @default("CAR_LOAN")
+    isActive           Boolean             @default(true)
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
+    eligibilityId      String?
+    feesChargesId      String?
+    featuresId         String?
+    user               User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId             String?
     FeaturesCarLoan    FeaturesCarLoan?
     EligibilityCarLoan EligibilityCarLoan?
     FeesChargesCarLoan FeesChargesCarLoan?
@@ -60,4 +58,3 @@ model FeesChargesCarLoan {
     carLoan             CarLoan @relation(fields: [carLoanId], references: [id], onDelete: Cascade)
     carLoanId           String  @unique
 }
-     

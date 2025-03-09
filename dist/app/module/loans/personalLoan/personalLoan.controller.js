@@ -19,8 +19,9 @@ const sendResponce_1 = __importDefault(require("../../../utils/sendResponce"));
 const personalLoan_service_1 = require("./personalLoan.service");
 const personalLoan_validation_1 = require("./personalLoan.validation");
 const createPersonalLoan = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const payload = personalLoan_validation_1.PersonalLoanValidationSchema.createPersonalLoanValidateSchema.parse(JSON.parse(req.body.data));
-    const file = req.file;
+    const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
     if (!file) {
         throw new Error('Please upload a file');
     }
@@ -42,8 +43,9 @@ const getAllPersonalLoan = (0, catchAsync_1.default)((req, res) => __awaiter(voi
     });
 }));
 const updatePersonalLoan = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const payload = personalLoan_validation_1.PersonalLoanValidationSchema.updatePersonalLoanValidateSchema.parse(JSON.parse(req.body.data));
-    const file = req.file;
+    const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
     const result = yield personalLoan_service_1.PersonalLoanService.updatePersonalLoan(payload, file, req.params.id);
     (0, sendResponce_1.default)(res, {
         success: true,

@@ -7,7 +7,7 @@ import sendResponses from "../../utils/sendResponce";
 
 const createBlog = catchAsync(async (req, res) => {
   const payload = BlogValidationSchema.parse(JSON.parse(req.body.data))
-  const file = req.file
+  const file = req.file?.buffer
 
 
     const result = await BlogService.createBlog(payload, file)

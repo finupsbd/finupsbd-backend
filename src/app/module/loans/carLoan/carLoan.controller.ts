@@ -12,7 +12,7 @@ const createCarLoan = catchAsync(async (req, res) => {
    CarLoanValidationSchema.createCarLoanValidateSchema.parse(
       JSON.parse(req.body.data)
     );
-  const file = req.file;
+  const file = req.file?.buffer;
   if (!file) {
     throw new Error('Please upload a file');
   }
@@ -44,7 +44,7 @@ const updateCarLoan = catchAsync(async (req, res) => {
   const payload = CarLoanValidationSchema.createCarLoanValidateSchema.parse(
     JSON.parse(req.body.data)
   );
-  const file = req.file;
+  const file = req.file?.buffer;
   const result = await CarLoanService.updateCarLoan(
     payload as TCarLoan,
     file,

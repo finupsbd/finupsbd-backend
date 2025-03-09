@@ -19,8 +19,9 @@ const blog_service_1 = require("./blog.service");
 const blog_validation_1 = require("./blog.validation");
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const payload = blog_validation_1.BlogValidationSchema.parse(JSON.parse(req.body.data));
-    const file = req.file;
+    const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
     const result = yield blog_service_1.BlogService.createBlog(payload, file);
     (0, sendResponce_1.default)(res, {
         success: true,

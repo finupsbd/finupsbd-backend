@@ -1,22 +1,33 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 import sendResponses from '../../utils/sendResponce';
 import { ApplicationFromService } from './applicationForm.service';
 import { TMiddlewareUser } from '../../types/commonTypes';
+import { sendImageToCloud } from '../../utils/sendImageToCloud';
 
 const createApplicationForm = catchAsync(async (req, res) => {
-  const user = req.user as TMiddlewareUser;
-  const result = await ApplicationFromService.createApplicationForm(
-    req.body,
-    user
-  );
 
-  sendResponses(res, {
-    success: true,
-    message: 'Application Create successfully',
-    statusCode: StatusCodes.CREATED,
-    data: result,
-  });
+  if (!req.files) {
+    throw new Error('No files were uploaded');
+  }
+
+  // const saveImage = files.images?.map( async (file: any) => {
+  //   return await sendImageToCloud(file.buffer)
+  // })
+
+  // const user = req.user as TMiddlewareUser;
+  // const result = await ApplicationFromService.createApplicationForm(
+  //   req.body,
+  //   user
+  // );
+
+  // sendResponses(res, {
+  //   success: true,
+  //   message: 'Application Create successfully',
+  //   statusCode: StatusCodes.CREATED,
+  //   data: result,
+  // });
 });
 
 const getAllApplicationForm = catchAsync(async (req, res) => {

@@ -1,189 +1,182 @@
 enum Status {
-  PENDING
-  IN_PROGRESS
-  APPROVED
-  REJECTED
+    PENDING
+    IN_PROGRESS
+    APPROVED
+    REJECTED
 }
 
 enum Gender {
-  MALE
-  FEMALE
-  OTHER
+    MALE
+    FEMALE
+    OTHER
 }
 
 enum MaritalStatus {
-  SINGLE
-  MARRIED
-  DIVORCED
-  WIDOWED
+    SINGLE
+    MARRIED
+    DIVORCED
+    WIDOWED
 }
 
 enum OwnershipStatus {
-  OWNED
-  RENTED
-  LEASED
-  OTHER
+    OWNED
+    RENTED
+    LEASED
+    OTHER
 }
 
 enum PropertyType {
-  RESIDENTIAL
-  COMMERCIAL
-  LAND
+    RESIDENTIAL
+    COMMERCIAL
+    LAND
 }
 
 enum EmploymentStatus {
-  SALARIED
-  SELF_EMPLOYED
-  BUSINESS_OWNER
+    SALARIED
+    SELF_EMPLOYED
+    BUSINESS_OWNER
 }
 
 enum LoanType {
-  PERSONAL
-  HOME
-  CAR
-  BUSINESS
-  EDUCATION
-  OTHER
+    PERSONAL
+    HOME
+    CAR
+    BUSINESS
+    EDUCATION
+    OTHER
 }
 
 enum DocumentType {
-  PASSPORT_PHOTO
-  NATIONAL_ID
-  BIRTH_CERTIFICATE
-  INCOME_PROOF
-  BANK_STATEMENT
-  TIN_CERTIFICATE
-  EMPLOYMENT_PROOF
-  UTILITY_BILL
-  PROPERTY_DOCUMENT
-  SUPPORTING_DOCUMENT
+    PASSPORT_PHOTO
+    NATIONAL_ID
+    BIRTH_CERTIFICATE
+    INCOME_PROOF
+    BANK_STATEMENT
+    TIN_CERTIFICATE
+    EMPLOYMENT_PROOF
+    UTILITY_BILL
+    PROPERTY_DOCUMENT
+    SUPPORTING_DOCUMENT
 }
 
 model ApplicationForm {
-  id                        String                     @id @default(uuid())
-  applicationId             String                     @unique
-  User                      User?                      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId                    String?
-  personalLoanId            String?
-  status                    Status                     @default(PENDING)
-  userInfo                  ApplicationUserInfo?
-  address                   Address?
-  employmentFinancialInfo   EmploymentFinancialInfo?
-  loanSpecifications        LoanRequestSpecifications?
-  financialObligations      FinancialObligation[]
-  uploadedDocuments         DocumentFile[]
-  // Relation fields (optional)
-  userInfoId                String?
-  currentAddressId          String?
-  permanentAddressId        String?
-  employmentFinancialInfoId String?
-  loanSpecificationsId      String?
-  createdAt                 DateTime                   @default(now())
-  updatedAt                 DateTime                   @updatedAt
-  HomeLoan                  HomeLoan?                  @relation(fields: [homeLoanId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  personalLoan              PersonalLoan?              @relation(fields: [personalLoanId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  homeLoanId                String?
-  CarLoan                   CarLoan?                   @relation(fields: [carLoanId], references: [id])
-  carLoanId                 String?
-  SMELoan                   SMELoan?                   @relation(fields: [sMELoanId], references: [id])
-  sMELoanId                 String?
+    id                        String                     @id @default(uuid())
+    applicationId             String                     @unique
+    User                      User?                      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    userId                    String?
+    personalLoanId            String?
+    status                    Status                     @default(PENDING)
+    userInfo                  ApplicationUserInfo?
+    address                   Address?
+    employmentFinancialInfo   EmploymentFinancialInfo?
+    loanSpecifications        LoanRequestSpecifications?
+    financialObligations      FinancialObligation[]
+    uploadedDocuments         DocumentFile[]
+    // Relation fields (optional)
+    userInfoId                String?
+    currentAddressId          String?
+    permanentAddressId        String?
+    employmentFinancialInfoId String?
+    loanSpecificationsId      String?
+    createdAt                 DateTime                   @default(now())
+    updatedAt                 DateTime                   @updatedAt
 
-  @@index([applicationId])
-  @@map("applicationFrom")
+    @@index([applicationId])
+    @@map("applicationFrom")
 }
 
 model Address {
-  id                String           @id @default(uuid())
-  houseFlatNo       String
-  streetRoad        String
-  areaLocality      String
-  city              String
-  district          String
-  postalCode        String
-  lengthOfStayYears Int
-  ownershipStatus   OwnershipStatus
-  applicationForm   ApplicationForm? @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
-  applicationFormId String?          @unique
+    id                String           @id @default(uuid())
+    houseFlatNo       String
+    streetRoad        String
+    areaLocality      String
+    city              String
+    district          String
+    postalCode        String
+    lengthOfStayYears Int
+    ownershipStatus   OwnershipStatus
+    applicationForm   ApplicationForm? @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
+    applicationFormId String?          @unique
 }
 
 model ApplicationUserInfo {
-  id                String          @id @default(uuid())
-  fullName          String
-  fatherName        String
-  motherName        String
-  spouseName        String?
-  dateOfBirth       String
-  placeOfBirth      String
-  gender            Gender
-  maritalStatus     MaritalStatus
-  nid               String
-  birthRegistration String?
-  mobileNumber      String
-  alternateNumber   String?
-  emailAddress      String
-  socialMediaLinks  String[]
-  propertyType      PropertyType
-  approximateValue  Float
-  applicationForm   ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
-  applicationFormId String          @unique
+    id                String          @id @default(uuid())
+    fullName          String
+    fatherName        String
+    motherName        String
+    spouseName        String?
+    dateOfBirth       String
+    placeOfBirth      String
+    gender            Gender
+    maritalStatus     MaritalStatus
+    nid               String
+    birthRegistration String?
+    mobileNumber      String
+    alternateNumber   String?
+    emailAddress      String
+    socialMediaLinks  String[]
+    propertyType      PropertyType
+    approximateValue  Float
+    applicationForm   ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
+    applicationFormId String          @unique
 }
 
 model EmploymentFinancialInfo {
-  id                         String           @id @default(uuid())
-  employmentStatus           EmploymentStatus
-  jobTitle                   String
-  employerName               String
-  officeAddress              String
-  department                 String
-  contactDetails             String
-  businessName               String?
-  businessRegistrationNumber String?
-  employmentTenureYears      Int
-  monthlyGrossIncome         Float
-  otherSourcesOfIncome       String?
-  totalMonthlyExpenses       Float
-  profession                 String
-  taxIdentificationNumber    String?
-  currentCreditScore         Float?
-  applicationForm            ApplicationForm  @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
-  applicationFormId          String           @unique
+    id                         String           @id @default(uuid())
+    employmentStatus           EmploymentStatus
+    jobTitle                   String
+    employerName               String
+    officeAddress              String
+    department                 String
+    contactDetails             String
+    businessName               String?
+    businessRegistrationNumber String?
+    employmentTenureYears      Int
+    monthlyGrossIncome         Float
+    otherSourcesOfIncome       String?
+    totalMonthlyExpenses       Float
+    profession                 String
+    taxIdentificationNumber    String?
+    currentCreditScore         Float?
+    applicationForm            ApplicationForm  @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
+    applicationFormId          String           @unique
 }
 
 model LoanRequestSpecifications {
-  id                   String          @id @default(uuid())
-  loanType             LoanType
-  loanAmountRequested  Float
-  purposeOfLoan        String
-  preferredLoanTenure  Int
-  proposedEMIStartDate DateTime?
-  repaymentPreferences String
-  applicationForm      ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
-  applicationFormId    String          @unique
+    id                   String          @id @default(uuid())
+    loanType             LoanType
+    loanAmountRequested  Float
+    purposeOfLoan        String
+    preferredLoanTenure  Int
+    proposedEMIStartDate DateTime?
+    repaymentPreferences String
+    applicationForm      ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
+    applicationFormId    String          @unique
 }
 
 model FinancialObligation {
-  id                    String          @id @default(uuid())
-  lenderName            String
-  loanBalance           Float
-  monthlyEMI            Float
-  remainingTenure       Int
-  cardIssuer            String?
-  currentBalance        Float?
-  minimumMonthlyPayment Float?
-  obligationType        String
-  balance               Float
-  emi                   Float
-  applicationForm       ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
-  applicationFormId     String
+    id                    String          @id @default(uuid())
+    lenderName            String
+    loanBalance           Float
+    monthlyEMI            Float
+    remainingTenure       Int
+    cardIssuer            String?
+    currentBalance        Float?
+    minimumMonthlyPayment Float?
+    obligationType        String
+    balance               Float
+    emi                   Float
+    applicationForm       ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
+    applicationFormId     String
 }
 
 model DocumentFile {
-  id                Int             @id @default(autoincrement())
-  type              DocumentType
-  filePath          String
-  uploadedAt        DateTime        @default(now())
-  fileSizeMB        Float?
-  fileType          String?
-  applicationForm   ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
-  applicationFormId String
+    id                Int             @id @default(autoincrement())
+    type              DocumentType
+    filePath          String
+    uploadedAt        DateTime        @default(now())
+    fileSizeMB        Float?
+    fileType          String?
+    applicationForm   ApplicationForm @relation(fields: [applicationFormId], references: [id], onDelete: Cascade)
+    applicationFormId String
 }

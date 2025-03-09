@@ -21,7 +21,7 @@ const globalErrorHandler = (
   let statusCode = StatusCodes.BAD_REQUEST;
 
   if (res.headersSent) {
-    newMessage = "Internal Server Error"; 
+    newMessage = "Internal Server Error";
     error = err;
   }
 
@@ -32,7 +32,7 @@ const globalErrorHandler = (
     statusCode = err?.statusCode;
   }
 
- 
+
   //Zod Validation Error handle
   if (err instanceof ZodError) {
     const errors = err.errors.map((e: any) => ({
@@ -44,49 +44,14 @@ const globalErrorHandler = (
       success: false,
       message: 'Invalid input data',
       errors,
-      stack: err.stack, 
+      stack: err.stack,
     });
   }
 
-  // if (err instanceof Prisma.PrismaClientKnownRequestError) {
-  //   switch (err.code) {
-  //     case 'P2002': // Unique constraint failed
-  //       return res.status(400).json({
-  //         success: false,
-  //         message: `Validation Error: Unique constraint failed on the field: ${err?.meta?.target}`,
-  //         statusCode: StatusCodes.NOT_FOUND,
-  //         error: err,
-  //       });
-  //     case 'P2025': // Record not found
-  //       return res.status(404).json({
-  //         success: false,
-  //         message:
-  //           'The record you are trying to update or delete does not exist.',
-  //         error: err,
-  //       });
-  //     case 'P2003': // Foreign key constraint failed
-  //       return res.status(400).json({
-  //         success: false,
-  //         message: 'Foreign key constraint failed.',
-  //         error: err,
-  //       });
-  //     case 'P2000': // Value too long for column
-  //       return res.status(400).json({
-  //         success: false,
-  //         message: 'Value is too long for the column.',
-  //         error: err,
-  //       });
-  //     // Add more cases as needed
-  //     default:
-  //       return res.status(500).json({
-  //         success: false,
-  //         message: 'A database error occurred.',
-  //         error: err,
-  //       });
-  //   }
-  // }
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
+
+  
     if (err.code === 'P2002') {
       // Unique constraint failed
       res.status(400).json({
@@ -125,6 +90,7 @@ const globalErrorHandler = (
         error: err,
       });
     }
+    
   }
 
   // Handle Prisma Unknown Errors
@@ -139,13 +105,40 @@ const globalErrorHandler = (
 
   // Handle Prisma Validation Errors
   if (err instanceof Prisma.PrismaClientValidationError) {
-    res.status(400).json({
-      status: 'fail',
+    // Use a regex to capture the invalid field and expected type from the error message.
+    // For example, for an error like:
+    // "Invalid value for argument `businessOwnerType`. Expected BusinessOwnerType."
+    const regex = /Invalid value for argument `(.+?)`\.\s*Expected (.+?)\./;
+    const match = err.message.match(regex);
+  
+    let invalidField = 'unknown';
+    let expectedValue = 'unknown';
+  
+    if (match) {
+      invalidField = match[1];
+      expectedValue = match[2];
+    }
+  
+    // Optionally, split and clean up the full error message for additional context.
+    const errorLines = err.message
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+  
+    return res.status(400).json({
+      success: false,
       message: 'Database query validation error',
-      details: err.message,
+      error: {
+        invalidField,
+        expectedValue,
+        // Provide the full error context as an array of lines
+        errorContext: errorLines,
+      },
+      stack: ConfigFile.NODE_ENV === 'production' ? null : err.stack,
     });
   }
-
+  
+  
   res.status(StatusCodes.BAD_GATEWAY).json({
     success: false,
     message: newMessage,

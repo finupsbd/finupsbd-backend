@@ -8,3 +8,11 @@
   minProfitRate=5&
   maxProfitRate=30&
   banks=Standard Chartered,The City Bank,Brac Bank
+
+
+
+
+
+{{finUpsBD}}eligibility-check?page=1&pageSize=2&amount=20000&searchTerm=brack bank&interestRate=11.75
+
+

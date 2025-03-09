@@ -29,6 +29,8 @@ const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
             phone: true,
             role: true,
             profile: true,
+            isActive: true,
+            emailVerified: true,
             ApplicationForm: {
                 include: {
                     User: true,

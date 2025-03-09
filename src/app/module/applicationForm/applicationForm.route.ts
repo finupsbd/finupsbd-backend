@@ -10,11 +10,10 @@ const route = express.Router();
 
 route.post(
   '/',
-  auth('USER', "ADMIN", "SUPER_ADMIN"), upload.fields([
-    { name: 'passportPhoto', maxCount: 1 },
-    { name: 'nid', maxCount: 1 },
-  ]), validateRequest(ApplicationValidationSchema.CreateApplicationValidationSchema), ApplicationController.createApplicationForm
-);
+  auth('USER', "ADMIN", "SUPER_ADMIN"), 
+  upload.fields([{ name: 'images' }]), 
+  ApplicationController.createApplicationForm
+); 
 route.get('/', ApplicationController.getAllApplicationForm);
 
 

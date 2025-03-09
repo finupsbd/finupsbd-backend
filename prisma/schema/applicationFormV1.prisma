@@ -1,0 +1,177 @@
+// model LoanApplication {
+//     id                        String                  @id @default(uuid())
+//     applicationId             String
+//     userId                    String
+//     loanId                    String? // optional
+//     status                    Status                  @default(PENDING)
+//     userInfoId                String                  @unique
+//     presentAddressId          String?                 @unique
+//     permanentAddressId        String?                 @unique
+//     employmentFinancialInfoId String                  @unique
+//     loanSpecificationsId      String                  @unique
+//     financialObligationsId    String                  @unique
+//     user                      User                    @relation(fields: [userId], references: [id])
+//     userInfo                  UserInfo                @relation(fields: [userInfoId], references: [id])
+//     presentAddress            presentAddress?         @relation(fields: [presentAddressId], references: [id])
+//     permanentAddress          permanentAddress?       @relation(fields: [permanentAddressId], references: [id])
+//     employmentFinancialInfo   EmploymentFinancialInfo @relation(fields: [employmentFinancialInfoId], references: [id])
+//     loanSpecifications        LoanSpecifications      @relation(fields: [loanSpecificationsId], references: [id])
+//     financialObligations      FinancialObligations    @relation(fields: [financialObligationsId], references: [id])
+
+//     createdAt      DateTime      @default(now())
+//     updatedAt      DateTime      @updatedAt
+//     HomeLoan       HomeLoan?     @relation(fields: [homeLoanId], references: [id])
+//     homeLoanId     String?
+//     PersonalLoan   PersonalLoan? @relation(fields: [personalLoanId], references: [id])
+//     personalLoanId String?
+//     carloan        CarLoan?      @relation(fields: [carLoanId], references: [id])
+//     carLoanId      String?
+//     smeloan        SMELoan?      @relation(fields: [smeLoanId], references: [id])
+//     smeLoanId      String?
+
+//     @@index([applicationId, status, userId])
+//     @@map("loanApplications")
+// }
+
+// model UserInfo {
+//     id                String        @id @default(uuid())
+//     fullName          String
+//     fatherName        String
+//     motherName        String
+//     spouseName        String?
+//     dateOfBirth       DateTime
+//     placeOfBirth      String
+//     gender            Gender
+//     maritalStatus     MaritalStatus
+//     birthRegistration String? // optional
+//     mobileNumber      String
+//     alternateNumber   String?
+//     emailAddress      String
+
+//     loanApplication LoanApplication?
+// }
+
+// model presentAddress {
+//     id                String           @id @default(uuid())
+//     houseFlatNo       String
+//     streetRoad        String
+//     areaLocality      String
+//     city              String
+//     district          String
+//     postalCode        String
+//     lengthOfStayYears Int
+//     ownershipStatus   OwnershipStatus
+//     LoanApplication   LoanApplication?
+// }
+
+// model permanentAddress {
+//     id                String           @id @default(uuid())
+//     houseFlatNo       String
+//     streetRoad        String
+//     areaLocality      String
+//     city              String
+//     district          String
+//     postalCode        String
+//     lengthOfStayYears Int
+//     ownershipStatus   OwnershipStatus
+//     LoanApplication   LoanApplication?
+// }
+
+// model EmploymentFinancialInfo {
+//     id                         String           @id @default(uuid())
+//     employmentStatus           EmploymentStatus
+//     jobTitle                   String
+//     employerName               String
+//     officeAddress              String
+//     department                 String?
+//     contactDetails             String
+//     businessName               String?
+//     businessRegistrationNumber String?
+//     employmentTenureYears      Int
+//     monthlyGrossIncome         Float
+//     otherSourcesOfIncome       String?
+//     totalMonthlyExpenses       Float
+//     profession                 String?
+//     taxIdentificationNumber    String
+//     currentCreditScore         Int
+
+//     loanApplication LoanApplication?
+// }
+
+// model LoanSpecifications {
+//     id                   String   @id @default(uuid())
+//     existingLoanType     LoanType
+//     loanAmountRequested  Float
+//     purposeOfLoan        String
+//     preferredLoanTenure  Int
+//     proposedEMIStartDate DateTime
+//     repaymentPreferences String
+
+//     loanApplication LoanApplication?
+// }
+
+// model FinancialObligations {
+//     id                        String  @id @default(uuid())
+//     lenderName                String
+//     loanBalance               Float
+//     monthlyEMI                Float
+//     remainingTenure           Int
+//     cardIssuer                String?
+//     currentBalance            Float?
+//     minimumMonthlyPayment     Float?
+//     type                      String
+//     balance                   Float
+//     emi                       Float
+//     fullNameCoApplicant       String?
+//     relationshipToCoApplicant String?
+//     coApplicantMonthlyIncome  Float?
+
+//     loanApplication LoanApplication?
+// }
+
+// enum Status {
+//     PENDING
+//     IN_PROGRESS
+//     APPROVED
+//     REJECTED
+// }
+
+// enum Gender {
+//     MALE
+//     FEMALE
+//     OTHER
+// }
+
+// enum MaritalStatus {
+//     SINGLE
+//     MARRIED
+//     DIVORCED
+//     WIDOWED
+// }
+
+// enum OwnershipStatus {
+//     OWNED
+//     RENTED
+//     LEASED
+//     OTHER
+// }
+
+// enum PropertyType {
+//     RESIDENTIAL
+//     COMMERCIAL
+//     LAND
+// }
+
+// enum EmploymentStatus {
+//     SALARIED
+//     BUSINESS_OWNER
+// }
+
+// enum LoanType {
+//     PERSONAL
+//     HOME
+//     CAR
+//     BUSINESS
+//     EDUCATION
+//     OTHER
+// }

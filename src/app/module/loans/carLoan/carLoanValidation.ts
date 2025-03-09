@@ -39,9 +39,9 @@ const createCarLoanValidateSchema = z.object({
     monthlyEmi: z.string().min(1, 'Monthly EMI is required'),
     totalAmount: z.string().min(1, 'Total amount is required'),
     eligibleLoan: z.string().min(1, 'Eligible loan is required'),
-    features: featureCarLoanSchema.optional(),
-    eligibility: eligibilityCarLoanSchema.optional(),
-    feesCharges: feesChargesCarLoanSchema.optional(),
+    featuresCarLoan: featureCarLoanSchema.optional(),
+    eligibilityCarLoan: eligibilityCarLoanSchema.optional(),
+    feesChargesCarLoan: feesChargesCarLoanSchema.optional(),
 });
 
 
@@ -58,9 +58,9 @@ const updateCarLoanValidateSchema = z.object({
     monthlyEmi: z.string().min(1, 'Monthly EMI is required').optional(),
     totalAmount: z.string().min(1, 'Total amount is required').optional(),
     eligibleLoan: z.string().min(1, 'Eligible loan is required').optional(),
-    features: featureCarLoanSchema.optional(),
-    eligibility: eligibilityCarLoanSchema.optional(),
-    feesCharges: feesChargesCarLoanSchema.optional(),
+    featuresCarLoan: featureCarLoanSchema.optional(),
+    eligibilityCarLoan: eligibilityCarLoanSchema.optional(),
+    feesChargesCarLoan: feesChargesCarLoanSchema.optional(),
 });
 
 

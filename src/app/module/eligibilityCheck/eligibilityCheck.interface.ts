@@ -1,101 +1,101 @@
-type TLoneType = 'PERSONAL_LOAN' | 'CAR_LOAN' | 'HOME_LOAN' | 'SME_LOAN';
-type TCurrentJobExperience =
-  | '0-1 YEAR'
-  | '1-3 YEARS'
-  | '3-6 YEARS '
-  | '6-10 YEARS'
-  | '10+ YEARS';
-type TCardType = 'CREDIT_CARD' | 'DEBIT_CARD' | 'PREPAID_CARD';
-type TGender = 'MALE' | 'FEMALE' | 'OTHER';
-type SalaryType = 'BANK_ACCOUNT' | 'CASH' | 'CHEQUE';
+// Enum types as string unions
+export type MainLoanType = 'PERSONAL_LOAN' | 'HOME_LOAN' | 'CAR_LOAN' | 'SME_LOAN';
 
+export type EGender = 'MALE' | 'FEMALE' | 'OTHER';
+
+export type Profession = 'BUSINESS_OWNER' | 'SALARIED';
+
+export type BusinessOwnerType =
+  | 'PROPRIETOR'
+  | 'PARTNER'
+  | 'CORPORATION'
+  | 'LLC'
+  | 'COOPERATIVE'
+  | 'JOINT_VENTURE'
+  | 'FRANCHISE';
+
+export type VehicleType =
+  | 'CAR'
+  | 'BIKE'
+  | 'TRUCK'
+  | 'BUS'
+  | 'VAN'
+  | 'SUV'
+  | 'MOTORCYCLE'
+  | 'SCOOTER'
+  | 'PICKUP'
+  | 'ATV'
+  | 'RV'
+  | 'FIRE_TRUCK'
+  | 'AMBULANCE'
+  | 'POLICE_CAR'
+  | 'TAXI'
+  | 'TRACTOR'
+  | 'SEMI_TRAILER'
+  | 'TRAIN'
+  | 'TRAM'
+  | 'FERRY'
+  | 'AIRPLANE'
+  | 'HELICOPTER';
+
+export type ExistingLoanType =
+  | 'HOME_LOAN'
+  | 'PERSONAL_LOAN'
+  | 'CAR_LOAN'
+  | 'SME_LOAN'
+  | 'CREDIT_CARD'
+  | 'OTHER';
+
+export type CardType = 'CREDIT_CARD' | 'DEBIT_CARD';
+
+
+// The EligibilityCheck model as a TypeScript interface
 export type TEligibilityCheck = {
-  LoanType?: TLoneType;
-  cardType?: TCardType;
-  gender: TGender;
-  dateOfBirth: string; // ISO format (e.g., "1990-01-01")
-  profession: 'SALARIED' | 'BUSINESS_OWNER';
-  companyName?: string;
-  companyType?: string;
-  jobStatus?: string;
-  currentJobExperience?: TCurrentJobExperience;
-  residenceType?: 'RENTAL' | 'OWNED';
-  Salaried?: TSalariedJobDetails;
-  BusinessOwner?: TBusinessOwnerDetails;
-  rentalIncome?: boolean;
-  RentalIncomeDetails?: TRentalIncomeDetails;
-  haveAnyLoan?: boolean;
-  LoanDetails?: TLoanDetails;
-  haveAnyCreditCard?: boolean;
-  CreditCardDetails?: TCreditCardDetails;
-  lastOneYearBankTransactionBDT?: number;
-  TradeLicenseAge?: number;
-  AreTradeLicenseAndOfficeAddressSame?: boolean;
-};
+  id: string;
+  loanType: MainLoanType;
+  gender: EGender;
+  dateOfBirth: Date;
+  profession: Profession;
 
-type TBankAccountDetails = {
-  YourSalaryType: string;
-  BankName: string;
-  YourSalaryAmountBDT: number;
-  SalaryDepositToBankInLast7Months: number;
-};
+  // Business-related fields
+  businessOwnerType?: BusinessOwnerType;
+  businessType?: string;
+  sharePortion?: number;
+  tradeLicenseAge?: number;
 
-type TCashDetails = {
-  YourSalaryType: string;
-  YourSalaryAmountBDT: number;
-};
+  // Additional info fields
+  vehicleType?: VehicleType;
+  expectedLoanTenure: number;
+  monthlyIncome: number;
+  jobLocation: string;
 
-type TChequeDetails = {
-  ChequeType: string;
-  YourSalaryAmountBDT: number;
-};
+  // Rental income fields
+  haveAnyRentalIncome: boolean;
+  selectArea?: string;
+  rentalIncome?: number;
 
-type TSalariedJobDetails = {
-  companyName: string;
-  companyType: string;
-  yourJobStatus: string;
-  currentJobExperience: number;
-  TotalJobExperienceCurrent: number;
-  yourSalaryType: SalaryType;
-  bankAccount?: TBankAccountDetails;
-  cash?: TCashDetails;
-  cheque?: TChequeDetails;
-};
+  // Existing loan details
+  haveAnyLoan: boolean;
+  numberOfLoan?: number;
+  existingLoanType?: ExistingLoanType;
+  EMIAmountBDT?: number;
+  InterestRate?: number;
 
-type TBusinessOwnerDetails = {
-  YourCompanyType: 'PRIVATE_LTD' | 'PARTNERSHIP' | 'PROPRIETOR_SHIP';
-  PrivateLtd?: {
-    SharePortion: number;
-    YourBusinessCategory: string;
-    YourBusinessType: string;
-  };
-  Partnership?: {
-    YourBusinessCategory: string;
-    YourBusinessType: string;
-  };
-};
+  // Credit card details
+  haveAnyCreditCard: boolean;
+  numberOfCard?: number;
+  cardType?: CardType;
+  cardLimitBDT?: number;
 
-type TRentalIncomeDetails = {
-  HouseType: {
-    tinShedHouse: boolean;
-    SemiPaka: boolean;
-    BuildingWithPlan: boolean;
-    BuildingWithoutPlan: boolean;
-  };
-};
+  // Secondary applicant
+  secondaryApplicant: boolean;
 
-type TLoanDetails = {
-  NumberOfLoan: number;
-  LoanType: string;
-  BankName: string;
-  EMIAmountBDT: number;
-  InterestRate: boolean;
-};
+  // Contact / personal info
+  name: string;
+  email: string;
+  phone: string;
 
-type TCreditCardDetails = {
-  numberOfCard: number;
-  cardType: string;
-  bankName: string;
-  cardLimitBDT: number;
-};
-
+  // Timestamps
+  createdAt: Date;
+  updatedAt: Date;
+}

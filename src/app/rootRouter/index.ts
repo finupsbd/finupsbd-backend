@@ -11,6 +11,7 @@ import { PersonalLoanRouter } from '../module/loans/personalLoan/personalLoan.ro
 import { EligibilityCheckRouter } from '../module/eligibilityCheck/eligibilityCheck.route'
 import { HomeLoanRouter } from '../module/loans/homeLoan/homeLoan.route'
 import { CarLoanRouter } from '../module/loans/carLoan/carLoan.route'
+import { SMELoanRouter } from '../module/loans/smeLoan/smeLoan.route'
 const router = express.Router()
 
 
@@ -64,6 +65,10 @@ const moduleRouter = [
     {
         path: '/car-loan', 
         route: CarLoanRouter
+    },
+    {
+        path: '/sme-loan', 
+        route: SMELoanRouter
     },
 ]
 

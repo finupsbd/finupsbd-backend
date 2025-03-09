@@ -1,122 +1,114 @@
 {
-  "applicationForm": {
-    "id": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1",
-    "applicationId": "APP-2025001",
-    "userId": "user-12345",
-    "status": "PENDING",
-    "createdAt": "2025-01-23T10:00:00.000Z",
-    "updatedAt": "2025-01-23T10:00:00.000Z",
-    "userInfo": {
-      "id": "b1df53f4-38f3-4902-8658-501f57ebf88d",
-      "fullName": "John Doe",
-      "fatherName": "Richard Doe",
-      "motherName": "Jane Doe",
-      "spouseName": "Emily Doe",
-      "dateOfBirth": "1990-01-01",
-      "placeOfBirth": "Dhaka",
-      "gender": "MALE",
-      "maritalStatus": "MARRIED",
-      "nid": "123456789",
-      "birthRegistration": null,
-      "mobileNumber": "+880123456789",
-      "alternateNumber": "+880987654321",
-      "emailAddress": "john.doe@example.com",
-      "socialMediaLinks": [
-        "https://facebook.com/johndoe",
-        "https://linkedin.com/in/johndoe"
-      ],
-      "propertyType": "RESIDENTIAL",
-      "approximateValue": 5000000,
-      "applicationFormId": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1"
-    },
-    "currentAddress": {
-      "id": "a3f7d9f1-bb59-42e9-99b6-58c315a52b87",
-      "houseFlatNo": "123",
-      "streetRoad": "Main Street",
-      "areaLocality": "Dhanmondi",
-      "city": "Dhaka",
-      "district": "Dhaka",
-      "postalCode": "1205",
-      "lengthOfStayYears": 5,
-      "ownershipStatus": "RENTED",
-      "applicationFormId": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1"
-    },
-    "permanentAddress": {
-      "id": "c2a8e8db-9e4a-4867-8ff6-3a7ed528b913",
-      "houseFlatNo": "456",
-      "streetRoad": "Green Road",
-      "areaLocality": "Mohammadpur",
-      "city": "Dhaka",
-      "district": "Dhaka",
-      "postalCode": "1207",
-      "lengthOfStayYears": 10,
-      "ownershipStatus": "OWNED",
-      "applicationFormId": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1"
-    },
-    "employmentFinancialInfo": {
-      "id": "d4e1f7c8-a8c3-4e22-94ef-23f653fbb598",
-      "employmentStatus": "SALARIED",
-      "jobTitle": "Software Engineer",
-      "employerName": "Tech Solutions Ltd.",
-      "officeAddress": "Banani, Dhaka",
-      "department": "IT",
-      "contactDetails": "+880123456789",
-      "businessName": null,
-      "businessRegistrationNumber": null,
-      "employmentTenureYears": 3,
-      "monthlyGrossIncome": 150000,
-      "otherSourcesOfIncome": "Freelancing",
-      "totalMonthlyExpenses": 40000,
-      "profession": "Engineer",
-      "taxIdentificationNumber": "TIN123456",
-      "currentCreditScore": 750,
-      "applicationFormId": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1"
-    },
-    "loanSpecifications": {
-      "id": "e7a8c4f5-7b3a-4d8f-b24f-3b7e67acb79a",
-      "loanType": "PERSONAL",
-      "loanAmountRequested": 500000,
-      "purposeOfLoan": "Medical Expenses",
-      "preferredLoanTenure": 12,
-      "proposedEMIStartDate": "2025-02-01T00:00:00.000Z",
-      "repaymentPreferences": "Equal Installments",
-      "applicationFormId": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1"
-    },
-    "financialObligations": [
-      {
-        "id": "fa2e8dbb-3e49-4f7b-84b9-3b7f5678c123",
-        "lenderName": "Bank Ltd.",
-        "loanBalance": 200000,
-        "monthlyEMI": 10000,
-        "remainingTenure": 12,
-        "cardIssuer": "Visa",
-        "currentBalance": 50000,
-        "minimumMonthlyPayment": 5000,
-        "obligationType": "Credit Card",
-        "balance": 100000,
-        "emi": 8000,
-        "applicationFormId": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1"
-      }
-    ],
-    "uploadedDocuments": [
-      {
-        "id": 1,
-        "type": "PASSPORT_PHOTO",
-        "filePath": "/uploads/passport_photo.jpg",
-        "uploadedAt": "2025-01-23T10:10:00.000Z",
-        "fileSizeMB": 0.5,
-        "fileType": "jpg",
-        "applicationFormId": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1"
-      },
-      {
-        "id": 2,
-        "type": "NATIONAL_ID",
-        "filePath": "/uploads/nid.jpg",
-        "uploadedAt": "2025-01-23T10:15:00.000Z",
-        "fileSizeMB": 0.3,
-        "fileType": "jpg",
-        "applicationFormId": "cf4e2c79-0b5d-4d7c-8a6a-5b93276d73f1"
-      }
-    ]
-  }
+  "applicationId": "APP-001",
+  "userId": "user-uuid",
+  "personalLoanId": null,
+  "status": "PENDING",
+  "userInfo": {
+    "fullName": "John Doe",   
+    "fatherName": "Richard Doe",
+    "motherName": "Jane Doe",
+    "spouseName": "Mary Doe",
+    "dateOfBirth": "1980-01-01",
+    "placeOfBirth": "Metropolis",
+    "gender": "MALE",
+    "maritalStatus": "MARRIED",
+    "birthRegistration": "BR987654321",    (Optonal)
+    "mobileNumber": "+1234567890",
+    "alternateNumber": "+0987654321", 
+    "emailAddress": "john.doe@example.com", 
+  },
+residentialInformation: {
+ "permanentAddress": {     
+    "houseFlatNo": "12B",
+    "streetRoad": "Maple Street",
+    "areaLocality": "Downtown",
+    "city": "Metropolis",
+    "district": "Central",
+    "postalCode": "12345",
+    "lengthOfStayYears": 5,
+    "ownershipStatus": "OWNED",
+  },
+  "presentAddress": {     
+    "houseFlatNo": "12B",
+    "streetRoad": "Maple Street",
+    "areaLocality": "Downtown",
+    "city": "Metropolis",
+    "district": "Central",
+    "postalCode": "12345",
+    "lengthOfStayYears": 5,
+    "ownershipStatus": "OWNED",
+  },
+
 }
+
+  "employmentFinancialInfo": { 
+    "employmentStatus": "SALARIED",
+    "jobTitle": "Software Engineer",
+    "employerName": "Tech Corp",
+    "officeAddress": "123 Tech Avenue, Metropolis",
+    "department": "Engineering",
+    "contactDetails": "+1234567890",
+    "businessName": null,
+    "businessRegistrationNumber": null,
+    "employmentTenureYears": 10,
+    "monthlyGrossIncome": 6000.5,
+    "otherSourcesOfIncome": "Freelancing",
+    "totalMonthlyExpenses": 3000.75,
+    "profession": "IT",
+    "taxIdentificationNumber": "TIN123456",
+    "currentCreditScore": 750,
+  },
+  "loanSpecifications": {
+    "loanType": "HOME",
+    "loanAmountRequested": 200000.0,
+    "purposeOfLoan": "Home purchase",
+    "preferredLoanTenure": 30,
+    "proposedEMIStartDate": "2025-04-01T00:00:00Z",
+    "repaymentPreferences": "Monthly",
+  },
+  "financialObligations": {
+      "lenderName": "Bank A",
+      "loanBalance": 10000.0,
+      "monthlyEMI": 300.0,
+      "remainingTenure": 36,
+      "cardIssuer": null,
+      "currentBalance": null,
+      "minimumMonthlyPayment": null,
+      "type": "Credit Card",
+      "balance": 10000.0,
+      "emi": 300.0,
+      "fullNameCoApplicant: "reza", 
+      "relationshipToApplicant": "", 
+      "employmentMonthlyIncome": "",  
+    }, 
+}
+
+
+
+  "uploadedDocuments": [
+    {
+      "id": 1,
+      "type": "PASSPORT_PHOTO",
+      "filePath": "/uploads/documents/passport_photo.jpg",
+      "uploadedAt": "2025-03-08T12:05:00Z",
+      "fileSizeMB": 0.5,
+      "fileType": "image/jpeg",
+      "applicationFormId": "app-form-uuid"
+    },
+    {
+      "id": 2,
+      "type": "NATIONAL_ID",
+      "filePath": "/uploads/documents/national_id.pdf",
+      "uploadedAt": "2025-03-08T12:10:00Z",
+      "fileSizeMB": 1.2,
+      "fileType": "application/pdf",
+      "applicationFormId": "app-form-uuid"
+    }
+  ],
+
+
+
+
+    "propertyType": "RESIDENTIAL",
+    "approximateValue": 500000.0,
+    "applicationFormId": "app-form-uuid"

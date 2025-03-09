@@ -8,8 +8,7 @@ import { TPersonalLoan } from "./personalLoan.interface";
 const createPersonalLoan = async (payload: TPersonalLoan, file: any) => {
 
   const coverImage = file ? await sendImageToCloud(file) : undefined;
-  console.log(coverImage)
-  payload.coverImage = coverImage;
+  payload.coverImage = coverImage ?? undefined;
   
   const result = await prisma.personalLoan.create({
     data: {

@@ -12,7 +12,7 @@ const createHomeLoan = catchAsync(async (req, res) => {
    HomeLoanValidationSchema.createHomeLoanValidateSchema.parse(
       JSON.parse(req.body.data)
     );
-  const file = req.file;
+  const file = req.file?.buffer;
   if (!file) {
     throw new Error('Please upload a file');
   }
@@ -44,7 +44,7 @@ const updateHomeLoan = catchAsync(async (req, res) => {
   const payload = HomeLoanValidationSchema.createHomeLoanValidateSchema.parse(
     JSON.parse(req.body.data)
   );
-  const file = req.file;
+  const file = req.file?.buffer;
   const result = await HomeLoanService.updateHomeLoan(
     payload as THomeLoan,
     file,
