@@ -102,6 +102,26 @@ const logout = catchAsync(async (req, res) => {
   }
 });
 
+
+const changePassword = catchAsync(async (req, res) => {
+  const user = req.user
+
+  console.log(user)
+  const result = await AuthServices.changePassword(req.body, user);
+
+
+  sendResponce(res, {
+    success: true, 
+    message: 'Password chnage successfully ',
+    statusCode: StatusCodes.OK,
+    data: result
+  })
+
+});
+
+
+
+
 export const AuthController = {
   signUp,
   validatePin,
@@ -110,4 +130,5 @@ export const AuthController = {
   resetPassword,
   refreshToken,
   logout,
+  changePassword
 };

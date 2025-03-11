@@ -5,7 +5,7 @@ import { TBlog } from './blog.interface';
 
 const createBlog = async (payload: TBlog, file: any) => {
   const coverImage = await sendImageToCloud(file?.path);
-  payload.coverImage = coverImage?.secure_url;
+  payload.coverImage = coverImage ?? undefined;
 
   const result = await prisma.blog.create({ data: payload });
   return result;

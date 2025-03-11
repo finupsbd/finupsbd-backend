@@ -37,9 +37,9 @@ const auth = (...requiredRoles) => {
         if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
             throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, "You are not valid user");
         }
-        if (!(user === null || user === void 0 ? void 0 : user.emailVerified)) {
-            throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, "You are not valid user");
-        }
+        // if(!user?.emailVerified){
+        //     throw new AppError(StatusCodes.BAD_REQUEST,"You are not valid user")
+        // }
         if (requiredRoles && !requiredRoles.includes(decode === null || decode === void 0 ? void 0 : decode.role)) {
             throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'you are not authorized role ');
         }

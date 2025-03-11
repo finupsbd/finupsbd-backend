@@ -22,7 +22,7 @@ model User {
   isActive            Boolean           @default(true)
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
-  lastLogin           DateTime?  
+  lastLogin           DateTime?
   blogPost            Blog[]
   ApplicationForm     ApplicationForm[]
   PersonalLoan        PersonalLoan[]
@@ -37,23 +37,23 @@ model User {
   @@map("users") // Maps to the "users" table
 }
 
-enum UserGender {
-  male
-  female
-  other
-}
-
 model Profile {
-  id               String     @id @default(uuid())
+  id               String   @id @default(uuid())
   nameAsNid        String
   nationalIdNumber String
-  gender           UserGender
+  gender           UserProfileGender
   dateOfBirth      DateTime
   avatar           String? // URL to profile picture
   address          String?
   city             String
-  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String     @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String   @unique
 
   @@map("profiles")
+}
+
+enum UserProfileGender {
+  MALE
+  FEMALE
+  OTHER
 }

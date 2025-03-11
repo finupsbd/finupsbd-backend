@@ -18,14 +18,16 @@ export const prisma = new PrismaClient({
 
 
 app.use(cookieParser())
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors({
-    origin: '*', 
-    credentials: true         
-}))
+  origin: "*", // Allow only frontend origin
+  // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Allow cookies and authentication headers
+  // allowedHeaders: "Content-Type,Authorization"
+}));
+
 seedSuperAdmin()
-
-
 
 app.use(passport.initialize());
 
@@ -65,7 +67,7 @@ app.get('/', async (req: Request, res: Response) => {
   res.status(200).json({
     status: 'success',
     message: 'finupsBD server is fully operational and healthy.',
-    ServerCreate: "Reza", 
+    ServerCreate: "Reza",
     timestamp: currentTimestamp,
     uptime: `${uptimeSeconds.toFixed(2)} seconds`,
     database: dbStatus,
@@ -80,7 +82,7 @@ app.get('/', async (req: Request, res: Response) => {
       speed: cpu.speed,
       times: cpu.times
     })),
- 
+
     platform,
     processId,
     arch,
@@ -95,7 +97,7 @@ app.get('/', async (req: Request, res: Response) => {
 
 app.use(globalErrorHandler)    //  global Error handler 
 app.use(notFound)              //  user request route not found handler
- 
+
 
 
 export default app;

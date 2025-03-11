@@ -10,7 +10,7 @@ import { TCarLoan } from "./carLoan.interface";
 
 const createCarLoan = async (payload: TCarLoan, file: any) => {
   const coverImage = file ? await sendImageToCloud(file?.path) : undefined;
-  payload.coverImage = coverImage?.secure_url || '';
+  payload.coverImage = coverImage ?? undefined;
   const result = await prisma.carLoan.create({
     data: {
       bankName: payload.bankName ,
@@ -55,7 +55,7 @@ const getAllCarLoan = async () => {
 
 const updateCarLoan = async (payload: TCarLoan, file: any, id: string) => {
   const coverImage = file ? await sendImageToCloud(file?.path) : undefined;
-  payload.coverImage = coverImage?.secure_url || '';
+  payload.coverImage = coverImage ?? undefined;
 
   // Handle the Bank record
   const result = await prisma.carLoan.upsert({

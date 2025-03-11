@@ -48,6 +48,12 @@ const resetPasswordValidationSchema = z.object({
   // phone: phoneSchema,
 });
 
+const changePasswordValidationSchema = z.object({
+  oldPassword: passwordSchema,
+  newPassword: passwordSchema
+  // phone: phoneSchema,
+});
+
 // password = z
 //   .string()
 //   .min(8, 'Password must be at least 8 characters long') // Minimum length
@@ -66,4 +72,5 @@ export const UserValidation = {
   loginValidationSchema,
   forgetPasswordValidationSchema,
   resetPasswordValidationSchema,
+  changePasswordValidationSchema
 };

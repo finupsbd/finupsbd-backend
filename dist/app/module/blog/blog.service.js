@@ -15,7 +15,7 @@ const app_1 = require("../../../app");
 const sendImageToCloud_1 = require("../../utils/sendImageToCloud");
 const createBlog = (payload, file) => __awaiter(void 0, void 0, void 0, function* () {
     const coverImage = yield (0, sendImageToCloud_1.sendImageToCloud)(file === null || file === void 0 ? void 0 : file.path);
-    payload.coverImage = coverImage === null || coverImage === void 0 ? void 0 : coverImage.secure_url;
+    payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
     const result = yield app_1.prisma.blog.create({ data: payload });
     return result;
 });

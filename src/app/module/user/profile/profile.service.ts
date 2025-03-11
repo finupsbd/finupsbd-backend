@@ -1,29 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { prisma } from "../../../../app";
+import { sendImageToCloud } from "../../../utils/sendImageToCloud";
+import { TUserProfile } from "./profile.interface";
 
-import { prisma } from '../../../../app';
 
-const createProfile = async (payload: any, user: any) => {
-  const { userId } = user;
-  console.log(userId);
-  const existingProfile = await prisma.profile.findUnique({
-    where: { userId },
-  });
 
-  if (existingProfile) {
-    // Update the profile if it exists
-    const updatedProfile = await prisma.profile.update({
-      where: { userId },
-      data: payload,
-    });
-    return updatedProfile;
-  }
+const createProfile = async (payload: TUserProfile, user: any, image: any) => {
 
-  const newProfile = await prisma.profile.create({
-    data: payload,
-  });
+  const profileImage = await sendImageToCloud(image)
+  payload.avatar = profileImage ?? undefined;
 
-  return newProfile;
+
+
+
+  const result = await prisma.user.update({
+    where: { id: user?.userId },
+    data: {
+      profile: {
+        upsert: {
+          create: {
+            ...payload
+          },
+          update: {
+            ...payload
+          }
+        }
+      }
+    },
+    include: {
+      profile: true
+    }
+  })
+
+  console.log(result)
+
+
+
 };
+
 
 
 

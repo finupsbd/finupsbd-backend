@@ -132,8 +132,7 @@ const globalErrorHandler = (
     res.status(500).json({
       status: 'error',
       message: 'Unknown database error',
-      details:
-        'An unexpected error occurred while interacting with the database.',
+      details: err.message,
     });
   }
 

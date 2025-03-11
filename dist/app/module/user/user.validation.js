@@ -39,6 +39,11 @@ const resetPasswordValidationSchema = zod_1.z.object({
     newPassword: exports.passwordSchema
     // phone: phoneSchema,
 });
+const changePasswordValidationSchema = zod_1.z.object({
+    oldPassword: exports.passwordSchema,
+    newPassword: exports.passwordSchema
+    // phone: phoneSchema,
+});
 // password = z
 //   .string()
 //   .min(8, 'Password must be at least 8 characters long') // Minimum length
@@ -56,4 +61,5 @@ exports.UserValidation = {
     loginValidationSchema,
     forgetPasswordValidationSchema,
     resetPasswordValidationSchema,
+    changePasswordValidationSchema
 };

@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PersonalLoanService = void 0;
+exports.HomeLoanService = void 0;
 const app_1 = require("../../../../app");
 const sendImageToCloud_1 = require("../../../utils/sendImageToCloud");
-const createPersonalLoan = (payload, file) => __awaiter(void 0, void 0, void 0, function* () {
-    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file) : undefined;
+const createHomeLoan = (payload, file) => __awaiter(void 0, void 0, void 0, function* () {
+    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file === null || file === void 0 ? void 0 : file.path) : undefined;
     payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
-    const result = yield app_1.prisma.personalLoan.create({
+    const result = yield app_1.prisma.homeLoan.create({
         data: {
             bankName: payload.bankName,
             amount: payload.amount,
@@ -27,39 +27,39 @@ const createPersonalLoan = (payload, file) => __awaiter(void 0, void 0, void 0, 
             monthlyEmi: payload.monthlyEmi,
             totalAmount: payload.totalAmount,
             eligibleLoan: payload.eligibleLoan,
-            features: {
-                create: payload.features,
+            FeaturesHomeLoan: {
+                create: payload.featuresHomeLoan,
             },
-            eligibility: {
-                create: payload.eligibility,
+            EligibilityHomeLoan: {
+                create: payload.eligibilityHomeLoan,
             },
-            feesCharges: {
-                create: payload.feesCharges,
+            FeesChargesHomeLoan: {
+                create: payload.feesChargesHomeLoan,
             },
         },
         include: {
-            features: true,
-            eligibility: true,
-            feesCharges: true,
+            FeaturesHomeLoan: true,
+            EligibilityHomeLoan: true,
+            FeesChargesHomeLoan: true,
         },
     });
     return result;
 });
-const getAllPersonalLoan = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield app_1.prisma.personalLoan.findMany({
+const getAllHomeLoan = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield app_1.prisma.homeLoan.findMany({
         include: {
-            features: true, // Correctly references Features model
-            eligibility: true, // Correctly references Eligibility model
-            feesCharges: true, // Correctly references FeesCharges model
+            FeaturesHomeLoan: true, // Correctly references Features model
+            EligibilityHomeLoan: true, // Correctly references Eligibility model
+            FeesChargesHomeLoan: true, // Correctly references FeesCharges model
         },
     });
     return result;
 });
-const updatePersonalLoan = (payload, file, id) => __awaiter(void 0, void 0, void 0, function* () {
-    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file) : undefined;
+const updateHomeLoan = (payload, file, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file === null || file === void 0 ? void 0 : file.path) : undefined;
     payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
     // Handle the Bank record
-    const bankResult = yield app_1.prisma.personalLoan.upsert({
+    const result = yield app_1.prisma.homeLoan.upsert({
         where: { id },
         create: {
             bankName: payload.bankName,
@@ -71,14 +71,14 @@ const updatePersonalLoan = (payload, file, id) => __awaiter(void 0, void 0, void
             monthlyEmi: payload.monthlyEmi,
             totalAmount: payload.totalAmount,
             eligibleLoan: payload.eligibleLoan,
-            features: {
-                create: payload.features,
+            FeaturesHomeLoan: {
+                create: payload.featuresHomeLoan,
             },
-            eligibility: {
-                create: payload.eligibility,
+            EligibilityHomeLoan: {
+                create: payload.eligibilityHomeLoan,
             },
-            feesCharges: {
-                create: payload.feesCharges,
+            FeesChargesHomeLoan: {
+                create: payload.feesChargesHomeLoan,
             },
         },
         update: {
@@ -91,26 +91,26 @@ const updatePersonalLoan = (payload, file, id) => __awaiter(void 0, void 0, void
             monthlyEmi: payload.monthlyEmi,
             totalAmount: payload.totalAmount,
             eligibleLoan: payload.eligibleLoan,
-            features: {
-                update: payload.features,
+            FeaturesHomeLoan: {
+                update: payload.featuresHomeLoan,
             },
-            eligibility: {
-                update: payload.eligibility,
+            EligibilityHomeLoan: {
+                update: payload.eligibilityHomeLoan,
             },
-            feesCharges: {
-                update: payload.feesCharges,
+            FeesChargesHomeLoan: {
+                update: payload.feesChargesHomeLoan,
             },
         },
         include: {
-            features: true,
-            eligibility: true,
-            feesCharges: true,
+            FeaturesHomeLoan: true,
+            EligibilityHomeLoan: true,
+            FeesChargesHomeLoan: true,
         }
     });
-    return bankResult; // Return the updated or created bank record
+    return result; // Return the updated or created bank record
 });
-exports.PersonalLoanService = {
-    createPersonalLoan,
-    getAllPersonalLoan,
-    updatePersonalLoan,
+exports.HomeLoanService = {
+    createHomeLoan,
+    getAllHomeLoan,
+    updateHomeLoan,
 };

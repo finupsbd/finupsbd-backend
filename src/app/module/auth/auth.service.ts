@@ -1,7 +1,8 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import jwt, {JwtPayload } from 'jsonwebtoken';
 
 import { prisma } from '../../../app';
-import { passwordHash } from '../../utils/passwordHash';
+import { comparePassword, passwordHash } from '../../utils/passwordHash';
 import sendEmail from '../../utils/sendEmail';
 import {
   accessTokenGenerate,
@@ -23,16 +24,16 @@ const signUp = async (payload: TUser) => {
 
   const isAlreadySignUpRequest = await prisma.user.findUnique({
     where: {
-     email: payload.email,
+      email: payload.email,
     },
   });
 
-  if(isAlreadySignUpRequest){
+  if (isAlreadySignUpRequest) {
     return 'allready send pin check email. Thank you';
   }
 
- 
-  const { email} = payload;
+
+  const { email } = payload;
   payload.password = await passwordHash(payload.password);
 
   //   const pin = crypto.randomBytes(3).toString('hex'); // 6-digit PIN
@@ -50,9 +51,8 @@ const signUp = async (payload: TUser) => {
   });
 
   if (userIsExist) {
-    console.log(userIsExist);
     if (userIsExist && userIsExist.emailVerified === false) {
-      const sendOtp = await prisma.user.update({where: {email}, data: {pin: pin, pinExpiry: pinExpiry}});
+      const sendOtp = await prisma.user.update({ where: { email }, data: { pin: pin, pinExpiry: pinExpiry } });
       const MailSubject = 'Your PIN for Verification';
       const MailText = `
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
@@ -70,10 +70,10 @@ const signUp = async (payload: TUser) => {
   `;
       await sendEmail(payload?.email, MailSubject, MailText);
       // phoneOtpSend(phone, "send message")
-      throw new AppError(200,'Check your email for verification PIN thank you');
+      throw new AppError(200, 'Check your email for verification PIN thank you');
     }
-    if(userIsExist.emailVerified){
-      throw new AppError(StatusCodes.CONFLICT,'You have already verified user. Please login thank you');
+    if (userIsExist.emailVerified) {
+      throw new AppError(StatusCodes.CONFLICT, 'You have already verified user. Please login thank you');
     }
   }
 
@@ -105,16 +105,16 @@ const validatePin = async (payload: { email: string; pin: string }) => {
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    throw new AppError(400,'User not found');
+    throw new AppError(400, 'User not found');
   }
 
   const currentTime = new Date();
   if (user?.pinExpiry && user?.pinExpiry < currentTime) {
-    throw new AppError(400,'PIN has expired');
+    throw new AppError(400, 'PIN has expired');
   }
 
   if (user?.pin !== pin) {
-    throw new AppError(400,'Invalid PIN');
+    throw new AppError(400, 'Invalid PIN');
     // return { success: false, message: 'Invalid PIN' };
   }
 
@@ -244,11 +244,17 @@ const validatePin = async (payload: { email: string; pin: string }) => {
 const login = async (payload: { email: string; password: string }) => {
   const { email } = payload;
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: {
+      profile: true
+    }
+
+  });
   console.log(user);
 
   if (!user) {
-    throw new AppError(404,'User not found');
+    throw new AppError(404, 'User not found');
   }
 
   // if (!user.emailVerified) {
@@ -258,7 +264,7 @@ const login = async (payload: { email: string; password: string }) => {
   // }
 
   if (!user?.isActive) {
-    throw new AppError(400,'Your account is inactive. Please contact support.');
+    throw new AppError(400, 'Your account is inactive. Please contact support.');
   }
 
   const passwordCompare = await bcrypt.compare(
@@ -267,11 +273,12 @@ const login = async (payload: { email: string; password: string }) => {
   );
 
   if (!passwordCompare) {
-    throw new AppError(400,'Invalid password! please input valid password.');
+    throw new AppError(400, 'Invalid password! please input valid password.');
   }
 
   const jwtPayload = {
     name: user?.name,
+    avater: user?.profile?.avatar,
     userId: user?.id,
     role: user?.role,
     email: user?.email,
@@ -301,15 +308,15 @@ const forgetPassword = async (payload: { email: string }) => {
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user) {
-    throw new AppError(404,'User not found');
+    throw new AppError(404, 'User not found');
   }
 
   if (!user.emailVerified) {
-    throw new AppError(502,'Your email is not verified. Please verify your email');
+    throw new AppError(502, 'Your email is not verified. Please verify your email');
   }
 
   if (!user?.isActive) {
-    throw new AppError(502,'Your account is inactive. Please contact support.');
+    throw new AppError(502, 'Your account is inactive. Please contact support.');
   }
 
   //todo forget password
@@ -354,7 +361,7 @@ const resetPassword = async (payload: {
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user) {
-    throw new AppError(StatusCodes.NOT_FOUND,'User not found');
+    throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
   }
 
   if (!user.emailVerified) {
@@ -364,7 +371,7 @@ const resetPassword = async (payload: {
   }
 
   if (!user?.isActive) {
-    throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,'Your account is inactive. Please contact support.');
+    throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
   }
 
   const passwordHashing = await passwordHash(payload?.newPassword);
@@ -412,7 +419,7 @@ const resetPassword = async (payload: {
 
 const refreshToken = async (token: string) => {
   if (!token) {
-    throw new AppError(StatusCodes.UNAUTHORIZED,'You are unauthorized');
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'You are unauthorized');
   }
   const decode = (await jwt.verify(
     token,
@@ -422,15 +429,15 @@ const refreshToken = async (token: string) => {
   const user = await prisma.user.findUnique({ where: { email: decode.email } });
 
   if (!user) {
-    throw new AppError(StatusCodes.NOT_FOUND,'User Not Found');
+    throw new AppError(StatusCodes.NOT_FOUND, 'User Not Found');
   }
 
   if (!user?.isActive) {
-    throw new AppError(StatusCodes.BAD_REQUEST,'You are not a valid user');
+    throw new AppError(StatusCodes.BAD_REQUEST, 'You are not a valid user');
   }
 
   if (!user?.emailVerified) {
-    throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,'You are not valid user');
+    throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY, 'You are not valid user');
   }
 
   const jwtPayload = {
@@ -446,6 +453,86 @@ const refreshToken = async (token: string) => {
   };
 };
 
+const changePassword = async (payload: {
+  oldPassword: string;
+  newPassword: string;
+}, user: any) => {
+
+
+  const { email } = user
+
+
+  const userData = await prisma.user.findUnique({ where: { email } });
+
+
+  if (!user) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+
+  //   if (!user.emailVerified) {
+  //     throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,
+  //       'Your email is not verified. Please verify your email before reset your password'
+  //     );
+  //   }
+
+  if (user?.isActive) {
+    throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
+  }
+
+  const passwordHashing = await passwordHash(payload?.newPassword);
+
+  if (!userData?.password) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'User password not found');
+  }
+  const checkPassword = await comparePassword(payload.oldPassword, userData.password);
+
+  if (!checkPassword) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Please Provide valid password');
+  }
+
+  await prisma.user.update({
+    where: { email },
+    data: { password: passwordHashing },
+  });
+
+
+    const emailSubject = 'Password Changed';
+    const bodyText = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+      <h2 style="color: #333; text-align: center; font-size: 28px; margin-bottom: 20px; font-weight: bold;">Your Password Has Been Changed</h2>
+      <p style="font-size: 16px; color: #555; text-align: center;">Hello ${user?.name},</p>
+      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">We wanted to let you know that your password has been successfully updated. If you initiated this change, no further action is required.</p>
+
+      <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px;">
+        <p style="font-size: 16px; color: #555; font-weight: bold;">Important Security Information:</p>
+        <ul style="font-size: 14px; color: #555; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
+          <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
+          <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
+        </ul>
+      </div>
+
+      <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
+
+      <div style="text-align: center;">
+        <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">
+        <p>If you did not request this change, please ignore this email. This message was sent automatically, and you do not need to reply.</p>
+      </div>
+    </div>
+  </div>
+
+  `;
+
+    await sendEmail(email, emailSubject, bodyText);
+    return {};
+};
+
+
 export const AuthServices = {
   signUp,
   validatePin,
@@ -453,4 +540,5 @@ export const AuthServices = {
   forgetPassword,
   resetPassword,
   refreshToken,
+  changePassword
 };

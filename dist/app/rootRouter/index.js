@@ -15,6 +15,8 @@ const openai_route_1 = require("../module/openai/openai.route");
 const applicationForm_route_1 = require("../module/applicationForm/applicationForm.route");
 const personalLoan_route_1 = require("../module/loans/personalLoan/personalLoan.route");
 const eligibilityCheck_route_1 = require("../module/eligibilityCheck/eligibilityCheck.route");
+const homeLoan_route_1 = require("../module/loans/homeLoan/homeLoan.route");
+const carLoan_route_1 = require("../module/loans/carLoan/carLoan.route");
 const router = express_1.default.Router();
 const moduleRouter = [
     {
@@ -46,16 +48,24 @@ const moduleRouter = [
         route: openai_route_1.OpenAiRouter
     },
     {
-        path: '/personal-loan',
-        route: personalLoan_route_1.PersonalLoanRouter
-    },
-    {
         path: '/application',
         route: applicationForm_route_1.ApplicationRouter
     },
     {
         path: '/eligibility-check',
         route: eligibilityCheck_route_1.EligibilityCheckRouter
+    },
+    {
+        path: '/personal-loan',
+        route: personalLoan_route_1.PersonalLoanRouter
+    },
+    {
+        path: '/home-loan',
+        route: homeLoan_route_1.HomeLoanRouter
+    },
+    {
+        path: '/car-loan',
+        route: carLoan_route_1.CarLoanRouter
     },
 ];
 moduleRouter.forEach(item => router.use(item.path, item.route));

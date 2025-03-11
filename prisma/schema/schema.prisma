@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  // directUrl = env("DIRECT_URL")
   // PLUS_API_KEY = env("PLUS_API_KEY")
   relationMode = "prisma"
 }
