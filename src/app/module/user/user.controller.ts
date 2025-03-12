@@ -6,7 +6,8 @@ import sendResponses from "../../utils/sendResponce";
 
 
 const getAllUsers = catchAsync(async (req, res) => {
-    const result = await UserServices.getAllUser()
+    const query = req.query
+    const result = await UserServices.getAllUser(query)
     
 
     sendResponses(res, {
@@ -20,15 +21,33 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 
 
+const getSingleUser = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+console.log(id)
+    const result = await UserServices.getSingleUser(id)
+    
+
+    sendResponses(res, {
+        success: true, 
+        message: "retrieve single user successfully.",
+        statusCode: StatusCodes.OK,
+        data: result
+    })
+})
+
+
+
+
   const meProfile = catchAsync(async (req, res) => {
     const user = req.user
-    console.log(user);
+
     const result = await UserServices.meProfile(user)
 
 
     sendResponses(res, {
         success: true, 
-        message: "User login successfully",
+        message: "Retrive my Profile Data",
         statusCode: StatusCodes.OK,
         data: result
     })
@@ -38,5 +57,6 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 export const UserController = {
     getAllUsers,
-    meProfile
+    meProfile, 
+    getSingleUser
 }

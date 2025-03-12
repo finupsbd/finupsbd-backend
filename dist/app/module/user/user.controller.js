@@ -18,7 +18,8 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const user_service_1 = require("./user.service");
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.getAllUser();
+    const query = req.query;
+    const result = yield user_service_1.UserServices.getAllUser(query);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: "retrieve all user  successfully.",
@@ -26,18 +27,29 @@ const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: result
     });
 }));
+const getSingleUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    console.log(id);
+    const result = yield user_service_1.UserServices.getSingleUser(id);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: "retrieve single user successfully.",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
+}));
 const meProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    console.log(user);
     const result = yield user_service_1.UserServices.meProfile(user);
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: "User login successfully",
+        message: "Retrive my Profile Data",
         statusCode: http_status_codes_1.StatusCodes.OK,
         data: result
     });
 }));
 exports.UserController = {
     getAllUsers,
-    meProfile
+    meProfile,
+    getSingleUser
 };
