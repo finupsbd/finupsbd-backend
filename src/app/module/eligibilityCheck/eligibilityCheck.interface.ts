@@ -15,28 +15,11 @@ export type BusinessOwnerType =
   | 'FRANCHISE';
 
 export type VehicleType =
-  | 'CAR'
-  | 'BIKE'
-  | 'TRUCK'
-  | 'BUS'
-  | 'VAN'
-  | 'SUV'
-  | 'MOTORCYCLE'
-  | 'SCOOTER'
-  | 'PICKUP'
-  | 'ATV'
-  | 'RV'
-  | 'FIRE_TRUCK'
-  | 'AMBULANCE'
-  | 'POLICE_CAR'
-  | 'TAXI'
-  | 'TRACTOR'
-  | 'SEMI_TRAILER'
-  | 'TRAIN'
-  | 'TRAM'
-  | 'FERRY'
-  | 'AIRPLANE'
-  | 'HELICOPTER';
+  | "CAR_SEDAN"
+  | "CAR_SUV"
+  | "CAR_HATCHBACK"
+  | "BIKE"
+
 
 export type ExistingLoanType =
   | 'HOME_LOAN'
@@ -62,6 +45,8 @@ export type TEligibilityCheck = {
   businessType?: string;
   sharePortion?: number;
   tradeLicenseAge?: number;
+  amount?: number;
+  tenure?: number;
 
   // Additional info fields
   vehicleType?: VehicleType;
@@ -99,3 +84,4 @@ export type TEligibilityCheck = {
   createdAt: Date;
   updatedAt: Date;
 }
+

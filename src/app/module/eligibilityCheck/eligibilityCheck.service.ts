@@ -20,7 +20,7 @@ const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string
   // const cleanData = removeNullFields(result)
   // if (cleanData.email) {
   // const success =  myCache.set(cleanData.email, cleanData);
-  // console.log(success)
+  // console.log(success) b
   // } 
 
 

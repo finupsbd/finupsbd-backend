@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthServices = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const app_1 = require("../../../app");
 const passwordHash_1 = require("../../utils/passwordHash");
@@ -47,7 +48,6 @@ const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         },
     });
     if (userIsExist) {
-        console.log(userIsExist);
         if (userIsExist && userIsExist.emailVerified === false) {
             const sendOtp = yield app_1.prisma.user.update({ where: { email }, data: { pin: pin, pinExpiry: pinExpiry } });
             const MailSubject = 'Your PIN for Verification';
@@ -225,8 +225,14 @@ const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () 
 });
 // Login user------------------------------------------------------------------------------------------------------------
 const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { email } = payload;
-    const user = yield app_1.prisma.user.findUnique({ where: { email } });
+    const user = yield app_1.prisma.user.findUnique({
+        where: { email },
+        include: {
+            profile: true
+        }
+    });
     console.log(user);
     if (!user) {
         throw new AppError_1.default(404, 'User not found');
@@ -245,6 +251,7 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const jwtPayload = {
         name: user === null || user === void 0 ? void 0 : user.name,
+        avater: (_a = user === null || user === void 0 ? void 0 : user.profile) === null || _a === void 0 ? void 0 : _a.avatar,
         userId: user === null || user === void 0 ? void 0 : user.id,
         role: user === null || user === void 0 ? void 0 : user.role,
         email: user === null || user === void 0 ? void 0 : user.email,
@@ -381,6 +388,66 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
         accessToken,
     };
 });
+const changePassword = (payload, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = user;
+    const userData = yield app_1.prisma.user.findUnique({ where: { email } });
+    if (!user) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
+    }
+    //   if (!user.emailVerified) {
+    //     throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,
+    //       'Your email is not verified. Please verify your email before reset your password'
+    //     );
+    //   }
+    if (user === null || user === void 0 ? void 0 : user.isActive) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
+    }
+    const passwordHashing = yield (0, passwordHash_1.passwordHash)(payload === null || payload === void 0 ? void 0 : payload.newPassword);
+    if (!(userData === null || userData === void 0 ? void 0 : userData.password)) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'User password not found');
+    }
+    const checkPassword = yield (0, passwordHash_1.comparePassword)(payload.oldPassword, userData.password);
+    if (!checkPassword) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Please Provide valid password');
+    }
+    yield app_1.prisma.user.update({
+        where: { email },
+        data: { password: passwordHashing },
+    });
+    const emailSubject = 'Password Changed';
+    const bodyText = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+      <h2 style="color: #333; text-align: center; font-size: 28px; margin-bottom: 20px; font-weight: bold;">Your Password Has Been Changed</h2>
+      <p style="font-size: 16px; color: #555; text-align: center;">Hello ${user === null || user === void 0 ? void 0 : user.name},</p>
+      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">We wanted to let you know that your password has been successfully updated. If you initiated this change, no further action is required.</p>
+
+      <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px;">
+        <p style="font-size: 16px; color: #555; font-weight: bold;">Important Security Information:</p>
+        <ul style="font-size: 14px; color: #555; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
+          <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
+          <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
+        </ul>
+      </div>
+
+      <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
+
+      <div style="text-align: center;">
+        <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">
+        <p>If you did not request this change, please ignore this email. This message was sent automatically, and you do not need to reply.</p>
+      </div>
+    </div>
+  </div>
+
+  `;
+    yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
+    return {};
+});
 exports.AuthServices = {
     signUp,
     validatePin,
@@ -388,4 +455,5 @@ exports.AuthServices = {
     forgetPassword,
     resetPassword,
     refreshToken,
+    changePassword
 };

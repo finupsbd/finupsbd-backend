@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { checkEligibilityWithLoanDetails } from "../utils/checkEligibility";
 
 
 
@@ -18,10 +17,5 @@ import { checkEligibilityWithLoanDetails } from "../utils/checkEligibility";
   
   export const carLoan = async (payload: any, query: Record<string, unknown>) => {
 
-       
-    const result = checkEligibilityWithLoanDetails(payload, 12000, 12);
-    console.log(result)
-
-
-    return result
+ 
   }

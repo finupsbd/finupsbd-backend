@@ -36,43 +36,6 @@ const globalErrorHandler = (err, req, res, next) => {
             stack: err.stack,
         });
     }
-    // if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    //   switch (err.code) {
-    //     case 'P2002': // Unique constraint failed
-    //       return res.status(400).json({
-    //         success: false,
-    //         message: `Validation Error: Unique constraint failed on the field: ${err?.meta?.target}`,
-    //         statusCode: StatusCodes.NOT_FOUND,
-    //         error: err,
-    //       });
-    //     case 'P2025': // Record not found
-    //       return res.status(404).json({
-    //         success: false,
-    //         message:
-    //           'The record you are trying to update or delete does not exist.',
-    //         error: err,
-    //       });
-    //     case 'P2003': // Foreign key constraint failed
-    //       return res.status(400).json({
-    //         success: false,
-    //         message: 'Foreign key constraint failed.',
-    //         error: err,
-    //       });
-    //     case 'P2000': // Value too long for column
-    //       return res.status(400).json({
-    //         success: false,
-    //         message: 'Value is too long for the column.',
-    //         error: err,
-    //       });
-    //     // Add more cases as needed
-    //     default:
-    //       return res.status(500).json({
-    //         success: false,
-    //         message: 'A database error occurred.',
-    //         error: err,
-    //       });
-    //   }
-    // }
     if (err instanceof client_1.Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
             // Unique constraint failed
@@ -121,15 +84,34 @@ const globalErrorHandler = (err, req, res, next) => {
         res.status(500).json({
             status: 'error',
             message: 'Unknown database error',
-            details: 'An unexpected error occurred while interacting with the database.',
+            details: err.message,
         });
     }
     // Handle Prisma Validation Errors
     if (err instanceof client_1.Prisma.PrismaClientValidationError) {
+        const regex = /Invalid value for argument `(.+?)`\.\s*Expected (.+?)\./;
+        const match = err.message.match(regex);
+        let invalidField = 'unknown';
+        let expectedValue = 'unknown';
+        if (match) {
+            invalidField = match[1];
+            expectedValue = match[2];
+        }
+        // Optionally, split and clean up the full error message for additional context.
+        const errorLines = err.message
+            .split('\n')
+            .map((line) => line.trim())
+            .filter((line) => line.length > 0);
         res.status(400).json({
-            status: 'fail',
+            success: false,
             message: 'Database query validation error',
-            details: err.message,
+            error: {
+                invalidField,
+                expectedValue,
+                // Provide the full error context as an array of lines
+                errorContext: errorLines,
+            },
+            stack: config_1.ConfigFile.NODE_ENV === 'production' ? null : err.stack,
         });
     }
     res.status(http_status_codes_1.StatusCodes.BAD_GATEWAY).json({

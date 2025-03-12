@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CarLoanValidationSchema = void 0;
+exports.SMELoanValidationSchema = void 0;
 const zod_1 = require("zod");
 // Define the schema for the features
-const featureCarLoanSchema = zod_1.z.object({
+const featureSMELoanSchema = zod_1.z.object({
     loanAmount: zod_1.z.string().min(1, 'Loan amount is required'),
     minimumAmount: zod_1.z.string().min(1, 'Minimum amount is required'),
     maximumAmount: zod_1.z.string().min(1, 'Maximum amount is required'),
@@ -12,7 +12,7 @@ const featureCarLoanSchema = zod_1.z.object({
     maximumYear: zod_1.z.string().min(1, 'Maximum year is required'),
 });
 // Define the schema for the eligibility
-const eligibilityCarLoanSchema = zod_1.z.object({
+const eligibilitySMELoanSchema = zod_1.z.object({
     condition: zod_1.z.string().min(1, 'Condition is required'),
     offer: zod_1.z.string().min(1, 'Offer is required'),
     minimumIncome: zod_1.z.number().positive().min(1, 'Minimum income is required'),
@@ -20,7 +20,7 @@ const eligibilityCarLoanSchema = zod_1.z.object({
     ageRequirement: zod_1.z.number().positive().min(1, 'Age requirement is required'),
 });
 // Define the schema for the fees and charges
-const feesChargesCarLoanSchema = zod_1.z.object({
+const feesChargesSMELoanSchema = zod_1.z.object({
     processingFee: zod_1.z.string().min(1, 'Processing fee is required'),
     earlySettlementFee: zod_1.z.string().min(1, 'Early settlement fee is required'),
     prepaymentFee: zod_1.z.string().min(1, 'Prepayment fee is required'),
@@ -28,8 +28,8 @@ const feesChargesCarLoanSchema = zod_1.z.object({
     penalCharge: zod_1.z.string().min(1, 'Penal charge is required'),
 });
 // Define the schema for the main bank object
-const createCarLoanValidateSchema = zod_1.z.object({
-    bankName: zod_1.z.string().min(1, 'Bank name is required'),
+const createSMELoanValidateSchema = zod_1.z.object({
+    bankName: zod_1.z.string().min(1, 'Bank name is r equired'),
     amount: zod_1.z.string().min(1, 'Amount is required'),
     coverImage: zod_1.z.object({}).optional(),
     periodMonths: zod_1.z.string().min(1, 'Period months is required'),
@@ -38,11 +38,11 @@ const createCarLoanValidateSchema = zod_1.z.object({
     monthlyEmi: zod_1.z.string().min(1, 'Monthly EMI is required'),
     totalAmount: zod_1.z.string().min(1, 'Total amount is required'),
     eligibleLoan: zod_1.z.string().min(1, 'Eligible loan is required'),
-    featuresCarLoan: featureCarLoanSchema.optional(),
-    eligibilityCarLoan: eligibilityCarLoanSchema.optional(),
-    feesChargesCarLoan: feesChargesCarLoanSchema.optional(),
+    featuresSMELoan: featureSMELoanSchema.optional(),
+    eligibilitySMELoan: eligibilitySMELoanSchema.optional(),
+    feesChargesSMELoan: feesChargesSMELoanSchema.optional(),
 });
-const updateCarLoanValidateSchema = zod_1.z.object({
+const updateSMELoanValidateSchema = zod_1.z.object({
     bankName: zod_1.z.string().min(1, 'Bank name is required').optional(),
     amount: zod_1.z.string().min(1, 'Amount is required').optional(),
     coverImage: zod_1.z.object({}).optional(),
@@ -52,11 +52,11 @@ const updateCarLoanValidateSchema = zod_1.z.object({
     monthlyEmi: zod_1.z.string().min(1, 'Monthly EMI is required').optional(),
     totalAmount: zod_1.z.string().min(1, 'Total amount is required').optional(),
     eligibleLoan: zod_1.z.string().min(1, 'Eligible loan is required').optional(),
-    featuresCarLoan: featureCarLoanSchema.optional(),
-    eligibilityCarLoan: eligibilityCarLoanSchema.optional(),
-    feesChargesCarLoan: feesChargesCarLoanSchema.optional(),
+    featuresSMELoan: featureSMELoanSchema.optional(),
+    eligibilitySMELoan: eligibilitySMELoanSchema.optional(),
+    feesChargesSMELoan: feesChargesSMELoanSchema.optional(),
 });
-exports.CarLoanValidationSchema = {
-    createCarLoanValidateSchema,
-    updateCarLoanValidateSchema
+exports.SMELoanValidationSchema = {
+    createSMELoanValidateSchema,
+    updateSMELoanValidateSchema
 };

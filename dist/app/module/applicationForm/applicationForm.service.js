@@ -13,73 +13,77 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationFromService = void 0;
-const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../app");
 const AppError_1 = __importDefault(require("../../error/AppError"));
-const generateApplicationId_1 = require("../../utils/generateApplicationId");
 const sendEmail_1 = __importDefault(require("../../utils/sendEmail"));
 const maskedMobileNumber_1 = __importDefault(require("../../utils/maskedMobileNumber"));
-const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 0, function* () {
-    payload.userId = user.userId;
-    payload.applicationId = (yield (0, generateApplicationId_1.generateApplicationId)());
-    const existingForm = yield app_1.prisma.applicationForm.findUnique({
-        where: { applicationId: payload.applicationId },
-    });
-    if (existingForm) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_GATEWAY, `ApplicationForm with ID ${payload.applicationId} already exists.`);
-    }
-    const result = yield app_1.prisma.applicationForm.create({
-        data: {
-            applicationId: payload.applicationId,
-            userId: payload.userId,
-            personalLoanId: payload.personalLoanId,
-            userInfo: {
-                create: payload.userInfo,
-            },
-            address: {
-                create: payload.address,
-            },
-            employmentFinancialInfo: {
-                create: payload.employmentFinancialInfo,
-            },
-            loanSpecifications: {
-                create: payload.loanSpecifications,
-            },
-            financialObligations: {
-                createMany: { data: payload.financialObligations },
-            },
-            uploadedDocuments: {
-                createMany: {
-                    data: payload.uploadedDocuments.map((doc) => ({
-                        type: doc.type,
-                        filePath: doc.filePath,
-                        fileSizeMB: doc.fileSizeMB,
-                        fileType: doc.fileType,
-                    })),
-                },
-            },
-        },
-        include: {
-            User: true,
-            personalLoan: true
-        }
-    });
-    return result;
-});
-const getAllApplicationForm = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield app_1.prisma.applicationForm.findMany({
-        include: {
-            User: true,
-            personalLoan: true,
-            address: true,
-            employmentFinancialInfo: true,
-            financialObligations: true,
-            loanSpecifications: true,
-            uploadedDocuments: true,
-        },
-    });
-    return result;
-});
+// const createApplicationForm = async (
+//   payload: TFullApplicationForm,
+//   user: TMiddlewareUser
+// ) => {
+//   payload.userId = user.userId;
+//   payload.applicationId = (await generateApplicationId()) as string;
+//   const existingForm = await prisma.applicationForm.findUnique({
+//     where: { applicationId: payload.applicationId },
+//   });
+//   if (existingForm) {
+//     throw new AppError(
+//       StatusCodes.BAD_GATEWAY,
+//       `ApplicationForm with ID ${payload.applicationId} already exists.`
+//     );
+//   }
+//   const result = await prisma.applicationForm.create({
+//     data: {
+//       applicationId: payload.applicationId,
+//       userId: payload.userId,
+//       personalLoanId: payload.personalLoanId,
+//       userInfo: {
+//         create: payload.userInfo,
+//       },
+//       address: {
+//         create: payload.address,
+//       },
+//       employmentFinancialInfo: {
+//         create: payload.employmentFinancialInfo,
+//       },
+//       loanSpecifications: {
+//         create: payload.loanSpecifications,
+//       },
+//       financialObligations: {
+//         createMany: { data: payload.financialObligations },
+//       },
+//       uploadedDocuments: {
+//         createMany: {
+//           data: payload.uploadedDocuments.map((doc) => ({
+//             type: doc.type,
+//             filePath: doc.filePath,
+//             fileSizeMB: doc.fileSizeMB,
+//             fileType: doc.fileType,
+//           })),
+//         },
+//       },
+//     },
+//     include:{
+//       User: true,
+//       personalLoan: true
+//     }
+//   });
+//   return result;
+// };
+// const getAllApplicationForm = async () => {
+//   const result = await prisma.applicationForm.findMany({
+//     include: {
+//       User: true,
+//       personalLoan: true,
+//       address: true,
+//       employmentFinancialInfo: true,
+//       financialObligations: true,
+//       loanSpecifications: true,
+//       uploadedDocuments: true,
+//     },
+//   });
+//   return result;
+// };
 const applicationTracking = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(payload);
     const result = yield app_1.prisma.applicationForm.findFirst({
@@ -172,8 +176,6 @@ const applicationForget = (payload) => __awaiter(void 0, void 0, void 0, functio
     };
 });
 exports.ApplicationFromService = {
-    createApplicationForm,
-    getAllApplicationForm,
     applicationTracking,
     applicationForget,
 };

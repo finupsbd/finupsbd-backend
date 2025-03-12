@@ -13,29 +13,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationController = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const applicationForm_service_1 = require("./applicationForm.service");
 const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.user;
-    const result = yield applicationForm_service_1.ApplicationFromService.createApplicationForm(req.body, user);
-    (0, sendResponce_1.default)(res, {
-        success: true,
-        message: 'Application Create successfully',
-        statusCode: http_status_codes_1.StatusCodes.CREATED,
-        data: result,
-    });
+    if (!req.files) {
+        throw new Error('No files were uploaded');
+    }
+    // const saveImage = files.images?.map( async (file: any) => {
+    //   return await sendImageToCloud(file.buffer)
+    // })
+    // const user = req.user as TMiddlewareUser;
+    // const result = await ApplicationFromService.createApplicationForm(
+    //   req.body,
+    //   user
+    // );
+    // sendResponses(res, {
+    //   success: true,
+    //   message: 'Application Create successfully',
+    //   statusCode: StatusCodes.CREATED,
+    //   data: result,
+    // });
 }));
-const getAllApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield applicationForm_service_1.ApplicationFromService.getAllApplicationForm();
-    (0, sendResponce_1.default)(res, {
-        success: true,
-        message: 'Application Create successfully',
-        statusCode: http_status_codes_1.StatusCodes.CREATED,
-        data: result,
-    });
-}));
+// const getAllApplicationForm = catchAsync(async (req, res) => {
+//   const result = await ApplicationFromService.getAllApplicationForm();
+//   sendResponses(res, {
+//     success: true,
+//     message: 'Application Create successfully',
+//     statusCode: StatusCodes.CREATED,
+//     data: result,
+//   });
+// });
 const applicationTracking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield applicationForm_service_1.ApplicationFromService.applicationTracking(req.body);
     (0, sendResponce_1.default)(res, {
@@ -55,8 +65,7 @@ const applicationForget = (0, catchAsync_1.default)((req, res) => __awaiter(void
     });
 }));
 exports.ApplicationController = {
-    createApplicationForm,
-    getAllApplicationForm,
+    // createApplicationForm,
     applicationTracking,
     applicationForget,
 };

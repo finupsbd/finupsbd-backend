@@ -17,6 +17,7 @@ const personalLoan_route_1 = require("../module/loans/personalLoan/personalLoan.
 const eligibilityCheck_route_1 = require("../module/eligibilityCheck/eligibilityCheck.route");
 const homeLoan_route_1 = require("../module/loans/homeLoan/homeLoan.route");
 const carLoan_route_1 = require("../module/loans/carLoan/carLoan.route");
+const smeLoan_route_1 = require("../module/loans/smeLoan/smeLoan.route");
 const router = express_1.default.Router();
 const moduleRouter = [
     {
@@ -66,6 +67,10 @@ const moduleRouter = [
     {
         path: '/car-loan',
         route: carLoan_route_1.CarLoanRouter
+    },
+    {
+        path: '/sme-loan',
+        route: smeLoan_route_1.SMELoanRouter
     },
 ];
 moduleRouter.forEach(item => router.use(item.path, item.route));

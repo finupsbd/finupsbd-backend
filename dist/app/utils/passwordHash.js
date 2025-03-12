@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.passwordHash = void 0;
+exports.comparePassword = exports.passwordHash = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = require("../../config");
 const passwordHash = (password) => __awaiter(void 0, void 0, void 0, function* () {
@@ -21,3 +21,8 @@ const passwordHash = (password) => __awaiter(void 0, void 0, void 0, function* (
     return result;
 });
 exports.passwordHash = passwordHash;
+const comparePassword = (myPlaintextPassword, hashPassword) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bcrypt_1.default.compare(myPlaintextPassword, hashPassword);
+    return result;
+});
+exports.comparePassword = comparePassword;

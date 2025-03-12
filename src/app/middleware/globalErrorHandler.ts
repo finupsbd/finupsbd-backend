@@ -51,7 +51,7 @@ const globalErrorHandler = (
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
 
-  
+
     if (err.code === 'P2002') {
       // Unique constraint failed
       res.status(400).json({
@@ -90,7 +90,7 @@ const globalErrorHandler = (
         error: err,
       });
     }
-    
+
   }
 
   // Handle Prisma Unknown Errors
@@ -98,34 +98,30 @@ const globalErrorHandler = (
     res.status(500).json({
       status: 'error',
       message: 'Unknown database error',
-      details:
-        'An unexpected error occurred while interacting with the database.',
+      details: err.message,
     });
   }
 
   // Handle Prisma Validation Errors
   if (err instanceof Prisma.PrismaClientValidationError) {
-    // Use a regex to capture the invalid field and expected type from the error message.
-    // For example, for an error like:
-    // "Invalid value for argument `businessOwnerType`. Expected BusinessOwnerType."
     const regex = /Invalid value for argument `(.+?)`\.\s*Expected (.+?)\./;
     const match = err.message.match(regex);
-  
+
     let invalidField = 'unknown';
     let expectedValue = 'unknown';
-  
+
     if (match) {
       invalidField = match[1];
       expectedValue = match[2];
     }
-  
+
     // Optionally, split and clean up the full error message for additional context.
     const errorLines = err.message
       .split('\n')
       .map((line) => line.trim())
       .filter((line) => line.length > 0);
-  
-    return res.status(400).json({
+
+    res.status(400).json({
       success: false,
       message: 'Database query validation error',
       error: {
@@ -137,8 +133,8 @@ const globalErrorHandler = (
       stack: ConfigFile.NODE_ENV === 'production' ? null : err.stack,
     });
   }
-  
-  
+
+
   res.status(StatusCodes.BAD_GATEWAY).json({
     success: false,
     message: newMessage,

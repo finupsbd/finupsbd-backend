@@ -8,13 +8,13 @@ import { upload } from '../../utils/sendImageToCloud';
 
 const route = express.Router();
 
-route.post(
-  '/',
-  auth('USER', "ADMIN", "SUPER_ADMIN"), 
-  upload.fields([{ name: 'images' }]), 
-  ApplicationController.createApplicationForm
-); 
-route.get('/', ApplicationController.getAllApplicationForm);
+// route.post(
+//   '/',
+//   auth('USER', "ADMIN", "SUPER_ADMIN"), 
+//   upload.fields([{ name: 'images' }]), 
+//   ApplicationController.createApplicationForm
+// ); 
+// route.get('/', ApplicationController.getAllApplicationForm);
 
 
 

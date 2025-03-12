@@ -30,16 +30,16 @@ const createApplicationForm = catchAsync(async (req, res) => {
   // });
 });
 
-const getAllApplicationForm = catchAsync(async (req, res) => {
-  const result = await ApplicationFromService.getAllApplicationForm();
+// const getAllApplicationForm = catchAsync(async (req, res) => {
+//   const result = await ApplicationFromService.getAllApplicationForm();
 
-  sendResponses(res, {
-    success: true,
-    message: 'Application Create successfully',
-    statusCode: StatusCodes.CREATED,
-    data: result,
-  });
-});
+//   sendResponses(res, {
+//     success: true,
+//     message: 'Application Create successfully',
+//     statusCode: StatusCodes.CREATED,
+//     data: result,
+//   });
+// });
 
 const applicationTracking = catchAsync(async (req, res) => {
   const result = await ApplicationFromService.applicationTracking(req.body);
@@ -64,8 +64,7 @@ const applicationForget = catchAsync(async (req, res) => {
 });
 
 export const ApplicationController = {
-  createApplicationForm,
-  getAllApplicationForm,
+  // createApplicationForm,
   applicationTracking,
   applicationForget,
 };

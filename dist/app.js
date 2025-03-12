@@ -28,10 +28,13 @@ exports.prisma = new client_1.PrismaClient({
 // log: ['query', 'info', 'warn', 'error'],
 });
 app.use((0, cookie_parser_1.default)());
-app.use(express_1.default.json());
+app.use(express_1.default.json({ limit: "50mb" }));
+app.use(express_1.default.urlencoded({ limit: "50mb", extended: true }));
 app.use((0, cors_1.default)({
-    origin: '*',
-    credentials: true
+    origin: "*", // Allow only frontend origin
+    // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Allow cookies and authentication headers
+    // allowedHeaders: "Content-Type,Authorization"
 }));
 (0, DB_1.default)();
 app.use(passport_1.default.initialize());

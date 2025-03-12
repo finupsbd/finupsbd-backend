@@ -34,11 +34,6 @@ const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
             ApplicationForm: {
                 include: {
                     User: true,
-                    personalLoan: {
-                        select: {
-                            bankName: true,
-                        }
-                    }
                 }
             }
         },

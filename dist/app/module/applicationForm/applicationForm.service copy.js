@@ -1,3 +1,4 @@
+"use strict";
 // import { StatusCodes } from 'http-status-codes';
 // import { prisma } from '../../../app';
 // import AppError from '../../error/AppError';
@@ -6,26 +7,21 @@
 // import { generateApplicationId } from '../../utils/generateApplicationId';
 // import sendEmail from '../../utils/sendEmail';
 // import maskMobileNumber from '../../utils/maskedMobileNumber';
-
 // const createApplicationForm = async (
 //   payload: TFullApplicationForm,
 //   user: TMiddlewareUser
 // ) => {
 //   payload.userId = user.userId;
 //   payload.applicationId = (await generateApplicationId()) as string;
-
 //   const existingForm = await prisma.applicationForm.findUnique({
 //     where: { applicationId: payload.applicationId },
 //   });
-
 //   if (existingForm) {
 //     throw new AppError(
 //       StatusCodes.BAD_GATEWAY,
 //       `ApplicationForm with ID ${payload.applicationId} already exists.`
 //     );
 //   }
-
-  
 //   const result = await prisma.applicationForm.create({
 //     data: {
 //       applicationId: payload.applicationId,
@@ -62,10 +58,8 @@
 //       personalLoan: true
 //     }
 //   });
-
 //   return result;
 // };
-
 // const getAllApplicationForm = async () => {
 //   const result = await prisma.applicationForm.findMany({
 //     include: {
@@ -76,13 +70,10 @@
 //       financialObligations: true,
 //       loanSpecifications: true,
 //       uploadedDocuments: true,
-      
 //     },
 //   });
-
 //   return result;
 // };
-
 // const applicationTracking = async (payload: {
 //   applicationId: string;
 //   phone: string;
@@ -100,17 +91,14 @@
 //       loanSpecifications: true
 //     },
 //   });
-
 //   if (!result) {
 //     throw new AppError(
 //       404,
 //       'Application not found please enter valid Phone and Application ID'
 //     );
 //   }
-
 //   return result;
 // };
-
 // const applicationForget = async (payload: { email: string; phone: string }) => {
 //   const result = await prisma.user.findFirst({
 //     where: {
@@ -129,7 +117,6 @@
 //       },
 //     },
 //   });
-
 //   if (
 //     !result ||
 //     !result.ApplicationForm ||
@@ -137,13 +124,11 @@
 //   ) {
 //     throw new AppError(404, 'No application found for this user.');
 //   }
-
 //   // Prepare application details for email
 //   const applications = result.ApplicationForm.map((app) => ({
 //     applicationId: app.applicationId,
 //     loanType: app.loanSpecifications?.loanType || 'Unknown',
 //   }));
-
 //   const applicationDetails = applications
 //     .map(
 //       (app) =>
@@ -179,21 +164,15 @@
 //     </footer>
 //   </div>
 // `;
-
-
 //   await sendEmail(result.email, subject, html);
-
 //   const maskedPhoneNumber = maskMobileNumber(result.phone)
 //   const userEmail = result.email
 //   // const maskedEmailAddress =  maskMobileNumber(result.email)
-
-
 //   return {
 //     maskedPhoneNumber, 
 //     userEmail
 //   };
 // };
-
 // export const ApplicationFromService = {
 //   createApplicationForm,
 //   getAllApplicationForm,

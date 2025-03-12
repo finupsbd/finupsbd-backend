@@ -13,23 +13,18 @@ const getAllUser = async () => {
 
 const meProfile = async (user: any) => {
   const result = await prisma.user.findFirst({
-    where: {email: user?.email as string},
+    where: { email: user?.email as string },
     select: {
-      name: true, 
-      email: true, 
+      name: true,
+      email: true,
       phone: true,
-      role: true, 
+      role: true,
       profile: true,
       isActive: true,
       emailVerified: true,
       ApplicationForm: {
         include: {
           User: true,
-          personalLoan: {
-            select: {
-              bankName: true, 
-            }
-          }
         }
       }
     },

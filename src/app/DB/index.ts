@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client"
 
 const superUser: Prisma.UserCreateInput = {
   name: 'Super Admin',
+  userId: '250112001',
   email: 'super.admin@gmail.com',
   phone: '0170000000',
   password:  ConfigFile.SUPER_ADMIN_PASSWORD as string,

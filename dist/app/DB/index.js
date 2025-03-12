@@ -17,6 +17,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = require("../../config");
 const superUser = {
     name: 'Super Admin',
+    userId: '250112001',
     email: 'super.admin@gmail.com',
     phone: '0170000000',
     password: config_1.ConfigFile.SUPER_ADMIN_PASSWORD,

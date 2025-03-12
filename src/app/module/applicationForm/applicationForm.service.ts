@@ -1,87 +1,84 @@
-import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../../../app';
 import AppError from '../../error/AppError';
-import { TFullApplicationForm } from './application.interface';
-import { TMiddlewareUser } from '../../types/commonTypes';
-import { generateApplicationId } from '../../utils/generateApplicationId';
+
 import sendEmail from '../../utils/sendEmail';
 import maskMobileNumber from '../../utils/maskedMobileNumber';
 
-const createApplicationForm = async (
-  payload: TFullApplicationForm,
-  user: TMiddlewareUser
-) => {
-  payload.userId = user.userId;
-  payload.applicationId = (await generateApplicationId()) as string;
+// const createApplicationForm = async (
+//   payload: TFullApplicationForm,
+//   user: TMiddlewareUser
+// ) => {
+//   payload.userId = user.userId;
+//   payload.applicationId = (await generateApplicationId()) as string;
 
-  const existingForm = await prisma.applicationForm.findUnique({
-    where: { applicationId: payload.applicationId },
-  });
+//   const existingForm = await prisma.applicationForm.findUnique({
+//     where: { applicationId: payload.applicationId },
+//   });
 
-  if (existingForm) {
-    throw new AppError(
-      StatusCodes.BAD_GATEWAY,
-      `ApplicationForm with ID ${payload.applicationId} already exists.`
-    );
-  }
+//   if (existingForm) {
+//     throw new AppError(
+//       StatusCodes.BAD_GATEWAY,
+//       `ApplicationForm with ID ${payload.applicationId} already exists.`
+//     );
+//   }
 
   
-  const result = await prisma.applicationForm.create({
-    data: {
-      applicationId: payload.applicationId,
-      userId: payload.userId,
-      personalLoanId: payload.personalLoanId,
-      userInfo: {
-        create: payload.userInfo,
-      },
-      address: {
-        create: payload.address,
-      },
-      employmentFinancialInfo: {
-        create: payload.employmentFinancialInfo,
-      },
-      loanSpecifications: {
-        create: payload.loanSpecifications,
-      },
-      financialObligations: {
-        createMany: { data: payload.financialObligations },
-      },
-      uploadedDocuments: {
-        createMany: {
-          data: payload.uploadedDocuments.map((doc) => ({
-            type: doc.type,
-            filePath: doc.filePath,
-            fileSizeMB: doc.fileSizeMB,
-            fileType: doc.fileType,
-          })),
-        },
-      },
-    },
-    include:{
-      User: true,
-      personalLoan: true
-    }
-  });
+//   const result = await prisma.applicationForm.create({
+//     data: {
+//       applicationId: payload.applicationId,
+//       userId: payload.userId,
+//       personalLoanId: payload.personalLoanId,
+//       userInfo: {
+//         create: payload.userInfo,
+//       },
+//       address: {
+//         create: payload.address,
+//       },
+//       employmentFinancialInfo: {
+//         create: payload.employmentFinancialInfo,
+//       },
+//       loanSpecifications: {
+//         create: payload.loanSpecifications,
+//       },
+//       financialObligations: {
+//         createMany: { data: payload.financialObligations },
+//       },
+//       uploadedDocuments: {
+//         createMany: {
+//           data: payload.uploadedDocuments.map((doc) => ({
+//             type: doc.type,
+//             filePath: doc.filePath,
+//             fileSizeMB: doc.fileSizeMB,
+//             fileType: doc.fileType,
+//           })),
+//         },
+//       },
+//     },
+//     include:{
+//       User: true,
+//       personalLoan: true
+//     }
+//   });
 
-  return result;
-};
+//   return result;
+// };
 
-const getAllApplicationForm = async () => {
-  const result = await prisma.applicationForm.findMany({
-    include: {
-      User: true,
-      personalLoan: true,
-      address: true,
-      employmentFinancialInfo: true,
-      financialObligations: true,
-      loanSpecifications: true,
-      uploadedDocuments: true,
+// const getAllApplicationForm = async () => {
+//   const result = await prisma.applicationForm.findMany({
+//     include: {
+//       User: true,
+//       personalLoan: true,
+//       address: true,
+//       employmentFinancialInfo: true,
+//       financialObligations: true,
+//       loanSpecifications: true,
+//       uploadedDocuments: true,
       
-    },
-  });
+//     },
+//   });
 
-  return result;
-};
+//   return result;
+// };
 
 const applicationTracking = async (payload: {
   applicationId: string;
@@ -195,8 +192,6 @@ const applicationForget = async (payload: { email: string; phone: string }) => {
 };
 
 export const ApplicationFromService = {
-  createApplicationForm,
-  getAllApplicationForm,
   applicationTracking,
   applicationForget,
 };
