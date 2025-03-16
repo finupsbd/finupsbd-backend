@@ -19,10 +19,15 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.homeLoan = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
+const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../../app");
+const AppError_1 = __importDefault(require("../../../error/AppError"));
 const calculateEMI_1 = require("../utils/calculateEMI");
 const suggestEligibleLoanAmount_1 = require("../utils/suggestEligibleLoanAmount");
 const homeLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,6 +37,7 @@ const homeLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function*
         const pageSize = query.pageSize ? Number(query.pageSize) : 10;
         // Remove pagination keys from query to use the rest as filters
         const { page: _page, pageSize: _pageSize, amount = 200000, searchTerm, interestRate } = query, filter = __rest(query, ["page", "pageSize", "amount", "searchTerm", "interestRate"]);
+        console.log({ interestRate });
         const buildFilters = () => {
             const filters = {};
             if (typeof searchTerm === 'string' && searchTerm.trim()) {
@@ -78,10 +84,12 @@ const homeLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function*
             if (payload === null || payload === void 0 ? void 0 : payload.haveAnyLoan) {
                 payload.monthlyIncome = payload.monthlyIncome - ((_b = payload.EMIAmountBDT) !== null && _b !== void 0 ? _b : 0);
             }
-            if (payload === null || payload === void 0 ? void 0 : payload.haveAnyCreditCard) {
-                payload.monthlyIncome = payload.monthlyIncome - 2000;
+            if ((payload === null || payload === void 0 ? void 0 : payload.haveAnyCreditCard) && (payload === null || payload === void 0 ? void 0 : payload.cardType) === "CREDIT_CARD") {
+                payload.monthlyIncome = Number(payload.monthlyIncome) - (Number(payload.numberOfCard) * 2000);
             }
-            console.log(payload === null || payload === void 0 ? void 0 : payload.monthlyIncome);
+            if ((payload === null || payload === void 0 ? void 0 : payload.profession) === "BUSINESS_OWNER") {
+                throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "you");
+            }
             // const res = calculateLoanDetails(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure, Number(loan.processingFee));
             const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
             const totalRepayment = monthlyEMI * payload.expectedLoanTenure;

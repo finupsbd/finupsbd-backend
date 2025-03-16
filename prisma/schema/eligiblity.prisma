@@ -65,30 +65,31 @@ model EligibilityCheck {
 
     // Additional info
     vehicleType        VehicleType?
-    expectedLoanTenure Int
-    monthlyIncome      Int
-    jobLocation        String
+    expectedLoanTenure Int?
+    monthlyIncome      Int?
+    jobLocation        String?
 
     // Rental income
-    haveAnyRentalIncome Boolean
+    haveAnyRentalIncome Boolean?
     selectArea          String?
     rentalIncome        Int?
 
     // Existing loan details
-    haveAnyLoan      Boolean
+    haveAnyLoan      Boolean?
     numberOfLoan     Int?
     existingLoanType ExistingLoanType?
     EMIAmountBDT     Int?
     InterestRate     Decimal?          @db.Decimal(5, 2)
 
     // Credit card details
-    haveAnyCreditCard Boolean
+    haveAnyCreditCard Boolean?
     numberOfCard      Int?
     cardType          CardType?
     cardLimitBDT      Int?
 
     // Secondary applicant
-    secondaryApplicant Boolean
+    secondaryApplicant Boolean?
+    termsAccepted Boolean?
 
     // Contact / personal info
     name          String

@@ -15,7 +15,7 @@ import smeLoan from "./eligibilityCheck.utils/smeLoan";
 
 const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
 
-
+console.log(payload)
   const result = await prisma.eligibilityCheck.create({ data: payload })
   // const cleanData = removeNullFields(result)
   // if (cleanData.email) {

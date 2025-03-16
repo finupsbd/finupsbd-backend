@@ -74,6 +74,7 @@ export type TEligibilityCheck = {
 
   // Secondary applicant
   secondaryApplicant: boolean;
+  termsAccepted?: boolean
 
   // Contact / personal info
   name: string;

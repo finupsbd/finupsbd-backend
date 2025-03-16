@@ -21,6 +21,7 @@ const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../app");
 const smeLoan_1 = __importDefault(require("./eligibilityCheck.utils/smeLoan"));
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload);
     const result = yield app_1.prisma.eligibilityCheck.create({ data: payload });
     // const cleanData = removeNullFields(result)
     // if (cleanData.email) {

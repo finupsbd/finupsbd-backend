@@ -24,6 +24,7 @@ const config_1 = require("../../../config");
 const generateUserId_1 = require("../../utils/generateUserId");
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
+const generateCustomPassword_1 = require("../../utils/generateCustomPassword");
 //Sign up User
 const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const isAlreadySignUpRequest = yield app_1.prisma.user.findUnique({
@@ -223,7 +224,6 @@ const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () 
     yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
     return {};
 });
-// Login user------------------------------------------------------------------------------------------------------------
 const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { email } = payload;
@@ -275,41 +275,73 @@ const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
     const { email } = payload;
     const user = yield app_1.prisma.user.findUnique({ where: { email } });
     if (!user) {
-        throw new AppError_1.default(404, 'User not found');
+        throw new AppError_1.default(404, 'User not found! Please provide valid email !');
     }
-    if (!user.emailVerified) {
-        throw new AppError_1.default(502, 'Your email is not verified. Please verify your email');
-    }
+    // if (!user.emailVerified) {
+    //   throw new AppError(502, 'Your email is not verified. Please verify your email');
+    // }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
         throw new AppError_1.default(502, 'Your account is inactive. Please contact support.');
     }
-    //todo forget password
-    const pin = Math.floor(100000 + Math.random() * 900000).toString();
-    const pinExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
-    const resetPin = yield app_1.prisma.user.update({
+    const newPassword = (0, generateCustomPassword_1.generateCustomPassword)();
+    console.log(newPassword);
+    const newUserPassword = yield app_1.prisma.user.update({
         where: { email },
         data: {
-            pin: pin,
-            pinExpiry: pinExpiry,
-            emailVerified: false,
+            password: newPassword
         },
     });
-    const emailSubject = 'Your PIN for Verification';
+    // const pin = Math.floor(100000 + Math.random() * 900000).toString();
+    // const pinExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
+    //   const resetPin = await prisma.user.update({
+    //     where: { email },
+    //     data: {
+    //       pin: pin,
+    //       pinExpiry: pinExpiry,
+    //       emailVerified: false,
+    //     },
+    //   });
+    const emailSubject = 'Your New Password';
     const bodyText = `
-  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-      <h2 style="color: #333; text-align: center; font-size: 24px; margin-bottom: 20px;">Your Verification PIN Code</h2>
-      <p style="font-size: 16px; color: #555;">Hello ${user === null || user === void 0 ? void 0 : user.name}</p>
-      <p style="font-size: 16px; color: #555;">Your PIN code for verification is:</p>
-      <h2 style="color: #007BFF; font-size: 36px; font-weight: bold; text-align: center; margin: 20px 0;">${resetPin === null || resetPin === void 0 ? void 0 : resetPin.pin}</h2>
-      <p style="font-size: 16px; color: #555;"><strong>🔒 Security Note:</strong> This PIN is valid for <strong>15 minutes</strong> only. Please do not share it with anyone.</p>
-      <p style="font-size: 16px; color: #555;">If you did not request this PIN, please ignore this email or contact our support team immediately.</p>
+<div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7fa; padding: 40px;">
+  <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+    <!-- Header Section -->
+    <div style="background-color: #007BFF; padding: 20px; text-align: center;">
+      <h1 style="color: #ffffff; font-size: 28px; margin: 0;">Your New Password</h1>
+    </div>
+    <!-- Body Section -->
+    <div style="padding: 30px;">
+      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Hello ${user === null || user === void 0 ? void 0 : user.name},</p>
+      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">
+        We have generated a new password for your account. Please use the password below to log in. For your security, we highly recommend that you change it immediately after logging in.
+      </p>
+      <div style="text-align: center; margin: 30px 0;">
+        <span style="display: inline-block; background-color: #f0f0f0; padding: 15px 25px; font-size: 24px; letter-spacing: 2px; border-radius: 4px; color: #333;">
+          ${newUserPassword === null || newUserPassword === void 0 ? void 0 : newUserPassword.password}
+        </span>
+      </div>
+      <p style="font-size: 14px; color: #777; margin-bottom: 20px;">
+        If you did not request a new password, please contact our support team immediately.
+      </p>
       <p style="font-size: 16px; color: #555;">Thank you,</p>
-      <p style="font-size: 16px; color: #555; font-weight: bold;">PinUpsDB</p>
+      <p style="font-size: 16px; color: #555; font-weight: bold;">finupsBD</p>
+    </div>
+    <!-- Footer Section -->
+    <div style="background-color: #f0f0f0; padding: 15px; text-align: center;">
+      <p style="font-size: 14px; color: #777; margin: 0;">&copy; ${new Date().getFullYear()} finupsBD. All rights reserved.</p>
     </div>
   </div>
+</div>
 `;
     yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
+    if (user) {
+        yield app_1.prisma.user.update({
+            where: { email },
+            data: {
+                password: yield (0, passwordHash_1.passwordHash)(user === null || user === void 0 ? void 0 : user.password)
+            },
+        });
+    }
     return {};
 });
 const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {

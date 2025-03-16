@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../../../app";
+import AppError from "../../../error/AppError";
 import { TEligibilityCheck } from "../eligibilityCheck.interface";
 import { calculateEMI } from "../utils/calculateEMI";
 import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
@@ -12,7 +14,7 @@ export const homeLoan = async (payload: TEligibilityCheck, query: Record<string,
 
     // Remove pagination keys from query to use the rest as filters
     const { page: _page, pageSize: _pageSize, amount = 200000, searchTerm, interestRate, ...filter } = query;
-
+    console.log({interestRate})
 
     const buildFilters = () => {
       const filters: any = {};
@@ -56,19 +58,21 @@ export const homeLoan = async (payload: TEligibilityCheck, query: Record<string,
       if (payload?.monthlyIncome) {
         payload.monthlyIncome = payload.monthlyIncome / 2
       }
-      if (payload?.haveAnyRentalIncome) {
+      if (payload?.haveAnyRentalIncome) { 
         payload.monthlyIncome = payload?.monthlyIncome + (payload?.rentalIncome ?? 0);
       }
       if (payload?.haveAnyLoan) {
         payload.monthlyIncome = payload.monthlyIncome - (payload.EMIAmountBDT ?? 0);
       }
 
-      if (payload?.haveAnyCreditCard) {
-        payload.monthlyIncome = payload.monthlyIncome - 2000;
+      if (payload?.haveAnyCreditCard && payload?.cardType === "CREDIT_CARD") {
+        payload.monthlyIncome = Number(payload.monthlyIncome) - (Number(payload.numberOfCard) * 2000);
       }
 
+      if(payload?.profession === "BUSINESS_OWNER") {
+          throw new AppError(StatusCodes.NOT_FOUND, "you")
+      }
 
-      console.log(payload?.monthlyIncome)
 
 
 
@@ -87,7 +91,7 @@ export const homeLoan = async (payload: TEligibilityCheck, query: Record<string,
         bankName: loan.bankName,
         amount: amount,
         periodMonths: payload.expectedLoanTenure,
-        loanType: loan.loanType,
+        loanType: loan.loanType, 
         monthlyEMI: monthlyEMI,
         totalRepayment: totalRepayment,
         coverImage: loan.coverImage,

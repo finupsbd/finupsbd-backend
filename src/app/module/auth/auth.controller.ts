@@ -45,6 +45,9 @@ const login = catchAsync(async (req, res) => {
   })
 });
 
+
+
+
 const forgetPassword = catchAsync(async (req, res) => {
   const result = await AuthServices.forgetPassword(req.body);
 
@@ -57,6 +60,9 @@ const forgetPassword = catchAsync(async (req, res) => {
   })
 
 });
+
+
+
 
 const resetPassword = catchAsync(async (req, res) => {
   const result = await AuthServices.resetPassword(req.body);
