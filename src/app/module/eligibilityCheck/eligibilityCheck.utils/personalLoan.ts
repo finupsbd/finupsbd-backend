@@ -6,12 +6,20 @@ import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
 
 export const personalLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
   try {
+
+    const forEligiblity = {...payload}
+    
+
+ 
     // Extract pagination parameters and default to page 1 and 10 items per page if not provided.
     const page = query.page ? Number(query.page) : 1;
-    const pageSize = query.pageSize ? Number(query.pageSize) : 10;
+    const pageSize = query.pageSize ? Number(query.pageSize) : 2;
 
     // Remove pagination keys from query to use the rest as filters
-    const { page: _page, pageSize: _pageSize, amount = 200000, searchTerm, interestRate, ...filter } = query;
+    const { page: _page, pageSize: _pageSize, sortOrder, amount = 200000, searchTerm, interestRate, ...filter } = query;
+
+
+
 
 
     const buildFilters = () => {
@@ -39,7 +47,7 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
         skip: Math.max(0, (page - 1) * pageSize),
         take: pageSize,
         // Optionally, order by a specific field (e.g., createdAt)
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: 'asc' },
         include: {
           eligibility: true,
           features: true,
@@ -52,7 +60,7 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     ]);
     
 
-    const suggestedLoans = loans.map((loan) => {
+    const suggestedLoans = loans.map( (loan) => {
 
       // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
       if (payload?.monthlyIncome) {
@@ -60,9 +68,15 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
       }
       if (payload?.haveAnyRentalIncome) {
         payload.monthlyIncome = payload?.monthlyIncome + (payload?.rentalIncome ?? 0);
+        if (forEligiblity) {
+          forEligiblity.monthlyIncome = forEligiblity.monthlyIncome + (payload?.rentalIncome ?? 0);
+        }
       }
       if (payload?.haveAnyLoan) {
         payload.monthlyIncome = payload.monthlyIncome - (payload.EMIAmountBDT ?? 0);
+        if (forEligiblity) {
+          forEligiblity.monthlyIncome = forEligiblity.monthlyIncome - (payload.EMIAmountBDT ?? 0);
+        }
       }
 
       if (payload?.haveAnyCreditCard) {
@@ -70,20 +84,17 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
       }
 
 
-      console.log(payload?.monthlyIncome)
-
-
-
       // const res = calculateLoanDetails(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure, Number(loan.processingFee));
-
+      console.log("For eligiblity check data", forEligiblity)
 
 
       const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
       const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
-      const eligibleLoanAmount = suggestEligibleLoanAmount(payload?.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure); 
+      const eligibleLoanAmount = suggestEligibleLoanAmount(forEligiblity?.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure); 
       // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
       // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
 
+ 
       return {
         id: loan.id,
         bankName: loan.bankName,
@@ -96,11 +107,20 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
         interestRate: loan.interestRate,
         processingFee: loan.processingFee,
         eligibleLoan: eligibleLoanAmount,
-        features: loan.features,
-        feesCharges: loan.feesCharges,
-        eligibility: loan.eligibility,
+          features: loan.features,
+          feesCharges: loan.feesCharges,
+          eligibility: loan.eligibility,
       };
     });
+
+
+    if (typeof sortOrder === 'string') {
+      if (sortOrder.toLowerCase() === 'desc') {
+        suggestedLoans.sort((a, b) => b.eligibleLoan - a.eligibleLoan);
+      } else if (sortOrder.toLowerCase() === 'asc') {
+        suggestedLoans.sort((a, b) => a.eligibleLoan - b.eligibleLoan);
+      }
+    }
 
     return {
       data: suggestedLoans,

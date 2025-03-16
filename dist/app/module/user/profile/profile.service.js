@@ -30,7 +30,6 @@ const createProfile = (payload, user, image) => __awaiter(void 0, void 0, void 0
             profile: true
         }
     });
-    console.log(result);
 });
 exports.ProfileServices = {
     createProfile,

@@ -29,7 +29,6 @@ const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
 }));
 const getSingleUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    console.log(id);
     const result = yield user_service_1.UserServices.getSingleUser(id);
     (0, sendResponce_1.default)(res, {
         success: true,

@@ -3,13 +3,13 @@ export interface TPersonalLoan {
     id?: string;
     bankName: string;
     coverImage?: string | undefined;
-    amount: string;
-    periodMonths: string;
+    amount?: string;
+    periodMonths?: string;
     processingFee: string;
     interestRate: string;
-    monthlyEmi: string;
-    totalAmount: string;
-    eligibleLoan: string;
+    monthlyEmi?: string;
+    totalAmount?: string;
+    eligibleLoan?: string;
     features?: TFeatures  // Optional relation to Features
     eligibility?: TEligibility // Optional relation to Eligibility
     feesCharges?: TFeesCharges  // Optional relation to FeesCharges

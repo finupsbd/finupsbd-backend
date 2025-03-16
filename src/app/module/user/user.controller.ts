@@ -24,7 +24,6 @@ const getAllUsers = catchAsync(async (req, res) => {
 const getSingleUser = catchAsync(async (req, res) => {
 
     const id = req.params.id
-console.log(id)
     const result = await UserServices.getSingleUser(id)
     
 

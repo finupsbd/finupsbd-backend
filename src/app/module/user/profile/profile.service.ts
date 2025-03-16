@@ -32,10 +32,6 @@ const createProfile = async (payload: TUserProfile, user: any, image: any) => {
     }
   })
 
-  console.log(result)
-
-
-
 };
 
 

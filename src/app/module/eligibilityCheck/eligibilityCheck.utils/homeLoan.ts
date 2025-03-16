@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../../../app";
-import AppError from "../../../error/AppError";
 import { TEligibilityCheck } from "../eligibilityCheck.interface";
 import { calculateEMI } from "../utils/calculateEMI";
 import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
@@ -14,7 +12,8 @@ export const homeLoan = async (payload: TEligibilityCheck, query: Record<string,
 
     // Remove pagination keys from query to use the rest as filters
     const { page: _page, pageSize: _pageSize, amount = 200000, searchTerm, interestRate, ...filter } = query;
-    console.log({interestRate})
+
+
 
     const buildFilters = () => {
       const filters: any = {};
@@ -69,9 +68,9 @@ export const homeLoan = async (payload: TEligibilityCheck, query: Record<string,
         payload.monthlyIncome = Number(payload.monthlyIncome) - (Number(payload.numberOfCard) * 2000);
       }
 
-      if(payload?.profession === "BUSINESS_OWNER") {
-          throw new AppError(StatusCodes.NOT_FOUND, "you")
-      }
+      // if(payload?.profession === "BUSINESS_OWNER") {
+      //     throw new AppError(StatusCodes.NOT_FOUND, "you")
+      // }
 
 
 
