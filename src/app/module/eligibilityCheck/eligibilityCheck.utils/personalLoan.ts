@@ -7,20 +7,17 @@ import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
 export const personalLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
   try {
 
-    const forEligiblity = {...payload}
-    
+    const forEligiblity = { ...payload }
 
- 
+
+
+
     // Extract pagination parameters and default to page 1 and 10 items per page if not provided.
     const page = query.page ? Number(query.page) : 1;
-    const pageSize = query.pageSize ? Number(query.pageSize) : 2;
+    const pageSize = query.pageSize ? Number(query.pageSize) : 3;
 
     // Remove pagination keys from query to use the rest as filters
-    const { page: _page, pageSize: _pageSize, sortOrder, amount = 200000, searchTerm, interestRate, ...filter } = query;
-
-
-
-
+    const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = 200000, searchTerm, interestRate, ...filter } = query;
 
     const buildFilters = () => {
       const filters: any = {};
@@ -38,8 +35,12 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
       }
       return filters;
     };
-    
+
     const filters = buildFilters();
+
+
+
+
 
     const [loans, totalLoans] = await prisma.$transaction([
       prisma.personalLoan.findMany({
@@ -58,13 +59,14 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
         where: filters,
       }),
     ]);
-    
 
-    const suggestedLoans = loans.map( (loan) => {
+
+    const suggestedLoans = loans.map((loan) => {
 
       // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
       if (payload?.monthlyIncome) {
         payload.monthlyIncome = payload.monthlyIncome / 2
+        
       }
       if (payload?.haveAnyRentalIncome) {
         payload.monthlyIncome = payload?.monthlyIncome + (payload?.rentalIncome ?? 0);
@@ -90,37 +92,46 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
 
       const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
       const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
-      const eligibleLoanAmount = suggestEligibleLoanAmount(forEligiblity?.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure); 
+      const eligibleLoanAmount = suggestEligibleLoanAmount(forEligiblity?.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
       // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
       // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
 
- 
+
       return {
         id: loan.id,
         bankName: loan.bankName,
-        amount: amount,
+        amount: Math.floor(Number(amount)).toFixed(2),
         periodMonths: payload.expectedLoanTenure,
         loanType: loan.loanType,
-        monthlyEMI: monthlyEMI,
-        totalRepayment: totalRepayment,
+        monthlyEMI: Math.floor(Number(monthlyEMI)).toFixed(2),
+        totalRepayment: Math.floor(totalRepayment).toFixed(2),
         coverImage: loan.coverImage,
         interestRate: loan.interestRate,
         processingFee: loan.processingFee,
-        eligibleLoan: eligibleLoanAmount,
-          features: loan.features,
-          feesCharges: loan.feesCharges,
-          eligibility: loan.eligibility,
+        eligibleLoan: Math.floor(Number(eligibleLoanAmount)).toFixed(2),
+        features: loan.features,
+        feesCharges: loan.feesCharges,
+        eligibility: loan.eligibility,
       };
     });
 
 
-    if (typeof sortOrder === 'string') {
-      if (sortOrder.toLowerCase() === 'desc') {
-        suggestedLoans.sort((a, b) => b.eligibleLoan - a.eligibleLoan);
-      } else if (sortOrder.toLowerCase() === 'asc') {
-        suggestedLoans.sort((a, b) => a.eligibleLoan - b.eligibleLoan);
+    if (typeof sortKey === 'string') {
+      if (sortKey.toLowerCase() === 'asc') {
+        suggestedLoans.sort((a, b) => Number(b.interestRate) - Number(a.interestRate));
+      } else if (sortKey.toLowerCase() === 'desc') {
+        suggestedLoans.sort((a, b) => Number(a.interestRate) - Number(b.interestRate));
       }
     }
+
+    if (typeof sortOrder === 'string') {
+      if (sortOrder.toLowerCase() === 'desc') {
+        suggestedLoans.sort((a, b) => Number(b.eligibleLoan) - Number(a.eligibleLoan));
+      } else if (sortOrder.toLowerCase() === 'asc') {
+        suggestedLoans.sort((a, b) => Number(a.eligibleLoan) - Number(b.eligibleLoan));
+      }
+    }
+
 
     return {
       data: suggestedLoans,

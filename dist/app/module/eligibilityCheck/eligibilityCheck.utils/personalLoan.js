@@ -30,9 +30,9 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
         const forEligiblity = Object.assign({}, payload);
         // Extract pagination parameters and default to page 1 and 10 items per page if not provided.
         const page = query.page ? Number(query.page) : 1;
-        const pageSize = query.pageSize ? Number(query.pageSize) : 2;
+        const pageSize = query.pageSize ? Number(query.pageSize) : 3;
         // Remove pagination keys from query to use the rest as filters
-        const { page: _page, pageSize: _pageSize, sortOrder, amount = 200000, searchTerm, interestRate } = query, filter = __rest(query, ["page", "pageSize", "sortOrder", "amount", "searchTerm", "interestRate"]);
+        const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = 200000, searchTerm, interestRate } = query, filter = __rest(query, ["page", "pageSize", "sortOrder", "sortKey", "amount", "searchTerm", "interestRate"]);
         const buildFilters = () => {
             const filters = {};
             if (typeof searchTerm === 'string' && searchTerm.trim()) {
@@ -98,26 +98,34 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: amount,
+                amount: Math.floor(Number(amount)).toFixed(2),
                 periodMonths: payload.expectedLoanTenure,
                 loanType: loan.loanType,
-                monthlyEMI: monthlyEMI,
-                totalRepayment: totalRepayment,
+                monthlyEMI: Math.floor(Number(monthlyEMI)).toFixed(2),
+                totalRepayment: Math.floor(totalRepayment).toFixed(2),
                 coverImage: loan.coverImage,
                 interestRate: loan.interestRate,
                 processingFee: loan.processingFee,
-                eligibleLoan: eligibleLoanAmount,
+                eligibleLoan: Math.floor(Number(eligibleLoanAmount)).toFixed(2),
                 features: loan.features,
                 feesCharges: loan.feesCharges,
                 eligibility: loan.eligibility,
             };
         });
+        if (typeof sortKey === 'string') {
+            if (sortKey.toLowerCase() === 'asc') {
+                suggestedLoans.sort((a, b) => Number(b.interestRate) - Number(a.interestRate));
+            }
+            else if (sortKey.toLowerCase() === 'desc') {
+                suggestedLoans.sort((a, b) => Number(a.interestRate) - Number(b.interestRate));
+            }
+        }
         if (typeof sortOrder === 'string') {
             if (sortOrder.toLowerCase() === 'desc') {
-                suggestedLoans.sort((a, b) => b.eligibleLoan - a.eligibleLoan);
+                suggestedLoans.sort((a, b) => Number(b.eligibleLoan) - Number(a.eligibleLoan));
             }
             else if (sortOrder.toLowerCase() === 'asc') {
-                suggestedLoans.sort((a, b) => a.eligibleLoan - b.eligibleLoan);
+                suggestedLoans.sort((a, b) => Number(a.eligibleLoan) - Number(b.eligibleLoan));
             }
         }
         return {
