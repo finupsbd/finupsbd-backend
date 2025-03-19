@@ -1,4 +1,5 @@
 "use strict";
+// import { prisma } from '../../app';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,10 +10,51 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateUserIdToday = generateUserIdToday;
+exports.generatePrefix = generatePrefix;
 exports.generateUserId = generateUserId;
+// const lastUser = async () => {
+//   const id = await prisma.user.findFirst({
+//     orderBy: {
+//       createdAt: 'desc',
+//     },
+//     select: {
+//       userId: true,
+//     },
+//   });
+//   return id;
+// };
+// export async function generateUserId() {
+//   let newUserId;
+//   const  userId  = await lastUser();
+//   if (userId?.userId) {
+//     // Example: "250112001"
+//       const prefix = userId?.userId?.slice(0, 6); // Extract prefix, e.g., "250112"
+//       const sequence = parseInt(userId.userId.slice(6), 10); // Extract numeric part, e.g., "001"
+//       const nextSequence = (sequence + 1).toString().padStart(3, '0'); // Increment and pad with zeros
+//       newUserId = `${prefix}${nextSequence}`; // Combine prefix and new sequence
+//   } else {
+//     // If no users exist, start with the first ID
+//     newUserId = generateUserIdToday(1);
+//   }
+//   return newUserId;
+// }
+function generateUserIdToday(sequenceNumber) {
+    const now = new Date();
+    // Get the last two digits of the year
+    const year = now.getFullYear().toString().slice(-2);
+    // Month is 0-indexed, so add 1 and pad to two digits
+    const month = ("0" + (now.getMonth() + 1)).slice(-2);
+    // Get day of month and pad to two digits
+    const day = ("0" + now.getDate()).slice(-2);
+    // Pad the sequence number to 3 digits
+    const sequence = ("00" + sequenceNumber).slice(-3);
+    return year + month + day + sequence;
+}
 const app_1 = require("../../app");
+// Get the last created user with a userId.
 const lastUser = () => __awaiter(void 0, void 0, void 0, function* () {
-    const id = yield app_1.prisma.user.findFirst({
+    const user = yield app_1.prisma.user.findFirst({
         orderBy: {
             createdAt: 'desc',
         },
@@ -20,23 +62,38 @@ const lastUser = () => __awaiter(void 0, void 0, void 0, function* () {
             userId: true,
         },
     });
-    return id;
+    return user;
 });
+// Function to generate the date prefix (YYMMDD)
+function generatePrefix() {
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2);
+    const month = ("0" + (now.getMonth() + 1)).slice(-2);
+    const day = ("0" + now.getDate()).slice(-2);
+    return year + month + day;
+}
+// Function to generate a new userId based on today's date and sequence.
 function generateUserId() {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
+        const todayPrefix = generatePrefix();
         let newUserId;
-        const userId = yield lastUser();
-        if (userId === null || userId === void 0 ? void 0 : userId.userId) {
-            // Example: "250112001"
-            const prefix = (_a = userId === null || userId === void 0 ? void 0 : userId.userId) === null || _a === void 0 ? void 0 : _a.slice(0, 6); // Extract prefix, e.g., "250112"
-            const sequence = parseInt(userId.userId.slice(6), 10); // Extract numeric part, e.g., "001"
-            const nextSequence = (sequence + 1).toString().padStart(3, '0'); // Increment and pad with zeros
-            newUserId = `${prefix}${nextSequence}`; // Combine prefix and new sequence
+        const user = yield lastUser();
+        if (user === null || user === void 0 ? void 0 : user.userId) {
+            const lastUserPrefix = user.userId.slice(0, 6); // Extract the prefix from the last userId.
+            if (lastUserPrefix === todayPrefix) {
+                // If the last user was created today, increment the sequence.
+                const sequence = parseInt(user.userId.slice(6), 10);
+                const nextSequence = (sequence + 1).toString().padStart(3, '0');
+                newUserId = `${todayPrefix}${nextSequence}`;
+            }
+            else {
+                // Last user is from a previous day, so reset the sequence.
+                newUserId = `${todayPrefix}001`;
+            }
         }
         else {
-            // If no users exist, start with the first ID
-            newUserId = '250112001';
+            // No users exist yet; start with sequence 001.
+            newUserId = `${todayPrefix}001`;
         }
         return newUserId;
     });

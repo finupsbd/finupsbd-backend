@@ -12,11 +12,15 @@ const zod_1 = require("zod");
 const globalErrorHandler = (err, req, res, next) => {
     var _a;
     let newMessage = "Something went's wrong";
-    let error = {};
+    const error = {};
     let statusCode = http_status_codes_1.StatusCodes.BAD_REQUEST;
-    if (res.headersSent) {
-        newMessage = "Internal Server Error";
-        error = err;
+    if (err.headersSent) {
+        res.status(400).json({
+            success: false,
+            message: 'Invalid input data',
+            error,
+            stack: err.stack,
+        }); // Or just return, depending on your flow
     }
     //generics error handle
     if (err instanceof AppError_1.default) {

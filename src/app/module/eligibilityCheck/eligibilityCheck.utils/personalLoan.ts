@@ -7,10 +7,6 @@ import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
 export const personalLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
   try {
 
-    const forEligiblity = { ...payload }
-
-
-
 
     // Extract pagination parameters and default to page 1 and 10 items per page if not provided.
     const page = query.page ? Number(query.page) : 1;
@@ -19,14 +15,25 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     // Remove pagination keys from query to use the rest as filters
     const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = 200000, searchTerm, interestRate, ...filter } = query;
 
+
     const buildFilters = () => {
       const filters: any = {};
       if (typeof searchTerm === 'string' && searchTerm.trim()) {
-        filters.bankName = {
-          contains: searchTerm.trim(),
-          mode: 'insensitive',
-        };
+        const searchTerms = searchTerm.split(',')
+          .map(term => term.trim())
+          .filter(term => term.length > 0);
+
+        // Build an OR filter for each search term
+        if (searchTerms.length > 0) {
+          filters.OR = searchTerms.map(term => ({
+            bankName: {
+              contains: term,
+              mode: 'insensitive'
+            }
+          }));
+        }
       }
+
       if (typeof interestRate === 'string' && interestRate.trim()) {
         filters.interestRate = {
           contains: interestRate.trim(),
@@ -37,8 +44,6 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     };
 
     const filters = buildFilters();
-
-
 
 
 
@@ -61,38 +66,34 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     ]);
 
 
+
+    
+ 
+ 
+    // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
+    if (payload?.monthlyIncome) {
+      payload.monthlyIncome = payload.monthlyIncome / 2
+    }
+
+    if (payload?.haveAnyRentalIncome) {
+      payload.monthlyIncome = payload.monthlyIncome + payload.rentalIncome!
+    }
+
+    if (payload?.haveAnyLoan) {
+      payload.monthlyIncome = payload.monthlyIncome - (payload.EMIAmountBDT ?? 0);
+    }
+
+    if (payload?.haveAnyCreditCard) {
+      
+      payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCard! * 2000);
+    }
+
+
     const suggestedLoans = loans.map((loan) => {
-
-      // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
-      if (payload?.monthlyIncome) {
-        payload.monthlyIncome = payload.monthlyIncome / 2
-        
-      }
-      if (payload?.haveAnyRentalIncome) {
-        payload.monthlyIncome = payload?.monthlyIncome + (payload?.rentalIncome ?? 0);
-        if (forEligiblity) {
-          forEligiblity.monthlyIncome = forEligiblity.monthlyIncome + (payload?.rentalIncome ?? 0);
-        }
-      }
-      if (payload?.haveAnyLoan) {
-        payload.monthlyIncome = payload.monthlyIncome - (payload.EMIAmountBDT ?? 0);
-        if (forEligiblity) {
-          forEligiblity.monthlyIncome = forEligiblity.monthlyIncome - (payload.EMIAmountBDT ?? 0);
-        }
-      }
-
-      if (payload?.haveAnyCreditCard) {
-        payload.monthlyIncome = payload.monthlyIncome - 2000;
-      }
-
-
-      // const res = calculateLoanDetails(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure, Number(loan.processingFee));
-      console.log("For eligiblity check data", forEligiblity)
-
 
       const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
       const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
-      const eligibleLoanAmount = suggestEligibleLoanAmount(forEligiblity?.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
+      const eligibleLoanAmount = suggestEligibleLoanAmount(payload?.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
       // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
       // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
 

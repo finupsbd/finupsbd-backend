@@ -2,27 +2,31 @@ import { prisma } from "../../app"
 import bcrypt from "bcrypt"
 import { ConfigFile } from "../../config"
 import { Prisma } from "@prisma/client"
+import { generateUserId } from "../utils/generateUserId"
+
 
 
 const superUser: Prisma.UserCreateInput = {
-  name: 'Super Admin',
-  userId: '250112001',
+  name: 'Md Rasel',
+  userId: "",
   email: 'super.admin@gmail.com',
-  phone: '0170000000',
-  password:  ConfigFile.SUPER_ADMIN_PASSWORD as string,
+  phone: '01719185563',
+  password: ConfigFile.SUPER_ADMIN_PASSWORD as string,
   role: 'SUPER_ADMIN',
   emailVerified: true,
 }
 
 
-const seedSuperAdmin = async () =>{
 
-    const passwordHash = await bcrypt.hash(ConfigFile.SUPER_ADMIN_PASSWORD as string, Number(ConfigFile.BCRYPT_SALT_ROUNDS))
-    superUser.password = passwordHash
-    const isSuperAdmin = await prisma.user.findFirst({where: {role: "SUPER_ADMIN"}})
-    if(!isSuperAdmin){
-        await prisma.user.create({data: superUser})
-    }
+const seedSuperAdmin = async () => {
+  superUser.userId = await generateUserId()
+  const passwordHash = await bcrypt.hash(ConfigFile.SUPER_ADMIN_PASSWORD as string, Number(ConfigFile.BCRYPT_SALT_ROUNDS))
+  superUser.password = passwordHash
+  const isSuperAdmin = await prisma.user.findFirst({ where: { role: "SUPER_ADMIN" } })
+  if (!isSuperAdmin) {
+    await prisma.user.create({ data: superUser })
+  }
 }
+
 
 export default seedSuperAdmin

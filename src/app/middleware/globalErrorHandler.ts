@@ -17,12 +17,17 @@ const globalErrorHandler = (
   next: NextFunction
 ) => {
   let newMessage = "Something went's wrong";
-  let error = {};
+  const error = {};
   let statusCode = StatusCodes.BAD_REQUEST;
 
-  if (res.headersSent) {
-    newMessage = "Internal Server Error";
-    error = err;
+  if (err.headersSent) {
+
+    res.status(400).json({
+      success: false,
+      message: 'Invalid input data',
+      error,
+      stack: err.stack,
+    }); // Or just return, depending on your flow
   }
 
 

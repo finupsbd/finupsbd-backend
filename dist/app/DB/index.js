@@ -15,16 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = require("../../app");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = require("../../config");
+const generateUserId_1 = require("../utils/generateUserId");
 const superUser = {
-    name: 'Super Admin',
-    userId: '250112001',
+    name: 'Md Rasel',
+    userId: "",
     email: 'super.admin@gmail.com',
-    phone: '0170000000',
+    phone: '01719185563',
     password: config_1.ConfigFile.SUPER_ADMIN_PASSWORD,
     role: 'SUPER_ADMIN',
     emailVerified: true,
 };
 const seedSuperAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
+    superUser.userId = yield (0, generateUserId_1.generateUserId)();
     const passwordHash = yield bcrypt_1.default.hash(config_1.ConfigFile.SUPER_ADMIN_PASSWORD, Number(config_1.ConfigFile.BCRYPT_SALT_ROUNDS));
     superUser.password = passwordHash;
     const isSuperAdmin = yield app_1.prisma.user.findFirst({ where: { role: "SUPER_ADMIN" } });

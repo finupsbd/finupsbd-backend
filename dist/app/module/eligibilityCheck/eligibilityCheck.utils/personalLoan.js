@@ -26,8 +26,8 @@ const app_1 = require("../../../../app");
 const calculateEMI_1 = require("../utils/calculateEMI");
 const suggestEligibleLoanAmount_1 = require("../utils/suggestEligibleLoanAmount");
 const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const forEligiblity = Object.assign({}, payload);
         // Extract pagination parameters and default to page 1 and 10 items per page if not provided.
         const page = query.page ? Number(query.page) : 1;
         const pageSize = query.pageSize ? Number(query.pageSize) : 3;
@@ -36,10 +36,18 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
         const buildFilters = () => {
             const filters = {};
             if (typeof searchTerm === 'string' && searchTerm.trim()) {
-                filters.bankName = {
-                    contains: searchTerm.trim(),
-                    mode: 'insensitive',
-                };
+                const searchTerms = searchTerm.split(',')
+                    .map(term => term.trim())
+                    .filter(term => term.length > 0);
+                // Build an OR filter for each search term
+                if (searchTerms.length > 0) {
+                    filters.OR = searchTerms.map(term => ({
+                        bankName: {
+                            contains: term,
+                            mode: 'insensitive'
+                        }
+                    }));
+                }
             }
             if (typeof interestRate === 'string' && interestRate.trim()) {
                 filters.interestRate = {
@@ -67,32 +75,23 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
                 where: filters,
             }),
         ]);
+        // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
+        if (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) {
+            payload.monthlyIncome = payload.monthlyIncome / 2;
+        }
+        if (payload === null || payload === void 0 ? void 0 : payload.haveAnyRentalIncome) {
+            payload.monthlyIncome = payload.monthlyIncome + payload.rentalIncome;
+        }
+        if (payload === null || payload === void 0 ? void 0 : payload.haveAnyLoan) {
+            payload.monthlyIncome = payload.monthlyIncome - ((_a = payload.EMIAmountBDT) !== null && _a !== void 0 ? _a : 0);
+        }
+        if (payload === null || payload === void 0 ? void 0 : payload.haveAnyCreditCard) {
+            payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCard * 2000);
+        }
         const suggestedLoans = loans.map((loan) => {
-            var _a, _b, _c, _d;
-            // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
-            if (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) {
-                payload.monthlyIncome = payload.monthlyIncome / 2;
-            }
-            if (payload === null || payload === void 0 ? void 0 : payload.haveAnyRentalIncome) {
-                payload.monthlyIncome = (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) + ((_a = payload === null || payload === void 0 ? void 0 : payload.rentalIncome) !== null && _a !== void 0 ? _a : 0);
-                if (forEligiblity) {
-                    forEligiblity.monthlyIncome = forEligiblity.monthlyIncome + ((_b = payload === null || payload === void 0 ? void 0 : payload.rentalIncome) !== null && _b !== void 0 ? _b : 0);
-                }
-            }
-            if (payload === null || payload === void 0 ? void 0 : payload.haveAnyLoan) {
-                payload.monthlyIncome = payload.monthlyIncome - ((_c = payload.EMIAmountBDT) !== null && _c !== void 0 ? _c : 0);
-                if (forEligiblity) {
-                    forEligiblity.monthlyIncome = forEligiblity.monthlyIncome - ((_d = payload.EMIAmountBDT) !== null && _d !== void 0 ? _d : 0);
-                }
-            }
-            if (payload === null || payload === void 0 ? void 0 : payload.haveAnyCreditCard) {
-                payload.monthlyIncome = payload.monthlyIncome - 2000;
-            }
-            // const res = calculateLoanDetails(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure, Number(loan.processingFee));
-            console.log("For eligiblity check data", forEligiblity);
             const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
             const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
-            const eligibleLoanAmount = (0, suggestEligibleLoanAmount_1.suggestEligibleLoanAmount)(forEligiblity === null || forEligiblity === void 0 ? void 0 : forEligiblity.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
+            const eligibleLoanAmount = (0, suggestEligibleLoanAmount_1.suggestEligibleLoanAmount)(payload === null || payload === void 0 ? void 0 : payload.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
             // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
             // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
             return {
