@@ -68,11 +68,15 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
 
 
     
- 
+    const forEligibleLoan = {...payload}
+
+
+
  
     // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
     if (payload?.monthlyIncome) {
       payload.monthlyIncome = payload.monthlyIncome / 2
+      forEligibleLoan.monthlyIncome = forEligibleLoan.monthlyIncome / 2
     }
 
     if (payload?.haveAnyRentalIncome) {
@@ -86,14 +90,14 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     if (payload?.haveAnyCreditCard) {
       
       payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCard! * 2000);
-    }
+    } 
 
 
     const suggestedLoans = loans.map((loan) => {
 
       const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
       const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
-      const eligibleLoanAmount = suggestEligibleLoanAmount(payload?.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
+      const eligibleLoanAmount = suggestEligibleLoanAmount(payload.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
       // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
       // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
 

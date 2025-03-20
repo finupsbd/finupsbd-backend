@@ -75,9 +75,11 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
                 where: filters,
             }),
         ]);
+        const forEligibleLoan = Object.assign({}, payload);
         // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
         if (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) {
             payload.monthlyIncome = payload.monthlyIncome / 2;
+            forEligibleLoan.monthlyIncome = forEligibleLoan.monthlyIncome / 2;
         }
         if (payload === null || payload === void 0 ? void 0 : payload.haveAnyRentalIncome) {
             payload.monthlyIncome = payload.monthlyIncome + payload.rentalIncome;
@@ -91,7 +93,7 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
         const suggestedLoans = loans.map((loan) => {
             const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
             const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
-            const eligibleLoanAmount = (0, suggestEligibleLoanAmount_1.suggestEligibleLoanAmount)(payload === null || payload === void 0 ? void 0 : payload.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
+            const eligibleLoanAmount = (0, suggestEligibleLoanAmount_1.suggestEligibleLoanAmount)(payload.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
             // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
             // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
             return {

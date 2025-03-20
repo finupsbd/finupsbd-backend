@@ -57,25 +57,18 @@ export const homeLoan = async (payload: TEligibilityCheck, query: Record<string,
       if (payload?.monthlyIncome) {
         payload.monthlyIncome = payload.monthlyIncome / 2
       }
-      if (payload?.haveAnyRentalIncome) { 
-        payload.monthlyIncome = payload?.monthlyIncome + (payload?.rentalIncome ?? 0);
-      }
       if (payload?.haveAnyLoan) {
         payload.monthlyIncome = payload.monthlyIncome - (payload.EMIAmountBDT ?? 0);
+   
+      }
+
+      if (payload?.haveAnyRentalIncome) { 
+        payload.monthlyIncome = payload?.monthlyIncome + (payload?.rentalIncome ?? 0);
       }
 
       if (payload?.haveAnyCreditCard && payload?.cardType === "CREDIT_CARD") {
         payload.monthlyIncome = Number(payload.monthlyIncome) - (Number(payload.numberOfCard) * 2000);
       }
-
-      // if(payload?.profession === "BUSINESS_OWNER") {
-      //     throw new AppError(StatusCodes.NOT_FOUND, "you")
-      // }
-
-
-
-
-      // const res = calculateLoanDetails(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure, Number(loan.processingFee));
 
 
 

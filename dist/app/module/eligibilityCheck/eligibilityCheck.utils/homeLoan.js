@@ -72,19 +72,15 @@ const homeLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function*
             if (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) {
                 payload.monthlyIncome = payload.monthlyIncome / 2;
             }
-            if (payload === null || payload === void 0 ? void 0 : payload.haveAnyRentalIncome) {
-                payload.monthlyIncome = (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) + ((_a = payload === null || payload === void 0 ? void 0 : payload.rentalIncome) !== null && _a !== void 0 ? _a : 0);
-            }
             if (payload === null || payload === void 0 ? void 0 : payload.haveAnyLoan) {
-                payload.monthlyIncome = payload.monthlyIncome - ((_b = payload.EMIAmountBDT) !== null && _b !== void 0 ? _b : 0);
+                payload.monthlyIncome = payload.monthlyIncome - ((_a = payload.EMIAmountBDT) !== null && _a !== void 0 ? _a : 0);
+            }
+            if (payload === null || payload === void 0 ? void 0 : payload.haveAnyRentalIncome) {
+                payload.monthlyIncome = (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) + ((_b = payload === null || payload === void 0 ? void 0 : payload.rentalIncome) !== null && _b !== void 0 ? _b : 0);
             }
             if ((payload === null || payload === void 0 ? void 0 : payload.haveAnyCreditCard) && (payload === null || payload === void 0 ? void 0 : payload.cardType) === "CREDIT_CARD") {
                 payload.monthlyIncome = Number(payload.monthlyIncome) - (Number(payload.numberOfCard) * 2000);
             }
-            // if(payload?.profession === "BUSINESS_OWNER") {
-            //     throw new AppError(StatusCodes.NOT_FOUND, "you")
-            // }
-            // const res = calculateLoanDetails(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure, Number(loan.processingFee));
             const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
             const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
             const eligibleLoanAmount = (0, suggestEligibleLoanAmount_1.suggestEligibleLoanAmount)(payload === null || payload === void 0 ? void 0 : payload.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
