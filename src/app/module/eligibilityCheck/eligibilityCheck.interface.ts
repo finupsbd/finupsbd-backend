@@ -65,6 +65,7 @@ export type TEligibilityCheck = {
   existingLoanType?: ExistingLoanType;
   EMIAmountBDT?: number;
   InterestRate?: number;
+  loanOutstanding?: number;
 
   // Credit card details
   haveAnyCreditCard: boolean;
@@ -86,3 +87,4 @@ export type TEligibilityCheck = {
   updatedAt: Date;
 }
 
+   

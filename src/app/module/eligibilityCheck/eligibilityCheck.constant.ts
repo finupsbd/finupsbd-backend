@@ -3,6 +3,7 @@ export const loanTypes = {
   CAR_LOAN: 'CAR_LOAN',
   HOME_LOAN: 'HOME_LOAN',
   SME_LOAN: 'SME_LOAN',
+  INSTANT_LOAN: 'INSTANT_LOAN',
 };
 
 export const cardsTypes = {

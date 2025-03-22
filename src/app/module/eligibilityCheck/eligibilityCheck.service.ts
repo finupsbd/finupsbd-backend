@@ -9,6 +9,7 @@ import { prisma } from "../../../app";
 import { TEligibilityCheck } from "./eligibilityCheck.interface";
 import smeLoan from "./eligibilityCheck.utils/smeLoan";
 import { MainLoanType } from "@prisma/client";
+import instantLoan from "./eligibilityCheck.utils/inistantLoan";
 
 
 
@@ -25,8 +26,15 @@ const compareData = {
   ...payload
 }
 
+if (payload?.loanType === loanTypes.INSTANT_LOAN) {
+  return await instantLoan(payload as unknown as TEligibilityCheck, query)
+}
+
+
 if(!payload?.compareValue){
   const result = await prisma.eligibilityCheck.create({ data: payload as unknown as TEligibilityCheck })
+
+
 
   if (payload?.loanType === loanTypes.PERSONAL_LOAN) {
     return await personalLoan(result as unknown as TEligibilityCheck, query)

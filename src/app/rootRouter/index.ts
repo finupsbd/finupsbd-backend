@@ -12,62 +12,67 @@ import { EligibilityCheckRouter } from '../module/eligibilityCheck/eligibilityCh
 import { HomeLoanRouter } from '../module/loans/homeLoan/homeLoan.route'
 import { CarLoanRouter } from '../module/loans/carLoan/carLoan.route'
 import { SMELoanRouter } from '../module/loans/smeLoan/smeLoan.route'
+import { InstantLoanRouter } from '../module/loans/instantLoan/instantLoan.route'
 const router = express.Router()
 
 
 
 const moduleRouter = [
     {
-        path: '/auth', 
+        path: '/auth',
         route: AuthRouter
     },
     {
-        path: '/users', 
+        path: '/users',
         route: UserRouter
     },
     {
-        path: '/profiles', 
+        path: '/profiles',
         route: ProfileRouter
     },
     {
-        path: '/public', 
+        path: '/public',
         route: PublicRouter
-    },  
+    },
     {
-        path: '/news-letter', 
+        path: '/news-letter',
         route: NewsLetterRouter
-    }, 
+    },
     {
-        path: '/blogs', 
+        path: '/blogs',
         route: BlogRouter
-    }, 
+    },
     {
-        path: '/openai', 
+        path: '/openai',
         route: OpenAiRouter
     },
-    
+
     {
-        path: '/application', 
+        path: '/application',
         route: ApplicationRouter
     },
     {
-        path: '/eligibility-check', 
+        path: '/eligibility-check',
         route: EligibilityCheckRouter
     },
     {
-        path: '/personal-loan', 
+        path: '/personal-loan',
         route: PersonalLoanRouter
     },
     {
-        path: '/home-loan', 
+        path: '/instant-loan',
+        route: InstantLoanRouter
+    },
+    {
+        path: '/home-loan',
         route: HomeLoanRouter
     },
     {
-        path: '/car-loan', 
+        path: '/car-loan',
         route: CarLoanRouter
     },
     {
-        path: '/sme-loan', 
+        path: '/sme-loan',
         route: SMELoanRouter
     },
 ]

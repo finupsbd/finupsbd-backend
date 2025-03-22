@@ -6,6 +6,7 @@ exports.loanTypes = {
     CAR_LOAN: 'CAR_LOAN',
     HOME_LOAN: 'HOME_LOAN',
     SME_LOAN: 'SME_LOAN',
+    INSTANT_LOAN: 'INSTANT_LOAN',
 };
 exports.cardsTypes = {
     DEBIT_CARD: 'DEBIT_CARD',

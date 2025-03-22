@@ -33,6 +33,7 @@ model User {
   Session             Session[]
   PageView            PageView[]
   Activity            Activity[]
+  InstantLoan         InstantLoan[]
 
   @@index([email]) // Index for email
   @@index([phone]) // Index for phone
