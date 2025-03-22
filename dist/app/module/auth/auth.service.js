@@ -26,7 +26,8 @@ const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const generateCustomPassword_1 = require("../../utils/generateCustomPassword");
 //Sign up User
-const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log({ userSessionInfo });
     const isAlreadySignUpRequest = yield app_1.prisma.user.findUnique({
         where: {
             email: payload.email,

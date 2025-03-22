@@ -18,11 +18,14 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const auth_service_1 = require("./auth.service");
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const config_1 = require("../../../config");
+const context_1 = require("../../utils/super-admin-utiles/context");
 const signUp = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield auth_service_1.AuthServices.signUp(req.body);
+    const userSessionInfo = yield (0, context_1.getRequestContext)(req);
+    // const result = await AuthServices.signUp(req.body, userSessionInfo);
+    console.log(userSessionInfo);
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: result,
+        // message: result,
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         data: {},
     });

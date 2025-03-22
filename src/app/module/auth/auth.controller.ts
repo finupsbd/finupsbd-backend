@@ -3,13 +3,21 @@ import catchAsync from '../../utils/catchAsync';
 import { AuthServices } from './auth.service';
 import sendResponce from '../../utils/sendResponce';
 import { ConfigFile } from '../../../config';
+import { getRequestContext } from '../../utils/super-admin-utiles/context';
+
+
+
+
 
 const signUp = catchAsync(async (req, res) => {
-  const result = await AuthServices.signUp(req.body);
+  const userSessionInfo = await getRequestContext(req)
+  // const result = await AuthServices.signUp(req.body, userSessionInfo);
+
+  console.log(userSessionInfo)
 
   sendResponce(res, {
     success: true,
-    message: result,
+    // message: result,
     statusCode: StatusCodes.CREATED,
     data: {},
   });
@@ -66,6 +74,7 @@ const forgetPassword = catchAsync(async (req, res) => {
 
 const resetPassword = catchAsync(async (req, res) => {
   const result = await AuthServices.resetPassword(req.body);
+
 
 
   sendResponce(res, {

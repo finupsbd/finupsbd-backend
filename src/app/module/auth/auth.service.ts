@@ -20,7 +20,9 @@ import { generateCustomPassword } from '../../utils/generateCustomPassword';
 //Sign up User
 
 
-const signUp = async (payload: TUser) => {
+const signUp = async (payload: TUser, userSessionInfo: {ip: string, device: string, browser: string, location: string}) => {
+
+  console.log({userSessionInfo})
 
   const isAlreadySignUpRequest = await prisma.user.findUnique({
     where: {
@@ -293,6 +295,12 @@ const login = async (payload: { email: string; password: string }) => {
       lastLogin: new Date(),
     },
   }); // last login tracking
+
+
+
+
+
+
 
   return {
     accessToken,

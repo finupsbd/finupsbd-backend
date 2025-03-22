@@ -18,6 +18,7 @@ model User {
   resetPasswordExpiry DateTime? // Expiry for password reset token
   role                Role              @default(USER)
   profile             Profile?
+  kycVerification     KycVerification?
   emailVerified       Boolean           @default(false)
   isActive            Boolean           @default(true)
   createdAt           DateTime          @default(now())
@@ -29,6 +30,9 @@ model User {
   CarLoan             CarLoan[]
   SMELoan             SMELoan[]
   ApplicationForm     ApplicationForm[]
+  Session             Session[]
+  PageView            PageView[]
+  Activity            Activity[]
 
   @@index([email]) // Index for email
   @@index([phone]) // Index for phone
@@ -37,9 +41,8 @@ model User {
   @@map("users") // Maps to the "users" table
 }
 
-
 model Profile {
-  id               String   @id @default(uuid())
+  id               String            @id @default(uuid())
   nameAsNid        String
   nationalIdNumber String
   gender           UserProfileGender
@@ -47,8 +50,8 @@ model Profile {
   avatar           String? // URL to profile picture
   address          String?
   city             String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           String   @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String            @unique
 
   @@map("profiles")
 }
@@ -57,4 +60,88 @@ enum UserProfileGender {
   MALE
   FEMALE
   OTHER
+}
+
+// ENUMS for consistency
+enum DocumentTypeKyc {
+  NATIONAL_ID
+  PASSPORT
+  DRIVING_LICENSE
+  VOTER_ID
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model KycVerification {
+  id String @id @default(cuid())
+
+  // Basic Personal Information
+  fullName    String
+  fatherName  String?
+  motherName  String?
+  dateOfBirth DateTime
+  gender      UserProfileGender
+  nationality String
+  occupation  String?
+
+  // Identity Proof Document
+  documentType     DocumentTypeKyc
+  documentNumber   String
+  documentFrontUrl String // Front side of NID/Passport/Driving License
+  documentBackUrl  String? // Back side (if applicable)
+
+  // Address Proof
+  addressLine1       String
+  addressLine2       String?
+  city               String
+  state              String
+  postalCode         String
+  country            String
+  addressProofUrl    String // Utility bill, bank statement, etc.
+  selfieUrl          String
+  verificationStatus VerificationStatus @default(PENDING)
+  remarks            String? // Notes for reviewer/admin
+  verifiedAt         DateTime?
+  user               User               @relation(fields: [userId], references: [id])
+  userId             String             @unique // Link to your User model (assuming 1 user = 1 KYC)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  // e.g., IP, device, browser, location, etc.
+  ip        String?
+  device    String?
+  browser   String?
+  location  String?
+}
+
+model PageView {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  path      String
+  duration  Int? // in seconds
+  createdAt DateTime @default(now())
+  // e.g., OS, referrer, etc.
+  referrer  String?
+  os        String?
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String // e.g. "login", "checkout", "support", "feedback"
+  details   String?
+  createdAt DateTime @default(now())
+  // add fields like IP, device, location, rating, etc., as needed
 }
