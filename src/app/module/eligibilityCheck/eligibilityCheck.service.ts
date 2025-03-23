@@ -26,6 +26,7 @@ const compareData = {
   ...payload
 }
 
+
 if (payload?.loanType === loanTypes.INSTANT_LOAN) {
   return await instantLoan(payload as unknown as TEligibilityCheck, query)
 }

@@ -39,7 +39,7 @@ model EligibilityInstantLoan {
     condition         String
     offer             String
     minimumIncome     Int
-    minimumExperience Int
+    minimumExperience Decimal
     ageRequirement    Int
     instantLoan       InstantLoan @relation(fields: [InstantLoanId], references: [id], onDelete: Cascade)
     InstantLoanId     String      @unique
