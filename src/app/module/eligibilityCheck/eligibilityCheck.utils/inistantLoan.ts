@@ -78,9 +78,12 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
 
 
         // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
-        if (payload?.monthlyIncome) {
-            payload.monthlyIncome = payload.monthlyIncome / 2
-            forEligibleLoan.monthlyIncome = forEligibleLoan.monthlyIncome / 2
+        // if (payload?.monthlyIncome) {
+        //     payload.monthlyIncome = payload.monthlyIncome / 2
+        //     forEligibleLoan.monthlyIncome = forEligibleLoan.monthlyIncome / 2
+        // }
+        if(payload?.monthlyIncome > 50000){
+            payload.monthlyIncome = 50000
         }
 
         if (payload?.haveAnyRentalIncome) {
@@ -100,7 +103,7 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
 
             const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), Number(tenure));
             const totalRepayment = monthlyEMI * Number(tenure);
-            const eligibleLoanAmount = suggestEligibleLoanAmount(payload.monthlyIncome, Number(loan.interestRate), Number(tenure));
+            // const eligibleLoanAmount = suggestEligibleLoanAmount(payload.monthlyIncome, Number(loan.interestRate), Number(tenure));
             // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
             // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
 
@@ -116,7 +119,7 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
                 coverImage: loan.coverImage,
                 interestRate: loan.interestRate,
                 processingFee: loan.processingFee,
-                eligibleLoan: Math.floor(Number(eligibleLoanAmount)).toFixed(2),
+                eligibleLoan: payload?.monthlyIncome,
                 features: loan.FeaturesInstantLoan,
                 feesCharges: loan.FeesChargesInstantLoan,
                 eligibility: loan.EligibilityInstantLoan,

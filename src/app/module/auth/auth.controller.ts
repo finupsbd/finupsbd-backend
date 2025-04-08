@@ -11,13 +11,13 @@ import { getRequestContext } from '../../utils/super-admin-utiles/context';
 
 const signUp = catchAsync(async (req, res) => {
   const userSessionInfo = await getRequestContext(req)
-  // const result = await AuthServices.signUp(req.body, userSessionInfo);
+  const result = await AuthServices.signUp(req.body, userSessionInfo);
 
   console.log(userSessionInfo)
 
   sendResponce(res, {
     success: true,
-    // message: result,
+    message: result,
     statusCode: StatusCodes.CREATED,
     data: {},
   });
@@ -33,6 +33,11 @@ const validatePin = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
+
+
+
 
 const login = catchAsync(async (req, res) => {
   const result = await AuthServices.login(req.body);
