@@ -25,7 +25,7 @@ async function interactWithAssistant(
   });
   const user = await prisma.user.findMany({
     include: {
-      ApplicationForm: true, 
+      LoanApplicationForm: true, 
       PersonalLoan: true
     }
   })

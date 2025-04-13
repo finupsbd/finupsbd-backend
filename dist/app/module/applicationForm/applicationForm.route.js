@@ -6,14 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const applicationForm_controller_1 = require("./applicationForm.controller");
+const auth_1 = __importDefault(require("../../middleware/auth"));
 const route = express_1.default.Router();
-// route.post(
-//   '/',
-//   auth('USER', "ADMIN", "SUPER_ADMIN"), 
-//   upload.fields([{ name: 'images' }]), 
-//   ApplicationController.createApplicationForm
-// ); 
-// route.get('/', ApplicationController.getAllApplicationForm);
-route.post('/application-tracking', applicationForm_controller_1.ApplicationController.applicationTracking);
-route.post('/application-forget', applicationForm_controller_1.ApplicationController.applicationForget);
+route.post('/', (0, auth_1.default)('USER', 'SUPER_ADMIN', 'ADMIN'), applicationForm_controller_1.ApplicationController.createApplicationForm);
+route.get('/', applicationForm_controller_1.ApplicationController.getAllApplicationForm);
+// route.post('/application-tracking', ApplicationController.applicationTracking)
+// route.post('/application-forget', ApplicationController.applicationForget)
 exports.ApplicationRouter = route;

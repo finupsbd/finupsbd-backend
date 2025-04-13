@@ -3,7 +3,7 @@ import AppError from '../error/AppError';
 
 // Fetch the last application ID from the database
 const lastApplication = async () => {
-  const id = await prisma.applicationForm.findFirst({
+  const id = await prisma.loanApplicationForm.findFirst({
     orderBy: {
       createdAt: 'desc',
     },
@@ -17,6 +17,7 @@ const lastApplication = async () => {
 // Generate a new application ID
 export async function generateApplicationId() {
   const applicationId = await lastApplication();
+
 
   // Helper function to format the date prefix
   const getDatePrefix = () => {

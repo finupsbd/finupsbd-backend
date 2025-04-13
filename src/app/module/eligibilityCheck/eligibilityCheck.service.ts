@@ -9,7 +9,7 @@ import { prisma } from "../../../app";
 import { TEligibilityCheck } from "./eligibilityCheck.interface";
 import smeLoan from "./eligibilityCheck.utils/smeLoan";
 import { MainLoanType } from "@prisma/client";
-import instantLoan from "./eligibilityCheck.utils/inistantLoan";
+import { instantLoan } from "./eligibilityCheck.utils/inistantLoan";
 
 
 

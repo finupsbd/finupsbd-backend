@@ -20,11 +20,11 @@ const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../app");
 const smeLoan_1 = __importDefault(require("./eligibilityCheck.utils/smeLoan"));
-const inistantLoan_1 = __importDefault(require("./eligibilityCheck.utils/inistantLoan"));
+const inistantLoan_1 = require("./eligibilityCheck.utils/inistantLoan");
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     const compareData = Object.assign({}, payload);
     if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.INSTANT_LOAN) {
-        return yield (0, inistantLoan_1.default)(payload, query);
+        return yield (0, inistantLoan_1.instantLoan)(payload, query);
     }
     if (!(payload === null || payload === void 0 ? void 0 : payload.compareValue)) {
         const result = yield app_1.prisma.eligibilityCheck.create({ data: payload });

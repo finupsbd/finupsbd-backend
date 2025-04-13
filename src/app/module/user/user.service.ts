@@ -108,9 +108,9 @@ const meProfile = async (user: any) => {
       profile: true,
       isActive: true,
       emailVerified: true,
-      ApplicationForm: {
+      LoanApplicationForm: {
         include: {
-          User: true,
+          user: true,
         }
       }
     },

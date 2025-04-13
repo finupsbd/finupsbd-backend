@@ -85,9 +85,9 @@ const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
             profile: true,
             isActive: true,
             emailVerified: true,
-            ApplicationForm: {
+            LoanApplicationForm: {
                 include: {
-                    User: true,
+                    user: true,
                 }
             }
         },

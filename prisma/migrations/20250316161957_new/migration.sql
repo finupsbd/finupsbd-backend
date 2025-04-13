@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE "personalLoans" ALTER COLUMN "amount" DROP NOT NULL,
-ALTER COLUMN "periodMonths" DROP NOT NULL,
-ALTER COLUMN "monthlyEmi" DROP NOT NULL,
-ALTER COLUMN "totalAmount" DROP NOT NULL,
-ALTER COLUMN "eligibleLoan" DROP NOT NULL;

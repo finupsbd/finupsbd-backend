@@ -148,154 +148,344 @@
 
 
 
-enum Status {
-  PENDING = 'PENDING',
-  IN_PROGRESS = 'IN_PROGRESS',
-  APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED',
-}
+// enum Status {
+//   PENDING = 'PENDING',
+//   IN_PROGRESS = 'IN_PROGRESS',
+//   APPROVED = 'APPROVED',
+//   REJECTED = 'REJECTED',
+// }
 
-enum Gender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-  OTHER = 'OTHER',
-}
+// enum Gender {
+//   MALE = 'MALE',
+//   FEMALE = 'FEMALE',
+//   OTHER = 'OTHER',
+// }
 
-enum MaritalStatus {
-  SINGLE = 'SINGLE',
-  MARRIED = 'MARRIED',
-  DIVORCED = 'DIVORCED',
-  WIDOWED = 'WIDOWED',
-}
+// enum MaritalStatus {
+//   SINGLE = 'SINGLE',
+//   MARRIED = 'MARRIED',
+//   DIVORCED = 'DIVORCED',
+//   WIDOWED = 'WIDOWED',
+// }
 
-enum OwnershipStatus {
-  OWNED = 'OWNED',
-  RENTED = 'RENTED',
-  LEASED = 'LEASED',
-  OTHER = 'OTHER',
-}
+// enum OwnershipStatus {
+//   OWNED = 'OWNED',
+//   RENTED = 'RENTED',
+//   LEASED = 'LEASED',
+//   OTHER = 'OTHER',
+// }
 
-enum EmploymentStatus {
-  SALARIED = 'SALARIED',
-  BUSINESS_OWNER = 'BUSINESS_OWNER',
-}
+// enum EmploymentStatus {
+//   SALARIED = 'SALARIED',
+//   BUSINESS_OWNER = 'BUSINESS_OWNER',
+// }
 
-enum LoanType {
-  PERSONAL = 'PERSONAL',
-  HOME = 'HOME',
-  CAR = 'CAR',
-  BUSINESS = 'BUSINESS',
-  EDUCATION = 'EDUCATION',
-  OTHER = 'OTHER',
-}
+// enum LoanType {
+//   PERSONAL = 'PERSONAL',
+//   HOME = 'HOME',
+//   CAR = 'CAR',
+//   BUSINESS = 'BUSINESS',
+//   EDUCATION = 'EDUCATION',
+//   OTHER = 'OTHER',
+// }
 
-interface LoanApplication {
-  applicationId: string;
-  userId: string;
-  loanId?: string;
-  status: Status;
-  userInfoId: string;
-  residentialInformationId: string;
-  employmentFinancialInfoId: string;
-  loanSpecificationsId: string;
-  financialObligationsId: string;
-  createdAt: Date;
-  updatedAt: Date;
+// interface LoanApplication {
+//   applicationId: string;
+//   userId: string;
+//   loanId?: string;
+//   status: Status;
+//   userInfoId: string;
+//   residentialInformationId: string;
+//   employmentFinancialInfoId: string;
+//   loanSpecificationsId: string;
+//   financialObligationsId: string;
+//   createdAt: Date;
+//   updatedAt: Date;
   
-  // Relations (optional as they need to be explicitly included)
-  user?: User;
-  userInfo?: UserInfo;
-  residentialInformation?: ResidentialInformation;
-  employmentFinancialInfo?: EmploymentFinancialInfo;
-  loanSpecifications?: LoanSpecifications;
-  financialObligations?: FinancialObligations;
+//   // Relations (optional as they need to be explicitly included)
+//   user?: User;
+//   userInfo?: UserInfo;
+//   residentialInformation?: ResidentialInformation;
+//   employmentFinancialInfo?: EmploymentFinancialInfo;
+//   loanSpecifications?: LoanSpecifications;
+//   financialObligations?: FinancialObligations;
+// }
+
+// interface UserInfo {
+//   fullName: string;
+//   fatherName: string;
+//   motherName: string;
+//   spouseName?: string;
+//   dateOfBirth: Date;
+//   placeOfBirth: string;
+//   gender: Gender;
+//   maritalStatus: MaritalStatus;
+//   birthRegistration?: string;
+//   mobileNumber: string;
+//   alternateNumber?: string;
+//   emailAddress: string;
+//   loanApplication?: LoanApplication;
+// }
+
+// interface ResidentialInformation {
+//   permanentAddressId: string;
+//   presentAddressId: string;
+  
+//   // Relations
+//   permanentAddress?: Address;
+//   presentAddress?: Address;
+//   loanApplication?: LoanApplication;
+// }
+
+// interface Address {
+//   houseFlatNo: string;
+//   streetRoad: string;
+//   areaLocality: string;
+//   city: string;
+//   district: string;
+//   postalCode: string;
+//   lengthOfStayYears: number;
+//   ownershipStatus: OwnershipStatus;
+// }
+
+// interface EmploymentFinancialInfo {
+//   employmentStatus: EmploymentStatus;
+//   jobTitle: string;
+//   employerName: string;
+//   officeAddress: string;
+//   department?: string;
+//   contactDetails: string;
+//   businessName?: string;
+//   businessRegistrationNumber?: string;
+//   employmentTenureYears: number;
+//   monthlyGrossIncome: number;
+//   otherSourcesOfIncome?: string;
+//   totalMonthlyExpenses: number;
+//   profession?: string;
+//   taxIdentificationNumber: string;
+//   currentCreditScore: number;
+//   loanApplication?: LoanApplication;
+// }
+
+// interface LoanSpecifications {
+//   existingLoanType: LoanType;
+//   loanAmountRequested: number;
+//   purposeOfLoan: string;
+//   preferredLoanTenure: number;
+//   proposedEMIStartDate: Date;
+//   repaymentPreferences: string;
+//   loanApplication?: LoanApplication;
+// }
+
+// interface FinancialObligations {
+//   lenderName: string;
+//   loanBalance: number;
+//   monthlyEMI: number;
+//   remainingTenure: number;
+//   cardIssuer?: string;
+//   currentBalance?: number;
+//   minimumMonthlyPayment?: number;
+//   type: string;
+//   balance: number;
+//   emi: number;
+//   fullNameCoApplicant?: string;
+//   relationshipToCoApplicant?: string;
+//   coApplicantMonthlyIncome?: number;
+//   loanApplication?: LoanApplication;
+// }
+
+// // Assuming you have a User interface elsewhere
+// interface User {
+//   id: string;
+//   // ... other user fields
+// }
+
+
+
+
+
+// Enums
+export enum MaritalStatus {
+  SINGLE = "SINGLE",
+  MARRIED = "MARRIED",
+  DIVORCED = "DIVORCED",
+  WIDOWED = "WIDOWED",
 }
 
-interface UserInfo {
+export enum LoanStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  UNDER_REVIEW = "UNDER_REVIEW",
+}
+
+export enum DocumentType {
+  PASSPORT = "PASSPORT",
+  ID_CARD = "ID_CARD",
+  INCOME_PROOF = "INCOME_PROOF",
+  BANK_STATEMENT = "BANK_STATEMENT",
+  TIN_CERTIFICATE = "TIN_CERTIFICATE",
+  EMPLOYMENT_PROOF = "EMPLOYMENT_PROOF",
+  UTILITY_BILL = "UTILITY_BILL",
+  PROPERTY_DOCUMENT = "PROPERTY_DOCUMENT",
+  ADDITIONAL = "ADDITIONAL",
+}
+
+// Interfaces
+
+export interface PersonalInfo {
+  id: string;
   fullName: string;
-  fatherName: string;
-  motherName: string;
-  spouseName?: string;
-  dateOfBirth: Date;
+  fathersName: string;
+  mothersName: string;
+  spouseName: string;
+  dateOfBirth: string;
   placeOfBirth: string;
-  gender: Gender;
+  gender: string;
   maritalStatus: MaritalStatus;
-  birthRegistration?: string;
+  nationalId: string;
+  birthRegistration: string;
   mobileNumber: string;
-  alternateNumber?: string;
-  emailAddress: string;
-  loanApplication?: LoanApplication;
+  alternateMobile: string;
+  email: string;
+  socialMedia: string;
+  loanApplicationFormId: string;
 }
 
-interface ResidentialInformation {
-  permanentAddressId: string;
-  presentAddressId: string;
-  
-  // Relations
-  permanentAddress?: Address;
-  presentAddress?: Address;
-  loanApplication?: LoanApplication;
+export interface ResidentialInfo {
+  id: string;
+  permanentHouseNo: string;
+  permanentStreet: string;
+  permanentArea: string;
+  permanentCity: string;
+  permanentDistrict: string;
+  permanentPostalCode: string;
+  permanentStayLength: string;
+  permanentOwnership: string;
+  sameAsPermanent: boolean;
+  presentHouseNo: string;
+  presentStreet: string;
+  presentArea: string;
+  presentCity: string;
+  presentDistrict: string;
+  presentPostalCode: string;
+  presentStayLength: string;
+  presentOwnership: string;
+  propertyType: string;
+  approximateValue: string;
+  loanApplicationFormId: string;
 }
 
-interface Address {
-  houseFlatNo: string;
-  streetRoad: string;
-  areaLocality: string;
-  city: string;
-  district: string;
-  postalCode: string;
-  lengthOfStayYears: number;
-  ownershipStatus: OwnershipStatus;
-}
-
-interface EmploymentFinancialInfo {
-  employmentStatus: EmploymentStatus;
+export interface EmploymentInfo {
+  id: string;
+  employmentStatus: string;
   jobTitle: string;
   employerName: string;
-  officeAddress: string;
-  department?: string;
-  contactDetails: string;
-  businessName?: string;
-  businessRegistrationNumber?: string;
-  employmentTenureYears: number;
-  monthlyGrossIncome: number;
-  otherSourcesOfIncome?: string;
-  totalMonthlyExpenses: number;
-  profession?: string;
-  taxIdentificationNumber: string;
-  currentCreditScore: number;
-  loanApplication?: LoanApplication;
+  employerAddress: string;
+  employerDepartment: string;
+  employerContact: string;
+  businessName: string;
+  registrationNumber: string;
+  tenure: string;
+  monthlyIncome: string;
+  otherIncome: string;
+  householdExpenses: string;
+  tin: string;
+  creditScore: string;
+  loanApplicationFormId: string;
 }
 
-interface LoanSpecifications {
-  existingLoanType: LoanType;
-  loanAmountRequested: number;
-  purposeOfLoan: string;
-  preferredLoanTenure: number;
-  proposedEMIStartDate: Date;
-  repaymentPreferences: string;
-  loanApplication?: LoanApplication;
-}
-
-interface FinancialObligations {
-  lenderName: string;
-  loanBalance: number;
-  monthlyEMI: number;
-  remainingTenure: number;
-  cardIssuer?: string;
-  currentBalance?: number;
-  minimumMonthlyPayment?: number;
-  type: string;
-  balance: number;
-  emi: number;
-  fullNameCoApplicant?: string;
-  relationshipToCoApplicant?: string;
-  coApplicantMonthlyIncome?: number;
-  loanApplication?: LoanApplication;
-}
-
-// Assuming you have a User interface elsewhere
-interface User {
+export interface LoanRequest {
   id: string;
-  // ... other user fields
+  loanType: string;
+  loanAmount: string;
+  purpose: string;
+  tenure: string;
+  emiStartDate: string;
+  repaymentPreferences: string;
+  loanApplicationFormId: string;
+}
+
+export interface FinancialObligation {
+  id: string;
+  lenderName: string;
+  loanBalance: string;
+  monthlyEMI: string;
+  remainingTenure: string;
+  issuer: string;
+  currentBalance: string;
+  minimumPayment: string;
+  liabilityType: string;
+  liabilityBalance: string;
+  liabilityEMI: string;
+  coApplicantName: string;
+  coApplicantRelation: string;
+  coApplicantIncome: string;
+  loanApplicationFormId: string;
+}
+
+export interface Document {
+  id: string;
+  type: DocumentType;
+  url: string;
+  loanApplicationFormId: string;
+}
+
+export interface GuarantorInfo {
+  id: string;
+  personalfullName: string;
+  personalfathersOrHusbandsName: string;
+  personalmothersName: string;
+  personaldateOfBirth: Date;
+  personalnationality: string;
+  personalnid: string;
+  personalbirthRegistration?: string;
+  personalmobileNumber: string;
+  personalemailAddress: string;
+  personalrelationWithGuarantor: string;
+  personalpresentAddress: string;
+  personalpermanentAndMailingAddress: string;
+  personalworkAddress: string;
+  personaladdress: string;
+  personalprofession: string;
+  personalmonthlyIncome: string;
+  personalemployer: string;
+
+  businessfullName: string;
+  businessfathersOrHusbandsName: string;
+  businessmothersName: string;
+  businessdateOfBirth: Date;
+  businessnationality: string;
+  businessnid: string;
+  businessbirthRegistration?: string;
+  businessmobileNumber: string;
+  businessemailAddress: string;
+  businessrelationWithGuarantor: string;
+  businesspresentAddress: string;
+  businesspermanentAndMailingAddress: string;
+  businessworkAddress: string;
+  businessaddress: string;
+  businessprofession: string;
+  businessmonthlyIncome: string;
+  businessemployer: string;
+
+  loanApplicationFormId: string;
+}
+
+export interface TLoanApplicationForm {
+  id: string;
+  applicationId: string
+  isDeleted: boolean;
+  adminNotes?: string;
+  status: LoanStatus;
+  personalInfo?: PersonalInfo;
+  residentialInfo?: ResidentialInfo;
+  employmentInfo?: EmploymentInfo;
+  loanRequest?: LoanRequest;
+  financialObligations: FinancialObligation[];
+  documents: Document[];
+  guarantorInfo?: GuarantorInfo;
+  userId?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

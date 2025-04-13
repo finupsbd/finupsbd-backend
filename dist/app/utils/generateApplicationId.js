@@ -17,7 +17,7 @@ const app_1 = require("../../app");
 const AppError_1 = __importDefault(require("../error/AppError"));
 // Fetch the last application ID from the database
 const lastApplication = () => __awaiter(void 0, void 0, void 0, function* () {
-    const id = yield app_1.prisma.applicationForm.findFirst({
+    const id = yield app_1.prisma.loanApplicationForm.findFirst({
         orderBy: {
             createdAt: 'desc',
         },

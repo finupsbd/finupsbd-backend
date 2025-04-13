@@ -33,7 +33,7 @@ function interactWithAssistant(assistantId, message) {
         });
         const user = yield prisma.user.findMany({
             include: {
-                ApplicationForm: true,
+                LoanApplicationForm: true,
                 PersonalLoan: true
             }
         });

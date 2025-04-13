@@ -71,11 +71,9 @@ exports.upload = exports.sendImageToCloud = void 0;
 const cloudinary_1 = require("cloudinary");
 const config_1 = require("../../config");
 const multer_1 = __importDefault(require("multer"));
-// Remove 'fs' and any local file usage—Vercel does not support persistent storage
-// import fs from 'fs';  // <-- No longer needed
 // 1️⃣ Configure Cloudinary
 cloudinary_1.v2.config({
-    cloud_name: 'djr5gjijg', // Or process.env.CLOUDINARY_CLOUD_NAME
+    cloud_name: 'djr5gjijg',
     api_key: config_1.ConfigFile.CLOUDINARY_API_KEY,
     api_secret: config_1.ConfigFile.CLOUDINARY_API_SECRET,
 });
@@ -90,7 +88,6 @@ const sendImageToCloud = (fileBuffer) => __awaiter(void 0, void 0, void 0, funct
             }, (error, result) => {
                 if (error) {
                     console.error('Cloudinary upload error:', error);
-                    return reject(error);
                 }
                 if (result) {
                     resolve(result);
