@@ -1,3 +1,4 @@
+
 import express from 'express';
 import { ApplicationController } from './applicationForm.controller';
 import auth from '../../middleware/auth';
@@ -11,6 +12,7 @@ const route = express.Router();
 route.post(
   '/',
   auth('USER', 'SUPER_ADMIN', 'ADMIN'),
+  validateRequest(ApplicationValidationSchema.CreateApplicationValidationSchema),
   ApplicationController.createApplicationForm
 ); 
 

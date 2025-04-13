@@ -1,209 +1,263 @@
 import { z } from 'zod';
 
-// Enums
-export const StatusEnum = z.enum(
-  ['PENDING', 'IN_PROGRESS', 'APPROVE', 'REJECT'],
-  {
-    errorMap: () => ({
-      message:
-        'Status must be one of: PENDING, IN_PROGRESS, APPROVE, or REJECT',
-    }),
-  }
-);
+// Phone Number Validation
+const PhoneNumberValidation = z
+  .string()
+  .regex(/^\d{11}$/, 'Mobile number must be a valid 11 digit');
 
-export const PropertyTypeEnum = z.enum(['RESIDENTIAL', 'COMMERCIAL', 'LAND'], {
-  errorMap: () => ({
-    message: 'Property Type must be one of: RESIDENTIAL, COMMERCIAL, or LAND',
-  }),
-});
 
-export const GenderEnum = z.enum(['MALE', 'FEMALE', 'OTHER'], {
-  errorMap: () => ({
-    message: 'Gender must be one of: MALE, FEMALE, or OTHER',
-  }),
-});
 
-export const MaritalStatusEnum = z.enum(
-  ['SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED'],
-  {
-    errorMap: () => ({
-      message:
-        'Marital Status must be one of: SINGLE, MARRIED, DIVORCED, or WIDOWED',
-    }),
-  }
-);
 
-export const OwnershipStatusEnum = z.enum(['OWNED', 'RENTED', 'OTHER'], {
-  errorMap: () => ({
-    message: 'Ownership Status must be one of: OWNED, RENTED, or OTHER',
-  }),
-});
-
-export const EmploymentStatusEnum = z.enum(
-  ['SALARIED', 'SELF_EMPLOYED', 'BUSINESS_OWNER', 'UNEMPLOYED'],
-  {
-    errorMap: () => ({
-      message:
-        'Employment Status must be one of: SALARIED, SELF_EMPLOYED, BUSINESS_OWNER, or UNEMPLOYED',
-    }),
-  }
-);
-
-export const LoanTypeEnum = z.enum(['PERSONAL', 'HOME', 'CAR'], {
-  errorMap: () => ({
-    message: 'Loan Type must be one of: PERSONAL, HOME, or CAR',
-  }),
-});
-
-export const DocumentTypeEnum = z.enum(
-  [
-    'PASSPORT_PHOTO',
-    'NATIONAL_ID',
-    'BIRTH_CERTIFICATE',
+  // Helper functions
+  const validatePhoneNumber = (val: string) => /^(?:\+88|88)?(01[3-9]\d{8})$/.test(val);
+  const validateNumberString = (val: string) => /^\d+$/.test(val);
+  
+  // Enums with descriptions
+  const MaritalStatusEnum = z.enum(['SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED'], {
+    errorMap: () => ({ message: 'Invalid marital status. Valid options: SINGLE, MARRIED, DIVORCED, WIDOWED' })
+  });
+  
+  const LoanStatusEnum = z.enum(['SUBMITTED', 'IN_PROCESS', 'PENDING', 'APPROVED', 'REJECTED'], {
+    errorMap: () => ({ message: 'Invalid loan status' })
+  });
+  
+  const DocumentTypeEnum = z.enum([
+    'PASSPORT',
+    'ID_CARD',
     'INCOME_PROOF',
     'BANK_STATEMENT',
     'TIN_CERTIFICATE',
     'EMPLOYMENT_PROOF',
     'UTILITY_BILL',
     'PROPERTY_DOCUMENT',
-    'SUPPORTING_DOCUMENT',
-  ],
-  {
-    errorMap: () => ({
-      message: 'Document type must be either PASSPORT_PHOTO or NATIONAL_ID',
-    }),
-  }
-);
+    'ADDITIONAL'
+  ], {
+    errorMap: () => ({ message: 'Invalid document type' })
+  });
+  
+  // Personal Info Schema
+  const PersonalInfoSchema = z.object({
+    fullName: z.string().min(1, 'Full name is required'),
+    fathersName: z.string().min(1, "Father's name is required"),
+    mothersName: z.string().min(1, "Mother's name is required"),
+    spouseName: z.string().min(1, "Spouse's name is required"),
+    dateOfBirth: z.string().min(1, 'Date of birth is required'),
+    placeOfBirth: z.string().min(1, 'Place of birth is required'),
+    gender: z.string().min(1, 'Gender is required'),
+    maritalStatus: MaritalStatusEnum,
+    nationalId: z.string()
+      .min(1, 'National ID is required')
+      .regex(/^\d{10}$/, 'National ID must be 10 digits'),
+    birthRegistration: z.string()
+      .min(1, 'Birth registration number is required').optional(),
+    mobileNumber: z.string()
+      .min(1, 'Mobile number is required')
+      .refine(validatePhoneNumber, 'Invalid phone number format'),
+    alternateMobile: z.string()
+      .min(1, 'Alternate mobile number is required')
+      .refine(validatePhoneNumber, 'Invalid phone number format'),
+    email: z.string().email('Invalid email format'),
+    socialMedia: z.string().min(1, 'Social media information is required')
+  });
+  
+  // Residential Info Schema
+  const ResidentialInfoSchema = z.object({
+    permanentHouseNo: z.string().min(1, 'House number is required'),
+    permanentStreet: z.string().min(1, 'Street information is required'),
+    permanentArea: z.string().min(1, 'Area information is required'),
+    permanentCity: z.string().min(1, 'City is required'),
+    permanentDistrict: z.string().min(1, 'District is required'),
+    permanentPostalCode: z.string().min(1, 'Postal code is required'),
+    permanentStayLength: z.string().min(1, 'Stay duration is required'),
+    permanentOwnership: z.string().min(1, 'Ownership information is required'),
+    sameAsPermanent: z.boolean(),
+    presentHouseNo: z.string().min(1, 'Present house number is required')
+      .optional(),
+    presentStreet: z.string().min(1, 'Present street is required').optional(),
+    presentArea: z.string().min(1, 'Present area is required').optional(),
+    presentCity: z.string().min(1, 'Present city is required').optional(),
+    presentDistrict: z.string().min(1, 'Present district is required').optional(),
+    presentPostalCode: z.string().min(1, 'Present postal code is required').optional(),
+    presentStayLength: z.string().min(1, 'Present stay duration is required').optional(),
+    presentOwnership: z.string().min(1, 'Present ownership is required').optional(),
+    propertyType: z.string().min(1, 'Property type is required'),
+    approximateValue: z.string()
+      .min(1, 'Approximate value is required')
+      .refine(validateNumberString, 'Must be a valid number')
+  }).refine(data => !data.sameAsPermanent || (
+    data.presentHouseNo && 
+    data.presentStreet && 
+    data.presentArea &&
+    data.presentCity &&
+    data.presentDistrict &&
+    data.presentPostalCode &&
+    data.presentStayLength &&
+    data.presentOwnership
+  ), {
+    message: 'Present address fields are required when different from permanent',
+    path: ['sameAsPermanent']
+  });
+  
+  // Employment Info Schema
+  const EmploymentInfoSchema = z.object({
+    employmentStatus: z.string().min(1, 'Employment status is required'),
+    jobTitle: z.string().min(1, 'Job title is required'),
+    employerName: z.string().min(1, 'Employer name is required'),
+    employerAddress: z.string().min(1, 'Employer address is required'),
+    employerDepartment: z.string().min(1, 'Department is required'),
+    employerContact: z.string().min(1, 'Employer contact is required'),
+    businessName: z.string().min(1, 'Business name is required'),
+    registrationNumber: z.string().min(1, 'Registration number is required'),
+    tenure: z.string()
+      .min(1, 'Tenure is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    monthlyIncome: z.string()
+      .min(1, 'Monthly income is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    otherIncome: z.string()
+      .min(1, 'Other income is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    householdExpenses: z.string()
+      .min(1, 'Household expenses are required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    tin: z.string()
+      .min(1, 'TIN is required')
+      .regex(/^\d{9}$/, 'TIN must be 9 digits'),
+    creditScore: z.string()
+      .min(1, 'Credit score is required')
+      .regex(/^[3-8]\d{2}$/, 'Credit score must be between 300-850')
+  });
+  
+  // Loan Request Schema
+  const LoanRequestSchema = z.object({
+    loanType: z.string().min(1, 'Loan type is required'),
+    loanAmount: z.string()
+      .min(1, 'Loan amount is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    purpose: z.string().min(1, 'Loan purpose is required'),
+    tenure: z.string()
+      .min(1, 'Tenure is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    emiStartDate: z.string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format (YYYY-MM-DD)'),
+    repaymentPreferences: z.string().min(1, 'Repayment preference is required')
+  });
+  
+  // Financial Obligation Schema
+  const FinancialObligationSchema = z.object({
+    lenderName: z.string().min(1, 'Lender name is required'),
+    loanBalance: z.string()
+      .min(1, 'Loan balance is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    monthlyEMI: z.string()
+      .min(1, 'Monthly EMI is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    remainingTenure: z.string()
+      .min(1, 'Remaining tenure is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    issuer: z.string().min(1, 'Issuer is required'),
+    currentBalance: z.string()
+      .min(1, 'Current balance is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    minimumPayment: z.string()
+      .min(1, 'Minimum payment is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    liabilityType: z.string().min(1, 'Liability type is required'),
+    liabilityBalance: z.string()
+      .min(1, 'Liability balance is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    liabilityEMI: z.string()
+      .min(1, 'Liability EMI is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    coApplicantName: z.string().min(1, 'Co-applicant name is required'),
+    coApplicantRelation: z.string().min(1, 'Relationship is required'),
+    coApplicantIncome: z.string()
+      .min(1, 'Co-applicant income is required')
+      .refine(validateNumberString, 'Must be a valid number')
+  });
+  
+  // Document Schema
+  const DocumentSchema = z.object({
+    type: DocumentTypeEnum,
+    url: z.string().url('Invalid document URL').min(1, 'Document URL is required')
+  });
+  
+  // Guarantor Info Schema
+  const GuarantorInfoSchema = z.object({
+    // Personal Information
+    personalfullName: z.string().min(1, 'Full name is required'),
+    personalfathersOrHusbandsName: z.string().min(1, "Father's/Husband's name is required"),
+    personalmothersName: z.string().min(1, "Mother's name is required"),
+    personaldateOfBirth: z.coerce.date()
+      .max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), 
+      { message: 'Guarantor must be at least 18 years old' }),
+    personalnationality: z.string().min(1, 'Nationality is required'),
+    personalnid: z.string()
+      .min(1, 'NID is required')
+      .regex(/^\d{10}$/, 'NID must be 10 digits'),
+    personalbirthRegistration: z.string().optional(),
+    personalmobileNumber: z.string()
+      .min(1, 'Mobile number is required')
+      .refine(validatePhoneNumber, 'Invalid phone number format'),
+    personalemailAddress: z.string().email('Invalid email format'),
+    personalrelationWithGuarantor: z.string().min(1, 'Relationship is required'),
+    personalpresentAddress: z.string().min(1, 'Present address is required'),
+    personalpermanentAndMailingAddress: z.string().min(1, 'Permanent address is required'),
+    personalworkAddress: z.string().min(1, 'Work address is required'),
+    personaladdress: z.string().min(1, 'Address is required'),
+    personalprofession: z.string().min(1, 'Profession is required'),
+    personalmonthlyIncome: z.string()
+      .min(1, 'Monthly income is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    personalemployer: z.string().min(1, 'Employer is required'),
+  
+    // Business Information
+    businessfullName: z.string().min(1, 'Business name is required'),
+    businessfathersOrHusbandsName: z.string().min(1, "Father's/Husband's name is required"),
+    businessmothersName: z.string().min(1, "Mother's name is required"),
+    businessdateOfBirth: z.coerce.date()
+      .max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), 
+      { message: 'Guarantor must be at least 18 years old' }),
+    businessnationality: z.string().min(1, 'Nationality is required'),
+    businessnid: z.string()
+      .min(1, 'NID is required')
+      .regex(/^\d{10}$/, 'NID must be 10 digits'),
+    businessbirthRegistration: z.string().optional(),
+    businessmobileNumber: z.string()
+      .min(1, 'Mobile number is required')
+      .refine(validatePhoneNumber, 'Invalid phone number format'),
+    businessemailAddress: z.string().email('Invalid email format'),
+    businessrelationWithGuarantor: z.string().min(1, 'Relationship is required'),
+    businesspresentAddress: z.string().min(1, 'Present address is required'),
+    businesspermanentAndMailingAddress: z.string().min(1, 'Permanent address is required'),
+    businessworkAddress: z.string().min(1, 'Work address is required'),
+    businessaddress: z.string().min(1, 'Address is required'),
+    businessprofession: z.string().min(1, 'Profession is required'),
+    businessmonthlyIncome: z.string()
+      .min(1, 'Monthly income is required')
+      .refine(validateNumberString, 'Must be a valid number'),
+    businessemployer: z.string().min(1, 'Employer is required')
+  });
+  
 
-// Phone Number Validation
-const PhoneNumberValidation = z
-  .string()
-  .regex(/^\d{11}$/, 'Mobile number must be a valid 11 digit');
 
-// User Info Schema
-const UserInfoSchema = z.object({
-  fullName: z.string().min(1, 'Full Name is required'),
-  fatherName: z.string().min(1, "Father's Name is required"),
-  motherName: z.string().min(1, "Mother's Name is required"),
-  spouseName: z.string().min(1, "Spouse's Name is required"),
-  dateOfBirth: z.string().min(1, 'Date of Birth is required'),
-  placeOfBirth: z.string().min(1, 'Place of Birth is required'),
-  gender: GenderEnum,
-  maritalStatus: MaritalStatusEnum,
-  nid: z.string().min(10, 'NID must be at least 10 characters'),
-  birthRegistration: z.string().nullable(),
-  mobileNumber: PhoneNumberValidation,
-  alternateNumber: PhoneNumberValidation.optional(),
-  emailAddress: z.string().email('Invalid email address format'),
-  socialMediaLinks: z
-    .array(z.string().url('Each social media link must be a valid URL'))
-    .optional(),
-  propertyType: PropertyTypeEnum,
-  approximateValue: z
-    .number()
-    .positive('Property value must be a positive number'),
-});
-
-// Address Schema
-const AddressSchema = z.object({
-  houseFlatNo: z.string().min(1, 'House/Flat Number is required'),
-  streetRoad: z.string().min(1, 'Street/Road is required'),
-  areaLocality: z.string().min(1, 'Area/Locality is required'),
-  city: z.string().min(1, 'City is required'),
-  district: z.string().min(1, 'District is required'),
-  postalCode: z
-    .string()
-    .regex(/^\d{4,6}$/, 'Postal code must be 4 to 6 digits'),
-  lengthOfStayYears: z
-    .number()
-    .int()
-    .min(0, 'Length of stay must be a positive integer'),
-  ownershipStatus: OwnershipStatusEnum,
-});
-
-// Employment and Financial Info Schema
-const EmploymentFinancialInfoSchema = z.object({
-  employmentStatus: EmploymentStatusEnum,
-  jobTitle: z.string().min(1, 'Job Title is required').optional(),
-  employerName: z.string().min(1, 'Employer Name is required').optional(),
-  officeAddress: z.string().min(1, 'Office Address is required').optional(),
-  department: z.string().min(1, 'Department is required').optional(),
-  contactDetails: PhoneNumberValidation,
-  businessName: z.string().optional(),
-  businessRegistrationNumber: z.string().optional(),
-  employmentTenureYears: z
-    .number()
-    .min(0, 'Employment tenure must be a positive number'),
-  monthlyGrossIncome: z
-    .number()
-    .positive('Monthly gross income must be greater than zero'),
-  otherSourcesOfIncome: z.string().optional(),
-  totalMonthlyExpenses: z
-    .number()
-    .positive('Total monthly expenses must be greater than zero'),
-  profession: z.string().min(1, 'Profession is required'),
-  taxIdentificationNumber: z
-    .string()
-    .min(10, 'Tax Identification Number must be at least 10 characters'),
-  currentCreditScore: z
-    .number()
-    .min(300)
-    .max(850, 'Credit score must be between 300 and 850'),
-});
-
-// Loan Specifications Schema
-const LoanSpecificationsSchema = z.object({
-  loanType: LoanTypeEnum,
-  loanAmountRequested: z
-    .number()
-    .positive('Loan amount must be greater than zero'),
-  purposeOfLoan: z.string().min(1, 'Purpose of loan is required'),
-  preferredLoanTenure: z
-    .number()
-    .positive('Preferred loan tenure must be greater than zero'),
-  proposedEMIStartDate: z
-    .string()
-    .min(1, 'EMI start date must be in the future'),
-  repaymentPreferences: z.string().min(1, 'Repayment preferences are required'),
-});
-
-// Financial Obligations Schema
-const FinancialObligationsSchema = z.object({
-  lenderName: z.string().min(1, 'Lender name is required'),
-  loanBalance: z.number().min(0, 'Loan balance cannot be negative'),
-  monthlyEMI: z.number().min(0, 'EMI cannot be negative'),
-  remainingTenure: z
-    .number()
-    .int()
-    .min(0, 'Remaining tenure must be a positive integer'),
-  cardIssuer: z.string().min(1, 'Card issuer is required'),
-  currentBalance: z.number().min(0, 'Current balance cannot be negative'),
-  minimumMonthlyPayment: z
-    .number()
-    .min(0, 'Minimum monthly payment cannot be negative'),
-  obligationType: z.string().min(1, 'Obligation type is required'),
-  balance: z.number().min(0, 'Balance cannot be negative'),
-  emi: z.number().min(0, 'EMI cannot be negative'),
-});
-
-// Uploaded Documents Schema
-const UploadedDocumentsSchema = z.object({
-  type: DocumentTypeEnum,
-  filePath: z.string().min(1, 'File path is required'),
-  fileSizeMB: z.number().positive('File size must be positive'),
-  fileType: z.string().min(1, 'File type is required'),
-});
 
 // Main Application Schema
 const CreateApplicationValidationSchema = z.object({
-  personalLoanId: z.string().min(1, 'Personal loan ID is required').optional(),
-  userInfo: UserInfoSchema,
-  currentAddress: AddressSchema.optional(),
-  permanentAddress: AddressSchema.optional(),
-  employmentFinancialInfo: EmploymentFinancialInfoSchema,
-  loanSpecifications: LoanSpecificationsSchema,
-  financialObligations: z.array(FinancialObligationsSchema),
-  uploadedDocuments: z.array(UploadedDocumentsSchema),
+  adminNotes: z.string().optional(),
+  status: LoanStatusEnum.default('SUBMITTED'),
+  personalInfo: PersonalInfoSchema,
+  residentialInfo: ResidentialInfoSchema,
+  employmentInfo: EmploymentInfoSchema,
+  loanRequest: LoanRequestSchema,
+  financialObligations: z.array(FinancialObligationSchema)
+    .min(1, 'At least one financial obligation is required'),
+  documents: z.array(DocumentSchema)
+    .min(2, 'At least two documents are required')
+    .refine(docs => docs.some(d => d.type === 'ID_CARD'), 
+    { message: 'At least one ID document is required' }),
+  guarantorInfo: GuarantorInfoSchema,
+  userId: z.string().uuid('Invalid user ID format').optional()
 });
 
 const ApplicationTrackingValidation = z.object({
