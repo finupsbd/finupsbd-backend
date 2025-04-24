@@ -13,7 +13,7 @@ const createProfile = async (payload: TUserProfile, user: any, image: any) => {
 
 
 
-  const result = await prisma.user.update({
+   await prisma.user.update({
     where: { id: user?.userId },
     data: {
       profile: {

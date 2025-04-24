@@ -244,7 +244,7 @@ const PhoneNumberValidation = z
 
 // Main Application Schema
 const CreateApplicationValidationSchema = z.object({
-  adminNotes: z.string().optional(),
+  adminNotes: z.string().default('Waiting for admin review To process your application further if we need to verify your documents and information. Please wait for admin review.'),
   status: LoanStatusEnum.default('SUBMITTED'),
   personalInfo: PersonalInfoSchema,
   residentialInfo: ResidentialInfoSchema,
@@ -260,6 +260,7 @@ const CreateApplicationValidationSchema = z.object({
   userId: z.string().uuid('Invalid user ID format').optional()
 });
 
+
 const ApplicationTrackingValidation = z.object({
   applicationId: z.string().min(1, 'Application ID is required'),
   phone: PhoneNumberValidation,
@@ -270,8 +271,15 @@ const ApplicationForgetValidation = z.object({
   phone: PhoneNumberValidation,
 });
 
+const ApplicationStatusUpdateValidation = z.object({
+  status: LoanStatusEnum,
+  adminNotes: z.string().optional(),
+})
+
+
 export const ApplicationValidationSchema = {
   CreateApplicationValidationSchema,
   ApplicationTrackingValidation,
   ApplicationForgetValidation,
+  ApplicationStatusUpdateValidation
 };

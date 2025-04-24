@@ -1,8 +1,10 @@
-import express from "express"
+import express, { NextFunction, Request, Response } from "express"
 import { AuthController } from "./auth.controller"
 import validateRequest from "../../middleware/validateRequest"
 import { UserValidation } from "../user/user.validation"
 import auth from "../../middleware/auth"
+import { AuthValidation } from "./auth.validation"
+import catchAsync from "../../utils/catchAsync"
 
 const router = express.Router()
 
@@ -14,8 +16,11 @@ router.post('/login', validateRequest(UserValidation.loginValidationSchema), Aut
 router.post('/forget-password', validateRequest(UserValidation.forgetPasswordValidationSchema), AuthController.forgetPassword)
 router.post('/reset-password', auth("USER", "ADMIN", "SUPER_ADMIN"), validateRequest(UserValidation.resetPasswordValidationSchema), AuthController.resetPassword)
 router.post('/change-password', auth("USER", "ADMIN", "SUPER_ADMIN"), validateRequest(UserValidation.changePasswordValidationSchema), AuthController.changePassword)
-router.post('/refresh-token', auth("USER", "ADMIN", "SUPER_ADMIN"), AuthController.refreshToken)
-router.post('/logout', AuthController.logout)
+router.post('/refresh-token',catchAsync((req: Request, res: Response, next: NextFunction) => {
+    req.cookies = AuthValidation.refreshTokenValidationSchema.parse(req.cookies)
+    next()
+}), AuthController.refreshToken)
+router.post('/logout', AuthController.logout)   
 
 
 

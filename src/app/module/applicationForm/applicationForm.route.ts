@@ -9,11 +9,25 @@ import { ApplicationValidationSchema } from './applicationForm.validation';
 
 const route = express.Router();
 
+route.get(
+  '/',
+  auth('USER', 'SUPER_ADMIN', 'ADMIN'),
+  ApplicationController.getSingleApplication
+); 
+
 route.post(
   '/',
   auth('USER', 'SUPER_ADMIN', 'ADMIN'),
   validateRequest(ApplicationValidationSchema.CreateApplicationValidationSchema),
   ApplicationController.createApplicationForm
+); 
+
+
+route.patch(
+  '/update-status/:id',
+  auth('SUPER_ADMIN', 'ADMIN'),
+  validateRequest(ApplicationValidationSchema.ApplicationStatusUpdateValidation),
+  ApplicationController.statusUpdate
 ); 
 
 

@@ -20,9 +20,9 @@ import { generateCustomPassword } from '../../utils/generateCustomPassword';
 //Sign up User
 
 
-const signUp = async (payload: TUser, userSessionInfo: {ip: string, device: string, browser: string, location: string}) => {
+const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: string, browser: string, location: string }) => {
 
-  console.log({userSessionInfo})
+  console.log({ userSessionInfo })
 
   const isAlreadySignUpRequest = await prisma.user.findUnique({
     where: {
@@ -329,12 +329,12 @@ const forgetPassword = async (payload: { email: string }) => {
 
   console.log(newPassword)
 
- const newUserPassword = await prisma.user.update({
-      where: { email },
-      data: {
-        password: newPassword
-      },
-    });
+  const newUserPassword = await prisma.user.update({
+    where: { email },
+    data: {
+      password: newPassword
+    },
+  });
 
 
 
@@ -471,7 +471,12 @@ const refreshToken = async (token: string) => {
     ConfigFile.JWT_REFRESH_SECRET as string
   )) as JwtPayload;
 
-  const user = await prisma.user.findUnique({ where: { email: decode.email } });
+  const user = await prisma.user.findUnique({
+    where: { email: decode.email },
+    include: {
+      profile: true,
+    }
+  });
 
   if (!user) {
     throw new AppError(StatusCodes.NOT_FOUND, 'User Not Found');
@@ -486,6 +491,8 @@ const refreshToken = async (token: string) => {
   }
 
   const jwtPayload = {
+    name: user?.name,
+    avater: user?.profile?.avatar,
     userId: user?.id,
     role: user?.role,
     email: user?.email,

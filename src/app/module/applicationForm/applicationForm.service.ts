@@ -3,7 +3,7 @@ import AppError from '../../error/AppError';
 
 import sendEmail from '../../utils/sendEmail';
 import maskMobileNumber from '../../utils/maskedMobileNumber';
-import { TLoanApplicationForm } from './application.interface';
+import { LoanStatus, TLoanApplicationForm } from './application.interface';
 import { TMiddlewareUser } from '../../types/commonTypes';
 import { generateApplicationId } from '../../utils/generateApplicationId';
 import { StatusCodes } from 'http-status-codes';
@@ -175,6 +175,54 @@ const getAllApplicationForm = async () => {
 
 
 
+const updateStatus = async (id: string, payload: {status: LoanStatus, adminNotes: string}) => {
+console.log(payload)
+  const result = await prisma.loanApplicationForm.update({
+    where: {id}, 
+    data: {
+      status: payload.status, 
+      adminNotes: payload.adminNotes,
+    },
+    include: {
+      user: true
+    }
+
+  })
+
+  return result;
+}
+const getSingleApplication = async (id: string) => {
+
+  const result = await prisma.loanApplicationForm.findFirst({
+    where: {id}, 
+    include: {
+      personalInfo: true,
+      residentialInfo: true,
+      employmentInfo: true,
+      loanRequest: true,
+      financialObligations: true,
+      documents: true,
+      guarantorInfo: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          userId: true,
+          role: true,
+          profile: true,
+        },
+      },
+  }
+
+  })
+
+  return result;
+}
+
+
+
 
 
 
@@ -294,6 +342,7 @@ const getAllApplicationForm = async () => {
 export const ApplicationFromService = {
   getAllApplicationForm,
   createApplicationForm,
-  // applicationTracking,
+  updateStatus, 
+  getSingleApplication  // applicationTracking,
   // applicationForget,
 };

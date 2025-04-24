@@ -13,7 +13,7 @@ const emiCalculator = catchAsync(async (req, res) => {
 
   // Format response
   const result = {
-    'Disbursement Date': new Date(disbursementDate).toLocaleDateString(
+    'disbursementDate': new Date(disbursementDate).toLocaleDateString(
       'en-GB',
       {
         day: '2-digit',
@@ -21,13 +21,13 @@ const emiCalculator = catchAsync(async (req, res) => {
         year: 'numeric',
       }
     ),
-    'Loan Amount': loanAmount.toLocaleString('en-US', {
+    'loanAmount': loanAmount.toLocaleString('en-US', {
       style: 'currency',
       currency: 'BDT',
     }),
-    'Number of Schedule': numberOfMonths,
-    'Interest Rate': `${interestRate.toFixed(2)} %`,
-    'EMI Amount': emi.toFixed(2),
+    'numberOfSchedule': numberOfMonths,
+    'interestRate': `${interestRate.toFixed(2)} %`,
+    'emiAmount': emi.toFixed(2),
   };
 
   sendResponses(res, {

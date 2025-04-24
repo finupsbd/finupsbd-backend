@@ -313,10 +313,11 @@ export enum MaritalStatus {
 }
 
 export enum LoanStatus {
+  SUBMITTED = "SUBMITTED",
+  IN_PROCESS = "IN_PROCESS",
   PENDING = "PENDING",
   APPROVED = "APPROVED",
   REJECTED = "REJECTED",
-  UNDER_REVIEW = "UNDER_REVIEW",
 }
 
 export enum DocumentType {
