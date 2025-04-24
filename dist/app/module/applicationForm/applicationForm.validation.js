@@ -223,7 +223,7 @@ const GuarantorInfoSchema = zod_1.z.object({
 });
 // Main Application Schema
 const CreateApplicationValidationSchema = zod_1.z.object({
-    adminNotes: zod_1.z.string().optional(),
+    adminNotes: zod_1.z.string().default('Waiting for admin review To process your application further if we need to verify your documents and information. Please wait for admin review.'),
     status: LoanStatusEnum.default('SUBMITTED'),
     personalInfo: PersonalInfoSchema,
     residentialInfo: ResidentialInfoSchema,
@@ -245,8 +245,13 @@ const ApplicationForgetValidation = zod_1.z.object({
     email: zod_1.z.string().email().min(1, 'Email is required').optional(),
     phone: PhoneNumberValidation,
 });
+const ApplicationStatusUpdateValidation = zod_1.z.object({
+    status: LoanStatusEnum,
+    adminNotes: zod_1.z.string().optional(),
+});
 exports.ApplicationValidationSchema = {
     CreateApplicationValidationSchema,
     ApplicationTrackingValidation,
     ApplicationForgetValidation,
+    ApplicationStatusUpdateValidation
 };

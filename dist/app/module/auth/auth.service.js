@@ -397,11 +397,17 @@ const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* (
     return {};
 });
 const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     if (!token) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'You are unauthorized');
     }
     const decode = (yield jsonwebtoken_1.default.verify(token, config_1.ConfigFile.JWT_REFRESH_SECRET));
-    const user = yield app_1.prisma.user.findUnique({ where: { email: decode.email } });
+    const user = yield app_1.prisma.user.findUnique({
+        where: { email: decode.email },
+        include: {
+            profile: true,
+        }
+    });
     if (!user) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User Not Found');
     }
@@ -412,6 +418,8 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'You are not valid user');
     }
     const jwtPayload = {
+        name: user === null || user === void 0 ? void 0 : user.name,
+        avater: (_a = user === null || user === void 0 ? void 0 : user.profile) === null || _a === void 0 ? void 0 : _a.avatar,
         userId: user === null || user === void 0 ? void 0 : user.id,
         role: user === null || user === void 0 ? void 0 : user.role,
         email: user === null || user === void 0 ? void 0 : user.email,

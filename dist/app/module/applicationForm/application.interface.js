@@ -283,10 +283,11 @@ var MaritalStatus;
 })(MaritalStatus || (exports.MaritalStatus = MaritalStatus = {}));
 var LoanStatus;
 (function (LoanStatus) {
+    LoanStatus["SUBMITTED"] = "SUBMITTED";
+    LoanStatus["IN_PROCESS"] = "IN_PROCESS";
     LoanStatus["PENDING"] = "PENDING";
     LoanStatus["APPROVED"] = "APPROVED";
     LoanStatus["REJECTED"] = "REJECTED";
-    LoanStatus["UNDER_REVIEW"] = "UNDER_REVIEW";
 })(LoanStatus || (exports.LoanStatus = LoanStatus = {}));
 var DocumentType;
 (function (DocumentType) {

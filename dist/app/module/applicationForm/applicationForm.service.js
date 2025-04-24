@@ -154,6 +154,46 @@ const getAllApplicationForm = () => __awaiter(void 0, void 0, void 0, function* 
     });
     return result;
 });
+const updateStatus = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload);
+    const result = yield app_1.prisma.loanApplicationForm.update({
+        where: { id },
+        data: {
+            status: payload.status,
+            adminNotes: payload.adminNotes,
+        },
+        include: {
+            user: true
+        }
+    });
+    return result;
+});
+const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield app_1.prisma.loanApplicationForm.findFirst({
+        where: { id },
+        include: {
+            personalInfo: true,
+            residentialInfo: true,
+            employmentInfo: true,
+            loanRequest: true,
+            financialObligations: true,
+            documents: true,
+            guarantorInfo: true,
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                    userId: true,
+                    role: true,
+                    profile: true,
+                },
+            },
+        }
+    });
+    return result;
+});
 // const applicationTracking = async (payload: {
 //   applicationId: string;
 //   phone: string;
@@ -256,6 +296,7 @@ const getAllApplicationForm = () => __awaiter(void 0, void 0, void 0, function* 
 exports.ApplicationFromService = {
     getAllApplicationForm,
     createApplicationForm,
-    // applicationTracking,
+    updateStatus,
+    getSingleApplication // applicationTracking,
     // applicationForget,
 };

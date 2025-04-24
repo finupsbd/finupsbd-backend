@@ -40,7 +40,7 @@ const getAllApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(
     const result = yield applicationForm_service_1.ApplicationFromService.getAllApplicationForm();
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: 'Application Create successfully',
+        message: 'retrive all application successfully',
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         data: result,
     });
@@ -48,6 +48,26 @@ const getAllApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(
 const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
     const result = yield applicationForm_service_1.ApplicationFromService.createApplicationForm(req.body, user);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Application Create successfully',
+        statusCode: http_status_codes_1.StatusCodes.CREATED,
+        data: result,
+    });
+}));
+const statusUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield applicationForm_service_1.ApplicationFromService.updateStatus(id, req.body);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Application Create successfully',
+        statusCode: http_status_codes_1.StatusCodes.CREATED,
+        data: result,
+    });
+}));
+const getSingleApplication = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield applicationForm_service_1.ApplicationFromService.getSingleApplication(id);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Application Create successfully',
@@ -76,6 +96,8 @@ const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(
 exports.ApplicationController = {
     getAllApplicationForm,
     createApplicationForm,
+    statusUpdate,
+    getSingleApplication
     // applicationTracking,
     // applicationForget,
 };
