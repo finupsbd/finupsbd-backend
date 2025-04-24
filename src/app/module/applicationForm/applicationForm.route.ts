@@ -33,6 +33,6 @@ route.patch(
 
 
 route.get('/', ApplicationController.getAllApplicationForm);
-// route.post('/application-tracking', ApplicationController.applicationTracking)
+route.post('/application-tracking', ApplicationController.applicationTracking)
 // route.post('/application-forget', ApplicationController.applicationForget)
 export const ApplicationRouter = route;

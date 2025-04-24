@@ -14,6 +14,6 @@ route.get('/', (0, auth_1.default)('USER', 'SUPER_ADMIN', 'ADMIN'), applicationF
 route.post('/', (0, auth_1.default)('USER', 'SUPER_ADMIN', 'ADMIN'), (0, validateRequest_1.default)(applicationForm_validation_1.ApplicationValidationSchema.CreateApplicationValidationSchema), applicationForm_controller_1.ApplicationController.createApplicationForm);
 route.patch('/update-status/:id', (0, auth_1.default)('SUPER_ADMIN', 'ADMIN'), (0, validateRequest_1.default)(applicationForm_validation_1.ApplicationValidationSchema.ApplicationStatusUpdateValidation), applicationForm_controller_1.ApplicationController.statusUpdate);
 route.get('/', applicationForm_controller_1.ApplicationController.getAllApplicationForm);
-// route.post('/application-tracking', ApplicationController.applicationTracking)
+route.post('/application-tracking', applicationForm_controller_1.ApplicationController.applicationTracking);
 // route.post('/application-forget', ApplicationController.applicationForget)
 exports.ApplicationRouter = route;

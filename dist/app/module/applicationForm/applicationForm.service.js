@@ -194,31 +194,34 @@ const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function*
     });
     return result;
 });
-// const applicationTracking = async (payload: {
-//   applicationId: string;
-//   phone: string;
-// }) => {
-//   console.log(payload);
-//   const result = await prisma.applicationForm.findFirst({
-//     where: {
-//       applicationId: payload.applicationId,
-//       User: {
-//         phone: payload.phone,
-//       },
-//     },
-//     select: {
-//       status: true,
-//       loanSpecifications: true
-//     },
-//   });
-//   if (!result) {
-//     throw new AppError(
-//       404,
-//       'Application not found please enter valid Phone and Application ID'
-//     );
-//   }
-//   return result;
-// };
+const applicationTracking = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload);
+    const result = yield app_1.prisma.loanApplicationForm.findFirst({
+        where: {
+            applicationId: payload.applicationId,
+            user: {
+                phone: payload.phone,
+            },
+        },
+        select: {
+            status: true,
+            adminNotes: true,
+            applicationId: true,
+            loanRequest: true,
+            user: {
+                select: {
+                    name: true,
+                    userId: true,
+                    profile: true,
+                },
+            },
+        },
+    });
+    if (!result) {
+        throw new AppError_1.default(404, 'Application not found please enter valid Phone and Application ID');
+    }
+    return result;
+});
 // const applicationForget = async (payload: { email: string; phone: string }) => {
 //   const result = await prisma.user.findFirst({
 //     where: {
@@ -297,6 +300,7 @@ exports.ApplicationFromService = {
     getAllApplicationForm,
     createApplicationForm,
     updateStatus,
-    getSingleApplication // applicationTracking,
+    getSingleApplication,
+    applicationTracking,
     // applicationForget,
 };

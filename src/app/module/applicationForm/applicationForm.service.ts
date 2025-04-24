@@ -144,9 +144,6 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
   console.log(result, 'result')
   return result;
 };
-
-
-
 const getAllApplicationForm = async () => {
   const result = await prisma.loanApplicationForm.findMany({
     include: {
@@ -172,8 +169,6 @@ const getAllApplicationForm = async () => {
 
   return result;
 };
-
-
 
 const updateStatus = async (id: string, payload: {status: LoanStatus, adminNotes: string}) => {
 console.log(payload)
@@ -228,33 +223,42 @@ const getSingleApplication = async (id: string) => {
 
 
 
-// const applicationTracking = async (payload: {
-//   applicationId: string;
-//   phone: string;
-// }) => {
-//   console.log(payload);
-//   const result = await prisma.applicationForm.findFirst({
-//     where: {
-//       applicationId: payload.applicationId,
-//       User: {
-//         phone: payload.phone,
-//       },
-//     },
-//     select: {
-//       status: true,
-//       loanSpecifications: true
-//     },
-//   });
+const applicationTracking = async (payload: {
+  applicationId: string;
+  phone: string;
+}) => {
+  console.log(payload);
+  const result = await prisma.loanApplicationForm.findFirst({
+    where: {
+      applicationId: payload.applicationId,
+      user: {
+        phone: payload.phone,
+      },
+    },
+    select: {
+      status: true,
+      adminNotes: true,
+      applicationId: true,
+      loanRequest: true, 
+      user: {
+        select: {
+          name: true,
+          userId: true,
+          profile: true,
+        },
+      },
+    },
+  });
 
-//   if (!result) {
-//     throw new AppError(
-//       404,
-//       'Application not found please enter valid Phone and Application ID'
-//     );
-//   }
+  if (!result) {
+    throw new AppError(
+      404,
+      'Application not found please enter valid Phone and Application ID'
+    );
+  }
 
-//   return result;
-// };
+  return result;
+};
 
 // const applicationForget = async (payload: { email: string; phone: string }) => {
 //   const result = await prisma.user.findFirst({
@@ -343,6 +347,7 @@ export const ApplicationFromService = {
   getAllApplicationForm,
   createApplicationForm,
   updateStatus, 
-  getSingleApplication  // applicationTracking,
+  getSingleApplication,  
+  applicationTracking,
   // applicationForget,
 };

@@ -85,16 +85,16 @@ const getSingleApplication = catchAsync(async (req, res) => {
 
 
 
-// const applicationTracking = catchAsync(async (req, res) => {
-//   const result = await ApplicationFromService.applicationTracking(req.body);
+const applicationTracking = catchAsync(async (req, res) => {
+  const result = await ApplicationFromService.applicationTracking(req.body);
 
-//   sendResponses(res, {
-//     success: true,
-//     message: 'Application track successfully',
-//     statusCode: StatusCodes.OK,
-//     data: result,
-//   });
-// });
+  sendResponses(res, {
+    success: true,
+    message: 'Application track successfully',
+    statusCode: StatusCodes.OK,
+    data: result,
+  });
+});
 
 // const applicationForget = catchAsync(async (req, res) => {
 //   const result = await ApplicationFromService.applicationForget(req.body);
@@ -111,7 +111,7 @@ export const ApplicationController = {
   getAllApplicationForm,
   createApplicationForm,
   statusUpdate, 
-  getSingleApplication
-  // applicationTracking,
+  getSingleApplication,
+  applicationTracking,
   // applicationForget,
 };

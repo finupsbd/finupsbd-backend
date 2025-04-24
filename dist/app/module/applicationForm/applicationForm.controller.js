@@ -75,15 +75,15 @@ const getSingleApplication = (0, catchAsync_1.default)((req, res) => __awaiter(v
         data: result,
     });
 }));
-// const applicationTracking = catchAsync(async (req, res) => {
-//   const result = await ApplicationFromService.applicationTracking(req.body);
-//   sendResponses(res, {
-//     success: true,
-//     message: 'Application track successfully',
-//     statusCode: StatusCodes.OK,
-//     data: result,
-//   });
-// });
+const applicationTracking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield applicationForm_service_1.ApplicationFromService.applicationTracking(req.body);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Application track successfully',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result,
+    });
+}));
 // const applicationForget = catchAsync(async (req, res) => {
 //   const result = await ApplicationFromService.applicationForget(req.body);
 //   sendResponses(res, {
@@ -97,7 +97,7 @@ exports.ApplicationController = {
     getAllApplicationForm,
     createApplicationForm,
     statusUpdate,
-    getSingleApplication
-    // applicationTracking,
+    getSingleApplication,
+    applicationTracking,
     // applicationForget,
 };
