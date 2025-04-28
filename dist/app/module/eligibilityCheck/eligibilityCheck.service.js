@@ -8,56 +8,65 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EligibilityCheckService = void 0;
-const personalLoan_1 = __importDefault(require("./eligibilityCheck.utils/personalLoan"));
 const eligibilityCheck_constant_1 = require("./eligibilityCheck.constant");
-const homeLoan_1 = __importDefault(require("./eligibilityCheck.utils/homeLoan"));
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../app");
-const smeLoan_1 = __importDefault(require("./eligibilityCheck.utils/smeLoan"));
-const inistantLoan_1 = require("./eligibilityCheck.utils/inistantLoan");
+const personalLoan_1 = __importDefault(require("./eligibilityCheck/personalLoan"));
+const instantLoan_1 = require("./eligibilityCheck/instantLoan");
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
-    const compareData = Object.assign({}, payload);
+    // 1. Pull out the loans array
+    const { existingLoans = [] } = payload, eligibilityData = __rest(payload, ["existingLoans"]);
+    console.log(eligibilityData, 'eligibilityData');
+    // 2. Create with nested write
+    const result = yield app_1.prisma.eligibilityCheck.create({
+        data: Object.assign(Object.assign({}, eligibilityData), { existingLoans: {
+                create: existingLoans.map((loan) => ({
+                    existingLoanType: loan.existingLoanType,
+                    emiAmountBDT: loan.emiAmountBDT,
+                    interestRate: loan.interestRate,
+                })),
+            } }),
+        include: {
+            existingLoans: {
+                select: {
+                    existingLoanType: true,
+                    emiAmountBDT: true,
+                    interestRate: true,
+                },
+            },
+        },
+    });
+    console.log(result, 'result');
     if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.INSTANT_LOAN) {
-        return yield (0, inistantLoan_1.instantLoan)(payload, query);
+        return yield (0, instantLoan_1.instantLoan)(result, query);
     }
-    if (!(payload === null || payload === void 0 ? void 0 : payload.compareValue)) {
-        const result = yield app_1.prisma.eligibilityCheck.create({ data: payload });
-        if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.PERSONAL_LOAN) {
-            return yield (0, personalLoan_1.default)(result, query);
-        }
-        if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.HOME_LOAN) {
-            return yield (0, homeLoan_1.default)(result, query);
-        }
-        if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.SME_LOAN) {
-            return yield (0, smeLoan_1.default)(result, query);
-        }
-        // if (payload.LoanType === loanTypes.CAR_LOAN) {
-        //   return await carLoan(payload, query)
-        // }
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, `Invalid loan type provided. Please specify a valid loan type ((YOUR PROVIDED LOAN TYPE: ${payload.loanType})) (Excepeted Formate: PERSONAL_LOAN, HOME_LOAN, CAR_LOAN, SME_LOAN, CREDIT_CARD types)`);
+    if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.PERSONAL_LOAN) {
+        return yield (0, personalLoan_1.default)(result, query);
     }
-    else {
-        if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.PERSONAL_LOAN) {
-            return yield (0, personalLoan_1.default)(compareData, query);
-        }
-        if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.HOME_LOAN) {
-            return yield (0, homeLoan_1.default)(compareData, query);
-        }
-        if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.SME_LOAN) {
-            return yield (0, smeLoan_1.default)(compareData, query);
-        }
-    }
-    // const cleanData = removeNullFields(result)
-    // if (cleanData.email) {
-    // const success =  myCache.set(cleanData.email, cleanData);
-    // console.log(success) b
-    // } 
+    // if (payload?.loanType === loanTypes.HOME_LOAN) {
+    //   return await homeLoan(result as unknown as TEligibilityCheck, query)
+    // }
+    // if (payload?.loanType === loanTypes.SME_LOAN) {
+    //   return await smeLoan(result as unknown as TEligibilityCheck, query)
+    // }
+    throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, `This module is not yet implemented for ${payload === null || payload === void 0 ? void 0 : payload.loanType} type `);
 });
 exports.EligibilityCheckService = {
     eligibilityCheck,

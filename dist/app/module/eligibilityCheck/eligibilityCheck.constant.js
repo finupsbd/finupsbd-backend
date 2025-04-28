@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.professionType = exports.cardsTypes = exports.loanTypes = void 0;
+exports.vehicleTypes = exports.existingLoanTypes = exports.cardsTypes = exports.loanTypes = void 0;
 exports.loanTypes = {
     PERSONAL_LOAN: 'PERSONAL_LOAN',
     CAR_LOAN: 'CAR_LOAN',
@@ -15,4 +15,16 @@ exports.cardsTypes = {
     TRAVEL_CARD: 'TRAVEL_CARD',
     GIFT_CARD: 'GIFT_CARD',
 };
-exports.professionType = {};
+exports.existingLoanTypes = {
+    HOME_LOAN: 'HOME_LOAN',
+    PERSONAL_LOAN: 'PERSONAL_LOAN',
+    CAR_LOAN: 'CAR_LOAN',
+    SME_LOAN: 'SME_LOAN',
+    CREDIT_CARD: 'CREDIT_CARD',
+};
+exports.vehicleTypes = {
+    CAR_SEDAN: 'CAR_SEDAN',
+    CAR_SUV: 'CAR_SUV',
+    CAR_HATCHBACK: 'CAR_HATCHBACK',
+    BIKE: 'BIKE',
+};

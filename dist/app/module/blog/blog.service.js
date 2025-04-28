@@ -13,9 +13,10 @@ exports.BlogService = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const app_1 = require("../../../app");
 const sendImageToCloud_1 = require("../../utils/sendImageToCloud");
-const createBlog = (payload, file) => __awaiter(void 0, void 0, void 0, function* () {
+const createBlog = (payload, file, user) => __awaiter(void 0, void 0, void 0, function* () {
     const coverImage = yield (0, sendImageToCloud_1.sendImageToCloud)(file);
     payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
+    payload.userId = user.userId ? user.userId : undefined;
     const result = yield app_1.prisma.blog.create({ data: payload });
     return result;
 });
@@ -29,6 +30,18 @@ const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
             category: true,
             tags: true,
             coverImage: true,
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    profile: {
+                        select: {
+                            avatar: true,
+                        },
+                    }
+                },
+            }
         },
     });
     return result;

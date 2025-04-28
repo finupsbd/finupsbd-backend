@@ -1,104 +1,120 @@
+/// Enums (unchanged)
 enum MainLoanType {
-    PERSONAL_LOAN
-    HOME_LOAN
-    CAR_LOAN
-    SME_LOAN
+  PERSONAL_LOAN
+  HOME_LOAN
+  CAR_LOAN
+  SME_LOAN
+  INSTANT_LOAN
 }
 
 enum EGender {
-    MALE
-    FEMALE
-    OTHER
+  MALE
+  FEMALE
+  OTHER
 }
 
 enum Profession {
-    BUSINESS_OWNER
-    SALARIED
+  BUSINESS_OWNER
+  SALARIED
 }
 
 enum BusinessOwnerType {
-    PROPRIETOR
-    PARTNER
-    CORPORATION
-    LLC
-    COOPERATIVE
-    JOINT_VENTURE
-    FRANCHISE
+  PROPRIETOR
+  PARTNER
+  CORPORATION
+  LLC
+  COOPERATIVE
+  JOINT_VENTURE
+  FRANCHISE
 }
 
 enum VehicleType {
-    CAR_SEDAN
-    CAR_SUV
-    CAR_HATCHBACK
-    BIKE
+  CAR_SEDAN
+  CAR_SUV
+  CAR_HATCHBACK
+  BIKE
 }
 
 enum ExistingLoanType {
-    HOME_LOAN
-    PERSONAL_LOAN
-    CAR_LOAN
-    SME_LOAN
-    CREDIT_CARD
-    OTHER
+  HOME_LOAN
+  PERSONAL_LOAN
+  CAR_LOAN
+  SME_LOAN
+  CREDIT_CARD
+  OTHER
 }
 
 enum CardType {
-    CREDIT_CARD
-    DEBIT_CARD
+  CREDIT_CARD
+  DEBIT_CARD
 }
 
-/**
- * ------------------- Model -------------------
- */
+/// Main eligibility model
 model EligibilityCheck {
-    id          String          @id @default(uuid())
-    loanType    MainLoanType
-    gender      EGender
-    dateOfBirth DateTime
-    profession  Profession
+  id                   String              @id @default(uuid())
+  loanType             MainLoanType
+  gender               EGender
+  dateOfBirth          DateTime
+  profession           Profession
 
-    // Business-related
-    businessOwnerType BusinessOwnerType? // or String? if you don’t want to constrain to the enum
-    businessType      String?
-    sharePortion      Int?
-    tradeLicenseAge   Int?
+  // Business info
+  businessOwnerType    BusinessOwnerType?
+  businessType         String?
+  sharePortion         Int?
+  tradeLicenseAge      Int?
 
-    // Additional info
-    vehicleType        VehicleType?
-    expectedLoanTenure Int?
-    monthlyIncome      Int?
-    jobLocation        String?
+  // Personal & financial
+  vehicleType          VehicleType?
+  expectedLoanTenure   Int?
+  monthlyIncome        Int?
+  jobLocation          String?
 
-    // Rental income
-    haveAnyRentalIncome Boolean?
-    selectArea          String?
-    rentalIncome        Int?
+  // Rental income
+  haveAnyRentalIncome  Boolean?
+  selectArea           String?
+  rentalIncome         Int?
 
-    // Existing loan details
-    haveAnyLoan      Boolean?
-    numberOfLoan     Int?
-    existingLoanType ExistingLoanType?
-    EMIAmountBDT     Int?
-    InterestRate     Decimal?          @db.Decimal(5, 2)
+  // Loans → now a one‐to‐many relation
+  haveAnyLoan          Boolean?           @default(false)
+  existingLoans        ExistingLoan[]
 
-    // Credit card details
-    haveAnyCreditCard Boolean?
-    numberOfCard      Int?
-    cardType          CardType?
-    cardLimitBDT      Int?
+  // Credit cards
+  haveAnyCreditCard    Boolean?
+  numberOfCard         Int?
+  cardType             CardType?
+  cardLimitBDT         Int?
 
-    // Secondary applicant
-    secondaryApplicant Boolean?
-    termsAccepted Boolean?
+  // Other
+  secondaryApplicant   Boolean?
+  termsAccepted        Boolean?
+  
+  // Contact
+  name                 String
+  email                String
+  phone                String
 
-    // Contact / personal info
-    name          String
-    email         String
-    phone         String
-    isAppliedLoan Boolean  @default(false)
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
+  isAppliedLoan        Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
 
-    @@index([loanType, name, email, phone])
-    @@map("eligibilityCheck")
+  @@index([loanType, name, email, phone])
+  @@map("eligibilityCheck")
+}
+
+/// New model for each existing loan
+model ExistingLoan {
+  id                   String              @id @default(uuid())
+  existingLoanType     ExistingLoanType
+  emiAmountBDT         Int
+  interestRate         Decimal             @db.Decimal(5, 2)
+
+  // relation back to EligibilityCheck
+  eligibilityCheck     EligibilityCheck    @relation(fields: [eligibilityCheckId], references: [id], onDelete: Cascade)
+  eligibilityCheckId   String
+
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  @@map("existingLoans")
+  @@index([eligibilityCheckId])
 }

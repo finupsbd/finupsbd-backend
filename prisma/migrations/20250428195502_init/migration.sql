@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "MainLoanType" ADD VALUE 'INSTANT_LOAN';

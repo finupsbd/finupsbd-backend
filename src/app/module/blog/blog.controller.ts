@@ -3,14 +3,20 @@ import catchAsync from "../../utils/catchAsync";
 import { BlogService } from "./blog.service";
 import { BlogValidationSchema } from "./blog.validation";
 import sendResponses from "../../utils/sendResponce";
+import { TMiddlewareUser } from "../../types/commonTypes";
 
 
 const createBlog = catchAsync(async (req, res) => {
   const payload = BlogValidationSchema.parse(JSON.parse(req.body.data))
   const file = req.file?.buffer
+  const user = req.user as TMiddlewareUser;
 
+  if (!user) {
+    throw new Error("User is not authenticated");
+  }
+  console.log(user);
 
-    const result = await BlogService.createBlog(payload, file)
+  const result = await BlogService.createBlog(payload, file, user);
 
     
     sendResponses(res, {

@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from '../../../app';
+import { TMiddlewareUser } from '../../types/commonTypes';
 import { sendImageToCloud } from '../../utils/sendImageToCloud';
 import { TBlog } from './blog.interface';
 
-const createBlog = async (payload: TBlog, file: any) => {
+const createBlog = async (payload: TBlog, file: any, user: TMiddlewareUser ) => {
   const coverImage = await sendImageToCloud(file);
   payload.coverImage = coverImage ?? undefined;
+  payload.userId = user.userId ? user.userId : undefined;
 
-  const result = await prisma.blog.create({ data: payload });
+  const result = await prisma.blog.create({ data: payload as any });
   return result;
 };
 
@@ -21,6 +23,18 @@ const getAllBlogs = async () => {
       category: true,
       tags: true,
       coverImage: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          profile: {
+            select: {
+              avatar: true,
+            },
+          }
+        },
+      }
     },
   });
   return result;
@@ -52,3 +66,4 @@ export const BlogService = {
   getAllBlogs,
   deleteBlog,
 };
+                      

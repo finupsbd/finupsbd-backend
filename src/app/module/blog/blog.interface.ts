@@ -13,7 +13,7 @@
     title: string;
     slug: string;
     content: string;
-    userId: string;
+    userId?: string;
     publishedDate?: Date | undefined;
     status: "DRAFT" |  "PUBLISHED" | "ARCHIVED";
     excerpt?: string;

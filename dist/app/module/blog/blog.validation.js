@@ -8,7 +8,6 @@ exports.BlogValidationSchema = zod_1.z.object({
     title: zod_1.z.string(),
     slug: zod_1.z.string(),
     content: zod_1.z.string(),
-    userId: zod_1.z.string(),
     publishedDate: zod_1.z.date().optional(),
     status: exports.PostStatusSchema,
     excerpt: zod_1.z.string().optional(),

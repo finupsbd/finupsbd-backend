@@ -9,7 +9,6 @@ export const BlogValidationSchema = z.object({
     title: z.string(),
     slug: z.string(),
     content: z.string(),
-    userId: z.string(),
     publishedDate: z.date().optional(),
     status: PostStatusSchema,
     excerpt: z.string().optional(),

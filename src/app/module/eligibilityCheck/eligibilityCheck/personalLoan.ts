@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "../../../../app";
+import { calculateAge } from "../../../utils/calculateAge";
 import { TEligibilityCheck } from "../eligibilityCheck.interface";
+import { buildFilters } from "../queryBuilder/queryBuilder";
 import { calculateEMI } from "../utils/calculateEMI";
 import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
 
 export const personalLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
   try {
 
-
     // Extract pagination parameters and default to page 1 and 10 items per page if not provided.
+
     const page = query.page ? Number(query.page) : 1;
     const pageSize = query.pageSize ? Number(query.pageSize) : 3;
 
@@ -16,34 +18,12 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = 200000, searchTerm, interestRate, ...filter } = query;
 
 
-    const buildFilters = () => {
-      const filters: any = {};
-      if (typeof searchTerm === 'string' && searchTerm.trim()) {
-        const searchTerms = searchTerm.split(',')
-          .map(term => term.trim())
-          .filter(term => term.length > 0);
+  
+// console.log(calculateAge(payload.dateOfBirth.toISOString()) , 'age')
 
-        // Build an OR filter for each search term
-        if (searchTerms.length > 0) {
-          filters.OR = searchTerms.map(term => ({
-            bankName: {
-              contains: term,
-              mode: 'insensitive'
-            }
-          }));
-        }
-      }
+    const filters = buildFilters( payload.monthlyIncome, calculateAge(payload.dateOfBirth.toISOString()));
 
-      if (typeof interestRate === 'string' && interestRate.trim()) {
-        filters.interestRate = {
-          contains: interestRate.trim(),
-          mode: 'insensitive',
-        };
-      }
-      return filters;
-    };
-
-    const filters = buildFilters();
+    console.log(filters) 
 
 
 
@@ -66,7 +46,6 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     ]);
 
 
-
     
     const forEligibleLoan = {...payload}
 
@@ -80,11 +59,13 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     }
 
     if (payload?.haveAnyRentalIncome) {
-      payload.monthlyIncome = payload.monthlyIncome + payload.rentalIncome!
+      payload.monthlyIncome += payload.monthlyIncome 
     }
 
     if (payload?.haveAnyLoan) {
-      payload.monthlyIncome = payload.monthlyIncome - (payload.EMIAmountBDT ?? 0);
+      const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
+      payload.monthlyIncome -= totalEmi 
+
     }
 
     if (payload?.haveAnyCreditCard) {

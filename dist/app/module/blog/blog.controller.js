@@ -22,7 +22,12 @@ const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     var _a;
     const payload = blog_validation_1.BlogValidationSchema.parse(JSON.parse(req.body.data));
     const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
-    const result = yield blog_service_1.BlogService.createBlog(payload, file);
+    const user = req.user;
+    if (!user) {
+        throw new Error("User is not authenticated");
+    }
+    console.log(user);
+    const result = yield blog_service_1.BlogService.createBlog(payload, file, user);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Blog create successfully',

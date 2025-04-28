@@ -2,7 +2,7 @@
 CREATE TYPE "MaritalStatus" AS ENUM ('SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED');
 
 -- CreateEnum
-CREATE TYPE "LoanStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED', 'UNDER_REVIEW');
+CREATE TYPE "LoanStatus" AS ENUM ('SUBMITTED', 'IN_PROCESS', 'PENDING', 'APPROVED', 'REJECTED');
 
 -- CreateEnum
 CREATE TYPE "DocumentType" AS ENUM ('PASSPORT', 'ID_CARD', 'INCOME_PROOF', 'BANK_STATEMENT', 'TIN_CERTIFICATE', 'EMPLOYMENT_PROOF', 'UTILITY_BILL', 'PROPERTY_DOCUMENT', 'ADDITIONAL');
@@ -48,12 +48,8 @@ CREATE TABLE "LoanApplicationForm" (
     "id" TEXT NOT NULL,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "adminNotes" TEXT,
-    "status" "LoanStatus" NOT NULL DEFAULT 'PENDING',
-    "personalInfoId" TEXT NOT NULL,
-    "residentialInfoId" TEXT NOT NULL,
-    "employmentInfoId" TEXT NOT NULL,
-    "loanRequestId" TEXT NOT NULL,
-    "guarantorInfoId" TEXT NOT NULL,
+    "applicationId" TEXT,
+    "status" "LoanStatus" NOT NULL DEFAULT 'SUBMITTED',
     "userId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -78,6 +74,7 @@ CREATE TABLE "PersonalInfo" (
     "alternateMobile" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "socialMedia" TEXT NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "PersonalInfo_pkey" PRIMARY KEY ("id")
 );
@@ -104,6 +101,7 @@ CREATE TABLE "ResidentialInfo" (
     "presentOwnership" TEXT NOT NULL,
     "propertyType" TEXT NOT NULL,
     "approximateValue" TEXT NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "ResidentialInfo_pkey" PRIMARY KEY ("id")
 );
@@ -125,6 +123,7 @@ CREATE TABLE "EmploymentInfo" (
     "householdExpenses" TEXT NOT NULL,
     "tin" TEXT NOT NULL,
     "creditScore" TEXT NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "EmploymentInfo_pkey" PRIMARY KEY ("id")
 );
@@ -138,6 +137,7 @@ CREATE TABLE "LoanRequest" (
     "tenure" TEXT NOT NULL,
     "emiStartDate" TEXT NOT NULL,
     "repaymentPreferences" TEXT NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "LoanRequest_pkey" PRIMARY KEY ("id")
 );
@@ -210,6 +210,7 @@ CREATE TABLE "GuarantorInfo" (
     "businessprofession" TEXT NOT NULL,
     "businessmonthlyIncome" TEXT NOT NULL,
     "businessemployer" TEXT NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "GuarantorInfo_pkey" PRIMARY KEY ("id")
 );
@@ -321,11 +322,7 @@ CREATE TABLE "eligibilityCheck" (
     "haveAnyRentalIncome" BOOLEAN,
     "selectArea" TEXT,
     "rentalIncome" INTEGER,
-    "haveAnyLoan" BOOLEAN,
-    "numberOfLoan" INTEGER,
-    "existingLoanType" "ExistingLoanType",
-    "EMIAmountBDT" INTEGER,
-    "InterestRate" DECIMAL(5,2),
+    "haveAnyLoan" BOOLEAN DEFAULT false,
     "haveAnyCreditCard" BOOLEAN,
     "numberOfCard" INTEGER,
     "cardType" "CardType",
@@ -340,6 +337,19 @@ CREATE TABLE "eligibilityCheck" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "eligibilityCheck_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "existingLoans" (
+    "id" TEXT NOT NULL,
+    "existingLoanType" "ExistingLoanType" NOT NULL,
+    "emiAmountBDT" INTEGER NOT NULL,
+    "interestRate" DECIMAL(5,2) NOT NULL,
+    "eligibilityCheckId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "existingLoans_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -706,19 +716,7 @@ CREATE TABLE "Activity" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "LoanApplicationForm_personalInfoId_key" ON "LoanApplicationForm"("personalInfoId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "LoanApplicationForm_residentialInfoId_key" ON "LoanApplicationForm"("residentialInfoId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "LoanApplicationForm_employmentInfoId_key" ON "LoanApplicationForm"("employmentInfoId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "LoanApplicationForm_loanRequestId_key" ON "LoanApplicationForm"("loanRequestId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "LoanApplicationForm_guarantorInfoId_key" ON "LoanApplicationForm"("guarantorInfoId");
+CREATE UNIQUE INDEX "LoanApplicationForm_applicationId_key" ON "LoanApplicationForm"("applicationId");
 
 -- CreateIndex
 CREATE INDEX "LoanApplicationForm_userId_idx" ON "LoanApplicationForm"("userId");
@@ -727,10 +725,25 @@ CREATE INDEX "LoanApplicationForm_userId_idx" ON "LoanApplicationForm"("userId")
 CREATE INDEX "LoanApplicationForm_createdAt_idx" ON "LoanApplicationForm"("createdAt");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "PersonalInfo_loanApplicationFormId_key" ON "PersonalInfo"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ResidentialInfo_loanApplicationFormId_key" ON "ResidentialInfo"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EmploymentInfo_loanApplicationFormId_key" ON "EmploymentInfo"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "LoanRequest_loanApplicationFormId_key" ON "LoanRequest"("loanApplicationFormId");
+
+-- CreateIndex
 CREATE INDEX "FinancialObligation_loanApplicationFormId_idx" ON "FinancialObligation"("loanApplicationFormId");
 
 -- CreateIndex
 CREATE INDEX "Document_loanApplicationFormId_idx" ON "Document"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "GuarantorInfo_loanApplicationFormId_key" ON "GuarantorInfo"("loanApplicationFormId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "FeaturesCarLoan_carLoanId_key" ON "FeaturesCarLoan"("carLoanId");
@@ -743,6 +756,9 @@ CREATE UNIQUE INDEX "FeesChargesCarLoan_carLoanId_key" ON "FeesChargesCarLoan"("
 
 -- CreateIndex
 CREATE INDEX "eligibilityCheck_loanType_name_email_phone_idx" ON "eligibilityCheck"("loanType", "name", "email", "phone");
+
+-- CreateIndex
+CREATE INDEX "existingLoans_eligibilityCheckId_idx" ON "existingLoans"("eligibilityCheckId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "FeaturesHomeLoan_homeLoanId_key" ON "FeaturesHomeLoan"("homeLoanId");

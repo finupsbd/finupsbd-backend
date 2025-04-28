@@ -1,5 +1,12 @@
+
+
 // Enum types as string unions
-export type MainLoanType = 'PERSONAL_LOAN' | 'HOME_LOAN' | 'CAR_LOAN' | 'SME_LOAN';
+export type TMainLoanType =
+  'PERSONAL_LOAN'
+  | 'HOME_LOAN'
+  | 'CAR_LOAN'
+  | 'SME_LOAN'
+  | 'INSTANT_LOAN';
 
 export type EGender = 'MALE' | 'FEMALE' | 'OTHER';
 
@@ -27,15 +34,21 @@ export type ExistingLoanType =
   | 'CAR_LOAN'
   | 'SME_LOAN'
   | 'CREDIT_CARD'
-  | 'OTHER';
 
 export type CardType = 'CREDIT_CARD' | 'DEBIT_CARD';
+
+export interface ExistingLoan {
+  existingLoanType: ExistingLoanType;
+  emiAmountBDT: number;
+  interestRate: number;
+}
 
 
 // The EligibilityCheck model as a TypeScript interface
 export type TEligibilityCheck = {
+  emiAmountBDT: number;
   id: string;
-  loanType: MainLoanType;
+  loanType: TMainLoanType;
   gender: EGender;
   dateOfBirth: Date;
   profession: Profession;
@@ -61,11 +74,7 @@ export type TEligibilityCheck = {
 
   // Existing loan details
   haveAnyLoan: boolean;
-  numberOfLoan?: number;
-  existingLoanType?: ExistingLoanType;
-  EMIAmountBDT?: number;
-  InterestRate?: number;
-  loanOutstanding?: number;
+  existingLoans?: ExistingLoan[];
 
   // Credit card details
   haveAnyCreditCard: boolean;
@@ -87,4 +96,3 @@ export type TEligibilityCheck = {
   updatedAt: Date;
 }
 
-   

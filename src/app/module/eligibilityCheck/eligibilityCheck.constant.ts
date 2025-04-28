@@ -1,9 +1,9 @@
 export const loanTypes = {
   PERSONAL_LOAN: 'PERSONAL_LOAN',
-  CAR_LOAN: 'CAR_LOAN',
-  HOME_LOAN: 'HOME_LOAN',
-  SME_LOAN: 'SME_LOAN',
-  INSTANT_LOAN: 'INSTANT_LOAN',
+  CAR_LOAN:      'CAR_LOAN',
+  HOME_LOAN:     'HOME_LOAN',
+  SME_LOAN:      'SME_LOAN',
+  INSTANT_LOAN:  'INSTANT_LOAN',
 };
 
 export const cardsTypes = {
@@ -14,7 +14,18 @@ export const cardsTypes = {
   GIFT_CARD: 'GIFT_CARD',
 };
 
-export const professionType = {
-  
-}
-   
+export const existingLoanTypes = {
+  HOME_LOAN: 'HOME_LOAN',
+  PERSONAL_LOAN: 'PERSONAL_LOAN',
+  CAR_LOAN: 'CAR_LOAN',
+  SME_LOAN: 'SME_LOAN',
+  CREDIT_CARD: 'CREDIT_CARD',
+};
+
+export const vehicleTypes = {
+  CAR_SEDAN: 'CAR_SEDAN',
+  CAR_SUV: 'CAR_SUV',
+  CAR_HATCHBACK: 'CAR_HATCHBACK',
+  BIKE: 'BIKE',
+};
+
