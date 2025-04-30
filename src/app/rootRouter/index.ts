@@ -13,6 +13,7 @@ import { HomeLoanRouter } from '../module/loans/homeLoan/homeLoan.route'
 import { CarLoanRouter } from '../module/loans/carLoan/carLoan.route'
 import { SMELoanRouter } from '../module/loans/smeLoan/smeLoan.route'
 import { InstantLoanRouter } from '../module/loans/instantLoan/instantLoan.route'
+import { CreditCardRouter } from '../module/loans/creditCard/creditCard.route'
 const router = express.Router()
 
 
@@ -74,6 +75,10 @@ const moduleRouter = [
     {
         path: '/sme-loan',
         route: SMELoanRouter
+    },
+    {
+        path: '/credit-card',
+        route: CreditCardRouter
     },
 ]
 

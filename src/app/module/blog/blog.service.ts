@@ -23,6 +23,25 @@ const getAllBlogs = async () => {
       category: true,
       tags: true,
       coverImage: true,
+      comments: {
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              profile: {
+                select: {
+                  avatar: true,
+                },
+              },
+            },
+          },
+        },
+      },
       user: {
         select: {
           id: true,
@@ -60,10 +79,41 @@ const deleteBlog = async (id: string) => {
   return result;
 };
 
+
+
+
+const commentBlog = async (blogId: string, payload: {content: string}, user: TMiddlewareUser ) => {
+
+  const isExistBlog = await prisma.blog.findFirst({
+    where: { id : blogId },
+  });
+  if (!isExistBlog) {
+    throw new Error('Blog not found. thank you');
+  }
+
+
+  const result = await prisma.comment.create(
+    {
+      data: {
+        content: payload.content,
+        blogId: blogId,
+        userId: user.userId ? user.userId : undefined,
+      },
+    } as any
+  );
+
+  console.log(result, 'result comment blog');
+
+  return result;
+
+
+};
+
 export const BlogService = {
   createBlog,
   updateBlog,
   getAllBlogs,
   deleteBlog,
+  commentBlog
 };
                       

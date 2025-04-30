@@ -30,6 +30,25 @@ const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
             category: true,
             tags: true,
             coverImage: true,
+            comments: {
+                select: {
+                    id: true,
+                    content: true,
+                    createdAt: true,
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            profile: {
+                                select: {
+                                    avatar: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
             user: {
                 select: {
                     id: true,
@@ -63,9 +82,27 @@ const deleteBlog = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield app_1.prisma.blog.delete({ where: { id } });
     return result;
 });
+const commentBlog = (blogId, payload, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExistBlog = yield app_1.prisma.blog.findFirst({
+        where: { id: blogId },
+    });
+    if (!isExistBlog) {
+        throw new Error('Blog not found. thank you');
+    }
+    const result = yield app_1.prisma.comment.create({
+        data: {
+            content: payload.content,
+            blogId: blogId,
+            userId: user.userId ? user.userId : undefined,
+        },
+    });
+    console.log(result, 'result comment blog');
+    return result;
+});
 exports.BlogService = {
     createBlog,
     updateBlog,
     getAllBlogs,
     deleteBlog,
+    commentBlog
 };

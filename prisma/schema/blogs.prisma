@@ -9,7 +9,7 @@ model Blog {
     title           String
     slug            String
     content         String
-    user            User       @relation(fields: [userId], references: [id])
+    user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId          String
     publishedDate   DateTime?  @default(now())
     status          PostStatus @default(PUBLISHED)
@@ -20,22 +20,22 @@ model Blog {
     readingTime     Int? // in minutes
     metaTitle       String?
     metaDescription String?
-    // comments        Comment[]
+    comments        Comment[]
     attachments     String[] // Array of file URLs
     language        String     @default("en")
     permissions     String     @default("public")
     createdAt       DateTime   @default(now())
     updatedAt       DateTime   @updatedAt
-
     @@map("blogs")
 }
 
-// model Comment {
-//     id        Int      @id @default(autoincrement())
-//     content   String
-//     postId    String
-//     post      Blog     @relation(fields: [blogId], references: [id])
-//     blogId    Int      @unique
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
-// }
+model Comment {
+    id        String   @id @default(uuid())
+    content   String
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    blog      Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+    blogId    String   
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

@@ -5,34 +5,37 @@ import { calculateAge } from "../../../utils/calculateAge";
 
 
 
-const adjustMonthlyIncome = (payload: TEligibilityCheck): TEligibilityCheck => {
-    let income = payload.monthlyIncome;
+// const adjustMonthlyIncome = (payload: TEligibilityCheck): TEligibilityCheck => {
+//     let income = payload.monthlyIncome;
 
-    if (income > 50000) {
-        income = 50000;
-    }
+//     if (income > 50000) {
+//         income = 50000;
+//     }
 
-    if (payload.haveAnyRentalIncome) {
-        income += payload.rentalIncome || 0;
-    }
+//     if (payload.haveAnyRentalIncome) {
+//         income += payload.rentalIncome || 0;
+//     }
 
-    if (payload.haveAnyLoan) {
-        const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
-         payload.monthlyIncome -= totalEmi
-    }
+//     if (payload.haveAnyLoan) {
+//         const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
+//         payload.monthlyIncome -= totalEmi
+//     }
 
-    if (payload.haveAnyCreditCard) {
-        income -= (payload.numberOfCard || 0) * 2000;
-    }
+//     if (payload.haveAnyCreditCard) {
+//         income -= (payload.numberOfCard || 0) * 2000;
+//     }
 
-    return {
-        ...payload,
-        monthlyIncome: income,
-    };
-};
+//     return {
+//         ...payload,
+//         monthlyIncome: income,
+//     };
+// };
 
 
 export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
+
+    const { amount = 200000, tanure = 2 } = query;
+
     try {
 
         const [loans] = await prisma.$transaction([
@@ -61,19 +64,35 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
         ]);
 
 
-        const adjustedPayload = adjustMonthlyIncome(payload);
+
+        if (payload.monthlyIncome > 50000) {
+            payload.monthlyIncome = 50000;
+        }
+
+        if (payload.haveAnyRentalIncome) {
+            payload.rentalIncome = (payload.rentalIncome || 0) + (payload.rentalIncome || 0);
+        }
+
+        if (payload.haveAnyLoan) {
+            const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
+            payload.monthlyIncome -= totalEmi
+        }
+
+        if (payload.haveAnyCreditCard) {
+            payload.monthlyIncome -= (payload.numberOfCard || 0) * 2000;
+        }
 
 
-        console.log("Adjusted Payload:", adjustedPayload);
+
 
         const suggestedLoans = loans.map((loan) => {
-            const monthlyEMI = calculateEMI(Number(adjustedPayload.amount), Number(loan.interestRate), Number(adjustedPayload.tenure));
-            const totalRepayment = monthlyEMI * Number(adjustedPayload.tenure);
+            const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), Number(tanure));
+            const totalRepayment = monthlyEMI * Number(tanure);
 
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: Math.floor(Number(payload.amount)).toFixed(2),
+                amount: Math.floor(Number(amount)).toFixed(2),
                 periodMonths: payload.tenure,
                 loanType: loan.loanType,
                 monthlyEMI: Math.floor(monthlyEMI).toFixed(2),
@@ -81,14 +100,14 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
                 coverImage: loan.coverImage,
                 interestRate: Number(loan.interestRate),
                 processingFee: loan.processingFee,
-                eligibleLoan: adjustedPayload.monthlyIncome,
+                eligibleLoan: payload.monthlyIncome,
                 features: loan.FeaturesInstantLoan,
                 feesCharges: loan.FeesChargesInstantLoan,
                 eligibility: loan.EligibilityInstantLoan,
             };
         });
 
-      
+
         return suggestedLoans
     } catch (error) {
         console.error("Error in instantLoan function:", error);

@@ -34,7 +34,8 @@ model User {
   Activity            Activity[]
   InstantLoan         InstantLoan[]
   LoanApplicationForm LoanApplicationForm[]
-
+  CreditCard          CreditCard[]
+  Comment             Comment[]
 
   @@index([email]) // Index for email
   @@index([phone]) // Index for phone

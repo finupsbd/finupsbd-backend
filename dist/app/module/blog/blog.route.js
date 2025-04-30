@@ -12,6 +12,7 @@ const sendImageToCloud_1 = require("../../utils/sendImageToCloud");
 const auth_1 = __importDefault(require("../../middleware/auth"));
 const router = express_1.default.Router();
 router.post('/', (0, auth_1.default)("USER", "ADMIN", "SUPER_ADMIN"), sendImageToCloud_1.upload.single("file"), blog_controller_1.BlogController.createBlog);
+router.post('/comment/:id', (0, auth_1.default)("USER", "ADMIN", "SUPER_ADMIN"), blog_controller_1.BlogController.commentBlog);
 router.get('/', blog_controller_1.BlogController.getAllBlogs);
 router.patch('/:id', (0, validateRequest_1.default)(blog_validation_1.BlogValidation.BlogValidationSchema), blog_controller_1.BlogController.updateBlog);
 router.delete('/:id', blog_controller_1.BlogController.deleteBlog);

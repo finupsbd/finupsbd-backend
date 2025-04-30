@@ -13,25 +13,29 @@ exports.instantLoan = void 0;
 const calculateEMI_1 = require("../utils/calculateEMI");
 const app_1 = require("../../../../app");
 const calculateAge_1 = require("../../../utils/calculateAge");
-const adjustMonthlyIncome = (payload) => {
-    var _a;
-    let income = payload.monthlyIncome;
-    if (income > 50000) {
-        income = 50000;
-    }
-    if (payload.haveAnyRentalIncome) {
-        income += payload.rentalIncome || 0;
-    }
-    if (payload.haveAnyLoan) {
-        const totalEmi = ((_a = payload.existingLoans) === null || _a === void 0 ? void 0 : _a.reduce((acc, loan) => acc + loan.emiAmountBDT, 0)) || 0;
-        payload.monthlyIncome -= totalEmi;
-    }
-    if (payload.haveAnyCreditCard) {
-        income -= (payload.numberOfCard || 0) * 2000;
-    }
-    return Object.assign(Object.assign({}, payload), { monthlyIncome: income });
-};
+// const adjustMonthlyIncome = (payload: TEligibilityCheck): TEligibilityCheck => {
+//     let income = payload.monthlyIncome;
+//     if (income > 50000) {
+//         income = 50000;
+//     }
+//     if (payload.haveAnyRentalIncome) {
+//         income += payload.rentalIncome || 0;
+//     }
+//     if (payload.haveAnyLoan) {
+//         const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
+//         payload.monthlyIncome -= totalEmi
+//     }
+//     if (payload.haveAnyCreditCard) {
+//         income -= (payload.numberOfCard || 0) * 2000;
+//     }
+//     return {
+//         ...payload,
+//         monthlyIncome: income,
+//     };
+// };
 const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { amount = 200000, tanure = 2 } = query;
     try {
         const [loans] = yield app_1.prisma.$transaction([
             app_1.prisma.instantLoan.findMany({
@@ -57,15 +61,26 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
                 },
             })
         ]);
-        const adjustedPayload = adjustMonthlyIncome(payload);
-        console.log("Adjusted Payload:", adjustedPayload);
+        if (payload.monthlyIncome > 50000) {
+            payload.monthlyIncome = 50000;
+        }
+        if (payload.haveAnyRentalIncome) {
+            payload.rentalIncome = (payload.rentalIncome || 0) + (payload.rentalIncome || 0);
+        }
+        if (payload.haveAnyLoan) {
+            const totalEmi = ((_a = payload.existingLoans) === null || _a === void 0 ? void 0 : _a.reduce((acc, loan) => acc + loan.emiAmountBDT, 0)) || 0;
+            payload.monthlyIncome -= totalEmi;
+        }
+        if (payload.haveAnyCreditCard) {
+            payload.monthlyIncome -= (payload.numberOfCard || 0) * 2000;
+        }
         const suggestedLoans = loans.map((loan) => {
-            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(adjustedPayload.amount), Number(loan.interestRate), Number(adjustedPayload.tenure));
-            const totalRepayment = monthlyEMI * Number(adjustedPayload.tenure);
+            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), Number(tanure));
+            const totalRepayment = monthlyEMI * Number(tanure);
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: Math.floor(Number(payload.amount)).toFixed(2),
+                amount: Math.floor(Number(amount)).toFixed(2),
                 periodMonths: payload.tenure,
                 loanType: loan.loanType,
                 monthlyEMI: Math.floor(monthlyEMI).toFixed(2),
@@ -73,7 +88,7 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
                 coverImage: loan.coverImage,
                 interestRate: Number(loan.interestRate),
                 processingFee: loan.processingFee,
-                eligibleLoan: adjustedPayload.monthlyIncome,
+                eligibleLoan: payload.monthlyIncome,
                 features: loan.FeaturesInstantLoan,
                 feesCharges: loan.FeesChargesInstantLoan,
                 eligibility: loan.EligibilityInstantLoan,

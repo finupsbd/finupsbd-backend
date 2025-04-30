@@ -66,9 +66,23 @@ const deleteBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: {},
     });
 }));
+const commentBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const blogId = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
+    const user = req.user;
+    const payload = req.body;
+    yield blog_service_1.BlogService.commentBlog(blogId, payload, user);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Blog Comment Successfully',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: {},
+    });
+}));
 exports.BlogController = {
     createBlog,
     updateBlog,
     getAllBlogs,
-    deleteBlog
+    deleteBlog,
+    commentBlog
 };

@@ -66,11 +66,30 @@ const deleteBlog = catchAsync(async (req, res) => {
 
   });
 
+
+const commentBlog= catchAsync(async (req, res) => {
+    const blogId = req.params?.id
+    const user = req.user as TMiddlewareUser;
+    const payload = req.body
+
+    await BlogService.commentBlog(blogId, payload, user)
+
+
+    sendResponses(res, {
+      success: true,
+      message: 'Blog Comment Successfully',
+      statusCode: StatusCodes.OK,
+      data: {},
+    })
+
+  });
+
   
 export const BlogController = {
     createBlog,
     updateBlog, 
     getAllBlogs, 
-    deleteBlog
+    deleteBlog, 
+    commentBlog
   };
   

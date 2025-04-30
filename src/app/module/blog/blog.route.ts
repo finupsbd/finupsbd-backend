@@ -11,6 +11,7 @@ const router = express.Router()
 
 
 router.post('/', auth("USER", "ADMIN", "SUPER_ADMIN"), upload.single("file"), BlogController.createBlog)
+router.post('/comment/:id', auth("USER", "ADMIN", "SUPER_ADMIN"),BlogController.commentBlog)
 router.get('/', BlogController.getAllBlogs)
 router.patch('/:id',  validateRequest(BlogValidation.BlogValidationSchema), BlogController.updateBlog)
 router.delete('/:id', BlogController.deleteBlog)
