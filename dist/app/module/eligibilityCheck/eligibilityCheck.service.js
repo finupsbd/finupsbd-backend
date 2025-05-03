@@ -32,8 +32,9 @@ const personalLoan_1 = __importDefault(require("./eligibilityCheck/personalLoan"
 const instantLoan_1 = require("./eligibilityCheck/instantLoan");
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     // 1. Pull out the loans array
-    const { existingLoans = [] } = payload, eligibilityData = __rest(payload, ["existingLoans"]);
-    console.log(eligibilityData, 'eligibilityData');
+    const { existingLoans = [] } = payload, eligibilityData = __rest(payload
+    // 2. Create with nested write
+    , ["existingLoans"]);
     // 2. Create with nested write
     const result = yield app_1.prisma.eligibilityCheck.create({
         data: Object.assign(Object.assign({}, eligibilityData), { existingLoans: {
@@ -53,7 +54,6 @@ const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, f
             },
         },
     });
-    console.log(result, 'result');
     if ((payload === null || payload === void 0 ? void 0 : payload.loanType) === eligibilityCheck_constant_1.loanTypes.INSTANT_LOAN) {
         return yield (0, instantLoan_1.instantLoan)(result, query);
     }

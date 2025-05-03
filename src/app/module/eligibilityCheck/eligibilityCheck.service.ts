@@ -15,10 +15,9 @@ import { instantLoan } from "./eligibilityCheck/instantLoan";
 
 const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
 
-
   // 1. Pull out the loans array
   const { existingLoans = [], ...eligibilityData } = payload
-console.log(eligibilityData, 'eligibilityData')
+
   // 2. Create with nested write
   const result = await prisma.eligibilityCheck.create({
     data: {
@@ -42,7 +41,6 @@ console.log(eligibilityData, 'eligibilityData')
     },
   })
 
-  console.log(result, 'result')
 
   if (payload?.loanType === loanTypes.INSTANT_LOAN) {
     return await instantLoan(result as unknown as TEligibilityCheck, query)

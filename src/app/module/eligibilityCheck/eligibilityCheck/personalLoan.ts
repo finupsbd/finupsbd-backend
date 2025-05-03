@@ -23,7 +23,7 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
 
     const filters = buildFilters( payload.monthlyIncome, calculateAge(payload.dateOfBirth.toISOString()));
 
-    console.log(filters) 
+    // console.log(filters) 
 
 
 
@@ -32,7 +32,6 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
         where: filters,
         skip: Math.max(0, (page - 1) * pageSize),
         take: pageSize,
-        // Optionally, order by a specific field (e.g., createdAt)
         orderBy: { createdAt: 'asc' },
         include: {
           eligibility: true,
@@ -41,7 +40,7 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
         },
       }),
       prisma.personalLoan.count({
-        where: filters,
+        where: filters
       }),
     ]);
 

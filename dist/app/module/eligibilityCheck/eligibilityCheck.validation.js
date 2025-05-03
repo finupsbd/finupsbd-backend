@@ -118,6 +118,13 @@ exports.eligibilitySchema = zod_1.z
             }
         });
     }
+    // if (data.loanType == 'INSTANT_LOAN') {
+    //   console.log(data.expectedLoanTenure, 'expectedLoanTenure')
+    //   if (data.expectedLoanTenure < 1 || data.expectedLoanTenure > 3) {
+    //     ctx.addIssue({
+    //       code: 'custom',
+    //       message: 'expectedLoanTenure must be between 1 and 3 months for INSTANT_LOAN',
+    // })}}
 });
 exports.eligibilityValidationSchema = {
     eligibilitySchema: exports.eligibilitySchema

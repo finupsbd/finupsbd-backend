@@ -55,6 +55,7 @@ export const eligibilitySchema = z
     phone:               z.string().regex(/^[0-9]{10,15}$/, 'phone must be 10–15 digits'),
   })
   .superRefine((data, ctx) => {
+
     // BUSINESS fields only if BUSINESS_OWNER
     if (data.profession === 'BUSINESS_OWNER') {
       ;['businessOwnerType','businessType','sharePortion','tradeLicenseAge'].forEach((k) => {
@@ -111,7 +112,7 @@ export const eligibilitySchema = z
       ;['numberOfCard','cardType','cardLimitBDT'].forEach((k) => {
         if (data[k as keyof typeof data] === undefined) {
           ctx.addIssue({ code: 'custom', message: `${k} is required if haveAnyCreditCard is true`, path: [k] });
-        }
+        }  
       });
     } else {
       ;['numberOfCard','cardType','cardLimitBDT'].forEach((k) => {
@@ -120,7 +121,17 @@ export const eligibilitySchema = z
         }
       });
     }
+    // if (data.loanType == 'INSTANT_LOAN') {
+    //   console.log(data.expectedLoanTenure, 'expectedLoanTenure')
+    //   if (data.expectedLoanTenure < 1 || data.expectedLoanTenure > 3) {
+    //     ctx.addIssue({
+    //       code: 'custom',
+    //       message: 'expectedLoanTenure must be between 1 and 3 months for INSTANT_LOAN',
+    // })}}
+
+
   });
+
 
 
  export const eligibilityValidationSchema = {

@@ -37,13 +37,12 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
         const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = 200000, searchTerm, interestRate } = query, filter = __rest(query, ["page", "pageSize", "sortOrder", "sortKey", "amount", "searchTerm", "interestRate"]);
         // console.log(calculateAge(payload.dateOfBirth.toISOString()) , 'age')
         const filters = (0, queryBuilder_1.buildFilters)(payload.monthlyIncome, (0, calculateAge_1.calculateAge)(payload.dateOfBirth.toISOString()));
-        console.log(filters);
+        // console.log(filters) 
         const [loans, totalLoans] = yield app_1.prisma.$transaction([
             app_1.prisma.personalLoan.findMany({
                 where: filters,
                 skip: Math.max(0, (page - 1) * pageSize),
                 take: pageSize,
-                // Optionally, order by a specific field (e.g., createdAt)
                 orderBy: { createdAt: 'asc' },
                 include: {
                     eligibility: true,
@@ -52,7 +51,7 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
                 },
             }),
             app_1.prisma.personalLoan.count({
-                where: filters,
+                where: filters
             }),
         ]);
         const forEligibleLoan = Object.assign({}, payload);
