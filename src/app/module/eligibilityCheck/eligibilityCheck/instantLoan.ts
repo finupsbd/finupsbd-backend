@@ -2,6 +2,8 @@ import { TEligibilityCheck } from "../eligibilityCheck.interface";
 import { calculateEMI } from "../utils/calculateEMI";
 import { prisma } from "../../../../app";
 import { calculateAge } from "../../../utils/calculateAge";
+import AppError from "../../../error/AppError";
+
 
 
 
@@ -35,26 +37,11 @@ import { calculateAge } from "../../../utils/calculateAge";
 export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
 
     const { amount = 200000, tanure = 2 } = query;
-
+    
     try {
 
         const [loans] = await prisma.$transaction([
             prisma.instantLoan.findMany({
-                where: {
-                    bankName: {
-                        contains: query.searchTerm ? String(query.searchTerm) : undefined,
-                        mode: 'insensitive',
-                    },
-                    interestRate: {
-                        contains: query.interestRate ? String(query.interestRate) : undefined,
-                        mode: 'insensitive',
-                    },
-                    EligibilityInstantLoan: {
-                        minimumIncome: { gte: payload.monthlyIncome },
-                        ageRequirement: { gte: calculateAge(payload.dateOfBirth.toISOString()) },
-                    },
-                },
-                orderBy: { createdAt: 'asc' },
                 include: {
                     EligibilityInstantLoan: true,
                     FeaturesInstantLoan: true,
@@ -62,6 +49,14 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
                 },
             })
         ]);
+
+
+        console.log(loans, 'loans')
+
+        if (loans.length === 0) {
+            throw new AppError(404, "No loans found for the given criteria.");
+        }
+       
 
 
 

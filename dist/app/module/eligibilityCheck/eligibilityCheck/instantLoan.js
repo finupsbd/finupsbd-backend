@@ -8,11 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.instantLoan = void 0;
 const calculateEMI_1 = require("../utils/calculateEMI");
 const app_1 = require("../../../../app");
-const calculateAge_1 = require("../../../utils/calculateAge");
+const AppError_1 = __importDefault(require("../../../error/AppError"));
 // const adjustMonthlyIncome = (payload: TEligibilityCheck): TEligibilityCheck => {
 //     let income = payload.monthlyIncome;
 //     if (income > 50000) {
@@ -39,21 +42,6 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
     try {
         const [loans] = yield app_1.prisma.$transaction([
             app_1.prisma.instantLoan.findMany({
-                where: {
-                    bankName: {
-                        contains: query.searchTerm ? String(query.searchTerm) : undefined,
-                        mode: 'insensitive',
-                    },
-                    interestRate: {
-                        contains: query.interestRate ? String(query.interestRate) : undefined,
-                        mode: 'insensitive',
-                    },
-                    EligibilityInstantLoan: {
-                        minimumIncome: { gte: payload.monthlyIncome },
-                        ageRequirement: { gte: (0, calculateAge_1.calculateAge)(payload.dateOfBirth.toISOString()) },
-                    },
-                },
-                orderBy: { createdAt: 'asc' },
                 include: {
                     EligibilityInstantLoan: true,
                     FeaturesInstantLoan: true,
@@ -61,6 +49,10 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
                 },
             })
         ]);
+        console.log(loans, 'loans');
+        if (loans.length === 0) {
+            throw new AppError_1.default(404, "No loans found for the given criteria.");
+        }
         if (payload.monthlyIncome > 50000) {
             payload.monthlyIncome = 50000;
         }
