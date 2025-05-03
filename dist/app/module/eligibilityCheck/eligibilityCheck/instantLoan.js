@@ -38,7 +38,7 @@ const AppError_1 = __importDefault(require("../../../error/AppError"));
 // };
 const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { amount = 200000, tanure = 2 } = query;
+    console.log(query);
     try {
         const [loans] = yield app_1.prisma.$transaction([
             app_1.prisma.instantLoan.findMany({
@@ -67,12 +67,12 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
             payload.monthlyIncome -= (payload.numberOfCard || 0) * 2000;
         }
         const suggestedLoans = loans.map((loan) => {
-            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), Number(tanure));
-            const totalRepayment = monthlyEMI * Number(tanure);
+            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(query.amount), Number(loan.interestRate), Number(query.tanure));
+            const totalRepayment = monthlyEMI * Number(query.tanure);
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: Math.floor(Number(amount)).toFixed(2),
+                amount: Math.floor(Number(query.amount)).toFixed(2),
                 periodMonths: payload.tenure,
                 loanType: loan.loanType,
                 monthlyEMI: Math.floor(monthlyEMI).toFixed(2),

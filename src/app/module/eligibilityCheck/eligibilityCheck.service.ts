@@ -15,6 +15,8 @@ import { instantLoan } from "./eligibilityCheck/instantLoan";
 
 const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
 
+
+  console.log(query, 'query')
   // 1. Pull out the loans array
   const { existingLoans = [], ...eligibilityData } = payload
 

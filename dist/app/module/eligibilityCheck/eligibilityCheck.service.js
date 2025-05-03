@@ -31,6 +31,7 @@ const app_1 = require("../../../app");
 const personalLoan_1 = __importDefault(require("./eligibilityCheck/personalLoan"));
 const instantLoan_1 = require("./eligibilityCheck/instantLoan");
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(query, 'query');
     // 1. Pull out the loans array
     const { existingLoans = [] } = payload, eligibilityData = __rest(payload
     // 2. Create with nested write

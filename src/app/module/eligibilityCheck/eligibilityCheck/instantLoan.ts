@@ -36,8 +36,9 @@ import AppError from "../../../error/AppError";
 
 export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
 
-    const { amount = 200000, tanure = 2 } = query;
-    
+
+    console.log( query, )
+
     try {
 
         const [loans] = await prisma.$transaction([
@@ -81,13 +82,13 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
 
 
         const suggestedLoans = loans.map((loan) => {
-            const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), Number(tanure));
-            const totalRepayment = monthlyEMI * Number(tanure);
+            const monthlyEMI = calculateEMI(Number(query.amount), Number(loan.interestRate), Number(query.tanure));
+            const totalRepayment = monthlyEMI * Number(query.tanure);
 
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: Math.floor(Number(amount)).toFixed(2),
+                amount: Math.floor(Number(query.amount)).toFixed(2),
                 periodMonths: payload.tenure,
                 loanType: loan.loanType,
                 monthlyEMI: Math.floor(monthlyEMI).toFixed(2),
