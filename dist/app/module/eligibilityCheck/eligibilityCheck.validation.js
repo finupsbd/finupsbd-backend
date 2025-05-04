@@ -42,7 +42,7 @@ exports.eligibilitySchema = zod_1.z
     numberOfCard: zod_1.z.number().int().min(1).optional(),
     cardType: CardType.optional(),
     cardLimitBDT: zod_1.z.number().nonnegative().optional(),
-    secondaryApplicant: zod_1.z.boolean(),
+    secondaryApplicant: zod_1.z.boolean().optional(),
     name: zod_1.z.string().min(1),
     email: zod_1.z.string().email(),
     phone: zod_1.z.string().regex(/^[0-9]{10,15}$/, 'phone must be 10–15 digits'),

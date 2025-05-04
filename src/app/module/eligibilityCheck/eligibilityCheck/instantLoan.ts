@@ -1,7 +1,6 @@
 import { TEligibilityCheck } from "../eligibilityCheck.interface";
 import { calculateEMI } from "../utils/calculateEMI";
 import { prisma } from "../../../../app";
-import { calculateAge } from "../../../utils/calculateAge";
 import AppError from "../../../error/AppError";
 
 

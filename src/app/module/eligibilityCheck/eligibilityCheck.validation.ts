@@ -48,7 +48,7 @@ export const eligibilitySchema = z
     cardType:            CardType.optional(),
     cardLimitBDT:        z.number().nonnegative().optional(),
 
-    secondaryApplicant:  z.boolean(),
+    secondaryApplicant:  z.boolean().optional(),
 
     name:                z.string().min(1),
     email:               z.string().email(),
