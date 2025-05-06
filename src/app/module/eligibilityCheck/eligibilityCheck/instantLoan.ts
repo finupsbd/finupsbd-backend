@@ -6,38 +6,17 @@ import AppError from "../../../error/AppError";
 
 
 
-// const adjustMonthlyIncome = (payload: TEligibilityCheck): TEligibilityCheck => {
-//     let income = payload.monthlyIncome;
-
-//     if (income > 50000) {
-//         income = 50000;
-//     }
-
-//     if (payload.haveAnyRentalIncome) {
-//         income += payload.rentalIncome || 0;
-//     }
-
-//     if (payload.haveAnyLoan) {
-//         const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
-//         payload.monthlyIncome -= totalEmi
-//     }
-
-//     if (payload.haveAnyCreditCard) {
-//         income -= (payload.numberOfCard || 0) * 2000;
-//     }
-
-//     return {
-//         ...payload,
-//         monthlyIncome: income,
-//     };
-// };
-
-
 export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
 
-
-    console.log( query, )
-
+    const {
+        page: _page,
+        pageSize: _pageSize,
+        sortOrder,
+        sortKey,
+        amount = payload.monthlyIncome,
+        tenure,
+        ...restQuery
+    } = query;
     try {
 
         const [loans] = await prisma.$transaction([
@@ -50,9 +29,6 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
             })
         ]);
 
-
-        console.log(loans, 'loans')
-
         if (loans.length === 0) {
             throw new AppError(404, "No loans found for the given criteria.");
         }
@@ -62,6 +38,7 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
 
         if (payload.monthlyIncome > 50000) {
             payload.monthlyIncome = 50000;
+            console.log(payload.monthlyIncome, "payload.monthlyIncome")
         }
 
         if (payload.haveAnyRentalIncome) {
@@ -81,13 +58,15 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
 
 
         const suggestedLoans = loans.map((loan) => {
-            const monthlyEMI = calculateEMI(Number(query.amount), Number(loan.interestRate), Number(query.tanure));
-            const totalRepayment = monthlyEMI * Number(query.tanure);
+            const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), Number(tenure));
+            const totalRepayment = monthlyEMI * Number(tenure);
+
+
 
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: Math.floor(Number(query.amount)).toFixed(2),
+                amount: Math.floor(Number(amount)).toFixed(2),
                 periodMonths: payload.tenure,
                 loanType: loan.loanType,
                 monthlyEMI: Math.floor(monthlyEMI).toFixed(2),
