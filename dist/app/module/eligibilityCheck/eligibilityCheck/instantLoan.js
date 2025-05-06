@@ -29,7 +29,7 @@ const app_1 = require("../../../../app");
 const AppError_1 = __importDefault(require("../../../error/AppError"));
 const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = payload.monthlyIncome, tenure } = query, restQuery = __rest(query, ["page", "pageSize", "sortOrder", "sortKey", "amount", "tenure"]);
+    const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = payload.monthlyIncome, tenure = payload.expectedLoanTenure } = query, restQuery = __rest(query, ["page", "pageSize", "sortOrder", "sortKey", "amount", "tenure"]);
     try {
         const [loans] = yield app_1.prisma.$transaction([
             app_1.prisma.instantLoan.findMany({
@@ -43,9 +43,8 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
         if (loans.length === 0) {
             throw new AppError_1.default(404, "No loans found for the given criteria.");
         }
-        if (payload.monthlyIncome > 50000) {
+        if (payload.monthlyIncome >= 50000) {
             payload.monthlyIncome = 50000;
-            console.log(payload.monthlyIncome, "payload.monthlyIncome");
         }
         if (payload.haveAnyRentalIncome) {
             payload.rentalIncome = (payload.rentalIncome || 0) + (payload.rentalIncome || 0);

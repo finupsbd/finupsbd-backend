@@ -14,7 +14,7 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
         sortOrder,
         sortKey,
         amount = payload.monthlyIncome,
-        tenure,
+        tenure = payload.expectedLoanTenure,
         ...restQuery
     } = query;
     try {
@@ -36,10 +36,10 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
 
 
 
-        if (payload.monthlyIncome > 50000) {
+        if (payload.monthlyIncome >= 50000) {
             payload.monthlyIncome = 50000;
-            console.log(payload.monthlyIncome, "payload.monthlyIncome")
         }
+
 
         if (payload.haveAnyRentalIncome) {
             payload.rentalIncome = (payload.rentalIncome || 0) + (payload.rentalIncome || 0);

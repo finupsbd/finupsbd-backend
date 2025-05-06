@@ -40,7 +40,6 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
         // console.log(filters) 
         const [loans, totalLoans] = yield app_1.prisma.$transaction([
             app_1.prisma.personalLoan.findMany({
-                where: filters,
                 skip: Math.max(0, (page - 1) * pageSize),
                 take: pageSize,
                 orderBy: { createdAt: 'asc' },
@@ -51,10 +50,11 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
                 },
             }),
             app_1.prisma.personalLoan.count({
-                where: filters
+                where: filters,
             }),
         ]);
         const forEligibleLoan = Object.assign({}, payload);
+        console.log(loans, 'loans');
         // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
         if (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) {
             payload.monthlyIncome = payload.monthlyIncome / 2;

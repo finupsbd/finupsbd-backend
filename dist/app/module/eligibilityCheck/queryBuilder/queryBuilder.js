@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildFilters = void 0;
 const buildFilters = (
-// searchTerm: string ,
+// searchTerm: string,
 // interestRate?: string,
 minimumIncome, ageRequirement, minimumExperience) => {
     const filters = {};

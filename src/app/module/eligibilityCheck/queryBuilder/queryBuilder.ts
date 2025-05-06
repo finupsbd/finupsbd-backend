@@ -2,11 +2,11 @@
 
 import { Filters } from "./queryBuilderTypes";
 
-  
+
 
 
 export const buildFilters = (
-  // searchTerm: string ,
+  // searchTerm: string,
   // interestRate?: string,
   minimumIncome?: number,
   ageRequirement?: number,

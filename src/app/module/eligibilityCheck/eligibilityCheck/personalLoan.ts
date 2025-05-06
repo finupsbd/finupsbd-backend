@@ -29,7 +29,6 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
 
     const [loans, totalLoans] = await prisma.$transaction([
       prisma.personalLoan.findMany({
-        where: filters,
         skip: Math.max(0, (page - 1) * pageSize),
         take: pageSize,
         orderBy: { createdAt: 'asc' },
@@ -40,7 +39,7 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
         },
       }),
       prisma.personalLoan.count({
-        where: filters
+        where: filters,
       }),
     ]);
 
@@ -49,6 +48,7 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     const forEligibleLoan = {...payload}
 
 
+    console.log(loans, 'loans')
 
  
     // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
@@ -80,7 +80,6 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
       const eligibleLoanAmount = suggestEligibleLoanAmount(payload.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
       // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
       // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
-
 
       return {
         id: loan.id,
