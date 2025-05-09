@@ -36,6 +36,7 @@ model User {
   LoanApplicationForm LoanApplicationForm[]
   CreditCard          CreditCard[]
   Comment             Comment[]
+  TestApplication     TestApplication[]
 
   @@index([email]) // Index for email
   @@index([phone]) // Index for phone
