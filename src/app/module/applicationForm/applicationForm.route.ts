@@ -61,7 +61,7 @@ route.post('/step1', auth("USER", "SUPER_ADMIN"), catchAsync(async (req, res) =>
     },
   }); 
 
-  console.log({result})
+
 res.json({
   status: 'success',
   message: 'Application created successfully',

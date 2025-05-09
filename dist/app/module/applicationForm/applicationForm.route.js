@@ -47,9 +47,7 @@ route.post('/step1', (0, auth_1.default)("USER", "SUPER_ADMIN"), (0, catchAsync_
     });
 })));
 route.post('/step2/:id', (0, auth_1.default)("USER", "SUPER_ADMIN"), (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId } = req.user;
     const { id } = req.params;
-    console.log(userId);
     const result = yield app_1.prisma.testContactInfo.create({
         data: Object.assign(Object.assign({}, req.body), { testApplication: { connect: { id } } })
     });
