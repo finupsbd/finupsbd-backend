@@ -73,10 +73,8 @@ res.json({
 
 
 route.post('/step2/:id', auth("USER", "SUPER_ADMIN"), catchAsync(async (req, res) => {
-  const {userId} = req.user as TMiddlewareUser;
-  const { id } = req.params;
 
-  console.log(userId)
+  const { id } = req.params;
 
    const result  = await prisma.testContactInfo.create({
     data: {
