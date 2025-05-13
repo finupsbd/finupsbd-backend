@@ -1,9 +1,3 @@
-enum Role {
-  USER
-  ADMIN
-  SUPER_ADMIN
-}
-
 model User {
   id                  String                @id @default(uuid())
   userId              String?
@@ -13,17 +7,17 @@ model User {
   password            String
   pin                 String?
   pinExpiry           DateTime?
-  verificationToken   String? // Token for email verification
-  resetPasswordToken  String? // Token for password reset
-  resetPasswordExpiry DateTime? // Expiry for password reset token
+  verificationToken   String?
+  resetPasswordToken  String?
+  resetPasswordExpiry DateTime?
   role                Role                  @default(USER)
-  profile             Profile?
-  kycVerification     KycVerification?
   emailVerified       Boolean               @default(false)
   isActive            Boolean               @default(true)
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
   lastLogin           DateTime?
+  profile             Profile?
+  kycVerification     KycVerification?
   blogPost            Blog[]
   PersonalLoan        PersonalLoan[]
   HomeLoan            HomeLoan[]
@@ -33,16 +27,16 @@ model User {
   PageView            PageView[]
   Activity            Activity[]
   InstantLoan         InstantLoan[]
-  LoanApplicationForm LoanApplicationForm[]
   CreditCard          CreditCard[]
   Comment             Comment[]
   TestApplication     TestApplication[]
+  LoanApplicationForm LoanApplicationForm[]
 
-  @@index([email]) // Index for email
-  @@index([phone]) // Index for phone
+  @@index([email])
+  @@index([phone])
   @@index([role])
   @@index([isActive])
-  @@map("users") // Maps to the "users" table
+  @@map("users")
 }
 
 model Profile {
@@ -51,13 +45,80 @@ model Profile {
   nationalIdNumber String
   gender           UserProfileGender
   dateOfBirth      DateTime
-  avatar           String? // URL to profile picture
+  avatar           String?
   address          String?
   city             String
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String            @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("profiles")
+}
+
+model KycVerification {
+  id                 String             @id @default(cuid())
+  fullName           String
+  fatherName         String?
+  motherName         String?
+  dateOfBirth        DateTime
+  gender             UserProfileGender
+  nationality        String
+  occupation         String?
+  documentType       DocumentTypeKyc
+  documentNumber     String
+  documentFrontUrl   String
+  documentBackUrl    String?
+  addressLine1       String
+  addressLine2       String?
+  city               String
+  state              String
+  postalCode         String
+  country            String
+  addressProofUrl    String
+  selfieUrl          String
+  verificationStatus VerificationStatus @default(PENDING)
+  remarks            String?
+  verifiedAt         DateTime?
+  userId             String             @unique
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  createdAt DateTime @default(now())
+  ip        String?
+  device    String?
+  browser   String?
+  location  String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PageView {
+  id        String   @id @default(uuid())
+  userId    String
+  path      String
+  duration  Int?
+  createdAt DateTime @default(now())
+  referrer  String?
+  os        String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  details   String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
 }
 
 enum UserProfileGender {
@@ -66,7 +127,6 @@ enum UserProfileGender {
   OTHER
 }
 
-// ENUMS for consistency
 enum DocumentTypeKyc {
   NATIONAL_ID
   PASSPORT
@@ -78,74 +138,4 @@ enum VerificationStatus {
   PENDING
   APPROVED
   REJECTED
-}
-
-model KycVerification {
-  id String @id @default(cuid())
-
-  // Basic Personal Information
-  fullName    String
-  fatherName  String?
-  motherName  String?
-  dateOfBirth DateTime
-  gender      UserProfileGender
-  nationality String
-  occupation  String?
-
-  // Identity Proof Document
-  documentType     DocumentTypeKyc
-  documentNumber   String
-  documentFrontUrl String // Front side of NID/Passport/Driving License
-  documentBackUrl  String? // Back side (if applicable)
-
-  // Address Proof
-  addressLine1       String
-  addressLine2       String?
-  city               String
-  state              String
-  postalCode         String
-  country            String
-  addressProofUrl    String // Utility bill, bank statement, etc.
-  selfieUrl          String
-  verificationStatus VerificationStatus @default(PENDING)
-  remarks            String? // Notes for reviewer/admin
-  verifiedAt         DateTime?
-  user               User               @relation(fields: [userId], references: [id])
-  userId             String             @unique // Link to your User model (assuming 1 user = 1 KYC)
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-}
-
-model Session {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  // e.g., IP, device, browser, location, etc.
-  ip        String?
-  device    String?
-  browser   String?
-  location  String?
-}
-
-model PageView {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  path      String
-  duration  Int? // in seconds
-  createdAt DateTime @default(now())
-  // e.g., OS, referrer, etc.
-  referrer  String?
-  os        String?
-}
-
-model Activity {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type      String // e.g. "login", "checkout", "support", "feedback"
-  details   String?
-  createdAt DateTime @default(now())
-  // add fields like IP, device, location, rating, etc., as needed
 }

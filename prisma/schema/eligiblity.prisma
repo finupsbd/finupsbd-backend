@@ -1,3 +1,55 @@
+/// Main eligibility model
+model EligibilityCheck {
+  id                  String             @id @default(uuid())
+  loanType            MainLoanType
+  gender              EGender
+  dateOfBirth         DateTime
+  profession          Profession
+  businessOwnerType   BusinessOwnerType?
+  businessType        String?
+  sharePortion        Int?
+  tradeLicenseAge     Int?
+  vehicleType         VehicleType?
+  expectedLoanTenure  Int?
+  monthlyIncome       Int?
+  jobLocation         String?
+  haveAnyRentalIncome Boolean?
+  selectArea          String?
+  rentalIncome        Int?
+  haveAnyLoan         Boolean?           @default(false)
+  haveAnyCreditCard   Boolean?
+  numberOfCard        Int?
+  cardType            CardType?
+  cardLimitBDT        Int?
+  secondaryApplicant  Boolean?
+  termsAccepted       Boolean?
+  name                String
+  email               String
+  phone               String
+  isAppliedLoan       Boolean            @default(false)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  existingLoans       ExistingLoan[]
+
+  @@index([loanType, name, email, phone])
+  @@map("eligibilityCheck")
+}
+
+/// New model for each existing loan
+model ExistingLoan {
+  id                 String           @id @default(uuid())
+  existingLoanType   ExistingLoanType
+  emiAmountBDT       Int
+  interestRate       Decimal          @db.Decimal(5, 2)
+  eligibilityCheckId String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  eligibilityCheck   EligibilityCheck @relation(fields: [eligibilityCheckId], references: [id], onDelete: Cascade)
+
+  @@index([eligibilityCheckId])
+  @@map("existingLoans")
+}
+
 /// Enums (unchanged)
 enum MainLoanType {
   PERSONAL_LOAN
@@ -47,74 +99,4 @@ enum ExistingLoanType {
 enum CardType {
   CREDIT_CARD
   DEBIT_CARD
-}
-
-/// Main eligibility model
-model EligibilityCheck {
-  id                   String              @id @default(uuid())
-  loanType             MainLoanType
-  gender               EGender
-  dateOfBirth          DateTime
-  profession           Profession
-
-  // Business info
-  businessOwnerType    BusinessOwnerType?
-  businessType         String?
-  sharePortion         Int?
-  tradeLicenseAge      Int?
-
-  // Personal & financial
-  vehicleType          VehicleType?
-  expectedLoanTenure   Int?
-  monthlyIncome        Int?
-  jobLocation          String?
-
-  // Rental income
-  haveAnyRentalIncome  Boolean?
-  selectArea           String?
-  rentalIncome         Int?
-
-  // Loans → now a one‐to‐many relation
-  haveAnyLoan          Boolean?           @default(false)
-  existingLoans        ExistingLoan[]
-
-  // Credit cards
-  haveAnyCreditCard    Boolean?
-  numberOfCard         Int?
-  cardType             CardType?
-  cardLimitBDT         Int?
-
-  // Other
-  secondaryApplicant   Boolean?
-  termsAccepted        Boolean?
-  
-  // Contact
-  name                 String
-  email                String
-  phone                String
-
-  isAppliedLoan        Boolean            @default(false)
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
-
-  @@index([loanType, name, email, phone])
-  @@map("eligibilityCheck")
-}
-
-/// New model for each existing loan
-model ExistingLoan {
-  id                   String              @id @default(uuid())
-  existingLoanType     ExistingLoanType
-  emiAmountBDT         Int
-  interestRate         Decimal             @db.Decimal(5, 2)
-
-  // relation back to EligibilityCheck
-  eligibilityCheck     EligibilityCheck    @relation(fields: [eligibilityCheckId], references: [id], onDelete: Cascade)
-  eligibilityCheckId   String
-
-  createdAt            DateTime            @default(now())
-  updatedAt            DateTime            @updatedAt
-
-  @@map("existingLoans")
-  @@index([eligibilityCheckId])
 }

@@ -1,42 +1,35 @@
 model TestApplication {
-    id        String   @id @default(uuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    // Foreign key to User
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId String
-
-    // Relations to sub-models
-    TestBasicInfo   TestBasicInfo?
-    TestContactInfo TestContactInfo?
-    testProfession  TestProfession?
+  id              String           @id @default(uuid())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  TestBasicInfo   TestBasicInfo?
+  TestContactInfo TestContactInfo?
+  testProfession  TestProfession?
 }
 
 model TestBasicInfo {
-    id   String   @id @default(uuid())
-    name String
-    age  Int
-    dob  DateTime
-
-    testApplicationId String          @unique
-    testApplication   TestApplication @relation(fields: [testApplicationId], references: [id])
+  id                String          @id @default(uuid())
+  name              String
+  age               Int
+  dob               DateTime
+  testApplicationId String          @unique
+  testApplication   TestApplication @relation(fields: [testApplicationId], references: [id])
 }
 
 model TestContactInfo {
-    id    String @id @default(uuid())
-    phone String
-    email String @unique
-
-    testApplicationId String          @unique
-    testApplication   TestApplication @relation(fields: [testApplicationId], references: [id])
+  id                String          @id @default(uuid())
+  phone             String
+  email             String          @unique
+  testApplicationId String          @unique
+  testApplication   TestApplication @relation(fields: [testApplicationId], references: [id])
 }
 
 model TestProfession {
-    id            String @id @default(uuid())
-    profession    String
-    monthlyIncome Float
-
-    testApplicationId String          @unique
-    testApplication   TestApplication @relation(fields: [testApplicationId], references: [id])
+  id                String          @id @default(uuid())
+  profession        String
+  monthlyIncome     Float
+  testApplicationId String          @unique
+  testApplication   TestApplication @relation(fields: [testApplicationId], references: [id])
 }

@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.prisma = void 0;
-const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
+const express_1 = __importDefault(require("express"));
 const globalErrorHandler_1 = __importDefault(require("./app/middleware/globalErrorHandler"));
 const cors_1 = __importDefault(require("cors"));
 const notFound_1 = __importDefault(require("./app/middleware/notFound"));

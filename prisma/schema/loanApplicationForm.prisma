@@ -1,0 +1,103 @@
+model LoanApplicationForm {
+  id     String     @id @default(uuid())
+  status LoanStatus @default(SUBMITTED)
+
+  isActive      Boolean       @default(true)
+  isDeleted     Boolean       @default(false)
+  adminNotes    String?
+  applicationId String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId        String
+  personalInfo  PersonalInfo?
+
+  @@index([applicationId, status])
+  @@map("loanApplicationForm")
+}
+
+model PersonalInfo {
+  id                    String        @id @default(uuid())
+  fullName              String
+  fatherOrHusbandName   String
+  motherName            String
+  spouseName            String?
+  dateOfBirth           DateTime
+  placeOfBirth          String
+  nationality           String
+  gender                String
+  maritalStatus         MaritalStatus
+  identificationType    String
+  identificationNumber  String
+  religion              String?
+  residentialStatus     String?
+  mobileNumber          String
+  alternateMobileNumber String?
+  emailAddress          String
+
+  socialMediaProfiles   String[]
+  loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+  loanApplicationFormId String              @unique
+}
+
+enum LoanStatus {
+  SUBMITTED
+  PENDING
+  IN_PROGRESS
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+enum OwnershipStatus {
+  OWNED
+  RENTED
+  LEASED
+  OTHER
+}
+
+enum PropertyType {
+  RESIDENTIAL
+  COMMERCIAL
+  LAND
+}
+
+enum EmploymentStatus {
+  SALARIED
+  SELF_EMPLOYED
+  BUSINESS_OWNER
+}
+
+enum LoanType {
+  PERSONAL_LOAN
+  HOME_LOAN
+  CAR_LOAN
+  SME_LOAN
+  INSTANT_LOAN
+}
+
+enum DocumentType {
+  PASSPORT_PHOTO
+  NATIONAL_ID
+  BIRTH_CERTIFICATE
+  INCOME_PROOF
+  BANK_STATEMENT
+  TIN_CERTIFICATE
+  EMPLOYMENT_PROOF
+  UTILITY_BILL
+  PROPERTY_DOCUMENT
+  SUPPORTING_DOCUMENT
+}

@@ -1,68 +1,66 @@
 model CreditCard {
-    id       String @id @default(uuid())
-    bankName String
+  id                          String                 @id @default(uuid())
+  bankName                    String
+  freeAnnualFee               String
+  regularAnnualFee            String
+  annualFeeWaived             String
+  annualFeeWaivedReward       String
+  interestPerDay              String
+  interestFreePeriod          String
+  freeSupplementaryCards      String
+  maxSupplementaryCards       String
+  balanceTransferAvailability String
+  ownBankATMFee               String
+  otherBankATMFee             String
+  loungeFacility              String
+  loungeVisit                 String
+  cardChequeProcessingFee     String
+  processingFeeMinimum        String
+  cashWithdrawalLimit         String
+  cardType                    String                 @default("CREDIT_CARD")
+  isActive                    Boolean                @default(true)
+  coverImage                  String?
+  createdAt                   DateTime               @default(now())
+  updatedAt                   DateTime               @updatedAt
+  userId                      String?
+  user                        User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  featuresCreditCard          FeaturesCreditCard?
+  eligibilityCreditCard       EligibilityCreditCard?
+  feesChargesCreditCard       FeesChargesCreditCard?
 
-    freeAnnualFee               String
-    regularAnnualFee            String
-    annualFeeWaived             String
-    annualFeeWaivedReward       String
-    interestPerDay              String
-    interestFreePeriod          String
-    freeSupplementaryCards      String
-    maxSupplementaryCards       String
-    balanceTransferAvailability String
-    ownBankATMFee               String
-    otherBankATMFee             String
-    loungeFacility              String
-    loungeVisit                 String
-    cardChequeProcessingFee     String
-    processingFeeMinimum        String
-    cashWithdrawalLimit         String
-
-    cardType              String                 @default("CREDIT_CARD")
-    isActive              Boolean                @default(true)
-    coverImage            String?
-    createdAt             DateTime               @default(now())
-    updatedAt             DateTime               @updatedAt
-    user                  User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId                String?
-    featuresCreditCard    FeaturesCreditCard?
-    eligibilityCreditCard EligibilityCreditCard?
-    feesChargesCreditCard FeesChargesCreditCard?
-
-    @@map("creditCards")
+  @@map("creditCards")
 }
 
 model FeaturesCreditCard {
-    id            String      @id @default(uuid())
-    loanAmount    String
-    minimumAmount String
-    maximumAmount String
-    loanTenure    String
-    minimumYear   String
-    maximumYear   String
-    creditCard    CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
-    creditCardId  String?     @unique
+  id            String      @id @default(uuid())
+  loanAmount    String
+  minimumAmount String
+  maximumAmount String
+  loanTenure    String
+  minimumYear   String
+  maximumYear   String
+  creditCardId  String?     @unique
+  creditCard    CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
 }
 
 model EligibilityCreditCard {
-    id                String      @id @default(uuid())
-    condition         String
-    offer             String
-    minimumIncome     Int
-    minimumExperience Int
-    ageRequirement    Int
-    creditCard        CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
-    creditCardId      String?     @unique
+  id                String      @id @default(uuid())
+  condition         String
+  offer             String
+  minimumIncome     Int
+  minimumExperience Int
+  ageRequirement    Int
+  creditCardId      String?     @unique
+  creditCard        CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
 }
 
 model FeesChargesCreditCard {
-    id                  String      @id @default(uuid())
-    processingFee       String
-    earlySettlementFee  String
-    prepaymentFee       String
-    LoanReSchedulingFee String
-    penalCharge         String
-    creditCard          CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
-    creditCardId        String?     @unique
+  id                  String      @id @default(uuid())
+  processingFee       String
+  earlySettlementFee  String
+  prepaymentFee       String
+  LoanReSchedulingFee String
+  penalCharge         String
+  creditCardId        String?     @unique
+  creditCard          CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
 }

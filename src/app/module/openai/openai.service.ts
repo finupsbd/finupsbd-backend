@@ -27,7 +27,7 @@ async function interactWithAssistant(
     include: {
       LoanApplicationForm: true, 
       PersonalLoan: true
-    }
+    }   
   })
 
 

@@ -302,7 +302,9 @@
 
 
 
-
+export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+export type ResidentialStatus = 'Permanent Resident' | 'Temporary Resident' | 'Non-Resident';
+export type IdentificationType = 'NID' | 'PASSPORT' | 'DRIVER_LICENSE' | 'BIRTH_CERTIFICATE';
 
 // Enums
 export enum MaritalStatus {
@@ -318,6 +320,7 @@ export enum LoanStatus {
   PENDING = "PENDING",
   APPROVED = "APPROVED",
   REJECTED = "REJECTED",
+  COMPLETED = "COMPLETED",
 }
 
 export enum DocumentType {
@@ -335,22 +338,23 @@ export enum DocumentType {
 // Interfaces
 
 export interface PersonalInfo {
-  id: string;
   fullName: string;
-  fathersName: string;
-  mothersName: string;
-  spouseName: string;
-  dateOfBirth: string;
+  fatherOrHusbandName: string;
+  motherName: string;
+  spouseName: string | null;
+  dateOfBirth: string;         // ISO 8601 date string
   placeOfBirth: string;
-  gender: string;
+  nationality: string;
+  gender: Gender;
   maritalStatus: MaritalStatus;
-  nationalId: string;
-  birthRegistration: string;
+  identificationType: IdentificationType;
+  identificationNumber: string;
+  religion: string;
+  residentialStatus: ResidentialStatus;
   mobileNumber: string;
-  alternateMobile: string;
-  email: string;
-  socialMedia: string;
-  loanApplicationFormId: string;
+  alternateMobileNumber: string;
+  emailAddress: string;
+  socialMediaProfiles: string[];
 }
 
 export interface ResidentialInfo {
@@ -473,20 +477,14 @@ export interface GuarantorInfo {
   loanApplicationFormId: string;
 }
 
+
+
 export interface TLoanApplicationForm {
-  id: string;
-  applicationId: string
-  isDeleted: boolean;
-  adminNotes?: string;
   status: LoanStatus;
-  personalInfo?: PersonalInfo;
-  residentialInfo?: ResidentialInfo;
-  employmentInfo?: EmploymentInfo;
-  loanRequest?: LoanRequest;
-  financialObligations: FinancialObligation[];
-  documents: Document[];
-  guarantorInfo?: GuarantorInfo;
   userId?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  isActive: boolean;
+  isDeleted: boolean;
+  adminNotes?: string | null;
+  applicationId?: string | null;
+  personalInfo?: PersonalInfo;
 }

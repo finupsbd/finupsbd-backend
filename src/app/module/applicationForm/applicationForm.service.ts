@@ -69,196 +69,152 @@ import { StatusCodes } from 'http-status-codes';
 //   return result;
 // };
 
-
-
-
-
 const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser) => {
 
   console.log(user, 'body')
 
-  payload.userId = user.userId;
+  payload.userId = "00000000000000000";
   payload.applicationId = await generateApplicationId();
 
-  const existingForm = await prisma.loanApplicationForm.findUnique({
-    where: { applicationId: payload.applicationId },
-  });
+  // const existingForm = await prisma.loanApplicationForm.findUnique({
+  //   where: { applicationId: payload.applicationId },
+  // });
 
-  if (existingForm) {
-    throw new AppError(
-      StatusCodes.BAD_GATEWAY,
-      `ApplicationForm with ID ${payload.applicationId} already exists.`
-    );
-  }
-
-
+  // if (existingForm) {
+  //   throw new AppError(
+  //     StatusCodes.BAD_GATEWAY,
+  //     `ApplicationForm with ID ${payload.applicationId} already exists.`
+  //   );
+  // }
 
 
   const result = await prisma.loanApplicationForm.create({
     data: {
-      applicationId: payload.applicationId,
-      userId: payload.userId,
+      applicationId: "00000000001",
+      userId: '123456789012345t6789',
       personalInfo: {
         create: payload.personalInfo,
       },
-      residentialInfo: {
-        create: payload.residentialInfo,
-      },
-      employmentInfo: {
-        create: payload.employmentInfo,
-      },
-      loanRequest: {
-        create: payload.loanRequest,
-      },
-      financialObligations: {
-        create: payload.financialObligations,
-      },
-      documents: {
-        create: payload.documents,
-      },
-      guarantorInfo: {
-        create: payload.guarantorInfo,
-      }
     },
     include: {
       personalInfo: true,
-      residentialInfo: true,
-      employmentInfo: true,
-      loanRequest: true,
-      financialObligations: true,
-      documents: true,
-      guarantorInfo: true,
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-          userId: true,
-          role: true,
-        },
-      },
-    }
+    },
   })
 
   console.log(result, 'result')
   return result;
 };
-const getAllApplicationForm = async () => {
-  const result = await prisma.loanApplicationForm.findMany({
-    include: {
-      personalInfo: true,
-      residentialInfo: true,
-      employmentInfo: true,
-      loanRequest: true,
-      financialObligations: true,
-      documents: true,
-      guarantorInfo: true,
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-          userId: true,
-          role: true,
-          profile: true,
-        },
-      },
-  }})
-
-  return result;
-};
-
-const updateStatus = async (id: string, payload: {status: LoanStatus, adminNotes: string}) => {
-console.log(payload)
-  const result = await prisma.loanApplicationForm.update({
-    where: {id}, 
-    data: {
-      status: payload.status, 
-      adminNotes: payload.adminNotes,
-    },
-    include: {
-      user: true
-    }
-
-  })
-
-  return result;
-}
-const getSingleApplication = async (id: string) => {
-
-  const result = await prisma.loanApplicationForm.findFirst({
-    where: {id}, 
-    include: {
-      personalInfo: true,
-      residentialInfo: true,
-      employmentInfo: true,
-      loanRequest: true,
-      financialObligations: true,
-      documents: true,
-      guarantorInfo: true,
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-          userId: true,
-          role: true,
-          profile: true,
-        },
-      },
-  }
-
-  })
-
-  return result;
-}
 
 
 
 
+// const getAllApplicationForm = async () => {
+//   const result = await prisma.loanApplicationForm.findMany({
+//     include: {
+//       personalInfo: true,
+//       residentialInfo: true,
+//       employmentInfo: true,
+//       loanRequest: true,
+//       financialObligations: true,
+//       documents: true,
+//       guarantorInfo: true,
+//       user: {
+//         select: {
+//           id: true,
+//           name: true,
+//           email: true,
+//           phone: true,
+//           userId: true,
+//           role: true,
+//           profile: true,
+//         },
+//       },
+//   }})
 
+//   return result;
+// };
 
+// const updateStatus = async (id: string, payload: {status: LoanStatus, adminNotes: string}) => {
+// console.log(payload)
+//   const result = await prisma.loanApplicationForm.update({
+//     where: {id}, 
+//     data: {
+//       status: payload.status, 
+//       adminNotes: payload.adminNotes,
+//     },
+//     include: {
+//       user: true
+//     }
 
+//   })
 
-const applicationTracking = async (payload: {
-  applicationId: string;
-  phone: string;
-}) => {
-  console.log(payload);
-  const result = await prisma.loanApplicationForm.findFirst({
-    where: {
-      applicationId: payload.applicationId,
-      user: {
-        phone: payload.phone,
-      },
-    },
-    select: {
-      status: true,
-      adminNotes: true,
-      applicationId: true,
-      loanRequest: true, 
-      user: {
-        select: {
-          name: true,
-          userId: true,
-          profile: true,
-        },
-      },
-    },
-  });
+//   return result;
+// }
+// const getSingleApplication = async (id: string) => {
 
-  if (!result) {
-    throw new AppError(
-      404,
-      'Application not found please enter valid Phone and Application ID'
-    );
-  }
+//   const result = await prisma.loanApplicationForm.findFirst({
+//     where: {id}, 
+//     include: {
+//       personalInfo: true,
+//       residentialInfo: true,
+//       employmentInfo: true,
+//       loanRequest: true,
+//       financialObligations: true,
+//       documents: true,
+//       guarantorInfo: true,
+//       user: {
+//         select: {
+//           id: true,
+//           name: true,
+//           email: true,
+//           phone: true,
+//           userId: true,
+//           role: true,
+//           profile: true,
+//         },
+//       },
+//   }
 
-  return result;
-};
+//   })
+
+//   return result;
+// }
+// const applicationTracking = async (payload: {
+//   applicationId: string;
+//   phone: string;
+// }) => {
+//   console.log(payload);
+//   const result = await prisma.loanApplicationForm.findFirst({
+//     where: {
+//       applicationId: payload.applicationId,
+//       user: {
+//         phone: payload.phone,
+//       },
+//     },
+//     select: {
+//       status: true,
+//       adminNotes: true,
+//       applicationId: true,
+//       loanRequest: true, 
+//       user: {
+//         select: {
+//           name: true,
+//           userId: true,
+//           profile: true,
+//         },
+//       },
+//     },
+//   });
+
+//   if (!result) {
+//     throw new AppError(
+//       404,
+//       'Application not found please enter valid Phone and Application ID'
+//     );
+//   }
+
+//   return result;
+// };
 
 // const applicationForget = async (payload: { email: string; phone: string }) => {
 //   const result = await prisma.user.findFirst({
@@ -343,11 +299,38 @@ const applicationTracking = async (payload: {
 //   };
 // };
 
+
+
+
+// payload.applicationId = await generateApplicationId();
+
+// const existingForm = await prisma.loanApplicationForm.findUnique({
+//   where: { applicationId: payload.applicationId },
+// });
+
+// if (existingForm) {
+//   throw new AppError(
+//     StatusCodes.BAD_GATEWAY,
+//     `ApplicationForm with ID ${payload.applicationId} already exists.`
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
 export const ApplicationFromService = {
-  getAllApplicationForm,
   createApplicationForm,
-  updateStatus, 
-  getSingleApplication,  
-  applicationTracking,
-  // applicationForget,
+  // getAllApplicationForm,
+  // updateStatus, 
+  // getSingleApplication,  
+  // applicationTracking,
+  // applicationForget, 
 };

@@ -1,41 +1,42 @@
-enum PostStatus {
-    DRAFT
-    PUBLISHED
-    ARCHIVED
-}
-
 model Blog {
-    id              String     @id @default(uuid())
-    title           String
-    slug            String
-    content         String
-    user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId          String
-    publishedDate   DateTime?  @default(now())
-    status          PostStatus @default(PUBLISHED)
-    excerpt         String?
-    category        String?
-    tags            String[]
-    coverImage      String?
-    readingTime     Int? // in minutes
-    metaTitle       String?
-    metaDescription String?
-    comments        Comment[]
-    attachments     String[] // Array of file URLs
-    language        String     @default("en")
-    permissions     String     @default("public")
-    createdAt       DateTime   @default(now())
-    updatedAt       DateTime   @updatedAt
-    @@map("blogs")
+  id              String     @id @default(uuid())
+  title           String
+  slug            String
+  content         String
+  userId          String
+  publishedDate   DateTime?  @default(now())
+  status          PostStatus @default(PUBLISHED)
+  excerpt         String?
+  category        String?
+  tags            String[]
+  coverImage      String?
+  readingTime     Int?
+  metaTitle       String?
+  metaDescription String?
+  attachments     String[]
+  language        String     @default("en")
+  permissions     String     @default("public")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments        Comment[]
+
+  @@map("blogs")
 }
 
 model Comment {
-    id        String   @id @default(uuid())
-    content   String
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    blog      Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
-    blogId    String   
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(uuid())
+  content   String
+  userId    String
+  blogId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blog      Blog     @relation(fields: [blogId], references: [id], onDelete: Cascade)
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }

@@ -1,7 +1,7 @@
 model NewsLetter {
-    id    String  @id @default(uuid())
-    name  String?
-    email String  @unique
+  id    String  @id @default(uuid())
+  name  String?
+  email String  @unique
 
-    @@map("newsLetter")
+  @@map("newsLetter")
 }

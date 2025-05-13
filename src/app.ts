@@ -1,5 +1,6 @@
-import express, { Application, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import express, { Application, Request, Response } from 'express';
+
 import globalErrorHandler from './app/middleware/globalErrorHandler';
 import cors from 'cors'
 import notFound from './app/middleware/notFound';
