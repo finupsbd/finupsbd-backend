@@ -58,6 +58,12 @@ CREATE TYPE "DocumentTypeKyc" AS ENUM ('NATIONAL_ID', 'PASSPORT', 'DRIVING_LICEN
 -- CreateEnum
 CREATE TYPE "VerificationStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
 
+-- CreateEnum
+CREATE TYPE "UserBankRole" AS ENUM ('BANK_USER');
+
+-- CreateEnum
+CREATE TYPE "BankName" AS ENUM ('AGRANI_BANK_PLC', 'JANATA_BANK_PLC', 'SONALI_BANK_PLC', 'RUPALI_BANK_PLC', 'BANGLADESH_DEVELOPMENT_BANK_PLC', 'BASIC_BANK_LIMITED', 'BANGLADESH_KRISHI_BANK', 'RAJSHAHI_KRISHI_UNNAYAN_BANK', 'PROBASHI_KALLYAN_BANK', 'AB_BANK_PLC', 'BANGLADESH_COMMERCE_BANK_LIMITED', 'BANK_ASIA_PLC', 'BENGAL_COMMERCIAL_BANK_LIMITED', 'BRAC_BANK_PLC', 'CITY_BANK_PLC', 'COMMUNITY_BANK_BANGLADESH_PLC', 'CITIZENS_BANK_PLC', 'DHAKA_BANK_PLC', 'DHAKA_MERCANTILE_CO_OPERATIVE_BANK_LIMITED', 'DUTCH_BANGLA_BANK_PLC', 'EASTERN_BANK_PLC', 'IFIC_BANK_PLC', 'JAMUNA_BANK_LIMITED', 'MEGHNA_BANK_PLC', 'MERCANTILE_BANK_PLC', 'MIDLAND_BANK_LIMITED', 'MODHUMOTI_BANK_LIMITED', 'MUTUAL_TRUST_BANK_PLC', 'NATIONAL_CREDIT_AND_COMMERCE_BANK_PLC', 'NRB_BANK_LIMITED', 'NRBC_BANK_PLC', 'ONE_BANK_PLC', 'PREMIER_BANK_PLC', 'PRIME_BANK_PLC', 'PUBALI_BANK_PLC', 'SHIMANTO_BANK_LIMITED', 'SOUTHEAST_BANK_LIMITED', 'SOUTH_BANGLA_AGRICULTURE_AND_COMMERCE_BANK_LIMITED', 'TRUST_BANK_PLC', 'UNITED_COMMERCIAL_BANK_PLC', 'UTTARA_BANK_PLC', 'EXIM_BANK_PLC', 'AL_AARAFAH_ISLAMI_BANK_PLC', 'FIRST_SECURITY_ISLAMI_BANK_PLC', 'GLOBAL_ISLAMI_BANK_PLC', 'ICB_ISLAMIC_BANK_PLC', 'ISLAMI_BANK_BANGLADESH_PLC', 'SHAHJALAL_ISLAMI_BANK_PLC', 'SOCIAL_ISLAMI_BANK_PLC', 'STANDARD_BANK_PLC', 'UNION_BANK_PLC', 'BANK_AL_FALAH_LIMITED', 'CITIBANK_N_A', 'COMMERCIAL_BANK_OF_CEYLON_PLC', 'HABIB_BANK_LIMITED', 'HSBC', 'NATIONAL_BANK_OF_PAKISTAN', 'STANDARD_CHARTERED_BANK', 'STATE_BANK_OF_INDIA', 'WOORI_BANK', 'ANSAR_VDP_UNNAYAN_BANK', 'KARMASHANGOSTHAN_BANK', 'GRAMEEN_BANK', 'JUBILEE_BANK', 'PALLI_SANCHAY_BANK');
+
 -- CreateTable
 CREATE TABLE "blogs" (
     "id" TEXT NOT NULL,
@@ -403,13 +409,13 @@ CREATE TABLE "FeesChargesInstantLoan" (
 CREATE TABLE "loanApplicationForm" (
     "id" TEXT NOT NULL,
     "status" "LoanStatus" NOT NULL DEFAULT 'SUBMITTED',
-    "userId" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "adminNotes" TEXT,
     "applicationId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "loanApplicationForm_pkey" PRIMARY KEY ("id")
 );
@@ -433,7 +439,7 @@ CREATE TABLE "PersonalInfo" (
     "mobileNumber" TEXT NOT NULL,
     "alternateMobileNumber" TEXT,
     "emailAddress" TEXT NOT NULL,
-    "socialMediaProfiles" TEXT,
+    "socialMediaProfiles" TEXT[],
     "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "PersonalInfo_pkey" PRIMARY KEY ("id")
@@ -721,6 +727,27 @@ CREATE TABLE "Activity" (
     CONSTRAINT "Activity_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "userBanks" (
+    "id" TEXT NOT NULL,
+    "bankName" "BankName" NOT NULL,
+    "loginId" TEXT NOT NULL DEFAULT '123456789',
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "bankCode" TEXT NOT NULL,
+    "isBlocked" BOOLEAN NOT NULL DEFAULT false,
+    "failedLoginAttempts" INTEGER NOT NULL DEFAULT 0,
+    "blockedAt" TIMESTAMP(3),
+    "role" "UserBankRole" NOT NULL DEFAULT 'BANK_USER',
+    "isMEOSingnedIn" BOOLEAN NOT NULL DEFAULT false,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "userBanks_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "FeaturesCarLoan_carLoanId_key" ON "FeaturesCarLoan"("carLoanId");
 
@@ -762,12 +789,6 @@ CREATE UNIQUE INDEX "EligibilityInstantLoan_InstantLoanId_key" ON "EligibilityIn
 
 -- CreateIndex
 CREATE UNIQUE INDEX "FeesChargesInstantLoan_InstantLoanId_key" ON "FeesChargesInstantLoan"("InstantLoanId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "loanApplicationForm_userId_key" ON "loanApplicationForm"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "loanApplicationForm_applicationId_key" ON "loanApplicationForm"("applicationId");
 
 -- CreateIndex
 CREATE INDEX "loanApplicationForm_applicationId_status_idx" ON "loanApplicationForm"("applicationId", "status");
@@ -831,3 +852,6 @@ CREATE UNIQUE INDEX "profiles_userId_key" ON "profiles"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "KycVerification_userId_key" ON "KycVerification"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "userBanks_loginId_key" ON "userBanks"("loginId");

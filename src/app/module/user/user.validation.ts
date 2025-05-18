@@ -9,10 +9,7 @@ export const passwordSchema = z
   .string()
   .min(6, 'Password must be at least 6 characters long');
 
-export const phoneSchema = z
-  .string()
-  .min(1, 'Phone is required')
-  .regex(/^\d{11}$/, 'Phone number must be 11 digits');
+export const phoneSchema = z.string().min(1, 'Phone is required').regex(/^\d{11}$/, 'Phone number must be 11 digits');
 
 
 

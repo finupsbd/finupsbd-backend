@@ -14,6 +14,7 @@ import { CarLoanRouter } from '../module/loans/carLoan/carLoan.route'
 import { SMELoanRouter } from '../module/loans/smeLoan/smeLoan.route'
 import { InstantLoanRouter } from '../module/loans/instantLoan/instantLoan.route'
 import { CreditCardRouter } from '../module/loans/creditCard/creditCard.route'
+import { UserBankAuthRouter } from '../module/bankProtal/userBankAuth/userBankAuth.route'
 const router = express.Router()
 
 
@@ -79,6 +80,10 @@ const moduleRouter = [
     {
         path: '/credit-card',
         route: CreditCardRouter
+    },
+    {
+        path: '/bank-protal',
+        route: UserBankAuthRouter
     },
 ]
 

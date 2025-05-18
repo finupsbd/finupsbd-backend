@@ -9,10 +9,7 @@ exports.emailSchema = zod_1.z
 exports.passwordSchema = zod_1.z
     .string()
     .min(6, 'Password must be at least 6 characters long');
-exports.phoneSchema = zod_1.z
-    .string()
-    .min(1, 'Phone is required')
-    .regex(/^\d{11}$/, 'Phone number must be 11 digits');
+exports.phoneSchema = zod_1.z.string().min(1, 'Phone is required').regex(/^\d{11}$/, 'Phone number must be 11 digits');
 const createUserValidationSchema = zod_1.z.object({
     name: zod_1.z.string().min(1, 'Name is required'),
     email: exports.emailSchema,
