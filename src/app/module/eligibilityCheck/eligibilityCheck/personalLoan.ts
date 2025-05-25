@@ -64,7 +64,7 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     if (payload?.haveAnyLoan) {
       const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
       payload.monthlyIncome -= totalEmi 
-
+  
     }
 
     if (payload?.haveAnyCreditCard) {

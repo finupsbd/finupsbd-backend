@@ -9,6 +9,7 @@ import { RootRouter } from './app/rootRouter';
 import seedSuperAdmin from './app/DB';
 import passport from 'passport';
 import os from 'os';
+import { ConfigFile } from './config';
 
 
 
@@ -29,7 +30,9 @@ app.use(cors({
 
 seedSuperAdmin()
 
+
 app.use(passport.initialize());
+
 
 app.use('/api/v1', RootRouter)
 
@@ -37,67 +40,53 @@ app.use('/api/v1', RootRouter)
 
 
 
-
 // Production-grade health-check endpoint
-app.get('/', async (req: Request, res: Response) => {
-  const currentTimestamp = new Date().toISOString();
-  const uptimeSeconds = process.uptime();
-  const memoryUsage = process.memoryUsage();
-  const hostname = os.hostname();
-  const loadAverage = os.loadavg();
-  const cpuInfo = os.cpus();
-  const nodeVersion = process.version;
-  const platform = process.platform;
-  const processId = process.pid;
-  const arch = process.arch;
-  const networkInterfaces = os.networkInterfaces();
 
-  // Check database connectivity via Prisma
-  let dbStatus = 'unknown';
-  try {
-    // A simple query to ensure the DB connection is working
-    await prisma.$queryRaw`SELECT 1`;
-    dbStatus = 'connected';
-  } catch (error) {
-    dbStatus = 'disconnected';
-    console.log(error)
+app.get('/', async (req: Request, res: Response) => {
+  // Timestamp and uptime
+  const timestamp = new Date().toISOString()
+  const uptime = `${Math.floor(process.uptime())}s`
+
+  // Memory usage summary in MB
+  const { rss, heapUsed, heapTotal } = process.memoryUsage()
+  const memory = {
+    rss: `${(rss / 1024 / 1024).toFixed(1)} MB`,
+    heapUsed: `${(heapUsed / 1024 / 1024).toFixed(1)} MB`,
+    heapTotal: `${(heapTotal / 1024 / 1024).toFixed(1)} MB`,
   }
 
-  // Build the detailed health-check response
+  // Load averages
+  const [load1, load5, load15] = os.loadavg().map(n => n.toFixed(2))
+
+  // Database connectivity
+  let db = 'Not Connected'
+  try {
+    await prisma.$queryRaw`SELECT 1`
+    db = 'Connected'
+  } catch (err) {
+    console.error('DB health check failed:', err)
+  }
+
   res.status(200).json({
-    status: 'success',
-    message: 'finupsBD server is fully operational and healthy.',
-    ServerCreate: "Reza",
-    timestamp: currentTimestamp,
-    uptime: `${uptimeSeconds.toFixed(2)} seconds`,
-    database: dbStatus,
-    environment: process.env.NODE_ENV || 'development',
-    version: process.env.npm_package_version || 'unknown',
-    nodeVersion,
-    hostname,
-    memoryUsage,
-    loadAverage,
-    cpuInfo: cpuInfo.map(cpu => ({
-      model: cpu.model,
-      speed: cpu.speed,
-      times: cpu.times
-    })),
-
-    platform,
-    processId,
-    arch,
-    networkInterfaces,
-  });
-});
-
-
-
+    status: true,
+    message: 'FinupsBD server is up and running smoothly.',
+    timestamp,
+    uptime,
+    environment: ConfigFile.NODE_ENV || 'development',
+    npmVersion: ConfigFile.npm_package_version || 'unknown',
+    nodeVersion: ConfigFile.node_version,
+    database: db,
+    memory,
+    loadAverage: { '1m': load1, '5m': load5, '15m': load15 },
+    host: os.hostname(),
+    arch: process.arch,
+  })
+})
 
 
 
 app.use(globalErrorHandler)    //  global Error handler 
 app.use(notFound)              //  user request route not found handler
-
 
 
 export default app;

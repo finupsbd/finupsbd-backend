@@ -37,17 +37,28 @@
 | `/api/v1/public/emi-calculator`      | `POST`   | Calculate Emi                                    |
 
 
-## Technologies Used
-- **Backend**: Node.js, Express.js
-- **Database**: Postgres with Prisma
-- **Authentication**: JSON Web Tokens (JWT)
-- **Validation**: Zod
+## Tech Stack
+
+- **Language:** TypeScript  
+- **Framework:** Express.js  
+- **ORM:** Prisma  
+- **Database:** PostgreSQL  
+- **Caching:** Redis  
+- **Authentication:** JSON Web Tokens (JWT)  
+- **Rate Limiting:** express-rate-limit  
+- **File Storage:** Cloudinary  
+- **AI Integration:** OpenAI / Google Generative AI  
+- **Testing:** (Placeholder)
+
 
 ## Setup Instructions
 
-### Prerequisites
-- Node.js and npm installed.
-- Postgres database connection string.
+## Prerequisites
+
+- Node.js ≥ 18.x  
+- npm or Yarn  
+- PostgreSQL database  
+- Redis server  
 
 ### Steps
 1. Clone the repository:

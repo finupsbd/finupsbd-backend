@@ -1,15 +1,22 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import { ConfigFile } from '../../config';
-export const accessTokenGenerate = (jwtPayload: JwtPayload, expire: string) => {
-  const result = jwt.sign(jwtPayload, ConfigFile.JWT_ACCESS_SECRET as string, {
-    expiresIn: expire,
-  });
-  return result;
+
+export const accessTokenGenerate = (payload: JwtPayload,expiresIn: jwt.SignOptions['expiresIn']): string => {
+  return jwt.sign(
+    payload as string | Buffer | object,
+    ConfigFile.JWT_ACCESS_SECRET as jwt.Secret,
+    { expiresIn } as jwt.SignOptions,
+  );
 };
 
-export const refreshTokenGenerate = (jwtPayload: JwtPayload, expire: string) => {
-  const result = jwt.sign(jwtPayload, ConfigFile.JWT_REFRESH_SECRET as string, {
-    expiresIn: expire,
-  });
-  return result;
+export const refreshTokenGenerate = (
+  payload: JwtPayload,
+  expiresIn: jwt.SignOptions['expiresIn'],
+): string => {
+  return jwt.sign(
+    payload as string | Buffer | object,
+    ConfigFile.JWT_REFRESH_SECRET as jwt.Secret,
+    { expiresIn } as jwt.SignOptions,
+  );
 };

@@ -31,7 +31,7 @@ model EligibilityCheck {
   updatedAt           DateTime           @updatedAt
   existingLoans       ExistingLoan[]
 
-  @@index([loanType, name, email, phone])
+  @@index([loanType, name, email, phone, isAppliedLoan])
   @@map("eligibilityCheck")
 }
 

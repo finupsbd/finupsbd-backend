@@ -29,7 +29,7 @@ const app_1 = require("../../../../app");
 const AppError_1 = __importDefault(require("../../../error/AppError"));
 const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = payload.monthlyIncome, tenure = payload.expectedLoanTenure } = query, restQuery = __rest(query, ["page", "pageSize", "sortOrder", "sortKey", "amount", "tenure"]);
+    const { amount = payload.monthlyIncome, tenure = payload.expectedLoanTenure, page: _page, pageSize: _pageSize, sortOrder, sortKey } = query, restQuery = __rest(query, ["amount", "tenure", "page", "pageSize", "sortOrder", "sortKey"]);
     try {
         const [loans] = yield app_1.prisma.$transaction([
             app_1.prisma.instantLoan.findMany({
@@ -38,39 +38,45 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
                     FeaturesInstantLoan: true,
                     FeesChargesInstantLoan: true,
                 },
-            })
+            }),
         ]);
-        if (loans.length === 0) {
+        if (!loans.length) {
             throw new AppError_1.default(404, "No loans found for the given criteria.");
         }
-        if (payload.monthlyIncome >= 50000) {
-            payload.monthlyIncome = 50000;
+        // Clone monthly income to avoid mutating input
+        let adjustedMonthlyIncome = Math.min(payload.monthlyIncome || 0, 50000);
+        // Adjust rental income if applicable
+        if (payload.haveAnyRentalIncome && payload.rentalIncome) {
+            adjustedMonthlyIncome += payload.rentalIncome;
         }
-        if (payload.haveAnyRentalIncome) {
-            payload.rentalIncome = (payload.rentalIncome || 0) + (payload.rentalIncome || 0);
+        // Subtract existing loan EMIs
+        if (payload.haveAnyLoan && ((_a = payload.existingLoans) === null || _a === void 0 ? void 0 : _a.length)) {
+            const totalEMI = payload.existingLoans.reduce((sum, loan) => sum + (loan.emiAmountBDT || 0), 0);
+            adjustedMonthlyIncome -= totalEMI;
         }
-        if (payload.haveAnyLoan) {
-            const totalEmi = ((_a = payload.existingLoans) === null || _a === void 0 ? void 0 : _a.reduce((acc, loan) => acc + loan.emiAmountBDT, 0)) || 0;
-            payload.monthlyIncome -= totalEmi;
+        // Subtract credit card load
+        if (payload.haveAnyCreditCard && payload.numberOfCard) {
+            adjustedMonthlyIncome -= payload.numberOfCard * 2000;
         }
-        if (payload.haveAnyCreditCard) {
-            payload.monthlyIncome -= (payload.numberOfCard || 0) * 2000;
-        }
+        // Prepare loan suggestions
         const suggestedLoans = loans.map((loan) => {
-            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), Number(tenure));
-            const totalRepayment = monthlyEMI * Number(tenure);
+            const principal = Number(amount) || 0;
+            const interest = Number(loan.interestRate) || 0;
+            const duration = Number(tenure) || 0;
+            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(principal, interest, duration);
+            const totalRepayment = monthlyEMI * duration;
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: Math.floor(Number(amount)).toFixed(2),
+                amount: principal.toFixed(2),
                 periodMonths: payload.tenure,
                 loanType: loan.loanType,
-                monthlyEMI: Math.floor(monthlyEMI).toFixed(2),
-                totalRepayment: Math.floor(totalRepayment).toFixed(2),
+                monthlyEMI: monthlyEMI.toFixed(2),
+                totalRepayment: totalRepayment.toFixed(2),
                 coverImage: loan.coverImage,
-                interestRate: Number(loan.interestRate),
+                interestRate: interest,
                 processingFee: loan.processingFee,
-                eligibleLoan: payload.monthlyIncome,
+                eligibleLoan: adjustedMonthlyIncome.toFixed(2),
                 features: loan.FeaturesInstantLoan,
                 feesCharges: loan.FeesChargesInstantLoan,
                 eligibility: loan.EligibilityInstantLoan,

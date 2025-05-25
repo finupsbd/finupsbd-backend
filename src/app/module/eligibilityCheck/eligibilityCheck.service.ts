@@ -1,4 +1,3 @@
-
 import { loanTypes } from "./eligibilityCheck.constant";
 import AppError from "../../error/AppError";
 import { StatusCodes } from "http-status-codes";
@@ -6,29 +5,33 @@ import { prisma } from "../../../app";
 import { TEligibilityCheck } from "./eligibilityCheck.interface";
 import personalLoan from "./eligibilityCheck/personalLoan";
 import { instantLoan } from "./eligibilityCheck/instantLoan";
+// import homeLoan from "./eligibilityCheck/homeLoan";
+// import smeLoan from "./eligibilityCheck/smeLoan";
 
+type LoanHandler = (data: TEligibilityCheck, query: Record<string, unknown>) => Promise<unknown>;
 
+// Loan type handler map
+const loanHandlers: Record<string, LoanHandler> = {
+  [loanTypes.INSTANT_LOAN]: instantLoan,
+  [loanTypes.PERSONAL_LOAN]: personalLoan,
+  // [loanTypes.HOME_LOAN]: homeLoan,
+  // [loanTypes.SME_LOAN]: smeLoan,
+};
 
+const eligibilityCheck = async (
+  payload: TEligibilityCheck,
+  query: Record<string, unknown>
+) => {
+  const { existingLoans = [], ...eligibilityData } = payload;
 
-
-
-
-const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
-
-
-  console.log(query, 'query')
-  // 1. Pull out the loans array
-  const { existingLoans = [], ...eligibilityData } = payload
-
-  // 2. Create with nested write
-  const result = await prisma.eligibilityCheck.create({
+  const eligibilityCheckEntry = await prisma.eligibilityCheck.create({
     data: {
       ...eligibilityData,
       existingLoans: {
-        create: existingLoans.map((loan) => ({
-          existingLoanType: loan.existingLoanType, 
-          emiAmountBDT: loan.emiAmountBDT,
-          interestRate: loan.interestRate,
+        create: existingLoans.map(({ existingLoanType, emiAmountBDT, interestRate }) => ({
+          existingLoanType,
+          emiAmountBDT,
+          interestRate,
         })),
       },
     },
@@ -41,32 +44,26 @@ const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string
         },
       },
     },
-  })
+  });
+
+  const handler = loanHandlers[payload.loanType];
 
 
-  if (payload?.loanType === loanTypes.INSTANT_LOAN) {
-    return await instantLoan(result as unknown as TEligibilityCheck, query)
+
+  if (!handler) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      `Loan type handler not implemented for '${payload.loanType}'`
+    );
   }
 
-  if (payload?.loanType === loanTypes.PERSONAL_LOAN) {
-    return await personalLoan(result as unknown as TEligibilityCheck, query)
-  }
+  return handler(eligibilityCheckEntry as unknown as TEligibilityCheck, query);
+};
 
-  // if (payload?.loanType === loanTypes.HOME_LOAN) {
-  //   return await homeLoan(result as unknown as TEligibilityCheck, query)
-  // }
 
-  // if (payload?.loanType === loanTypes.SME_LOAN) {
-  //   return await smeLoan(result as unknown as TEligibilityCheck, query)
-  // }
 
-  throw new AppError(
-    StatusCodes.BAD_REQUEST,
-    `This module is not yet implemented for ${payload?.loanType} type `,
-  );
-}
 
 
 export const EligibilityCheckService = {
   eligibilityCheck,
-}
+};

@@ -19,8 +19,8 @@ const homeLoan_route_1 = require("../module/loans/homeLoan/homeLoan.route");
 const carLoan_route_1 = require("../module/loans/carLoan/carLoan.route");
 const smeLoan_route_1 = require("../module/loans/smeLoan/smeLoan.route");
 const instantLoan_route_1 = require("../module/loans/instantLoan/instantLoan.route");
-const creditCard_route_1 = require("../module/loans/creditCard/creditCard.route");
 const userBankAuth_route_1 = require("../module/bankProtal/userBankAuth/userBankAuth.route");
+const LoansBank_route_1 = require("../module/bankProtal/LoansBanks/LoansBank.route");
 const router = express_1.default.Router();
 const moduleRouter = [
     {
@@ -80,12 +80,12 @@ const moduleRouter = [
         route: smeLoan_route_1.SMELoanRouter
     },
     {
-        path: '/credit-card',
-        route: creditCard_route_1.CreditCardRouter
+        path: '/bank-portal/auth',
+        route: userBankAuth_route_1.UserBankAuthRouter
     },
     {
-        path: '/bank-protal',
-        route: userBankAuth_route_1.UserBankAuthRouter
+        path: '/bank-portal/loans',
+        route: LoansBank_route_1.LoansBankRouter
     },
 ];
 moduleRouter.forEach(item => router.use(item.path, item.route));

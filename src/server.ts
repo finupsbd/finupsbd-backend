@@ -3,12 +3,13 @@ import { Server } from 'http';
 import app from './app';
 import { ConfigFile } from './config';
 
+
 let server: Server;
 
 async function main() {
   try {
-    server = app.listen(ConfigFile.post, () => {
-      console.log(`Server is running on port ${ConfigFile.post}`);
+    server = app.listen(ConfigFile.PORT, () => {
+      console.log(`Server is running on port ${ConfigFile.PORT}`);
     });
   } catch (error) {
     console.log(error);

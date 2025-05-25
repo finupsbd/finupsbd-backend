@@ -3,88 +3,87 @@ import { calculateEMI } from "../utils/calculateEMI";
 import { prisma } from "../../../../app";
 import AppError from "../../../error/AppError";
 
+export const instantLoan = async (
+  payload: TEligibilityCheck,
+  query: Record<string, unknown>
+) => {
+  const {
+    amount = payload.monthlyIncome,
+    tenure = payload.expectedLoanTenure,
+    page: _page,
+    pageSize: _pageSize,
+    sortOrder,
+    sortKey,
+    ...restQuery
+  } = query;
 
+  try {
+    const [loans] = await prisma.$transaction([
+      prisma.instantLoan.findMany({
+        include: {
+          EligibilityInstantLoan: true,
+          FeaturesInstantLoan: true,
+          FeesChargesInstantLoan: true,
+        },
+      }),
+    ]);
 
-
-export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
-
-    const {
-        page: _page,
-        pageSize: _pageSize,
-        sortOrder,
-        sortKey,
-        amount = payload.monthlyIncome,
-        tenure = payload.expectedLoanTenure,
-        ...restQuery
-    } = query;
-    try {
-
-        const [loans] = await prisma.$transaction([
-            prisma.instantLoan.findMany({
-                include: {
-                    EligibilityInstantLoan: true,
-                    FeaturesInstantLoan: true,
-                    FeesChargesInstantLoan: true,
-                },
-            })
-        ]);
-
-        if (loans.length === 0) {
-            throw new AppError(404, "No loans found for the given criteria.");
-        }
-       
-
-
-
-        if (payload.monthlyIncome >= 50000) {
-            payload.monthlyIncome = 50000;
-        }
-
-
-        if (payload.haveAnyRentalIncome) {
-            payload.rentalIncome = (payload.rentalIncome || 0) + (payload.rentalIncome || 0);
-        }
-
-        if (payload.haveAnyLoan) {
-            const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
-            payload.monthlyIncome -= totalEmi
-        }
-
-        if (payload.haveAnyCreditCard) {
-            payload.monthlyIncome -= (payload.numberOfCard || 0) * 2000;
-        }
-
-
-
-
-        const suggestedLoans = loans.map((loan) => {
-            const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), Number(tenure));
-            const totalRepayment = monthlyEMI * Number(tenure);
-
-
-
-            return {
-                id: loan.id,
-                bankName: loan.bankName,
-                amount: Math.floor(Number(amount)).toFixed(2),
-                periodMonths: payload.tenure,
-                loanType: loan.loanType,
-                monthlyEMI: Math.floor(monthlyEMI).toFixed(2),
-                totalRepayment: Math.floor(totalRepayment).toFixed(2),
-                coverImage: loan.coverImage,
-                interestRate: Number(loan.interestRate),
-                processingFee: loan.processingFee,
-                eligibleLoan: payload.monthlyIncome,
-                features: loan.FeaturesInstantLoan,
-                feesCharges: loan.FeesChargesInstantLoan,
-                eligibility: loan.EligibilityInstantLoan,
-            };
-        });
-
-
-        return suggestedLoans
-    } catch (error) {
-        console.error("Error in instantLoan function:", error);
-        throw error;
+    if (!loans.length) {
+      throw new AppError(404, "No loans found for the given criteria.");
     }
+
+    // Clone monthly income to avoid mutating input
+    let adjustedMonthlyIncome = Math.min(payload.monthlyIncome || 0, 50000);
+
+    // Adjust rental income if applicable
+    if (payload.haveAnyRentalIncome && payload.rentalIncome) {
+      adjustedMonthlyIncome += payload.rentalIncome;
+    }
+
+    // Subtract existing loan EMIs
+    if (payload.haveAnyLoan && payload.existingLoans?.length) {
+      const totalEMI = payload.existingLoans.reduce(
+        (sum, loan) => sum + (loan.emiAmountBDT || 0),
+        0
+      );
+      adjustedMonthlyIncome -= totalEMI;
+    }
+
+    // Subtract credit card load
+    if (payload.haveAnyCreditCard && payload.numberOfCard) {
+      adjustedMonthlyIncome -= payload.numberOfCard * 2000;
+    }
+
+    // Prepare loan suggestions
+    const suggestedLoans = loans.map((loan) => {
+      const principal = Number(amount) || 0;
+      const interest = Number(loan.interestRate) || 0;
+      const duration = Number(tenure) || 0;
+
+      const monthlyEMI = calculateEMI(principal, interest, duration);
+      const totalRepayment = monthlyEMI * duration;
+
+      return {
+        id: loan.id,
+        bankName: loan.bankName,
+        amount: principal.toFixed(2),
+        periodMonths: payload.tenure,
+        loanType: loan.loanType,
+        monthlyEMI: monthlyEMI.toFixed(2),
+        totalRepayment: totalRepayment.toFixed(2),
+        coverImage: loan.coverImage,
+        interestRate: interest,
+        processingFee: loan.processingFee,
+        eligibleLoan: adjustedMonthlyIncome.toFixed(2),
+        features: loan.FeaturesInstantLoan,
+        feesCharges: loan.FeesChargesInstantLoan,
+        eligibility: loan.EligibilityInstantLoan,
+      };
+    });
+
+    return suggestedLoans;
+  } catch (error) {
+    console.error("Error in instantLoan function:", error);
+    throw error;
+  }
 };

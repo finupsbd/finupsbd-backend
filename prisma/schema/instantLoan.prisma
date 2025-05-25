@@ -1,3 +1,5 @@
+
+
 model InstantLoan {
   id                     String                  @id @default(uuid())
   bankName               String

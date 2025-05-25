@@ -18,8 +18,8 @@ let server;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            server = app_1.default.listen(config_1.ConfigFile.post, () => {
-                console.log(`Server is running on port ${config_1.ConfigFile.post}`);
+            server = app_1.default.listen(config_1.ConfigFile.PORT, () => {
+                console.log(`Server is running on port ${config_1.ConfigFile.PORT}`);
             });
         }
         catch (error) {

@@ -1,13 +1,13 @@
 import nodemailer from 'nodemailer';
-import { ConfigFile } from '../../config';
+
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
   secure: false, // true for port 465, false for other ports
   auth: {
-    user: ConfigFile.NODE_MAILER_EMAIL,
-    pass: ConfigFile.NODE_MAILER_PASS,
+    user: process.env.NODE_MAILER_EMAIL,
+    pass: process.env.NODE_MAILER_PASS,
   },
 });
 
@@ -17,7 +17,7 @@ const sendEmail = async (toEmail: string, emailSubject: string, bodyText: string
 
 ) => {
   const info = await transporter.sendMail({
-    from: ConfigFile.NODE_MAILER_EMAIL, // sender address
+    from: process.env.NODE_MAILER_EMAIL, // sender address
     to: toEmail, // list of receivers
     subject: emailSubject, // Subject line
     text: bodyText, // plain text body

@@ -13,19 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
-const config_1 = require("../../config");
 const transporter = nodemailer_1.default.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
     secure: false, // true for port 465, false for other ports
     auth: {
-        user: config_1.ConfigFile.NODE_MAILER_EMAIL,
-        pass: config_1.ConfigFile.NODE_MAILER_PASS,
+        user: process.env.NODE_MAILER_EMAIL,
+        pass: process.env.NODE_MAILER_PASS,
     },
 });
 const sendEmail = (toEmail, emailSubject, bodyText) => __awaiter(void 0, void 0, void 0, function* () {
     const info = yield transporter.sendMail({
-        from: config_1.ConfigFile.NODE_MAILER_EMAIL, // sender address
+        from: process.env.NODE_MAILER_EMAIL, // sender address
         to: toEmail, // list of receivers
         subject: emailSubject, // Subject line
         text: bodyText, // plain text body
