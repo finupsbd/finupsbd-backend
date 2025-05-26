@@ -9,48 +9,56 @@ import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
 export const personalLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
   try {
 
-    // Extract pagination parameters and default to page 1 and 10 items per page if not provided.
-
     const page = query.page ? Number(query.page) : 1;
     const pageSize = query.pageSize ? Number(query.pageSize) : 3;
+    const amount = query.amount ? Number(query.amount) : 200000;
+    const sortKey = (query.sortOrder as 'asc' | 'desc') || 'asc';
+    const sortOrder = (query.sortOrder as 'asc' | 'desc') || 'asc';
+    const searchTerm = (query.searchTerm as string) || '';
+    const interestRate = query.interestRate ? Number(query.interestRate) : 0;
+ 
 
-    // Remove pagination keys from query to use the rest as filters
-    const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = 200000, searchTerm, interestRate, ...filter } = query;
+    const filters = buildFilters(payload.monthlyIncome, calculateAge(payload.dateOfBirth.toISOString()));
 
 
-  
-// console.log(calculateAge(payload.dateOfBirth.toISOString()) , 'age')
+console.log(sortOrder)
 
-    const filters = buildFilters( payload.monthlyIncome, calculateAge(payload.dateOfBirth.toISOString()));
 
-    // console.log(filters) 
+
+
+
+
+
+
+
+
+const skip = Math.max(0, (page - 1) * pageSize);
+const take = pageSize;
+///---------------------------------------------------------------------------------------------------------------
+
 
 
 
     const [loans, totalLoans] = await prisma.$transaction([
       prisma.personalLoan.findMany({
-        skip: Math.max(0, (page - 1) * pageSize),
-        take: pageSize,
-        orderBy: { createdAt: 'asc' },
+        skip,
+        take,
         include: {
           eligibility: true,
           features: true,
           feesCharges: true,
         },
       }),
-      prisma.personalLoan.count({
-        where: filters,
-      }),
+      prisma.personalLoan.count({}),
     ]);
 
 
-    
-    const forEligibleLoan = {...payload}
+
+    const forEligibleLoan = { ...payload }
 
 
-    console.log(loans, 'loans')
 
- 
+
     // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
     if (payload?.monthlyIncome) {
       payload.monthlyIncome = payload.monthlyIncome / 2
@@ -58,19 +66,19 @@ export const personalLoan = async (payload: TEligibilityCheck, query: Record<str
     }
 
     if (payload?.haveAnyRentalIncome) {
-      payload.monthlyIncome += payload.monthlyIncome 
+      payload.monthlyIncome += payload.monthlyIncome
     }
 
     if (payload?.haveAnyLoan) {
       const totalEmi = payload.existingLoans?.reduce((acc, loan) => acc + loan.emiAmountBDT, 0) || 0;
-      payload.monthlyIncome -= totalEmi 
-  
+      payload.monthlyIncome -= totalEmi
+
     }
 
     if (payload?.haveAnyCreditCard) {
-      
+
       payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCard! * 2000);
-    } 
+    }
 
 
     const suggestedLoans = loans.map((loan) => {

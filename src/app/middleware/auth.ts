@@ -11,6 +11,8 @@ import { StatusCodes } from "http-status-codes";
 const auth = (...requiredRoles: string[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) =>{
         const token = req.headers.authorization?.split(' ')[1];
+
+        
         if(!token){
             throw new AppError(StatusCodes.UNAUTHORIZED,"You are unauthorized")
         }
@@ -20,6 +22,8 @@ const auth = (...requiredRoles: string[]) => {
         }
 
         const decode = await jwt.verify(token, ConfigFile.JWT_ACCESS_SECRET as string) as JwtPayload
+     
+
         const user = await prisma.user.findUnique({where: {email: decode.email}})
       
         if(!user){

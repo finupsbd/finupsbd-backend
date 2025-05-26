@@ -8,17 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.personalLoan = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -30,31 +19,31 @@ const suggestEligibleLoanAmount_1 = require("../utils/suggestEligibleLoanAmount"
 const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        // Extract pagination parameters and default to page 1 and 10 items per page if not provided.
         const page = query.page ? Number(query.page) : 1;
         const pageSize = query.pageSize ? Number(query.pageSize) : 3;
-        // Remove pagination keys from query to use the rest as filters
-        const { page: _page, pageSize: _pageSize, sortOrder, sortKey, amount = 200000, searchTerm, interestRate } = query, filter = __rest(query, ["page", "pageSize", "sortOrder", "sortKey", "amount", "searchTerm", "interestRate"]);
-        // console.log(calculateAge(payload.dateOfBirth.toISOString()) , 'age')
+        const amount = query.amount ? Number(query.amount) : 200000;
+        const sortKey = query.sortOrder || 'asc';
+        const sortOrder = query.sortOrder || 'asc';
+        const searchTerm = query.searchTerm || '';
+        const interestRate = query.interestRate ? Number(query.interestRate) : 0;
         const filters = (0, queryBuilder_1.buildFilters)(payload.monthlyIncome, (0, calculateAge_1.calculateAge)(payload.dateOfBirth.toISOString()));
-        // console.log(filters) 
+        console.log(sortOrder);
+        const skip = Math.max(0, (page - 1) * pageSize);
+        const take = pageSize;
+        ///---------------------------------------------------------------------------------------------------------------
         const [loans, totalLoans] = yield app_1.prisma.$transaction([
             app_1.prisma.personalLoan.findMany({
-                skip: Math.max(0, (page - 1) * pageSize),
-                take: pageSize,
-                orderBy: { createdAt: 'asc' },
+                skip,
+                take,
                 include: {
                     eligibility: true,
                     features: true,
                     feesCharges: true,
                 },
             }),
-            app_1.prisma.personalLoan.count({
-                where: filters,
-            }),
+            app_1.prisma.personalLoan.count({}),
         ]);
         const forEligibleLoan = Object.assign({}, payload);
-        console.log(loans, 'loans');
         // Calculate the monthly income after deducting the loan EMI, base loan 50% . 
         if (payload === null || payload === void 0 ? void 0 : payload.monthlyIncome) {
             payload.monthlyIncome = payload.monthlyIncome / 2;

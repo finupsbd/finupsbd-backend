@@ -13,7 +13,6 @@ import { HomeLoanRouter } from '../module/loans/homeLoan/homeLoan.route'
 import { CarLoanRouter } from '../module/loans/carLoan/carLoan.route'
 import { SMELoanRouter } from '../module/loans/smeLoan/smeLoan.route'
 import { InstantLoanRouter } from '../module/loans/instantLoan/instantLoan.route'
-import { CreditCardRouter } from '../module/loans/creditCard/creditCard.route'
 import { UserBankAuthRouter } from '../module/bankProtal/userBankAuth/userBankAuth.route'
 import { LoansBankRouter } from '../module/bankProtal/LoansBanks/LoansBank.route'
 const router = express.Router()

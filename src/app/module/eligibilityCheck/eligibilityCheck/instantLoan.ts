@@ -7,21 +7,17 @@ export const instantLoan = async (
   payload: TEligibilityCheck,
   query: Record<string, unknown>
 ) => {
-  const {
-    amount = payload.monthlyIncome,
-    tenure = payload.expectedLoanTenure,
-    page: _page,
-    pageSize: _pageSize,
-    sortOrder,
-    sortKey,
-    ...restQuery
+  const {tenure = Number(payload.expectedLoanTenure),
   } = query;
+
+console.log({payload})
+
 
   try {
     const [loans] = await prisma.$transaction([
       prisma.instantLoan.findMany({
         include: {
-          EligibilityInstantLoan: true,
+          EligibilityInstantLoan: true, 
           FeaturesInstantLoan: true,
           FeesChargesInstantLoan: true,
         },
@@ -32,45 +28,38 @@ export const instantLoan = async (
       throw new AppError(404, "No loans found for the given criteria.");
     }
 
-    // Clone monthly income to avoid mutating input
     let adjustedMonthlyIncome = Math.min(payload.monthlyIncome || 0, 50000);
 
-    // Adjust rental income if applicable
     if (payload.haveAnyRentalIncome && payload.rentalIncome) {
       adjustedMonthlyIncome += payload.rentalIncome;
     }
 
-    // Subtract existing loan EMIs
     if (payload.haveAnyLoan && payload.existingLoans?.length) {
-      const totalEMI = payload.existingLoans.reduce(
-        (sum, loan) => sum + (loan.emiAmountBDT || 0),
-        0
-      );
+      const totalEMI = payload.existingLoans.reduce((sum, loan) => sum + (loan.emiAmountBDT || 0), 0);
       adjustedMonthlyIncome -= totalEMI;
     }
 
-    // Subtract credit card load
+
     if (payload.haveAnyCreditCard && payload.numberOfCard) {
       adjustedMonthlyIncome -= payload.numberOfCard * 2000;
     }
 
-    // Prepare loan suggestions
     const suggestedLoans = loans.map((loan) => {
-      const principal = Number(amount) || 0;
       const interest = Number(loan.interestRate) || 0;
       const duration = Number(tenure) || 0;
 
-      const monthlyEMI = calculateEMI(principal, interest, duration);
+      const monthlyEMI = calculateEMI(payload.monthlyIncome, interest, duration);
       const totalRepayment = monthlyEMI * duration;
 
       return {
         id: loan.id,
         bankName: loan.bankName,
-        amount: principal.toFixed(2),
+        amount: payload.monthlyIncome.toFixed(2),
         periodMonths: payload.tenure,
         loanType: loan.loanType,
         monthlyEMI: monthlyEMI.toFixed(2),
         totalRepayment: totalRepayment.toFixed(2),
+        expectedLoanTenure:tenure,
         coverImage: loan.coverImage,
         interestRate: interest,
         processingFee: loan.processingFee,

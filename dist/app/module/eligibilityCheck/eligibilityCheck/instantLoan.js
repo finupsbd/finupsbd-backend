@@ -8,17 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -29,7 +18,8 @@ const app_1 = require("../../../../app");
 const AppError_1 = __importDefault(require("../../../error/AppError"));
 const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { amount = payload.monthlyIncome, tenure = payload.expectedLoanTenure, page: _page, pageSize: _pageSize, sortOrder, sortKey } = query, restQuery = __rest(query, ["amount", "tenure", "page", "pageSize", "sortOrder", "sortKey"]);
+    const { tenure = Number(payload.expectedLoanTenure), } = query;
+    console.log({ payload });
     try {
         const [loans] = yield app_1.prisma.$transaction([
             app_1.prisma.instantLoan.findMany({
@@ -43,36 +33,31 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
         if (!loans.length) {
             throw new AppError_1.default(404, "No loans found for the given criteria.");
         }
-        // Clone monthly income to avoid mutating input
         let adjustedMonthlyIncome = Math.min(payload.monthlyIncome || 0, 50000);
-        // Adjust rental income if applicable
         if (payload.haveAnyRentalIncome && payload.rentalIncome) {
             adjustedMonthlyIncome += payload.rentalIncome;
         }
-        // Subtract existing loan EMIs
         if (payload.haveAnyLoan && ((_a = payload.existingLoans) === null || _a === void 0 ? void 0 : _a.length)) {
             const totalEMI = payload.existingLoans.reduce((sum, loan) => sum + (loan.emiAmountBDT || 0), 0);
             adjustedMonthlyIncome -= totalEMI;
         }
-        // Subtract credit card load
         if (payload.haveAnyCreditCard && payload.numberOfCard) {
             adjustedMonthlyIncome -= payload.numberOfCard * 2000;
         }
-        // Prepare loan suggestions
         const suggestedLoans = loans.map((loan) => {
-            const principal = Number(amount) || 0;
             const interest = Number(loan.interestRate) || 0;
             const duration = Number(tenure) || 0;
-            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(principal, interest, duration);
+            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(payload.monthlyIncome, interest, duration);
             const totalRepayment = monthlyEMI * duration;
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: principal.toFixed(2),
+                amount: payload.monthlyIncome.toFixed(2),
                 periodMonths: payload.tenure,
                 loanType: loan.loanType,
                 monthlyEMI: monthlyEMI.toFixed(2),
                 totalRepayment: totalRepayment.toFixed(2),
+                expectedLoanTenure: tenure,
                 coverImage: loan.coverImage,
                 interestRate: interest,
                 processingFee: loan.processingFee,

@@ -9,6 +9,7 @@ import { ConfigFile } from '../../config';
 import { Prisma } from '@prisma/client';
 import AppError from '../error/AppError';
 import { ZodError } from 'zod';
+import { TokenExpiredError } from 'jsonwebtoken';
 
 const globalErrorHandler = (
   err: any,
@@ -19,6 +20,28 @@ const globalErrorHandler = (
   let newMessage = "Something went's wrong";
   const error = {};
   let statusCode = StatusCodes.BAD_REQUEST;
+
+  
+
+
+  if (err instanceof TokenExpiredError) {
+         res.status(401).json({
+          success: false,
+          message: 'Session expired. Please refresh your token or log in again.',
+          err, 
+        });
+      }
+
+
+  if (err instanceof SyntaxError) {
+         res.status(500).json({
+          success: false,
+          message: `SyntaxError: ${err.message}`,
+          stack: err.stack
+        });
+      }
+
+
 
   if (err.headersSent) {
 

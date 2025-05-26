@@ -9,11 +9,26 @@ const config_1 = require("../../config");
 const client_1 = require("@prisma/client");
 const AppError_1 = __importDefault(require("../error/AppError"));
 const zod_1 = require("zod");
+const jsonwebtoken_1 = require("jsonwebtoken");
 const globalErrorHandler = (err, req, res, next) => {
     var _a;
     let newMessage = "Something went's wrong";
     const error = {};
     let statusCode = http_status_codes_1.StatusCodes.BAD_REQUEST;
+    if (err instanceof jsonwebtoken_1.TokenExpiredError) {
+        res.status(401).json({
+            success: false,
+            message: 'Session expired. Please refresh your token or log in again.',
+            err,
+        });
+    }
+    if (err instanceof SyntaxError) {
+        res.status(500).json({
+            success: false,
+            message: `SyntaxError: ${err.message}`,
+            stack: err.stack
+        });
+    }
     if (err.headersSent) {
         res.status(400).json({
             success: false,
