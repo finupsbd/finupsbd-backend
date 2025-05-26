@@ -27,14 +27,14 @@ const http_status_codes_1 = require("http-status-codes");
 const generateCustomPassword_1 = require("../../utils/generateCustomPassword");
 //Sign up User
 const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log({ userSessionInfo });
-    const isAlreadySignUpRequest = yield app_1.prisma.user.findUnique({
+    const isAlreadySignUpRequest = yield app_1.prisma.user.findFirst({
         where: {
             email: payload.email,
         },
     });
+    console.log(isAlreadySignUpRequest);
     if (isAlreadySignUpRequest) {
-        return 'allready send pin check email. Thank you';
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, 'You have already an account please login');
     }
     const { email } = payload;
     payload.password = yield (0, passwordHash_1.passwordHash)(payload.password);
@@ -93,10 +93,59 @@ const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, f
 `;
     yield (0, sendEmail_1.default)(payload === null || payload === void 0 ? void 0 : payload.email, MailSubject, MailText);
     // phoneOtpSend(phone, "send message")
-    return 'Send Your pin Check your email! Thank you';
+    return {
+        email: result.email
+    };
+});
+const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { email } = payload;
+    const user = yield app_1.prisma.user.findUnique({
+        where: { email },
+        include: {
+            profile: true
+        }
+    });
+    if (!user) {
+        throw new AppError_1.default(404, 'We can’t find an account with those details, please register your account!');
+    }
+    // if (!user.emailVerified) {
+    //   throw new AppError(500,
+    //     'Your email is not verified. Please verify your email before logging in.'
+    //   );
+    // }
+    if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
+        throw new AppError_1.default(400, 'Your account is inactive. Please contact support.');
+    }
+    const passwordCompare = yield bcrypt_1.default.compare(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password);
+    if (!passwordCompare) {
+        throw new AppError_1.default(400, 'Invalid password! please input valid password.');
+    }
+    const jwtPayload = {
+        name: user === null || user === void 0 ? void 0 : user.name,
+        avater: (_a = user === null || user === void 0 ? void 0 : user.profile) === null || _a === void 0 ? void 0 : _a.avatar,
+        userId: user === null || user === void 0 ? void 0 : user.id,
+        role: user === null || user === void 0 ? void 0 : user.role,
+        email: user === null || user === void 0 ? void 0 : user.email,
+    };
+    const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '1d');
+    const refreshToken = (0, tokenGenerate_1.refreshTokenGenerate)(jwtPayload, '365d');
+    yield app_1.prisma.user.update({
+        where: {
+            email: user === null || user === void 0 ? void 0 : user.email,
+        },
+        data: {
+            lastLogin: new Date(),
+        },
+    }); // last login tracking
+    return {
+        accessToken,
+        refreshToken,
+    };
 });
 const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, pin } = payload;
+    console.log(email, pin);
     const user = yield app_1.prisma.user.findUnique({ where: { email } });
     if (!user) {
         throw new AppError_1.default(400, 'User not found');
@@ -224,53 +273,6 @@ const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () 
 `;
     yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
     return {};
-});
-const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const { email } = payload;
-    const user = yield app_1.prisma.user.findUnique({
-        where: { email },
-        include: {
-            profile: true
-        }
-    });
-    console.log(user);
-    if (!user) {
-        throw new AppError_1.default(404, 'User not found');
-    }
-    // if (!user.emailVerified) {
-    //   throw new AppError(500,
-    //     'Your email is not verified. Please verify your email before logging in.'
-    //   );
-    // }
-    if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
-        throw new AppError_1.default(400, 'Your account is inactive. Please contact support.');
-    }
-    const passwordCompare = yield bcrypt_1.default.compare(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password);
-    if (!passwordCompare) {
-        throw new AppError_1.default(400, 'Invalid password! please input valid password.');
-    }
-    const jwtPayload = {
-        name: user === null || user === void 0 ? void 0 : user.name,
-        avater: (_a = user === null || user === void 0 ? void 0 : user.profile) === null || _a === void 0 ? void 0 : _a.avatar,
-        userId: user === null || user === void 0 ? void 0 : user.id,
-        role: user === null || user === void 0 ? void 0 : user.role,
-        email: user === null || user === void 0 ? void 0 : user.email,
-    };
-    const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '1d');
-    const refreshToken = (0, tokenGenerate_1.refreshTokenGenerate)(jwtPayload, '365d');
-    yield app_1.prisma.user.update({
-        where: {
-            email: user === null || user === void 0 ? void 0 : user.email,
-        },
-        data: {
-            lastLogin: new Date(),
-        },
-    }); // last login tracking
-    return {
-        accessToken,
-        refreshToken,
-    };
 });
 const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = payload;

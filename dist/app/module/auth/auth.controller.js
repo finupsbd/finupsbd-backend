@@ -25,9 +25,9 @@ const signUp = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0,
     console.log(userSessionInfo);
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: result,
+        message: "Cheack your email and and verify!",
         statusCode: http_status_codes_1.StatusCodes.CREATED,
-        data: {},
+        data: result,
     });
 }));
 const validatePin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

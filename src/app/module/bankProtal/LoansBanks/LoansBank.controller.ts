@@ -27,11 +27,28 @@ const getAllApplyedLoans = catchAsync(async (req, res) => {
 
     const files = req.files as Express.Multer.File[];
 
+
+const textPrompth = `You are a bank‐document validation assistant. The user request is: “${prompth}”.
+
+1. Verify the document’s authenticity and completeness.
+2. Extract all relevant fields (e.g.personal info, nid related document type, issuing authority, document number, holder name, date of issue, account details, etc.) into a well‐formed JSON object.
+4. If any required information is missing or inconsistent, add a “warnings” array with clear messages.
+5. After the JSON output, include any additional observations or recommendations regarding the document.
+
+Return only the JSON and, if applicable, the observations block. `
+
+
+
+
+
+
+////text: `You are a data‐extraction assistant. and i want ${prompth} and send into send in a JSON Object and some ther case text`
+
     console.log(prompth)
 
     const multimodalPayload = [
         {
-            text: `You are a data‐extraction assistant. and i want ${prompth}` },
+            text: textPrompth },
         ...files.map(file => ({
             inlineData: {
                 data: file.buffer.toString("base64"),
@@ -46,17 +63,22 @@ const getAllApplyedLoans = catchAsync(async (req, res) => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const result = await model.generateContent(multimodalPayload);
-    const filanOutput = result.response?.candidates?.[0].content.parts[0]
+    const text = result.response?.candidates?.[0].content.parts[0]
+    const sourch = result.response?.candidates?.[0].citationMetadata?.citationSources?.[0]
 
-    console.log(filanOutput)
 
-
+        console.log(text)
 
     sendResponses(res, {
         statusCode: StatusCodes.OK,
         success: true,
         message: 'Get all applyed Loans from retrive successfully',
-        data: filanOutput
+        data: {
+            text: text, 
+            sourch: sourch || {},
+            result
+        }
+
     })
 
 });

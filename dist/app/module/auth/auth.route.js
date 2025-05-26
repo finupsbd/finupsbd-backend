@@ -13,7 +13,7 @@ const auth_validation_1 = require("./auth.validation");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const router = express_1.default.Router();
 router.post('/signUp', (0, validateRequest_1.default)(user_validation_1.UserValidation.createUserValidationSchema), auth_controller_1.AuthController.signUp);
-router.post('/validate-pin', (0, auth_1.default)("USER", "ADMIN", "SUPER_ADMIN"), (0, validateRequest_1.default)(user_validation_1.UserValidation.verifyPinValidationSchema), auth_controller_1.AuthController.validatePin);
+router.post('/validate-pin', (0, validateRequest_1.default)(user_validation_1.UserValidation.verifyPinValidationSchema), auth_controller_1.AuthController.validatePin);
 router.post('/login', (0, validateRequest_1.default)(user_validation_1.UserValidation.loginValidationSchema), auth_controller_1.AuthController.login);
 router.post('/forget-password', (0, validateRequest_1.default)(user_validation_1.UserValidation.forgetPasswordValidationSchema), auth_controller_1.AuthController.forgetPassword);
 router.post('/reset-password', (0, auth_1.default)("USER", "ADMIN", "SUPER_ADMIN"), (0, validateRequest_1.default)(user_validation_1.UserValidation.resetPasswordValidationSchema), auth_controller_1.AuthController.resetPassword);

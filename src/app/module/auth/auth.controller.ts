@@ -17,9 +17,9 @@ const signUp = catchAsync(async (req, res) => {
 
   sendResponce(res, {
     success: true,
-    message: result,
+    message: "Cheack your email and and verify!",
     statusCode: StatusCodes.CREATED,
-    data: {},
+    data: result,
   });
 });
 

@@ -22,16 +22,19 @@ import { generateCustomPassword } from '../../utils/generateCustomPassword';
 
 const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: string, browser: string, location: string }) => {
 
-  console.log({ userSessionInfo })
 
-  const isAlreadySignUpRequest = await prisma.user.findUnique({
+ 
+
+  const isAlreadySignUpRequest = await prisma.user.findFirst({
     where: {
       email: payload.email,
     },
   });
 
+  console.log(isAlreadySignUpRequest)
+
   if (isAlreadySignUpRequest) {
-    return 'allready send pin check email. Thank you';
+    throw new AppError(StatusCodes.CONFLICT, 'You have already an account please login');
   }
 
 
@@ -99,11 +102,86 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
 
   // phoneOtpSend(phone, "send message")
 
-  return 'Send Your pin Check your email! Thank you';
+  return {
+    email: result.email
+  };
 };
+
+
+
+
+const login = async (payload: { email: string; password: string }) => {
+  const { email } = payload;
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: {
+      profile: true
+    }
+
+  });
+
+  if (!user) {
+    throw new AppError(404, 'We can’t find an account with those details, please register your account!');
+  }
+
+  // if (!user.emailVerified) {
+  //   throw new AppError(500,
+  //     'Your email is not verified. Please verify your email before logging in.'
+  //   );
+  // }
+
+  if (!user?.isActive) {
+    throw new AppError(400, 'Your account is inactive. Please contact support.');
+  }
+
+  const passwordCompare = await bcrypt.compare(
+    payload?.password,
+    user?.password
+  );
+
+  if (!passwordCompare) {
+    throw new AppError(400, 'Invalid password! please input valid password.');
+  }
+
+  const jwtPayload = {
+    name: user?.name,
+    avater: user?.profile?.avatar,
+    userId: user?.id,
+    role: user?.role,
+    email: user?.email,
+  };
+
+  const accessToken = accessTokenGenerate(jwtPayload, '1d');
+  const refreshToken = refreshTokenGenerate(jwtPayload, '365d');
+
+  await prisma.user.update({
+    where: {
+      email: user?.email,
+    },
+    data: {
+      lastLogin: new Date(),
+    },
+  }); // last login tracking
+
+
+
+
+
+
+
+  return {
+    accessToken,
+    refreshToken,
+  };
+};
+
 
 const validatePin = async (payload: { email: string; pin: string }) => {
   const { email, pin } = payload;
+
+console.log(email, pin)
+
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
@@ -235,78 +313,9 @@ const validatePin = async (payload: { email: string; pin: string }) => {
     </body>
 `;
   await sendEmail(email, emailSubject, bodyText);
-
-
-
   return {};
 };
 
-const login = async (payload: { email: string; password: string }) => {
-  const { email } = payload;
-
-  const user = await prisma.user.findUnique({
-    where: { email },
-    include: {
-      profile: true
-    }
-
-  });
-  console.log(user);
-
-  if (!user) {
-    throw new AppError(404, 'User not found');
-  }
-
-  // if (!user.emailVerified) {
-  //   throw new AppError(500,
-  //     'Your email is not verified. Please verify your email before logging in.'
-  //   );
-  // }
-
-  if (!user?.isActive) {
-    throw new AppError(400, 'Your account is inactive. Please contact support.');
-  }
-
-  const passwordCompare = await bcrypt.compare(
-    payload?.password,
-    user?.password
-  );
-
-  if (!passwordCompare) {
-    throw new AppError(400, 'Invalid password! please input valid password.');
-  }
-
-  const jwtPayload = {
-    name: user?.name,
-    avater: user?.profile?.avatar,
-    userId: user?.id,
-    role: user?.role,
-    email: user?.email,
-  };
-
-  const accessToken = accessTokenGenerate(jwtPayload, '1d');
-  const refreshToken = refreshTokenGenerate(jwtPayload, '365d');
-
-  await prisma.user.update({
-    where: {
-      email: user?.email,
-    },
-    data: {
-      lastLogin: new Date(),
-    },
-  }); // last login tracking
-
-
-
-
-
-
-
-  return {
-    accessToken,
-    refreshToken,
-  };
-};
 
 const forgetPassword = async (payload: { email: string }) => {
   const { email } = payload;

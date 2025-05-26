@@ -1,12 +1,8 @@
 import { prisma } from '../../../app';
-import AppError from '../../error/AppError';
-
-import sendEmail from '../../utils/sendEmail';
-import maskMobileNumber from '../../utils/maskedMobileNumber';
-import { LoanStatus, TLoanApplicationForm } from './application.interface';
+import { TLoanApplicationForm } from './application.interface';
 import { TMiddlewareUser } from '../../types/commonTypes';
 import { generateApplicationId } from '../../utils/generateApplicationId';
-import { StatusCodes } from 'http-status-codes';
+
 
 
 
