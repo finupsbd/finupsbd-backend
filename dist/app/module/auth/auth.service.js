@@ -24,7 +24,6 @@ const config_1 = require("../../../config");
 const generateUserId_1 = require("../../utils/generateUserId");
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
-const generateCustomPassword_1 = require("../../utils/generateCustomPassword");
 //Sign up User
 const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
     const isAlreadySignUpRequest = yield app_1.prisma.user.findFirst({
@@ -128,7 +127,7 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         role: user === null || user === void 0 ? void 0 : user.role,
         email: user === null || user === void 0 ? void 0 : user.email,
     };
-    const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '1d');
+    const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '30d');
     const refreshToken = (0, tokenGenerate_1.refreshTokenGenerate)(jwtPayload, '365d');
     yield app_1.prisma.user.update({
         where: {
@@ -280,75 +279,70 @@ const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
     if (!user) {
         throw new AppError_1.default(404, 'User not found! Please provide valid email !');
     }
-    // if (!user.emailVerified) {
-    //   throw new AppError(502, 'Your email is not verified. Please verify your email');
-    // }
+    if (!user.emailVerified) {
+        throw new AppError_1.default(502, 'Your email is not verified. Please verify your email');
+    }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
         throw new AppError_1.default(502, 'Your account is inactive. Please contact support.');
     }
-    const newPassword = (0, generateCustomPassword_1.generateCustomPassword)();
-    console.log(newPassword);
-    const newUserPassword = yield app_1.prisma.user.update({
-        where: { email },
-        data: {
-            password: newPassword
-        },
-    });
-    // const pin = Math.floor(100000 + Math.random() * 900000).toString();
-    // const pinExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
-    //   const resetPin = await prisma.user.update({
-    //     where: { email },
-    //     data: {
-    //       pin: pin,
-    //       pinExpiry: pinExpiry,
-    //       emailVerified: false,
-    //     },
-    //   });
-    const emailSubject = 'Your New Password';
-    const bodyText = `
+    const jwtPayload = {
+        email: user.email,
+    };
+    const token = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '1h');
+    const passwordresetLink = `${config_1.ConfigFile.CLIENT_URL}/auth/reset-password?token=${token}&email=${user === null || user === void 0 ? void 0 : user.email}`;
+    const emailSubject = 'Your Reset Password Link';
+    const bodyHtml = `
 <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7fa; padding: 40px;">
   <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-    <!-- Header Section -->
+    <!-- Header -->
     <div style="background-color: #007BFF; padding: 20px; text-align: center;">
-      <h1 style="color: #ffffff; font-size: 28px; margin: 0;">Your New Password</h1>
+      <h1 style="color: #ffffff; font-size: 28px; margin: 0;">Password Reset Request</h1>
     </div>
-    <!-- Body Section -->
+
+    <!-- Body -->
     <div style="padding: 30px;">
-      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Hello ${user === null || user === void 0 ? void 0 : user.name},</p>
-      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">
-        We have generated a new password for your account. Please use the password below to log in. For your security, we highly recommend that you change it immediately after logging in.
+      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">Hi ${user.name},</p>
+      <p style="font-size: 16px; color: #555; margin-bottom: 30px;">
+        We received a request to reset your password. Click the button below to choose a new password. This link will expire in 1 hour.
       </p>
-      <div style="text-align: center; margin: 30px 0;">
-        <span style="display: inline-block; background-color: #f0f0f0; padding: 15px 25px; font-size: 24px; letter-spacing: 2px; border-radius: 4px; color: #333;">
-          ${newUserPassword === null || newUserPassword === void 0 ? void 0 : newUserPassword.password}
-        </span>
+
+      <div style="text-align: center; margin-bottom: 30px;">
+        <a
+          href="${passwordresetLink}"
+          style="
+            display: inline-block;
+            background-color: #007BFF;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 4px;
+            font-size: 18px;
+          "
+          target="_blank"
+        >
+          Reset Password
+        </a>
       </div>
+
       <p style="font-size: 14px; color: #777; margin-bottom: 20px;">
-        If you did not request a new password, please contact our support team immediately.
+        If you didn’t ask to reset your password, just ignore this email. No changes were made to your account.
       </p>
-      <p style="font-size: 16px; color: #555;">Thank you,</p>
-      <p style="font-size: 16px; color: #555; font-weight: bold;">finupsBD</p>
+      <p style="font-size: 16px; color: #555;">Thanks,</p>
+      <p style="font-size: 16px; color: #555; font-weight: bold;">finupsBD Team</p>
     </div>
-    <!-- Footer Section -->
+
+    <!-- Footer -->
     <div style="background-color: #f0f0f0; padding: 15px; text-align: center;">
       <p style="font-size: 14px; color: #777; margin: 0;">&copy; ${new Date().getFullYear()} finupsBD. All rights reserved.</p>
     </div>
   </div>
 </div>
 `;
-    yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
-    if (user) {
-        yield app_1.prisma.user.update({
-            where: { email },
-            data: {
-                password: yield (0, passwordHash_1.passwordHash)(user === null || user === void 0 ? void 0 : user.password)
-            },
-        });
-    }
+    yield (0, sendEmail_1.default)(email, emailSubject, bodyHtml);
     return {};
 });
 const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = payload;
+    const { email, newPassword } = payload;
     const user = yield app_1.prisma.user.findUnique({ where: { email } });
     if (!user) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
@@ -359,43 +353,11 @@ const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* (
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
     }
-    const passwordHashing = yield (0, passwordHash_1.passwordHash)(payload === null || payload === void 0 ? void 0 : payload.newPassword);
+    const passwordHashing = yield (0, passwordHash_1.passwordHash)(newPassword);
     yield app_1.prisma.user.update({
         where: { email },
         data: { password: passwordHashing },
     });
-    const emailSubject = 'Password Changed';
-    const bodyText = `
-  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
-  <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-    <h2 style="color: #333; text-align: center; font-size: 28px; margin-bottom: 20px; font-weight: bold;">Your Password Has Been Changed</h2>
-    <p style="font-size: 16px; color: #555; text-align: center;">Hello ${user === null || user === void 0 ? void 0 : user.name},</p>
-    <p style="font-size: 16px; color: #555; margin-bottom: 20px;">We wanted to let you know that your password has been successfully updated. If you initiated this change, no further action is required.</p>
-    
-    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px;">
-      <p style="font-size: 16px; color: #555; font-weight: bold;">Important Security Information:</p>
-      <ul style="font-size: 14px; color: #555; padding-left: 20px;">
-        <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
-        <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
-        <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
-      </ul>
-    </div>
-
-    <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
-
-    <div style="text-align: center;">
-      <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
-      <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
-    </div>
-
-    <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">
-      <p>If you did not request this change, please ignore this email. This message was sent automatically, and you do not need to reply.</p>
-    </div>
-  </div>
-</div>
-
-`;
-    yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
     return {};
 });
 const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {

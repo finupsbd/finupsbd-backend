@@ -14,6 +14,7 @@ exports.ConfigFile = {
     npm_package_version: process.env.npm_package_version,
     node_version: process.env.node_version,
     PORT: process.env.PORT,
+    CLIENT_URL: process.env.CLIENT_URL,
     BCRYPT_SALT_ROUNDS: process.env.BCRYPT_SALT_ROUNDS,
     NODE_MAILER_EMAIL: process.env.NODE_MAILER_EMAIL,
     NODE_MAILER_PASS: process.env.NODE_MAILER_PASS,

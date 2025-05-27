@@ -35,7 +35,7 @@ route.post( '/', ApplicationController.createApplicationForm);
 
 // route.get('/', ApplicationController.getAllApplicationForm);
 // route.post('/application-tracking', ApplicationController.applicationTracking)
-// route.post('/application-forget', ApplicationController.applicationForget)
+route.post('/application-forget', ApplicationController.applicationForget)
 
 
 

@@ -110,16 +110,17 @@ const createApplicationForm = catchAsync(async (req, res) => {
 //   });
 // });
 
-// const applicationForget = catchAsync(async (req, res) => {
-//   const result = await ApplicationFromService.applicationForget(req.body);
-
-//   sendResponses(res, {
-//     success: true,
-//     message: `We have sent your tracking ID to your registered Email: ${result.userEmail} Mobile Number +88${result.maskedPhoneNumber}`,
-//     statusCode: StatusCodes.OK,
-//     data: {},
-//   });
-// });
+const applicationForget = catchAsync(async (req, res) => {
+  // const result = await ApplicationFromService.applicationForget(req.body);
+  console.log(req.body)
+  sendResponses(res, {
+    success: true,
+    // message: `We have sent your tracking ID to your registered Email: ${result.userEmail} Mobile Number +88${result.maskedPhoneNumber}`,
+    message: `We have sent your tracking ID to your registered Email: ..........`,
+    statusCode: StatusCodes.OK,
+    data: {},
+  });
+});
 
 export const ApplicationController = {
   createApplicationForm,
@@ -128,5 +129,5 @@ export const ApplicationController = {
   // statusUpdate, 
   // getSingleApplication,
   // applicationTracking,
-  // applicationForget,
+  applicationForget,
 };

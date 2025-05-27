@@ -21,7 +21,7 @@ route.post('/', applicationForm_controller_1.ApplicationController.createApplica
 // ); 
 // route.get('/', ApplicationController.getAllApplicationForm);
 // route.post('/application-tracking', ApplicationController.applicationTracking)
-// route.post('/application-forget', ApplicationController.applicationForget)
+route.post('/application-forget', applicationForm_controller_1.ApplicationController.applicationForget);
 /////test
 // route.post('/step1', auth("USER", "SUPER_ADMIN"), catchAsync(async (req, res) => {
 //   const {userId} = req.user as TMiddlewareUser;
