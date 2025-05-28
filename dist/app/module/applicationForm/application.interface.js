@@ -24,7 +24,7 @@
 //   | 'PROPERTY_DOCUMENT'
 //   | 'SUPPORTING_DOCUMENT';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DocumentType = exports.LoanStatus = exports.MaritalStatus = void 0;
+exports.DocumentType = exports.LoanStatus = exports.EducationnalLavel = exports.MaritalStatus = void 0;
 // Enums
 var MaritalStatus;
 (function (MaritalStatus) {
@@ -33,6 +33,14 @@ var MaritalStatus;
     MaritalStatus["DIVORCED"] = "DIVORCED";
     MaritalStatus["WIDOWED"] = "WIDOWED";
 })(MaritalStatus || (exports.MaritalStatus = MaritalStatus = {}));
+var EducationnalLavel;
+(function (EducationnalLavel) {
+    EducationnalLavel["HIGHSCHOOL"] = "HIGHSCHOOL";
+    EducationnalLavel["BACHELOR"] = "BACHELOR";
+    EducationnalLavel["MASTER"] = "MASTER";
+    EducationnalLavel["PHD"] = "PHD";
+    EducationnalLavel["OTHER"] = "OTHER";
+})(EducationnalLavel || (exports.EducationnalLavel = EducationnalLavel = {}));
 var LoanStatus;
 (function (LoanStatus) {
     LoanStatus["SUBMITTED"] = "SUBMITTED";

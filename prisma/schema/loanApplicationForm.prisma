@@ -27,6 +27,7 @@ model PersonalInfo {
   nationality           String
   gender                String
   maritalStatus         MaritalStatus
+  educationalLevel      EduLavel
   identificationType    String
   identificationNumber  String
   religion              String?
@@ -34,10 +35,18 @@ model PersonalInfo {
   mobileNumber          String
   alternateMobileNumber String?
   emailAddress          String
-
   socialMediaProfiles   String[]
   loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
   loanApplicationFormId String              @unique
+}
+
+
+enum EduLavel {
+  HIGHSCHOOL
+  BACHELOR
+  MASTER
+  PHD
+  OTHER
 }
 
 enum LoanStatus {

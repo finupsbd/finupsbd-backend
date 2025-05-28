@@ -314,6 +314,16 @@ export enum MaritalStatus {
   WIDOWED = "WIDOWED",
 }
 
+
+
+export enum EducationnalLavel {
+  HIGHSCHOOL = "HIGHSCHOOL",
+  BACHELOR = "BACHELOR",
+  MASTER = "MASTER",
+  PHD = "PHD",
+  OTHER = "OTHER",
+}
+
 export enum LoanStatus {
   SUBMITTED = "SUBMITTED",
   IN_PROCESS = "IN_PROCESS",
@@ -345,6 +355,7 @@ export interface PersonalInfo {
   dateOfBirth: string;         // ISO 8601 date string
   placeOfBirth: string;
   nationality: string;
+  educationalLevel: EducationnalLavel,
   gender: Gender;
   maritalStatus: MaritalStatus;
   identificationType: IdentificationType;

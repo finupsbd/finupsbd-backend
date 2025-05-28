@@ -164,111 +164,130 @@ const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () 
     const emailSubject = 'Your PIN for Verification';
     const bodyText = `
    <head>
-      <style>
-        body {
-          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          color: #333;
-          margin: 0;
-          padding: 0;
-          background-color: #f4f4f4;
-        }
-        .email-container {
-          width: 100%;
-          background-color: #f4f4f4;
-          padding: 20px 0;
-        }
+    <style>
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .email-container {
+        width: 100%;
+        background-color: #f4f4f4;
+        padding: 20px 0;
+        animation: fadeIn 0.8s ease-out;
+      }
+      .email-content {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 8px;
+        border-top: 4px solid #28a745;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.8s ease-out 0.2s both;
+      }
+      .email-header {
+        text-align: center;
+        padding-bottom: 20px;
+      }
+      .email-header h2 {
+        color: #28a745;
+        font-size: 28px;
+        margin: 0;
+      }
+      .email-body {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+      }
+      .cta-button {
+        display: inline-block;
+        background-color: #28a745;
+        color: #ffffff;
+        padding: 12px 24px;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 4px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+      }
+      .cta-button:hover {
+        background-color: #218838;
+      }
+      .footer {
+        text-align: center;
+        padding-top: 30px;
+        font-size: 12px;
+        color: #777;
+      }
+      .footer a {
+        color: #28a745;
+        text-decoration: none;
+      }
+      .social-icons img {
+        width: 24px;
+        margin: 0 10px;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+      }
+      .social-icons img:hover {
+        opacity: 1;
+      }
+      @media (max-width: 600px) {
         .email-content {
-          max-width: 600px;
-          margin: 0 auto;
-          background-color: #ffffff;
-          padding: 40px;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .email-header {
-          text-align: center;
-          padding-bottom: 20px;
+          padding: 20px;
         }
         .email-header h2 {
-          color: #007BFF;
-          font-size: 28px;
-          margin: 0;
+          font-size: 24px;
         }
-        .email-body {
-          font-size: 16px;
-          line-height: 1.6;
-          color: #333;
-        }
-        .cta-button {
-          display: inline-block;
-          background-color: #007BFF;
-          color: #ffffff;
-          padding: 12px 24px;
-          text-decoration: none;
-          font-size: 16px;
-          border-radius: 4px;
-          margin-top: 20px;
-        }
-        .footer {
-          text-align: center;
-          padding-top: 30px;
-          font-size: 12px;
-          color: #777;
-        }
-        .footer a {
-          color: #007BFF;
-          text-decoration: none;
-        }
-        .social-icons img {
-          width: 24px;
-          margin: 0 10px;
-        }
-        @media (max-width: 600px) {
-          .email-content {
-            padding: 20px;
-          }
-          .email-header h2 {
-            font-size: 24px;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <table role="presentation" class="email-container">
-        <tr>
-          <td align="center">
-            <table role="presentation" class="email-content">
-              <tr class="email-header">
-                <td>
-                  <h2>Welcome to FinupsBd, ${user.name}!</h2>
-                </td>
-              </tr>
-              <tr class="email-body">
-                <td>
-                  <p>Dear ${user.name},</p>
-                  <p>Thank you for joining <strong>FinupsBd</strong>! your userID: <strong></strong>! We are thrilled to have you as part of our community.</p>
-                  <p>At FinupsBd, we strive to provide you with top-notch services and a seamless experience. Our team is here to assist you every step of the way, ensuring your journey with us is smooth and successful.</p>
-                  <p>To get started, feel free to explore our platform, and if you need any assistance, don't hesitate to reach out to our support team.</p>
-                  <a href="https://finupsbd.com/get-started" class="cta-button">Get Started</a>
-                </td>
-              </tr>
-              <tr class="footer">
-                <td>
-                  <p>&copy; ${new Date().getFullYear()} FinupsBd. All rights reserved.</p>
-                  <p>1234 Business St., Suite 567, City, Country</p>
-                  <div class="social-icons">
-                    <a href="https://facebook.com/finupsbd"><img src="facebook-icon.png" alt="Facebook"></a>
-                    <a href="https://twitter.com/finupsbd"><img src="twitter-icon.png" alt="Twitter"></a>
-                    <a href="https://linkedin.com/company/finupsbd"><img src="linkedin-icon.png" alt="LinkedIn"></a>
-                  </div>
-                  <p><a href="https://finupsbd.com/unsubscribe">Unsubscribe</a></p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </body>
+      }
+    </style>
+  </head>
+  <body>
+    <table role="presentation" class="email-container">
+      <tr>
+        <td align="center">
+          <table role="presentation" class="email-content">
+            <tr class="email-header">
+              <td>
+                <!-- You can swap this for your actual logo if you wish -->
+                <h2>Welcome to FinupsBd, ${user.name}!</h2>
+              </td>
+            </tr>
+            <tr class="email-body">
+              <td>
+                <p>Dear ${user.name},</p>
+                <p><strong>UserID:</strong> ${user.userId}</p>
+                <p>Thank you for joining <strong>FinupsBd</strong>! We’re thrilled to have you as part of our community.</p>
+                <p>At FinupsBd, our goal is to provide top-notch services and a seamless experience. Our team is here to guide you every step of the way.</p>
+                <p>To get started, explore our platform, and if you need assistance, don’t hesitate to reach out to our support team.</p>
+                <a href="https://www.finupsbd.com/" class="cta-button">Visit Website</a>
+              </td>
+            </tr>
+            <tr class="footer">
+              <td>
+                <p>&copy; ${new Date().getFullYear()} FinupsBd. All rights reserved.</p>
+                <p>Shimultoly, Gazipur</p>
+                <div class="social-icons">
+                  <a href="https://facebook.com/finupsbd"><img src="facebook-icon.png" alt="Facebook"></a>
+                  <a href="https://twitter.com/finupsbd"><img src="twitter-icon.png" alt="Twitter"></a>
+                  <a href="https://linkedin.com/company/finupsbd"><img src="linkedin-icon.png" alt="LinkedIn"></a>
+                </div>
+                <p><a href="https://finupsbd.com/unsubscribe">Unsubscribe</a></p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
 `;
     yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
     return {};
@@ -295,7 +314,7 @@ const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
 <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7fa; padding: 40px;">
   <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
     <!-- Header -->
-    <div style="background-color: #007BFF; padding: 20px; text-align: center;">
+    <div style="background-color: #28a745; padding: 20px; text-align: center;">
       <h1 style="color: #ffffff; font-size: 28px; margin: 0;">Password Reset Request</h1>
     </div>
 
@@ -311,7 +330,7 @@ const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
           href="${passwordresetLink}"
           style="
             display: inline-block;
-            background-color: #007BFF;
+            background-color: #28a745;
             color: #ffffff;
             text-decoration: none;
             padding: 15px 25px;
@@ -337,6 +356,7 @@ const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
     </div>
   </div>
 </div>
+
 `;
     yield (0, sendEmail_1.default)(email, emailSubject, bodyHtml);
     return {};
@@ -348,7 +368,7 @@ const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* (
         throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
     }
     if (!user.emailVerified) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'Your email is not verified. Please verify your email before reset your password');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'Your email was not verifyed. Please verify your email before reset your password');
     }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
@@ -394,64 +414,59 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     };
 });
 const changePassword = (payload, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = user;
-    const userData = yield app_1.prisma.user.findUnique({ where: { email } });
-    if (!user) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'User not found');
-    }
-    //   if (!user.emailVerified) {
-    //     throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,
-    //       'Your email is not verified. Please verify your email before reset your password'
-    //     );
-    //   }
-    if (user === null || user === void 0 ? void 0 : user.isActive) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
-    }
-    const passwordHashing = yield (0, passwordHash_1.passwordHash)(payload === null || payload === void 0 ? void 0 : payload.newPassword);
-    if (!(userData === null || userData === void 0 ? void 0 : userData.password)) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'User password not found');
-    }
-    const checkPassword = yield (0, passwordHash_1.comparePassword)(payload.oldPassword, userData.password);
-    if (!checkPassword) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Please Provide valid password');
-    }
-    yield app_1.prisma.user.update({
-        where: { email },
-        data: { password: passwordHashing },
-    });
-    const emailSubject = 'Password Changed';
-    const bodyText = `
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-      <h2 style="color: #333; text-align: center; font-size: 28px; margin-bottom: 20px; font-weight: bold;">Your Password Has Been Changed</h2>
-      <p style="font-size: 16px; color: #555; text-align: center;">Hello ${user === null || user === void 0 ? void 0 : user.name},</p>
-      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">We wanted to let you know that your password has been successfully updated. If you initiated this change, no further action is required.</p>
-
-      <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px;">
-        <p style="font-size: 16px; color: #555; font-weight: bold;">Important Security Information:</p>
-        <ul style="font-size: 14px; color: #555; padding-left: 20px;">
-          <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
-          <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
-          <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
-        </ul>
-      </div>
-
-      <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
-
-      <div style="text-align: center;">
-        <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
-        <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
-      </div>
-
-      <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">
-        <p>If you did not request this change, please ignore this email. This message was sent automatically, and you do not need to reply.</p>
-      </div>
-    </div>
-  </div>
-
-  `;
-    yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
-    return {};
+    console.log(user);
+    // const userData = await prisma.user.findUnique({ where: { email } });
+    // if (!user) {
+    //   throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+    // }
+    // //   if (!user.emailVerified) {
+    // //     throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,
+    // //       'Your email is not verified. Please verify your email before reset your password'
+    // //     );
+    // //   }
+    // if (user?.isActive) {
+    //   throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
+    // }
+    // const passwordHashing = await passwordHash(payload?.newPassword);
+    // if (!userData?.password) {
+    //   throw new AppError(StatusCodes.BAD_REQUEST, 'User password not found');
+    // }
+    // const checkPassword = await comparePassword(payload.oldPassword, userData.password);
+    // if (!checkPassword) {
+    //   throw new AppError(StatusCodes.NOT_FOUND, 'Please Provide valid password');
+    // }
+    // await prisma.user.update({
+    //   where: { email },
+    //   data: { password: passwordHashing },
+    // });
+    // const emailSubject = 'Password Changed';
+    // const bodyText = `
+    //   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
+    //   <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+    //     <h2 style="color: #333; text-align: center; font-size: 28px; margin-bottom: 20px; font-weight: bold;">Your Password Has Been Changed</h2>
+    //     <p style="font-size: 16px; color: #555; text-align: center;">Hello ${user?.name},</p>
+    //     <p style="font-size: 16px; color: #555; margin-bottom: 20px;">We wanted to let you know that your password has been successfully updated. If you initiated this change, no further action is required.</p>
+    //     <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px;">
+    //       <p style="font-size: 16px; color: #555; font-weight: bold;">Important Security Information:</p>
+    //       <ul style="font-size: 14px; color: #555; padding-left: 20px;">
+    //         <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
+    //         <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
+    //         <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
+    //       </ul>
+    //     </div>
+    //     <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
+    //     <div style="text-align: center;">
+    //       <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
+    //       <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
+    //     </div>
+    //     <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">
+    //       <p>If you did not request this change, please ignore this email. This message was sent automatically, and you do not need to reply.</p>
+    //     </div>
+    //   </div>
+    // </div>
+    // `;
+    // await sendEmail(email, emailSubject, bodyText);
+    // return {};
 });
 exports.AuthServices = {
     signUp,

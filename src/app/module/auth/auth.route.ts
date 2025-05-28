@@ -4,6 +4,7 @@ import validateRequest from "../../middleware/validateRequest"
 import { UserValidation } from "../user/user.validation"
 import { AuthValidation } from "./auth.validation"
 import catchAsync from "../../utils/catchAsync"
+import auth from "../../middleware/auth"
 
 const router = express.Router()
 
@@ -14,7 +15,7 @@ router.post('/validate-pin', validateRequest(UserValidation.verifyPinValidationS
 router.post('/login', validateRequest(UserValidation.loginValidationSchema), AuthController.login)
 router.post('/forget-password', validateRequest(UserValidation.forgetPasswordValidationSchema), AuthController.forgetPassword)
 router.post('/reset-password', validateRequest(UserValidation.resetPasswordValidationSchema), AuthController.resetPassword)
-router.post('/change-password', validateRequest(UserValidation.changePasswordValidationSchema), AuthController.changePassword)
+router.post('/change-password', auth("USER", "ADMIN", "SUPER_ADMIN"), validateRequest(UserValidation.changePasswordValidationSchema), AuthController.changePassword)
 router.post('/refresh-token',catchAsync((req: Request, res: Response, next: NextFunction) => {
     req.cookies = AuthValidation.refreshTokenValidationSchema.parse(req.cookies)
     next()
