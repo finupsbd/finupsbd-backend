@@ -46,6 +46,7 @@ const login = catchAsync(async (req, res) => {
 
   res.cookie('refreshToken', refreshToken, {
     secure: ConfigFile.NODE_ENV === 'production',
+    sameSite: ConfigFile.NODE_ENV === 'production' ? 'none' : 'lax',
     httpOnly: true,
   });
 
@@ -66,7 +67,7 @@ const forgetPassword = catchAsync(async (req, res) => {
 
 
   sendResponce(res, {
-    success: true, 
+    success: true,
     message: 'Check your email for verification!',
     statusCode: StatusCodes.OK,
     data: result
@@ -81,7 +82,7 @@ const resetPassword = catchAsync(async (req, res) => {
   const result = await AuthServices.resetPassword(req.body);
 
   sendResponce(res, {
-    success: true, 
+    success: true,
     message: 'Password Reset successfully please login',
     statusCode: StatusCodes.OK,
     data: result
@@ -96,7 +97,7 @@ const refreshToken = catchAsync(async (req, res) => {
 
 
   sendResponce(res, {
-    success: true, 
+    success: true,
     message: 'Access Token is retrieve',
     statusCode: StatusCodes.OK,
     data: result
@@ -110,9 +111,9 @@ const logout = catchAsync(async (req, res) => {
     res.clearCookie(refreshToken);
     // blacklistedTokens.add(token)
 
- 
+
     sendResponce(res, {
-      success: true, 
+      success: true,
       message: 'logout Successfully',
       statusCode: StatusCodes.OK,
       data: {}
@@ -129,7 +130,7 @@ const changePassword = catchAsync(async (req, res) => {
 
 
   sendResponce(res, {
-    success: true, 
+    success: true,
     message: 'Password chnage successfully ',
     statusCode: StatusCodes.OK,
     data: result

@@ -39,6 +39,7 @@ const loanHandlers = {
 };
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     const { existingLoans = [] } = payload, eligibilityData = __rest(payload, ["existingLoans"]);
+    console.log(payload);
     const eligibilityCheckEntry = yield app_1.prisma.eligibilityCheck.create({
         data: Object.assign(Object.assign({}, eligibilityData), { existingLoans: {
                 create: existingLoans.map(({ existingLoanType, emiAmountBDT, interestRate }) => ({

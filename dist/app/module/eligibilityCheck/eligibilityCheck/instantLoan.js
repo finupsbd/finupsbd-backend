@@ -18,8 +18,8 @@ const app_1 = require("../../../../app");
 const AppError_1 = __importDefault(require("../../../error/AppError"));
 const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { tenure = Number(payload.expectedLoanTenure), } = query;
-    console.log({ payload });
+    const { tenure = Number(payload.expectedLoanTenure) } = query;
+    const eligibleLoan = 15000;
     try {
         const [loans] = yield app_1.prisma.$transaction([
             app_1.prisma.instantLoan.findMany({
@@ -47,12 +47,12 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
         const suggestedLoans = loans.map((loan) => {
             const interest = Number(loan.interestRate) || 0;
             const duration = Number(tenure) || 0;
-            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(payload.monthlyIncome, interest, duration);
+            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(eligibleLoan, interest, duration);
             const totalRepayment = monthlyEMI * duration;
             return {
                 id: loan.id,
                 bankName: loan.bankName,
-                amount: payload.monthlyIncome.toFixed(2),
+                amount: eligibleLoan.toFixed(2),
                 periodMonths: payload.tenure,
                 loanType: loan.loanType,
                 monthlyEMI: monthlyEMI.toFixed(2),
@@ -61,12 +61,13 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
                 coverImage: loan.coverImage,
                 interestRate: interest,
                 processingFee: loan.processingFee,
-                eligibleLoan: adjustedMonthlyIncome.toFixed(2),
+                eligibleLoan: eligibleLoan,
                 features: loan.FeaturesInstantLoan,
                 feesCharges: loan.FeesChargesInstantLoan,
                 eligibility: loan.EligibilityInstantLoan,
             };
         });
+        console.log(suggestedLoans);
         return suggestedLoans;
     }
     catch (error) {

@@ -2,22 +2,32 @@ model LoanApplicationForm {
   id     String     @id @default(uuid())
   status LoanStatus @default(SUBMITTED)
 
-  isActive      Boolean       @default(true)
-  isDeleted     Boolean       @default(false)
+  isActive      Boolean  @default(true)
+  isDeleted     Boolean  @default(false)
   adminNotes    String?
   applicationId String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId        String
-  personalInfo  PersonalInfo?
 
-  @@index([applicationId, status])
+  // all realarion in to other model 
+  personalInfo           PersonalInfo?
+  residentialInformation ResidentialInformation?
+  employmentInformation  EmploymentInformation?
+  loanInfo               LoanInfo?
+  loanRequest            LoanRequest?
+  GuarantorInfo          GuarantorInfo?
+  PersonalGuarantor      PersonalGuarantor?
+  BusinessGuarantor      BusinessGuarantor?
+
+  @@index([applicationId, status, isActive, isDeleted])
   @@map("loanApplicationForm")
 }
 
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
 model PersonalInfo {
-  id                    String        @id @default(uuid())
+  id                    String              @id @default(uuid())
   fullName              String
   fatherOrHusbandName   String
   motherName            String
@@ -30,16 +40,224 @@ model PersonalInfo {
   educationalLevel      EduLavel
   identificationType    String
   identificationNumber  String
-  religion              String?
-  residentialStatus     String?
+  religion              Religion
+  residentialStatus     ResidentialStatus
   mobileNumber          String
   alternateMobileNumber String?
   emailAddress          String
   socialMediaProfiles   String[]
+  loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id])
+  loanApplicationFormId String              @unique
+}
+
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+model ResidentialInformation {
+  id                     String          @id @default(uuid())
+  presentAddress         String
+  presentDistrict        String
+  presentDivision        String
+  presentLengthOfStay    String
+  presentOwnershipStatus OwnershipStatus
+  presentPostalCode      String
+  presentThana           String
+
+  // If the permanent address is the same, set this to true and leave the fields below null
+  isPermanentSameAsPresent Boolean          @default(false)
+  permanentAddress         String?
+  permanentDistrict        String?
+  permanentDivision        String?
+  permanentLengthOfStay    String?
+  permanentOwnershipStatus OwnershipStatus?
+  permanentThana           String?
+  permanentPostalCode      String?
+
+  // tie back to the loan application or user
+  loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id])
+  loanApplicationFormId String              @unique
+}
+
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+model EmploymentInformation {
+  id                         String                 @id @default(uuid())
+  businessAddress            String?
+  businessName               String?
+  businessOwnerType          BusinessOwnerTypeLoan?
+  businessRegistrationNumber String?
+  businessType               BusinessType?
+  employmentStatus           EmploymentStatus
+  grossMonthlyIncome         String
+  otherIncome                String
+  propertyType               PropertyType
+  propertyValue              String
+  rentIncome                 String?
+  sharePortion               String?
+  totalIncome                String?
+  tradeLicenseAge            String?
+
+  /// Link back to the loan application (or user) record
+  loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id])
+  loanApplicationFormId String              @unique
+}
+
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+model LoanInfo {
+  id                    String              @id @default(uuid())
+  accountNumber         String
+  bankName              String
+  hasCreditCard         Boolean
+  hasExistingLoan       Boolean
+  creditCards           CreditCardUser[]    @relation("LoanInfoCreditCards")
+  existingLoans         ExistingLoanUser[]  @relation("LoanInfoExistingLoans")
+  loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id])
+  loanApplicationFormId String              @unique
+}
+
+model CreditCardUser {
+  id                           String   @id @default(uuid())
+  issuerName                   String
+  cardLimit                    String // or Int, depending on your data
+  toBeClosedBeforeDisbursement Boolean
+  loanInfo                     LoanInfo @relation("LoanInfoCreditCards", fields: [loanInfoId], references: [id], onDelete: Cascade)
+  loanInfoId                   String
+}
+
+model ExistingLoanUser {
+  id            String   @id @default(uuid())
+  loanType      LoanType
+  otherLoanType String? // for custom loan types
+  lenderName    String
+  loanInfo      LoanInfo @relation("LoanInfoExistingLoans", fields: [loanInfoId], references: [id], onDelete: Cascade)
+  loanInfoId    String
+}
+
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+model LoanRequest {
+  id                    String              @id @default(uuid())
+  loanAmount            Decimal             @db.Decimal(10, 2)
+  loanTenure            Int
+  loanPurpose           String
+  emiStartDate          Int // day of month when EMI begins
   loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
   loanApplicationFormId String              @unique
 }
 
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+model GuarantorInfo {
+  id                     String @id @default(uuid())
+  personalGuarantorName  String
+  personalGuarantorEmail String
+  personalGuarantorPhone String
+
+  businessGuarantorName  String
+  businessGuarantorEmail String
+  businessGuarantorPhone String
+
+  businessGuarantor     BusinessGuarantor?   @relation(fields: [businessGuarantorId], references: [id], onDelete: Cascade)
+  businessGuarantorId   String               @unique
+  personalGuarantor     PersonalGuarantor?   @relation(fields: [personalGuarantorId], references: [id], onDelete: Cascade)
+  personalGuarantorId   String               @unique
+  //// realation with application loan 
+  loanApplicationForm   LoanApplicationForm? @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+  loanApplicationFormId String?              @unique
+}
+
+/// Holds all details for a guarantor acting in a business capacity.
+model BusinessGuarantor {
+  id                    String                  @id @default(uuid())
+  fullName              String
+  fatherOrHusbandName   String
+  motherName            String
+  dateOfBirth           DateTime
+  emailAddress          String
+  mobileNumber          String
+  nationalIdNumber      String
+  nationality           String
+  permanentAddress      String
+  presentAddress        String
+  relationWithApplicant String
+  workAddress           String
+  document              GuarantorInfoDocument[]
+  /// Back-reference to the GuarantorInfo record
+  guarantorInfo         GuarantorInfo?
+  loanApplicationForm   LoanApplicationForm?    @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+  loanApplicationFormId String                  @unique
+}
+
+/// Holds all details for a guarantor acting in a personal capacity.
+model PersonalGuarantor {
+  id                    String                  @id @default(uuid())
+  fullName              String
+  fatherOrHusbandName   String
+  motherName            String
+  dateOfBirth           DateTime
+  emailAddress          String
+  mobileNumber          String
+  nationalIdNumber      String
+  nationality           String
+  permanentAddress      String
+  presentAddress        String
+  relationWithApplicant String
+  workAddress           String
+  document              GuarantorInfoDocument[]
+
+  /// Back-reference to the GuarantorInfo record
+  loanApplicationForm   LoanApplicationForm? @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+  loanApplicationFormId String               @unique
+  guarantorInfo         GuarantorInfo?
+}
+
+model GuarantorInfoDocument {
+  id                  String             @id @default(uuid())
+  secure_url          String
+  format              String
+  originalName        String
+  PersonalGuarantor   PersonalGuarantor? @relation(fields: [personalGuarantorId], references: [id])
+  personalGuarantorId String?
+  BusinessGuarantor   BusinessGuarantor? @relation(fields: [businessGuarantorId], references: [id])
+  businessGuarantorId String?
+}
+
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+enum BusinessOwnerTypeLoan {
+  PROPRIETORSHIP
+  PARTNERSHIP
+  LLC
+  CORPORATION
+  OTHER
+}
+
+enum BusinessType {
+  WHOLESALE
+  RETAIL
+  SERVICES
+  MANUFACTURING
+  OTHER
+}
+
+enum IdentificationType {
+  NID
+  PASSPORT
+}
+
+enum ResidentialStatus {
+  RESIDENT
+  NONRESIDENT
+  TEMPORARYRESIDENT
+}
+
+enum Religion {
+  ISLAM
+  HINDUISM
+  CHRISTIANITY
+  BUDDHISM
+  OTHER
+}
 
 enum EduLavel {
   HIGHSCHOOL

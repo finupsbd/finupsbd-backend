@@ -21,13 +21,12 @@ export const prisma = new PrismaClient({
 app.use(cookieParser())
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-app.use(cors({
-  origin: "*", // Allow only frontend origin
-  // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // Allow cookies and authentication headers
-  // allowedHeaders: "Content-Type,Authorization"
-}));
 
+app.use(cors({
+  origin: ["http://localhost:3000", "http://localhost:3001", "https://finupsbd-admin-dashboard.vercel.app", "https://finupsbd-fronend-developer.vercel.app"], 
+  credentials: true, // Allow cookies and authentication headers
+}));
+  
 seedSuperAdmin()
 
 

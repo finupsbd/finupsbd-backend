@@ -7,3 +7,14 @@ export type TMiddlewareUser = {
   iat: number; // Issued at timestamp (UNIX)
   exp: number; // Expiry timestamp (UNIX)
 };
+
+
+
+export type TMulterFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  buffer: Buffer;
+};

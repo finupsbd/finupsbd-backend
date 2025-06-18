@@ -18,11 +18,14 @@ const loanHandlers: Record<string, LoanHandler> = {
   // [loanTypes.SME_LOAN]: smeLoan,
 };
 
-const eligibilityCheck = async (
-  payload: TEligibilityCheck,
-  query: Record<string, unknown>
-) => {
+
+
+
+const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
+
   const { existingLoans = [], ...eligibilityData } = payload;
+
+  console.log(payload)
 
   const eligibilityCheckEntry = await prisma.eligibilityCheck.create({
     data: {

@@ -60,16 +60,18 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
             payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCard * 2000);
         }
         const suggestedLoans = loans.map((loan) => {
-            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
-            const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
-            const eligibleLoanAmount = (0, suggestEligibleLoanAmount_1.suggestEligibleLoanAmount)(payload.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
+            var _a;
+            const expectedLoanTenure = (_a = payload.expectedLoanTenure) !== null && _a !== void 0 ? _a : 12; // Default to 12 months if undefined
+            const monthlyEMI = (0, calculateEMI_1.calculateEMI)(Number(amount), Number(loan.interestRate), expectedLoanTenure);
+            const totalRepayment = monthlyEMI * expectedLoanTenure;
+            const eligibleLoanAmount = (0, suggestEligibleLoanAmount_1.suggestEligibleLoanAmount)(payload.monthlyIncome, Number(loan.interestRate), expectedLoanTenure);
             // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
             // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
             return {
                 id: loan.id,
                 bankName: loan.bankName,
                 amount: Math.floor(Number(amount)).toFixed(2),
-                periodMonths: payload.expectedLoanTenure,
+                periodMonths: expectedLoanTenure,
                 loanType: loan.loanType,
                 monthlyEMI: Math.floor(Number(monthlyEMI)).toFixed(2),
                 totalRepayment: Math.floor(totalRepayment).toFixed(2),

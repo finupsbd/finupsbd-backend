@@ -3,14 +3,12 @@ import { calculateEMI } from "../utils/calculateEMI";
 import { prisma } from "../../../../app";
 import AppError from "../../../error/AppError";
 
-export const instantLoan = async (
-  payload: TEligibilityCheck,
-  query: Record<string, unknown>
+export const instantLoan = async ( payload: TEligibilityCheck,query: Record<string, unknown>
 ) => {
-  const {tenure = Number(payload.expectedLoanTenure),
-  } = query;
+  const {tenure = Number(payload.expectedLoanTenure)} = query;
 
-console.log({payload})
+
+const eligibleLoan = 15000
 
 
   try {
@@ -24,6 +22,7 @@ console.log({payload})
       }),
     ]);
 
+    
     if (!loans.length) {
       throw new AppError(404, "No loans found for the given criteria.");
     }
@@ -48,14 +47,14 @@ console.log({payload})
       const interest = Number(loan.interestRate) || 0;
       const duration = Number(tenure) || 0;
 
-      const monthlyEMI = calculateEMI(payload.monthlyIncome, interest, duration);
+      const monthlyEMI = calculateEMI(eligibleLoan, interest, duration);
       const totalRepayment = monthlyEMI * duration;
 
       return {
         id: loan.id,
         bankName: loan.bankName,
-        amount: payload.monthlyIncome.toFixed(2),
-        periodMonths: payload.tenure,
+        amount: eligibleLoan.toFixed(2),
+        periodMonths: payload.tenure ,
         loanType: loan.loanType,
         monthlyEMI: monthlyEMI.toFixed(2),
         totalRepayment: totalRepayment.toFixed(2),
@@ -63,12 +62,14 @@ console.log({payload})
         coverImage: loan.coverImage,
         interestRate: interest,
         processingFee: loan.processingFee,
-        eligibleLoan: adjustedMonthlyIncome.toFixed(2),
+        eligibleLoan: eligibleLoan,
         features: loan.FeaturesInstantLoan,
         feesCharges: loan.FeesChargesInstantLoan,
         eligibility: loan.EligibilityInstantLoan,
       };
     });
+
+    console.log(suggestedLoans)
 
     return suggestedLoans;
   } catch (error) {

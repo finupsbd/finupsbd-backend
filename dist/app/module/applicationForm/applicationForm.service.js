@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationFromService = void 0;
-const app_1 = require("../../../app");
 const generateApplicationId_1 = require("../../utils/generateApplicationId");
 // const createApplicationForm = async (
 //   payload: TFullApplicationForm,
@@ -78,20 +77,20 @@ const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 
     //     `ApplicationForm with ID ${payload.applicationId} already exists.`
     //   );
     // }
-    const result = yield app_1.prisma.loanApplicationForm.create({
-        data: {
-            applicationId: "00000000001",
-            userId: '123456789012345t6789',
-            personalInfo: {
-                create: payload.personalInfo,
-            },
-        },
-        include: {
-            personalInfo: true,
-        },
-    });
-    console.log(result, 'result');
-    return result;
+    // const result = await prisma.loanApplicationForm.create({
+    //   data: {
+    //     applicationId: "00000000001",
+    //     userId: '123456789012345t6789',
+    //     personalInfo: {
+    //       create: payload.personalInfo,
+    //     },
+    //   },
+    //   include: {
+    //     personalInfo: true,
+    //   },
+    // })
+    // console.log(result, 'result')
+    // return result;
 });
 // const getAllApplicationForm = async () => {
 //   const result = await prisma.loanApplicationForm.findMany({

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const applicationForm_controller_1 = require("./applicationForm.controller");
+const sendImageToCloud_1 = require("../../utils/sendImageToCloud");
 const route = express_1.default.Router();
 // route.get(
 //   '/',
@@ -13,6 +14,7 @@ const route = express_1.default.Router();
 //   ApplicationController.getSingleApplication
 // ); 
 route.post('/', applicationForm_controller_1.ApplicationController.createApplicationForm);
+route.post('/applicant-guarator-info', sendImageToCloud_1.upload.array("files"), applicationForm_controller_1.ApplicationController.applicantGuarantorInfo);
 // route.patch(
 //   '/update-status/:id',
 //   auth('SUPER_ADMIN', 'ADMIN'),
@@ -22,161 +24,4 @@ route.post('/', applicationForm_controller_1.ApplicationController.createApplica
 // route.get('/', ApplicationController.getAllApplicationForm);
 // route.post('/application-tracking', ApplicationController.applicationTracking)
 route.post('/application-forget', applicationForm_controller_1.ApplicationController.applicationForget);
-/////test
-// route.post('/step1', auth("USER", "SUPER_ADMIN"), catchAsync(async (req, res) => {
-//   const {userId} = req.user as TMiddlewareUser;
-//   console.log(userId)
-//    const result  = await prisma.testApplication.create({
-//     data: {
-//       user: { connect: { id: userId} }, // you must have userId
-//       TestBasicInfo: {
-//         create: {
-//          ...req.body,
-//         },
-//       },
-//     },
-//   }); 
-// res.json({
-//   status: 'success',
-//   message: 'Application created successfully',
-//   data: result,
-// });
-// }))
-// route.post('/step2/:id', auth("USER", "SUPER_ADMIN"), catchAsync(async (req, res) => {
-//   const { id } = req.params;
-//    const result  = await prisma.testContactInfo.create({
-//     data: {
-//       ...req.body,
-//       testApplication: { connect: { id} }, 
-//     }
-//    })
-//   console.log({result})
-// res.json({
-//   status: 'success',
-//   message: 'Application created successfully',
-//   data: result,
-// });
-// }))
-// route.post('/step3/:id', auth("USER", "SUPER_ADMIN"), catchAsync(async (req, res) => {
-//   const {userId} = req.user as TMiddlewareUser;
-//   const { id } = req.params;
-//   console.log(userId)
-//    const result  = await prisma.testProfession.create({
-//     data: {
-//       ...req.body,
-//       testApplication: { connect: { id} }, 
-//     }
-//    })
-//   console.log({result})
-// res.json({
-//   status: 'success',
-//   message: 'Application created successfully',
-//   data: result,
-// });
-// }))
-// route.get('/test/:id', catchAsync(async (req, res) => {
-//   const { id } = req.params;
-//    const result  = await prisma.testApplication.findUnique({
-//     where: {
-//       id: id,
-//     },
-//     include: {
-//       TestBasicInfo: {
-//         select: {
-//           name: true,
-//           age: true,
-//           dob: true,
-//         }
-//       },
-//       TestContactInfo: {
-//         select: {
-//           email: true,
-//           phone: true,
-//         }
-//       },
-//       testProfession: {
-//         select: {
-//           profession: true,
-//           monthlyIncome: true,
-//         }
-//       },
-//       user: true,
-//     }
-//    })
-//   console.log({result})
-// res.json({
-//   status: 'success',
-//   message: 'Application created successfully',
-//   data: result,
-// });
-// }))
-// route.get('/test/', auth("USER", "SUPER_ADMIN"), catchAsync(async (req, res) => {
-// const {userId} = req.user as TMiddlewareUser;
-//    const result  = await prisma.testApplication.findMany({
-//     include: {
-//       TestBasicInfo: {
-//         select: {
-//           name: true,
-//           age: true,
-//           dob: true,
-//         }
-//       },
-//       TestContactInfo: {
-//         select: {
-//           email: true,
-//           phone: true,
-//         }
-//       },
-//       testProfession: {
-//         select: {
-//           profession: true,
-//           monthlyIncome: true,
-//         }
-//       },
-//      user: {
-//       select: {
-//         id: true,
-//         name: true,
-//         email: true,
-//       }
-//      }
-//     }
-//    })
-//    const result2  = await prisma.user.findUnique({
-//     where: {
-//       id: userId,
-//     },
-//     include: {
-//       TestApplication: {
-//         include: {
-//           TestBasicInfo: {
-//             select: {
-//               name: true,
-//               age: true,
-//               dob: true,
-//             }
-//           },
-//           TestContactInfo: {
-//             select: {
-//               email: true,
-//               phone: true,
-//             }
-//           },
-//           testProfession: {
-//             select: {
-//               profession: true,
-//               monthlyIncome: true,
-//             }
-//           },
-//         }
-//       }
-//     }
-//    })
-//   console.log({result})
-// res.json({
-//   status: 'success',
-//   message: 'Application created successfully',
-//   data: result2,
-// });
-// }))
 exports.ApplicationRouter = route;

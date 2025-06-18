@@ -35,6 +35,9 @@ model EligibilityCheck {
   @@map("eligibilityCheck")
 }
 
+
+
+
 /// New model for each existing loan
 model ExistingLoan {
   id                 String           @id @default(uuid())
@@ -68,16 +71,13 @@ enum EGender {
 enum Profession {
   BUSINESS_OWNER
   SALARIED
+  SELF_EMPLOYED
 }
 
 enum BusinessOwnerType {
-  PROPRIETOR
-  PARTNER
-  CORPORATION
-  LLC
-  COOPERATIVE
-  JOINT_VENTURE
-  FRANCHISE
+  PROPRIETORSHIP
+  PARTNERSHIP
+  PUBLIC_LIMITED_COMPANY
 }
 
 enum VehicleType {

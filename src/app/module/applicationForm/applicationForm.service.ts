@@ -84,21 +84,21 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
   // }
 
 
-  const result = await prisma.loanApplicationForm.create({
-    data: {
-      applicationId: "00000000001",
-      userId: '123456789012345t6789',
-      personalInfo: {
-        create: payload.personalInfo,
-      },
-    },
-    include: {
-      personalInfo: true,
-    },
-  })
+  // const result = await prisma.loanApplicationForm.create({
+  //   data: {
+  //     applicationId: "00000000001",
+  //     userId: '123456789012345t6789',
+  //     personalInfo: {
+  //       create: payload.personalInfo,
+  //     },
+  //   },
+  //   include: {
+  //     personalInfo: true,
+  //   },
+  // })
 
-  console.log(result, 'result')
-  return result;
+  // console.log(result, 'result')
+  // return result;
 };
 
 

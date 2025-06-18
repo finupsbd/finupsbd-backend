@@ -76,16 +76,16 @@ const take = pageSize;
     }
 
     if (payload?.haveAnyCreditCard) {
-
       payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCard! * 2000);
     }
 
 
     const suggestedLoans = loans.map((loan) => {
+      const expectedLoanTenure = payload.expectedLoanTenure ?? 12; // Default to 12 months if undefined
 
-      const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), payload.expectedLoanTenure);
-      const totalRepayment = monthlyEMI * payload.expectedLoanTenure;
-      const eligibleLoanAmount = suggestEligibleLoanAmount(payload.monthlyIncome, Number(loan.interestRate), payload.expectedLoanTenure);
+      const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), expectedLoanTenure);
+      const totalRepayment = monthlyEMI * expectedLoanTenure;
+      const eligibleLoanAmount = suggestEligibleLoanAmount(payload.monthlyIncome, Number(loan.interestRate), expectedLoanTenure);
       // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
       // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
 
@@ -93,7 +93,7 @@ const take = pageSize;
         id: loan.id,
         bankName: loan.bankName,
         amount: Math.floor(Number(amount)).toFixed(2),
-        periodMonths: payload.expectedLoanTenure,
+        periodMonths: expectedLoanTenure,
         loanType: loan.loanType,
         monthlyEMI: Math.floor(Number(monthlyEMI)).toFixed(2),
         totalRepayment: Math.floor(totalRepayment).toFixed(2),

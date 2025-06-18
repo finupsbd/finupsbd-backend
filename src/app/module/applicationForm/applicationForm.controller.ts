@@ -3,8 +3,12 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 import sendResponses from '../../utils/sendResponce';
 import { ApplicationFromService } from './applicationForm.service';
-import { TMiddlewareUser } from '../../types/commonTypes';
-import { sendImageToCloud } from '../../utils/sendImageToCloud';
+import { TMiddlewareUser, TMulterFile } from '../../types/commonTypes';
+import { uploadBufferToCloudinary } from '../../utils/FilesUploader';
+import { prisma } from '../../../app';
+
+// Define MulterFile type if not already imported
+
 
 
 
@@ -31,6 +35,83 @@ const createApplicationForm = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
+
+////garuantor info update with existing form
+
+const applicantGuarantorInfo = catchAsync(async (req, res) => {
+
+  const files = req.files as TMulterFile[] | undefined;
+
+  const data = req.body.data
+  const guarantorData = JSON.parse(data)
+
+
+
+  if (!files || files.length === 0) {
+    return sendResponses(res, {
+      success: false,
+      message: 'No guarantor files were uploaded.',
+      statusCode: StatusCodes.BAD_REQUEST,
+      data: {},
+    });
+  }
+
+  // 2. Iterate over each file.buffer and upload to Cloudinary
+  const uploadPromises = files.map(async (file, idx) => {
+    // e.g. “guarantor/20250602_0_originalname”
+    const timestamp = Date.now();
+    const safeName = file.originalname.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_\-.]/g, '');
+    const publicId = `guarantor/${timestamp}_${idx}_${safeName}`;
+
+    // You can set folder:"guarantor" and resource_type:"image" (or "raw" if PDF, etc.)
+    const result = await uploadBufferToCloudinary(file.buffer, publicId, {
+      folder: 'guarantor',
+      resource_type: 'image',
+    });
+
+    return {
+      originalName: file.originalname,
+      public_id: result.public_id,
+      secure_url: result.secure_url,
+      format: result.format,
+      width: result.width,
+      height: result.height,
+    };
+  });
+
+  // 3. Wait for all uploads
+  const uploadedFiles = await Promise.all(uploadPromises);
+
+  console.log()
+
+
+  // const result = await prisma.guarantorInfo.create({
+  //   data: {
+  //     personalGuarantor: {
+  //       ...guarantorData
+  //     },
+  //     loanApplicationForm: {
+  //       connect: { id: "65464654654654654654654654654" }
+  //     }
+  //   }
+
+  // },
+  // )
+
+
+  // 4. Respond with the Cloudinary URLs / IDs (or save them to your DB here)
+  return sendResponses(res, {
+    success: true,
+    message: 'Guarantor form created successfully',
+    statusCode: StatusCodes.CREATED,
+    data: {
+      uploadedFiles, // array of { originalName, public_id, secure_url, ... }
+    },
+  });
+}
+);
 
 
 
@@ -124,6 +205,7 @@ const applicationForget = catchAsync(async (req, res) => {
 
 export const ApplicationController = {
   createApplicationForm,
+  applicantGuarantorInfo,
   // getAllApplicationForm,
   // createPersonalInfo,
   // statusUpdate, 
