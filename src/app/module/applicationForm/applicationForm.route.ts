@@ -7,11 +7,12 @@ import validateRequest from '../../middleware/validateRequest';
 import catchAsync from '../../utils/catchAsync';
 import { TMiddlewareUser } from '../../types/commonTypes';
 import { upload } from '../../utils/sendImageToCloud';
+import multer from 'multer';
+import { LoanApplicationFormSchema } from './applicationForm.validation';
 
 
 
 const route = express.Router();
-
 
 
 
@@ -21,8 +22,8 @@ const route = express.Router();
 //   ApplicationController.getSingleApplication
 // ); 
 
-route.post( '/', ApplicationController.createApplicationForm); 
-route.post( '/applicant-guarator-info', upload.array("files"), ApplicationController.applicantGuarantorInfo); 
+route.post('/create-application', validateRequest(LoanApplicationFormSchema), ApplicationController.createApplicationForm);
+route.post('/applicant-guarator-info', upload.array("files"), ApplicationController.applicantGuarantorInfo);
 
 
 // route.patch(

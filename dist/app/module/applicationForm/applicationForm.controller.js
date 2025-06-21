@@ -32,7 +32,7 @@ const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(
         success: true,
         message: 'appliycation form created successfully',
         statusCode: http_status_codes_1.StatusCodes.CREATED,
-        data: result,
+        data: result
     });
 }));
 ////garuantor info update with existing form

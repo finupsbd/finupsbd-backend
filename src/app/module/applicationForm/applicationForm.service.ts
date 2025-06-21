@@ -1,5 +1,5 @@
 import { prisma } from '../../../app';
-import { TLoanApplicationForm } from './application.interface';
+import { TLoanApplicationForm } from '../../module/applicationForm/application.interface';
 import { TMiddlewareUser } from '../../types/commonTypes';
 import { generateApplicationId } from '../../utils/generateApplicationId';
 
@@ -65,12 +65,18 @@ import { generateApplicationId } from '../../utils/generateApplicationId';
 //   return result;
 // };
 
+
+
+//// current word
+
 const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser) => {
 
-  console.log(user, 'body')
 
-  payload.userId = "00000000000000000";
-  payload.applicationId = await generateApplicationId();
+
+  console.log(payload)
+
+  const applicationId = await generateApplicationId()
+
 
   // const existingForm = await prisma.loanApplicationForm.findUnique({
   //   where: { applicationId: payload.applicationId },
@@ -84,21 +90,52 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
   // }
 
 
-  // const result = await prisma.loanApplicationForm.create({
-  //   data: {
-  //     applicationId: "00000000001",
-  //     userId: '123456789012345t6789',
-  //     personalInfo: {
-  //       create: payload.personalInfo,
-  //     },
-  //   },
-  //   include: {
-  //     personalInfo: true,
-  //   },
-  // })
+  const result = await prisma.loanApplicationForm.create({
+    data: {
+      applicationId,
+      userId: "0ba83eb4-2b6d-415f-8537-cbfb1e910e4d",
+      personalInfo: {
+        create: payload.personalInfo
+      },
+      residentialInformation: {
+        create: payload.residentialInformation
+      },
+      employmentInformation: {
+        create: payload.employmentInformation
+      },
+      loanInfo: {
+        create: {
+          hasCreditCard: payload?.loanInfo?.hasCreditCard ?? false,
+          hasExistingLoan: payload?.loanInfo?.hasExistingLoan ?? false,
+          bankAccounts: {
+            create: payload?.loanInfo?.bankAccounts
+          },
+          creditCards: {
+            create: payload?.loanInfo?.creditCards
+          },
+          existingLoans: {
+            create: payload?.loanInfo?.existingLoans
+          }
+        }
+      },
+      loanRequest: {
+        create: payload.loanRequest
+      },
+      GuarantorInfo: {
+        create: {
+          personalGuarantor: {
+            create: payload?.GuarantorInfo?.personalGuarantor
+          },
+          businessGuarantor: {
+            create: payload?.GuarantorInfo?.businessGuarantor
+          }
+        }
+      }
+    }
+  })
 
-  // console.log(result, 'result')
-  // return result;
+  console.log(result, 'result')
+  return result;
 };
 
 

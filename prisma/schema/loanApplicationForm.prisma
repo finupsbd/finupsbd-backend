@@ -18,8 +18,10 @@ model LoanApplicationForm {
   loanInfo               LoanInfo?
   loanRequest            LoanRequest?
   GuarantorInfo          GuarantorInfo?
-  PersonalGuarantor      PersonalGuarantor?
-  BusinessGuarantor      BusinessGuarantor?
+  PersonalGuarantor      PersonalGuarantor?      @relation(fields: [personalGuarantorId], references: [id])
+  BusinessGuarantor      BusinessGuarantor?      @relation(fields: [businessGuarantorId], references: [id])
+  personalGuarantorId    String?
+  businessGuarantorId    String?
 
   @@index([applicationId, status, isActive, isDeleted])
   @@map("loanApplicationForm")
@@ -80,21 +82,37 @@ model ResidentialInformation {
 /////------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 model EmploymentInformation {
-  id                         String                 @id @default(uuid())
-  businessAddress            String?
-  businessName               String?
-  businessOwnerType          BusinessOwnerTypeLoan?
-  businessRegistrationNumber String?
-  businessType               BusinessType?
-  employmentStatus           EmploymentStatus
-  grossMonthlyIncome         String
-  otherIncome                String
-  propertyType               PropertyType
-  propertyValue              String
-  rentIncome                 String?
-  sharePortion               String?
-  totalIncome                String?
-  tradeLicenseAge            String?
+  id                  String   @id @default(uuid())
+  employmentStatus    String
+  jobTitle            String
+  designation         String
+  department          String
+  employeeId          String
+  employmentType      String
+  dateOfJoining       DateTime
+  organizationName    String
+  organizationAddress String
+  serviceYears        Int
+  serviceMonths       Int
+  eTin                String
+  officialContact     String
+
+  hasPreviousOrganization  Boolean
+  previousOrganizationName String? // Optional
+  previousDesignation      String? // Optional
+  previousServiceYears     Int? // Optional
+  previousServiceMonths    Int? // Optional
+
+  totalExperienceYears  Int
+  totalExperienceMonths Int
+
+  propertyType  String
+  propertyValue String
+
+  grossMonthlyIncome String
+  rentIncome         String?
+  otherIncome        String?
+  totalIncome        String
 
   /// Link back to the loan application (or user) record
   loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id])
@@ -105,10 +123,9 @@ model EmploymentInformation {
 
 model LoanInfo {
   id                    String              @id @default(uuid())
-  accountNumber         String
-  bankName              String
   hasCreditCard         Boolean
   hasExistingLoan       Boolean
+  bankAccounts          BankAccount[]       @relation("LoanInfoBankAccount")
   creditCards           CreditCardUser[]    @relation("LoanInfoCreditCards")
   existingLoans         ExistingLoanUser[]  @relation("LoanInfoExistingLoans")
   loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id])
@@ -118,19 +135,31 @@ model LoanInfo {
 model CreditCardUser {
   id                           String   @id @default(uuid())
   issuerName                   String
-  cardLimit                    String // or Int, depending on your data
+  cardLimit                    String
   toBeClosedBeforeDisbursement Boolean
   loanInfo                     LoanInfo @relation("LoanInfoCreditCards", fields: [loanInfoId], references: [id], onDelete: Cascade)
   loanInfoId                   String
 }
 
 model ExistingLoanUser {
-  id            String   @id @default(uuid())
-  loanType      LoanType
-  otherLoanType String? // for custom loan types
-  lenderName    String
-  loanInfo      LoanInfo @relation("LoanInfoExistingLoans", fields: [loanInfoId], references: [id], onDelete: Cascade)
-  loanInfoId    String
+  id                           String   @id @default(uuid())
+  loanType                     LoanType
+  otherLoanType                String?
+  lenderName                   String
+  outstandingAmount            Float
+  monthlyEMI                   Float
+  toBeClosedBeforeDisbursement Boolean
+  loanInfo                     LoanInfo @relation("LoanInfoExistingLoans", fields: [loanInfoId], references: [id], onDelete: Cascade)
+  loanInfoId                   String
+}
+
+model BankAccount {
+  id            String @id @default(uuid())
+  bankName      String
+  accountNumber String
+
+  loanInfo   LoanInfo @relation("LoanInfoBankAccount", fields: [loanInfoId], references: [id], onDelete: Cascade)
+  loanInfoId String
 }
 
 /////------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -145,82 +174,99 @@ model LoanRequest {
   loanApplicationFormId String              @unique
 }
 
-/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+/////-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 model GuarantorInfo {
-  id                     String @id @default(uuid())
-  personalGuarantorName  String
-  personalGuarantorEmail String
-  personalGuarantorPhone String
+  id String @id @default(uuid())
 
-  businessGuarantorName  String
-  businessGuarantorEmail String
-  businessGuarantorPhone String
+  // Personal Guarantor Info
+  personalGuarantor   PersonalGuarantor? @relation(fields: [personalGuarantorId], references: [id], onDelete: Cascade)
+  personalGuarantorId String?            @unique
 
-  businessGuarantor     BusinessGuarantor?   @relation(fields: [businessGuarantorId], references: [id], onDelete: Cascade)
-  businessGuarantorId   String               @unique
-  personalGuarantor     PersonalGuarantor?   @relation(fields: [personalGuarantorId], references: [id], onDelete: Cascade)
-  personalGuarantorId   String               @unique
-  //// realation with application loan 
-  loanApplicationForm   LoanApplicationForm? @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
-  loanApplicationFormId String?              @unique
+  // Business Guarantor Info
+  businessGuarantor   BusinessGuarantor? @relation(fields: [businessGuarantorId], references: [id], onDelete: Cascade)
+  businessGuarantorId String?            @unique
+
+  loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+  loanApplicationFormId String              @unique
 }
 
-/// Holds all details for a guarantor acting in a business capacity.
 model BusinessGuarantor {
-  id                    String                  @id @default(uuid())
-  fullName              String
-  fatherOrHusbandName   String
-  motherName            String
-  dateOfBirth           DateTime
-  emailAddress          String
-  mobileNumber          String
-  nationalIdNumber      String
-  nationality           String
-  permanentAddress      String
-  presentAddress        String
-  relationWithApplicant String
-  workAddress           String
-  document              GuarantorInfoDocument[]
-  /// Back-reference to the GuarantorInfo record
-  guarantorInfo         GuarantorInfo?
-  loanApplicationForm   LoanApplicationForm?    @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
-  loanApplicationFormId String                  @unique
+  id           String @id @default(uuid())
+  mobileNumber String
+  emailAddress String
+
+  guarantorInfo GuarantorInfo?
+
+  LoanApplicationForm LoanApplicationForm[]
 }
 
-/// Holds all details for a guarantor acting in a personal capacity.
 model PersonalGuarantor {
-  id                    String                  @id @default(uuid())
-  fullName              String
-  fatherOrHusbandName   String
-  motherName            String
-  dateOfBirth           DateTime
-  emailAddress          String
-  mobileNumber          String
-  nationalIdNumber      String
-  nationality           String
-  permanentAddress      String
-  presentAddress        String
-  relationWithApplicant String
-  workAddress           String
-  document              GuarantorInfoDocument[]
+  id           String @id @default(uuid())
+  mobileNumber String
+  emailAddress String
 
-  /// Back-reference to the GuarantorInfo record
-  loanApplicationForm   LoanApplicationForm? @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
-  loanApplicationFormId String               @unique
-  guarantorInfo         GuarantorInfo?
+  guarantorInfo GuarantorInfo?
+
+  LoanApplicationForm LoanApplicationForm[]
 }
 
-model GuarantorInfoDocument {
-  id                  String             @id @default(uuid())
-  secure_url          String
-  format              String
-  originalName        String
-  PersonalGuarantor   PersonalGuarantor? @relation(fields: [personalGuarantorId], references: [id])
-  personalGuarantorId String?
-  BusinessGuarantor   BusinessGuarantor? @relation(fields: [businessGuarantorId], references: [id])
-  businessGuarantorId String?
-}
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+// /// Holds all details for a guarantor acting in a business capacity.
+// model BusinessGuarantor {
+//   id                    String                  @id @default(uuid())
+//   fullName              String
+//   fatherOrHusbandName   String
+//   motherName            String
+//   dateOfBirth           DateTime
+//   emailAddress          String
+//   mobileNumber          String
+//   nationalIdNumber      String
+//   nationality           String
+//   permanentAddress      String
+//   presentAddress        String
+//   relationWithApplicant String
+//   workAddress           String
+//   document              GuarantorInfoDocument[]
+//   /// Back-reference to the GuarantorInfo record
+//   guarantorInfo         GuarantorInfo?
+//   loanApplicationForm   LoanApplicationForm?    @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+//   loanApplicationFormId String                  @unique
+// }
+
+// /// Holds all details for a guarantor acting in a personal capacity.
+// model PersonalGuarantor {
+//   id                    String                  @id @default(uuid())
+//   fullName              String
+//   fatherOrHusbandName   String
+//   motherName            String
+//   dateOfBirth           DateTime
+//   emailAddress          String
+//   mobileNumber          String
+//   nationalIdNumber      String
+//   nationality           String
+//   permanentAddress      String
+//   presentAddress        String
+//   relationWithApplicant String
+//   workAddress           String
+//   document              GuarantorInfoDocument[]
+
+//   /// Back-reference to the GuarantorInfo record
+//   loanApplicationForm   LoanApplicationForm? @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+//   loanApplicationFormId String               @unique
+//   guarantorInfo         GuarantorInfo?
+// }
+
+// model GuarantorInfoDocument {
+//   id                  String             @id @default(uuid())
+//   secure_url          String
+//   format              String
+//   originalName        String
+//   PersonalGuarantor   PersonalGuarantor? @relation(fields: [personalGuarantorId], references: [id])
+//   personalGuarantorId String?
+//   BusinessGuarantor   BusinessGuarantor? @relation(fields: [businessGuarantorId], references: [id])
+//   businessGuarantorId String?
+// }
 
 /////------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -300,6 +346,9 @@ enum PropertyType {
   RESIDENTIAL
   COMMERCIAL
   LAND
+  APARTMENT
+  HOUSE
+  OTHER
 }
 
 enum EmploymentStatus {

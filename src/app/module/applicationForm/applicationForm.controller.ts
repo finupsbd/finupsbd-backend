@@ -14,6 +14,7 @@ import { prisma } from '../../../app';
 
 const createApplicationForm = catchAsync(async (req, res) => {
 
+
   // if (!req.files) {
   //   throw new Error('No files were uploaded');
   // }
@@ -32,7 +33,7 @@ const createApplicationForm = catchAsync(async (req, res) => {
     success: true,
     message: 'appliycation form created successfully',
     statusCode: StatusCodes.CREATED,
-    data: result,
+    data: result
   });
 });
 

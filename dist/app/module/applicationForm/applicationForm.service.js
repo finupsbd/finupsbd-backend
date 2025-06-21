@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationFromService = void 0;
+const app_1 = require("../../../app");
 const generateApplicationId_1 = require("../../utils/generateApplicationId");
 // const createApplicationForm = async (
 //   payload: TFullApplicationForm,
@@ -64,10 +65,11 @@ const generateApplicationId_1 = require("../../utils/generateApplicationId");
 //   });
 //   return result;
 // };
+//// current word
 const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(user, 'body');
-    payload.userId = "00000000000000000";
-    payload.applicationId = yield (0, generateApplicationId_1.generateApplicationId)();
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+    console.log(payload);
+    const applicationId = yield (0, generateApplicationId_1.generateApplicationId)();
     // const existingForm = await prisma.loanApplicationForm.findUnique({
     //   where: { applicationId: payload.applicationId },
     // });
@@ -77,20 +79,51 @@ const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 
     //     `ApplicationForm with ID ${payload.applicationId} already exists.`
     //   );
     // }
-    // const result = await prisma.loanApplicationForm.create({
-    //   data: {
-    //     applicationId: "00000000001",
-    //     userId: '123456789012345t6789',
-    //     personalInfo: {
-    //       create: payload.personalInfo,
-    //     },
-    //   },
-    //   include: {
-    //     personalInfo: true,
-    //   },
-    // })
-    // console.log(result, 'result')
-    // return result;
+    const result = yield app_1.prisma.loanApplicationForm.create({
+        data: {
+            applicationId,
+            userId: "0ba83eb4-2b6d-415f-8537-cbfb1e910e4d",
+            personalInfo: {
+                create: payload.personalInfo
+            },
+            residentialInformation: {
+                create: payload.residentialInformation
+            },
+            employmentInformation: {
+                create: payload.employmentInformation
+            },
+            loanInfo: {
+                create: {
+                    hasCreditCard: (_b = (_a = payload === null || payload === void 0 ? void 0 : payload.loanInfo) === null || _a === void 0 ? void 0 : _a.hasCreditCard) !== null && _b !== void 0 ? _b : false,
+                    hasExistingLoan: (_d = (_c = payload === null || payload === void 0 ? void 0 : payload.loanInfo) === null || _c === void 0 ? void 0 : _c.hasExistingLoan) !== null && _d !== void 0 ? _d : false,
+                    bankAccounts: {
+                        create: (_e = payload === null || payload === void 0 ? void 0 : payload.loanInfo) === null || _e === void 0 ? void 0 : _e.bankAccounts
+                    },
+                    creditCards: {
+                        create: (_f = payload === null || payload === void 0 ? void 0 : payload.loanInfo) === null || _f === void 0 ? void 0 : _f.creditCards
+                    },
+                    existingLoans: {
+                        create: (_g = payload === null || payload === void 0 ? void 0 : payload.loanInfo) === null || _g === void 0 ? void 0 : _g.existingLoans
+                    }
+                }
+            },
+            loanRequest: {
+                create: payload.loanRequest
+            },
+            GuarantorInfo: {
+                create: {
+                    personalGuarantor: {
+                        create: (_h = payload === null || payload === void 0 ? void 0 : payload.GuarantorInfo) === null || _h === void 0 ? void 0 : _h.personalGuarantor
+                    },
+                    businessGuarantor: {
+                        create: (_j = payload === null || payload === void 0 ? void 0 : payload.GuarantorInfo) === null || _j === void 0 ? void 0 : _j.businessGuarantor
+                    }
+                }
+            }
+        }
+    });
+    console.log(result, 'result');
+    return result;
 });
 // const getAllApplicationForm = async () => {
 //   const result = await prisma.loanApplicationForm.findMany({
