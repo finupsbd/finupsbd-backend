@@ -20,7 +20,7 @@ export const prisma = new PrismaClient({
 
 app.use(cookieParser())
 app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.urlencoded({extended: true }));
 
 app.use(cors({
   origin: ["http://localhost:3000", "http://localhost:3001", "https://finupsbd-admin-dashboard.vercel.app", "https://finupsbd-fronend-developer.vercel.app"], 

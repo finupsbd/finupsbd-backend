@@ -8,10 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationFromService = void 0;
 const app_1 = require("../../../app");
 const generateApplicationId_1 = require("../../utils/generateApplicationId");
+const loanApplicationDocumentUpload_1 = __importDefault(require("../../utils/loanApplicationDocumentUpload"));
 // const createApplicationForm = async (
 //   payload: TFullApplicationForm,
 //   user: TMiddlewareUser
@@ -66,9 +70,20 @@ const generateApplicationId_1 = require("../../utils/generateApplicationId");
 //   return result;
 // };
 //// current word
-const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 0, function* () {
+const createApplicationForm = (payload, user, files) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-    console.log(payload);
+    const cloudinaryResults = [];
+    const filesObj = files;
+    const filesArray = Object.values(filesObj).flat();
+    for (const file of filesArray) {
+        const uploaded = yield (0, loanApplicationDocumentUpload_1.default)(file.buffer, file.originalname, file.mimetype);
+        cloudinaryResults.push({
+            url: uploaded.secure_url,
+            originalName: file.originalname,
+            mimeType: file.mimetype,
+        });
+    }
+    console.log({ cloudinaryResults });
     const applicationId = yield (0, generateApplicationId_1.generateApplicationId)();
     // const existingForm = await prisma.loanApplicationForm.findUnique({
     //   where: { applicationId: payload.applicationId },
@@ -82,7 +97,7 @@ const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 
     const result = yield app_1.prisma.loanApplicationForm.create({
         data: {
             applicationId,
-            userId: "0ba83eb4-2b6d-415f-8537-cbfb1e910e4d",
+            userId: user.userId,
             personalInfo: {
                 create: payload.personalInfo
             },
@@ -119,10 +134,40 @@ const createApplicationForm = (payload, user) => __awaiter(void 0, void 0, void 
                         create: (_j = payload === null || payload === void 0 ? void 0 : payload.GuarantorInfo) === null || _j === void 0 ? void 0 : _j.businessGuarantor
                     }
                 }
+            },
+            Document: {
+                create: cloudinaryResults.map(doc => ({
+                    url: doc.url,
+                    originalName: doc.originalName,
+                    mimeType: doc.mimeType
+                }))
+            },
+        },
+        include: {
+            user: {
+                select: {
+                    name: true,
+                    email: true
+                }
+            },
+            GuarantorInfo: {
+                include: {
+                    personalGuarantor: {
+                        select: {
+                            emailAddress: true,
+                            mobileNumber: true
+                        }
+                    },
+                    businessGuarantor: {
+                        select: {
+                            emailAddress: true,
+                            mobileNumber: true
+                        }
+                    }
+                }
             }
         }
     });
-    console.log(result, 'result');
     return result;
 });
 // const getAllApplicationForm = async () => {

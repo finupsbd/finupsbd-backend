@@ -20,6 +20,7 @@ model LoanApplicationForm {
   GuarantorInfo          GuarantorInfo?
   PersonalGuarantor      PersonalGuarantor?      @relation(fields: [personalGuarantorId], references: [id])
   BusinessGuarantor      BusinessGuarantor?      @relation(fields: [businessGuarantorId], references: [id])
+  Document               Document[]
   personalGuarantorId    String?
   businessGuarantorId    String?
 
@@ -267,6 +268,20 @@ model PersonalGuarantor {
 //   BusinessGuarantor   BusinessGuarantor? @relation(fields: [businessGuarantorId], references: [id])
 //   businessGuarantorId String?
 // }
+
+/////------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+model Document {
+  id                String   @id @default(cuid())
+  loanApplicationId String?
+  url               String
+  originalName      String
+  mimeType          String
+  uploadedAt        DateTime @default(now())
+
+  loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+  loanApplicationFormId String
+}
 
 /////------------------------------------------------------------------------------------------------------------------------------------------------------------
 

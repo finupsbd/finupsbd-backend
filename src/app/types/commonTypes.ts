@@ -18,3 +18,16 @@ export type TMulterFile = {
   size: number;
   buffer: Buffer;
 };
+
+
+
+export type TUploadedFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  buffer: Buffer;
+  size: number;
+};
+
+

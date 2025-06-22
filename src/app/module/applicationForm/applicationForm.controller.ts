@@ -14,19 +14,22 @@ import { prisma } from '../../../app';
 
 const createApplicationForm = catchAsync(async (req, res) => {
 
+  if (!req.files || req.files.length === 0) {
+    throw new Error("No files uploaded");
+  }
 
-  // if (!req.files) {
-  //   throw new Error('No files were uploaded');
-  // }
 
-  // const saveImage = files.images?.map( async (file: any) => {
-  //   return await sendImageToCloud(file.buffer)
-  // })
+  const files = req.files as Express.Multer.File[]
+
 
   const user = req.user as TMiddlewareUser;
+
+  const rawData = req.body.data;
+
   const result = await ApplicationFromService.createApplicationForm(
-    req.body,
-    user
+    JSON.parse(rawData),
+    user,
+    files
   );
 
   sendResponses(res, {
@@ -113,9 +116,6 @@ const applicantGuarantorInfo = catchAsync(async (req, res) => {
   });
 }
 );
-
-
-
 
 
 

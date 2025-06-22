@@ -20,14 +20,13 @@ const applicationForm_service_1 = require("./applicationForm.service");
 const FilesUploader_1 = require("../../utils/FilesUploader");
 // Define MulterFile type if not already imported
 const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // if (!req.files) {
-    //   throw new Error('No files were uploaded');
-    // }
-    // const saveImage = files.images?.map( async (file: any) => {
-    //   return await sendImageToCloud(file.buffer)
-    // })
+    if (!req.files || req.files.length === 0) {
+        throw new Error("No files uploaded");
+    }
+    const files = req.files;
     const user = req.user;
-    const result = yield applicationForm_service_1.ApplicationFromService.createApplicationForm(req.body, user);
+    const rawData = req.body.data;
+    const result = yield applicationForm_service_1.ApplicationFromService.createApplicationForm(JSON.parse(rawData), user, files);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: 'appliycation form created successfully',

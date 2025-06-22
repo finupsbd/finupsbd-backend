@@ -6,15 +6,13 @@ import auth from '../../middleware/auth';
 import validateRequest from '../../middleware/validateRequest';
 import catchAsync from '../../utils/catchAsync';
 import { TMiddlewareUser } from '../../types/commonTypes';
-import { upload } from '../../utils/sendImageToCloud';
 import multer from 'multer';
 import { LoanApplicationFormSchema } from './applicationForm.validation';
 
 
-
 const route = express.Router();
 
-
+const upload = multer({ storage: multer.memoryStorage() }); // keeps files in memory
 
 // route.get(
 //   '/',
@@ -22,7 +20,10 @@ const route = express.Router();
 //   ApplicationController.getSingleApplication
 // ); 
 
-route.post('/create-application', validateRequest(LoanApplicationFormSchema), ApplicationController.createApplicationForm);
+route.post('/create-application', auth('USER', 'SUPER_ADMIN', 'ADMIN'),  validateRequest(LoanApplicationFormSchema), upload.fields([
+    { name: 'files', maxCount: 10 },     // your uploaded files
+    { name: 'data', maxCount: 1 }        // your stringified JSON
+]), ApplicationController.createApplicationForm);
 route.post('/applicant-guarator-info', upload.array("files"), ApplicationController.applicantGuarantorInfo);
 
 

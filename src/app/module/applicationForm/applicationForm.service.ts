@@ -1,7 +1,9 @@
+
 import { prisma } from '../../../app';
 import { TLoanApplicationForm } from '../../module/applicationForm/application.interface';
-import { TMiddlewareUser } from '../../types/commonTypes';
+import { TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
 import { generateApplicationId } from '../../utils/generateApplicationId';
+import uploadBufferToCloudinary from '../../utils/loanApplicationDocumentUpload';
 
 
 
@@ -69,11 +71,28 @@ import { generateApplicationId } from '../../utils/generateApplicationId';
 
 //// current word
 
-const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser) => {
+const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser, files: TUploadedFile[]) => {
+
+  const cloudinaryResults = [];
+  const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
+  const filesArray: Express.Multer.File[] = Object.values(filesObj).flat();
+
+  for (const file of filesArray) {
+    const uploaded = await uploadBufferToCloudinary(file.buffer, file.originalname, file.mimetype);
+    cloudinaryResults.push({
+      url: uploaded.secure_url,
+      originalName: file.originalname,
+      mimeType: file.mimetype,
+    });
+  }
+
+
+  console.log({ cloudinaryResults })
 
 
 
-  console.log(payload)
+
+
 
   const applicationId = await generateApplicationId()
 
@@ -90,10 +109,11 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
   // }
 
 
+
   const result = await prisma.loanApplicationForm.create({
     data: {
       applicationId,
-      userId: "0ba83eb4-2b6d-415f-8537-cbfb1e910e4d",
+      userId: user.userId,
       personalInfo: {
         create: payload.personalInfo
       },
@@ -130,11 +150,42 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
             create: payload?.GuarantorInfo?.businessGuarantor
           }
         }
+      },
+      Document: {
+        create: cloudinaryResults.map(doc => ({
+          url: doc.url,
+          originalName: doc.originalName,
+          mimeType: doc.mimeType
+        }))
+      },
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true
+        }
+      },
+      GuarantorInfo: {
+        include: {
+          personalGuarantor: {
+            select: {
+              emailAddress: true,
+              mobileNumber: true
+            }
+          },
+          businessGuarantor: {
+            select: {
+              emailAddress: true,
+              mobileNumber: true
+            }
+          }
+        }
       }
+
     }
   })
 
-  console.log(result, 'result')
   return result;
 };
 
