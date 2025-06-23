@@ -26,7 +26,7 @@ const os_1 = __importDefault(require("os"));
 const config_1 = require("./config");
 const app = (0, express_1.default)();
 exports.prisma = new client_1.PrismaClient({
-// log: ['query', 'info', 'warn', 'error'],
+    log: ['query', 'info', 'warn', 'error'],
 });
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json({ limit: "50mb" }));

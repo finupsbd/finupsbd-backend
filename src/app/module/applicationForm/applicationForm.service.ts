@@ -83,6 +83,9 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
 
 
     return createdApplication;
+  }, {
+    maxWait: 10000, // Max wait time in ms before giving up acquiring a transaction
+    timeout: 15000  // Total allowed time for the transaction to finish (in ms)
   });
 
   return result;
@@ -189,7 +192,7 @@ const applicationTracking = async (payload: {
       status: true,
       adminNotes: true,
       applicationId: true,
-      loanRequest: true, 
+      loanRequest: true,
       user: {
         select: {
           name: true,
@@ -201,7 +204,7 @@ const applicationTracking = async (payload: {
   });
 
   if (!result) {
-    throw new AppError( 404,'Application not found please enter valid Phone and Application ID'
+    throw new AppError(404, 'Application not found please enter valid Phone and Application ID'
     );
   }
 

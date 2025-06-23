@@ -85,7 +85,10 @@ const createApplicationForm = (payload, user, files) => __awaiter(void 0, void 0
             }
         });
         return createdApplication;
-    }));
+    }), {
+        maxWait: 10000, // Max wait time in ms before giving up acquiring a transaction
+        timeout: 15000 // Total allowed time for the transaction to finish (in ms)
+    });
     return result;
 });
 const myLoanApplication = (user) => __awaiter(void 0, void 0, void 0, function* () {
