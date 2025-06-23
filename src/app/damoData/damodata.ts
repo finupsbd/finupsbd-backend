@@ -135,3 +135,26 @@ export const personalLoanData = [
         }
     }
 ]
+
+
+
+// const getAllApplicationForm = async () => {
+//   const result = await prisma.loanApplicationForm.findMany({
+//     include: {
+//       personalInfo: true,
+//       user: true, 
+//       GuarantorInfo: true, 
+//       loanInfo: true, 
+//       EligibleLoanOffer: true, 
+//       employmentInformation: true, 
+//       loanRequest: true, 
+//       Document: true, 
+//       residentialInformation: true
+//     }
+//   })
+
+//   return result;
+// };
+
+
+

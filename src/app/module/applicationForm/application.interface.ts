@@ -9,20 +9,18 @@ export type TLoanApplicationForm = {
   applicationId?: string;
   userId: string;
   personalInfo?: PersonalInfo;
-  residentialInformation?: ResidentialInformation;
+  residentialInfo?: ResidentialInformation;
   employmentInformation?: EmploymentInformation;
   loanInfo?: LoanInfo;
   loanRequest?: LoanRequest;
-  GuarantorInfo?: GuarantorInfo;
-  PersonalGuarantor?: PersonalGuarantor;
-  BusinessGuarantor?: BusinessGuarantor;
-  personalGuarantorId?: string;
-  businessGuarantorId?: string;
+  guarantorInfo?: GuarantorInfo;
+  personalGuarantor?: PersonalGuarantor;
+  businessGuarantor?: BusinessGuarantor;
 };
 
 export type PersonalInfo = {
   fullName: string;
-  fatherOrHusbandName: string;
+  fatherName: string;
   motherName: string;
   spouseName?: string;
   dateOfBirth: string;
@@ -31,8 +29,8 @@ export type PersonalInfo = {
   gender: Gender;
   maritalStatus: MaritalStatus;
   educationalLevel: EduLavel;
-  identificationType: string;
-  identificationNumber: string;
+  NIDNumber: string
+  passportNumber?: string
   religion: Religion;
   residentialStatus: ResidentialStatus;
   mobileNumber: string;
@@ -66,27 +64,54 @@ export type EmploymentInformation = {
   department: string;
   employeeId: string;
   employmentType: string;
-  dateOfJoining: string;
+  dateOfJoining: string; // ISO Date string
   organizationName: string;
   organizationAddress: string;
   serviceYears: number;
   serviceMonths: number;
   eTin: string;
   officialContact: string;
+
   hasPreviousOrganization: boolean;
   previousOrganizationName?: string;
   previousDesignation?: string;
   previousServiceYears?: number;
   previousServiceMonths?: number;
+
   totalExperienceYears: number;
   totalExperienceMonths: number;
+
+  // Business-related
+  businessName?: string;
+  businessAddress?: string;
+  sharePortion?: string;
+  businessRegistrationNumber?: string;
+  tradeLicenseAge?: string;
+
+  // Professional-related
+  professionType?: string;
+  otherProfession?: string;
+  professionalTitle?: string;
+  institutionName?: string;
+  workplaceAddress?: string;
+  yearsOfExperience?: number;
+  startedPracticeSince?: string; // ISO Date string
+  tin?: string;
+  websitePortfolioLink?: string;
+  professionalRegistrationNumber?: string;
+
+  // Property
   propertyType: string;
   propertyValue: string;
+
+  // Income
   grossMonthlyIncome: string;
   rentIncome?: string;
   otherIncome?: string;
+  sourceOfOtherIncome?: string;
   totalIncome: string;
 };
+
 
 export type LoanInfo = {
   hasCreditCard: boolean;
@@ -111,13 +136,14 @@ export type CreditCardUser = {
 };
 
 export type ExistingLoanUser = {
-  loanType: LoanType;
+  loanType: LoanType; // Assuming `LoanType` is an enum in TypeScript
+  adjustmentPlan: string;
+  disbursedAmount: string;
   otherLoanType?: string;
   lenderName: string;
-  outstandingAmount: number;
-  monthlyEMI: number;
-  toBeClosedBeforeDisbursement: boolean;
-
+  outstanding: string;
+  emi: string;
+  loanInfoId: string;
 };
 
 export type LoanRequest = {
@@ -128,22 +154,27 @@ export type LoanRequest = {
 
 };
 
+
+
+
 export type GuarantorInfo = {
   personalGuarantor: PersonalGuarantor;
-  businessGuarantor?: BusinessGuarantor;
+  businessGuarantor: BusinessGuarantor;
 };
 
 export type BusinessGuarantor = {
-
   mobileNumber: string;
   emailAddress: string;
 };
 
 export type PersonalGuarantor = {
-
   mobileNumber: string;
   emailAddress: string;
 };
+
+
+
+
 
 export enum Gender {
   MALE = "MALE",
@@ -159,11 +190,13 @@ export enum MaritalStatus {
 }
 
 export enum EduLavel {
-  HIGHSCHOOL = "HIGHSCHOOL",
-  BACHELOR = "BACHELOR",
-  MASTER = "MASTER",
+  BELOW_SSC = "BELOW_SSC",
+  SSC = "SSC",
+  HSC = "HSC",
+  GRADUATE = "GRADUATE",
+  POST_GRADUATE = "POST_GRADUATE",
   PHD = "PHD",
-  OTHER = "OTHER"
+  OTHER_EDUCATION = "OTHER_EDUCATION",
 }
 
 export enum Religion {
@@ -181,10 +214,10 @@ export enum ResidentialStatus {
 }
 
 export enum OwnershipStatus {
-  OWNED = "OWNED",
   RENTED = "RENTED",
-  LEASED = "LEASED",
-  OTHER = "OTHER"
+  FAMILY_OWNED = "FAMILY_OWNED",
+  COMPANY_PROVIDED = "COMPANY_PROVIDED"
+
 }
 
 export enum LoanStatus {

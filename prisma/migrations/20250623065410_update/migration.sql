@@ -8,10 +8,10 @@ CREATE TYPE "MainLoanType" AS ENUM ('PERSONAL_LOAN', 'HOME_LOAN', 'CAR_LOAN', 'S
 CREATE TYPE "EGender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
 
 -- CreateEnum
-CREATE TYPE "Profession" AS ENUM ('BUSINESS_OWNER', 'SALARIED');
+CREATE TYPE "Profession" AS ENUM ('BUSINESS_OWNER', 'SALARIED', 'SELF_EMPLOYED');
 
 -- CreateEnum
-CREATE TYPE "BusinessOwnerType" AS ENUM ('PROPRIETOR', 'PARTNER', 'CORPORATION', 'LLC', 'COOPERATIVE', 'JOINT_VENTURE', 'FRANCHISE');
+CREATE TYPE "BusinessOwnerType" AS ENUM ('PROPRIETORSHIP', 'PARTNERSHIP', 'PUBLIC_LIMITED_COMPANY');
 
 -- CreateEnum
 CREATE TYPE "VehicleType" AS ENUM ('CAR_SEDAN', 'CAR_SUV', 'CAR_HATCHBACK', 'BIKE');
@@ -23,6 +23,36 @@ CREATE TYPE "ExistingLoanType" AS ENUM ('HOME_LOAN', 'PERSONAL_LOAN', 'CAR_LOAN'
 CREATE TYPE "CardType" AS ENUM ('CREDIT_CARD', 'DEBIT_CARD');
 
 -- CreateEnum
+CREATE TYPE "EmploymentType" AS ENUM ('PERMANENT', 'CONTRACTUAL', 'PARTTIME', 'PROBATION');
+
+-- CreateEnum
+CREATE TYPE "BOwnerType" AS ENUM ('PROPRIETORSHIP', 'PARTNERSHIP', 'PUBLIC_LIMITED_COMPANY');
+
+-- CreateEnum
+CREATE TYPE "BusinessTypeEmployment" AS ENUM ('RETAIL', 'WHOLESALE', 'MANUFACTURING');
+
+-- CreateEnum
+CREATE TYPE "SelfEmploymentType" AS ENUM ('DOCTOR', 'ENGINEER', 'ARCHITECT', 'ACCOUNTANT', 'ARTIST', 'TEACHER', 'FREELANCER', 'OTHER');
+
+-- CreateEnum
+CREATE TYPE "BusinessOwnerTypeLoan" AS ENUM ('PROPRIETORSHIP', 'PARTNERSHIP', 'LLC', 'CORPORATION', 'OTHER');
+
+-- CreateEnum
+CREATE TYPE "BusinessType" AS ENUM ('WHOLESALE', 'RETAIL', 'SERVICES', 'MANUFACTURING', 'OTHER');
+
+-- CreateEnum
+CREATE TYPE "IdentificationType" AS ENUM ('NID', 'PASSPORT');
+
+-- CreateEnum
+CREATE TYPE "ResidentialStatus" AS ENUM ('RESIDENT', 'NONRESIDENT', 'TEMPORARYRESIDENT');
+
+-- CreateEnum
+CREATE TYPE "Religion" AS ENUM ('ISLAM', 'HINDUISM', 'CHRISTIANITY', 'BUDDHISM', 'OTHER');
+
+-- CreateEnum
+CREATE TYPE "EduLavel" AS ENUM ('BELOW_SSC', 'SSC', 'HSC', 'GRADUATE', 'POST_GRADUATE', 'PHD', 'OTHER_EDUCATION');
+
+-- CreateEnum
 CREATE TYPE "LoanStatus" AS ENUM ('SUBMITTED', 'PENDING', 'IN_PROGRESS', 'APPROVED', 'REJECTED', 'COMPLETED');
 
 -- CreateEnum
@@ -32,10 +62,10 @@ CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
 CREATE TYPE "MaritalStatus" AS ENUM ('SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED');
 
 -- CreateEnum
-CREATE TYPE "OwnershipStatus" AS ENUM ('OWNED', 'RENTED', 'LEASED', 'OTHER');
+CREATE TYPE "OwnershipStatus" AS ENUM ('OWNED', 'RENTED', 'FAMILY_OWNED', 'COMPANY_PROVIDED');
 
 -- CreateEnum
-CREATE TYPE "PropertyType" AS ENUM ('RESIDENTIAL', 'COMMERCIAL', 'LAND');
+CREATE TYPE "PropertyType" AS ENUM ('RESIDENTIAL', 'COMMERCIAL', 'LAND', 'APARTMENT', 'HOUSE', 'OTHER');
 
 -- CreateEnum
 CREATE TYPE "EmploymentStatus" AS ENUM ('SALARIED', 'SELF_EMPLOYED', 'BUSINESS_OWNER');
@@ -424,18 +454,19 @@ CREATE TABLE "loanApplicationForm" (
 CREATE TABLE "PersonalInfo" (
     "id" TEXT NOT NULL,
     "fullName" TEXT NOT NULL,
-    "fatherOrHusbandName" TEXT NOT NULL,
+    "fatherName" TEXT NOT NULL,
     "motherName" TEXT NOT NULL,
     "spouseName" TEXT,
     "dateOfBirth" TIMESTAMP(3) NOT NULL,
     "placeOfBirth" TEXT NOT NULL,
     "nationality" TEXT NOT NULL,
-    "gender" TEXT NOT NULL,
+    "gender" "Gender" NOT NULL,
     "maritalStatus" "MaritalStatus" NOT NULL,
-    "identificationType" TEXT NOT NULL,
-    "identificationNumber" TEXT NOT NULL,
-    "religion" TEXT,
-    "residentialStatus" TEXT,
+    "educationalLevel" "EduLavel" NOT NULL,
+    "NIDNumber" TEXT NOT NULL,
+    "passportNumber" TEXT,
+    "religion" "Religion" NOT NULL,
+    "residentialStatus" "ResidentialStatus" NOT NULL,
     "mobileNumber" TEXT NOT NULL,
     "alternateMobileNumber" TEXT,
     "emailAddress" TEXT NOT NULL,
@@ -443,6 +474,189 @@ CREATE TABLE "PersonalInfo" (
     "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "PersonalInfo_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ResidentialInformation" (
+    "id" TEXT NOT NULL,
+    "presentAddress" TEXT NOT NULL,
+    "presentDistrict" TEXT NOT NULL,
+    "presentDivision" TEXT NOT NULL,
+    "presentLengthOfStay" TEXT NOT NULL,
+    "presentOwnershipStatus" "OwnershipStatus" NOT NULL,
+    "presentPostalCode" TEXT NOT NULL,
+    "presentThana" TEXT NOT NULL,
+    "isPermanentSameAsPresent" BOOLEAN NOT NULL DEFAULT false,
+    "permanentAddress" TEXT,
+    "permanentDistrict" TEXT,
+    "permanentDivision" TEXT,
+    "permanentLengthOfStay" TEXT,
+    "permanentOwnershipStatus" "OwnershipStatus",
+    "permanentThana" TEXT,
+    "permanentPostalCode" TEXT,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "ResidentialInformation_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EmploymentInformation" (
+    "id" TEXT NOT NULL,
+    "employmentStatus" "EmploymentStatus",
+    "jobTitle" TEXT NOT NULL,
+    "designation" TEXT NOT NULL,
+    "department" TEXT NOT NULL,
+    "employeeId" TEXT NOT NULL,
+    "employmentType" "EmploymentType",
+    "dateOfJoining" TIMESTAMP(3) NOT NULL,
+    "organizationName" TEXT NOT NULL,
+    "organizationAddress" TEXT NOT NULL,
+    "serviceYears" TEXT NOT NULL,
+    "serviceMonths" TEXT NOT NULL,
+    "eTin" TEXT NOT NULL,
+    "officialContact" TEXT,
+    "hasPreviousOrganization" BOOLEAN NOT NULL,
+    "previousOrganizationName" TEXT NOT NULL,
+    "previousDesignation" TEXT NOT NULL,
+    "previousServiceYears" TEXT NOT NULL,
+    "previousServiceMonths" TEXT NOT NULL,
+    "totalExperienceYears" TEXT NOT NULL,
+    "totalExperienceMonths" TEXT NOT NULL,
+    "businessName" TEXT NOT NULL,
+    "businessAddress" TEXT NOT NULL,
+    "businessOwnerType" "BOwnerType" NOT NULL,
+    "businessType" "BusinessType" NOT NULL,
+    "sharePortion" TEXT NOT NULL,
+    "businessRegistrationNumber" TEXT NOT NULL,
+    "tradeLicenseAge" TEXT NOT NULL,
+    "professionalTitle" TEXT NOT NULL,
+    "institutionName" TEXT NOT NULL,
+    "workplaceAddress" TEXT NOT NULL,
+    "yearsOfExperience" TEXT NOT NULL,
+    "startedPracticeSince" TIMESTAMP(3) NOT NULL,
+    "tin" TEXT NOT NULL,
+    "websitePortfolioLink" TEXT NOT NULL,
+    "professionalRegistrationNumber" TEXT NOT NULL,
+    "grossMonthlyIncome" TEXT NOT NULL,
+    "rentIncome" TEXT NOT NULL,
+    "otherIncome" TEXT NOT NULL,
+    "sourceOfOtherIncome" TEXT NOT NULL,
+    "totalIncome" TEXT NOT NULL,
+    "professionType" "SelfEmploymentType",
+    "otherProfession" TEXT NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "EmploymentInformation_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Properties" (
+    "id" TEXT NOT NULL,
+    "propertyType" "PropertyType" NOT NULL,
+    "propertyValue" TEXT NOT NULL,
+    "employmentInformationId" TEXT,
+
+    CONSTRAINT "Properties_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "LoanInfo" (
+    "id" TEXT NOT NULL,
+    "hasCreditCard" BOOLEAN NOT NULL,
+    "hasExistingLoan" BOOLEAN NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "LoanInfo_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CreditCardUser" (
+    "id" TEXT NOT NULL,
+    "issuerName" TEXT NOT NULL,
+    "cardLimit" TEXT NOT NULL,
+    "toBeClosedBeforeDisbursement" BOOLEAN NOT NULL,
+    "loanInfoId" TEXT NOT NULL,
+
+    CONSTRAINT "CreditCardUser_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ExistingLoanUser" (
+    "id" TEXT NOT NULL,
+    "loanType" "LoanType" NOT NULL,
+    "adjustmentPlan" TEXT NOT NULL,
+    "disbursedAmount" TEXT NOT NULL,
+    "otherLoanType" TEXT,
+    "lenderName" TEXT NOT NULL,
+    "outstanding" TEXT NOT NULL,
+    "emi" TEXT NOT NULL,
+    "loanInfoId" TEXT NOT NULL,
+
+    CONSTRAINT "ExistingLoanUser_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BankAccount" (
+    "id" TEXT NOT NULL,
+    "bankName" TEXT NOT NULL,
+    "accountNumber" TEXT NOT NULL,
+    "loanInfoId" TEXT NOT NULL,
+
+    CONSTRAINT "BankAccount_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "LoanRequest" (
+    "id" TEXT NOT NULL,
+    "loanAmount" DECIMAL(10,2) NOT NULL,
+    "loanTenure" INTEGER NOT NULL,
+    "loanPurpose" TEXT NOT NULL,
+    "emiStartDate" INTEGER NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "LoanRequest_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "GuarantorInfo" (
+    "id" TEXT NOT NULL,
+    "businessGurantorEmail" TEXT NOT NULL,
+    "businessGurantorPhone" TEXT NOT NULL,
+    "personalGurantorEmail" TEXT NOT NULL,
+    "personalGurantorphone" TEXT NOT NULL,
+    "isEmailSend" BOOLEAN NOT NULL DEFAULT false,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "GuarantorInfo_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Document" (
+    "id" TEXT NOT NULL,
+    "loanApplicationId" TEXT,
+    "url" TEXT NOT NULL,
+    "originalName" TEXT NOT NULL,
+    "mimeType" TEXT NOT NULL,
+    "uploadedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "Document_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EligibleLoanOffer" (
+    "id" TEXT NOT NULL,
+    "bankName" TEXT NOT NULL,
+    "bankImage" TEXT NOT NULL,
+    "loanType" "LoanType" NOT NULL,
+    "amount" DECIMAL(12,2) NOT NULL,
+    "eligibleLoan" DECIMAL(12,2) NOT NULL,
+    "interestRate" DECIMAL(5,2) NOT NULL,
+    "periodMonths" INTEGER NOT NULL,
+    "processingFee" DECIMAL(5,2) NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "EligibleLoanOffer_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -513,6 +727,17 @@ CREATE TABLE "FeesCharges" (
     "personalLoanId" TEXT NOT NULL,
 
     CONSTRAINT "FeesCharges_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "prompthHistory" (
+    "id" TEXT NOT NULL,
+    "sessionId" TEXT NOT NULL,
+    "userPrompth" TEXT NOT NULL,
+    "aiResponce" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "prompthHistory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -767,7 +992,7 @@ CREATE UNIQUE INDEX "EligibilityCreditCard_creditCardId_key" ON "EligibilityCred
 CREATE UNIQUE INDEX "FeesChargesCreditCard_creditCardId_key" ON "FeesChargesCreditCard"("creditCardId");
 
 -- CreateIndex
-CREATE INDEX "eligibilityCheck_loanType_name_email_phone_idx" ON "eligibilityCheck"("loanType", "name", "email", "phone");
+CREATE INDEX "eligibilityCheck_loanType_name_email_phone_isAppliedLoan_idx" ON "eligibilityCheck"("loanType", "name", "email", "phone", "isAppliedLoan");
 
 -- CreateIndex
 CREATE INDEX "existingLoans_eligibilityCheckId_idx" ON "existingLoans"("eligibilityCheckId");
@@ -791,10 +1016,28 @@ CREATE UNIQUE INDEX "EligibilityInstantLoan_InstantLoanId_key" ON "EligibilityIn
 CREATE UNIQUE INDEX "FeesChargesInstantLoan_InstantLoanId_key" ON "FeesChargesInstantLoan"("InstantLoanId");
 
 -- CreateIndex
-CREATE INDEX "loanApplicationForm_applicationId_status_idx" ON "loanApplicationForm"("applicationId", "status");
+CREATE INDEX "loanApplicationForm_applicationId_status_isActive_isDeleted_idx" ON "loanApplicationForm"("applicationId", "status", "isActive", "isDeleted");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "PersonalInfo_loanApplicationFormId_key" ON "PersonalInfo"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ResidentialInformation_loanApplicationFormId_key" ON "ResidentialInformation"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EmploymentInformation_loanApplicationFormId_key" ON "EmploymentInformation"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "LoanInfo_loanApplicationFormId_key" ON "LoanInfo"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "LoanRequest_loanApplicationFormId_key" ON "LoanRequest"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "GuarantorInfo_loanApplicationFormId_key" ON "GuarantorInfo"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EligibleLoanOffer_loanApplicationFormId_key" ON "EligibleLoanOffer"("loanApplicationFormId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "newsLetter_email_key" ON "newsLetter"("email");
@@ -854,4 +1097,157 @@ CREATE UNIQUE INDEX "profiles_userId_key" ON "profiles"("userId");
 CREATE UNIQUE INDEX "KycVerification_userId_key" ON "KycVerification"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "userBanks_bankName_key" ON "userBanks"("bankName");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "userBanks_loginId_key" ON "userBanks"("loginId");
+
+-- AddForeignKey
+ALTER TABLE "blogs" ADD CONSTRAINT "blogs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_blogId_fkey" FOREIGN KEY ("blogId") REFERENCES "blogs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "carLoan" ADD CONSTRAINT "carLoan_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeaturesCarLoan" ADD CONSTRAINT "FeaturesCarLoan_carLoanId_fkey" FOREIGN KEY ("carLoanId") REFERENCES "carLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EligibilityCarLoan" ADD CONSTRAINT "EligibilityCarLoan_carLoanId_fkey" FOREIGN KEY ("carLoanId") REFERENCES "carLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeesChargesCarLoan" ADD CONSTRAINT "FeesChargesCarLoan_carLoanId_fkey" FOREIGN KEY ("carLoanId") REFERENCES "carLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "creditCards" ADD CONSTRAINT "creditCards_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeaturesCreditCard" ADD CONSTRAINT "FeaturesCreditCard_creditCardId_fkey" FOREIGN KEY ("creditCardId") REFERENCES "creditCards"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EligibilityCreditCard" ADD CONSTRAINT "EligibilityCreditCard_creditCardId_fkey" FOREIGN KEY ("creditCardId") REFERENCES "creditCards"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeesChargesCreditCard" ADD CONSTRAINT "FeesChargesCreditCard_creditCardId_fkey" FOREIGN KEY ("creditCardId") REFERENCES "creditCards"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "existingLoans" ADD CONSTRAINT "existingLoans_eligibilityCheckId_fkey" FOREIGN KEY ("eligibilityCheckId") REFERENCES "eligibilityCheck"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "homeLoan" ADD CONSTRAINT "homeLoan_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeaturesHomeLoan" ADD CONSTRAINT "FeaturesHomeLoan_homeLoanId_fkey" FOREIGN KEY ("homeLoanId") REFERENCES "homeLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EligibilityHomeLoan" ADD CONSTRAINT "EligibilityHomeLoan_homeLoanId_fkey" FOREIGN KEY ("homeLoanId") REFERENCES "homeLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeesChargesHomeLoan" ADD CONSTRAINT "FeesChargesHomeLoan_homeLoanId_fkey" FOREIGN KEY ("homeLoanId") REFERENCES "homeLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "instantLoans" ADD CONSTRAINT "instantLoans_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeaturesInstantLoan" ADD CONSTRAINT "FeaturesInstantLoan_InstantLoanId_fkey" FOREIGN KEY ("InstantLoanId") REFERENCES "instantLoans"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EligibilityInstantLoan" ADD CONSTRAINT "EligibilityInstantLoan_InstantLoanId_fkey" FOREIGN KEY ("InstantLoanId") REFERENCES "instantLoans"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeesChargesInstantLoan" ADD CONSTRAINT "FeesChargesInstantLoan_InstantLoanId_fkey" FOREIGN KEY ("InstantLoanId") REFERENCES "instantLoans"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "loanApplicationForm" ADD CONSTRAINT "loanApplicationForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PersonalInfo" ADD CONSTRAINT "PersonalInfo_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ResidentialInformation" ADD CONSTRAINT "ResidentialInformation_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EmploymentInformation" ADD CONSTRAINT "EmploymentInformation_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Properties" ADD CONSTRAINT "Properties_employmentInformationId_fkey" FOREIGN KEY ("employmentInformationId") REFERENCES "EmploymentInformation"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "LoanInfo" ADD CONSTRAINT "LoanInfo_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CreditCardUser" ADD CONSTRAINT "CreditCardUser_loanInfoId_fkey" FOREIGN KEY ("loanInfoId") REFERENCES "LoanInfo"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ExistingLoanUser" ADD CONSTRAINT "ExistingLoanUser_loanInfoId_fkey" FOREIGN KEY ("loanInfoId") REFERENCES "LoanInfo"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BankAccount" ADD CONSTRAINT "BankAccount_loanInfoId_fkey" FOREIGN KEY ("loanInfoId") REFERENCES "LoanInfo"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "LoanRequest" ADD CONSTRAINT "LoanRequest_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "GuarantorInfo" ADD CONSTRAINT "GuarantorInfo_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Document" ADD CONSTRAINT "Document_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EligibleLoanOffer" ADD CONSTRAINT "EligibleLoanOffer_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "personalLoans" ADD CONSTRAINT "personalLoans_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Features" ADD CONSTRAINT "Features_personalLoanId_fkey" FOREIGN KEY ("personalLoanId") REFERENCES "personalLoans"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Eligibility" ADD CONSTRAINT "Eligibility_personalLoanId_fkey" FOREIGN KEY ("personalLoanId") REFERENCES "personalLoans"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeesCharges" ADD CONSTRAINT "FeesCharges_personalLoanId_fkey" FOREIGN KEY ("personalLoanId") REFERENCES "personalLoans"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "smeLoan" ADD CONSTRAINT "smeLoan_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeaturesSMELoan" ADD CONSTRAINT "FeaturesSMELoan_smeLoanId_fkey" FOREIGN KEY ("smeLoanId") REFERENCES "smeLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EligibilitySMELoan" ADD CONSTRAINT "EligibilitySMELoan_smeLoanId_fkey" FOREIGN KEY ("smeLoanId") REFERENCES "smeLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FeesChargesSMELoan" ADD CONSTRAINT "FeesChargesSMELoan_smeLoanId_fkey" FOREIGN KEY ("smeLoanId") REFERENCES "smeLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TestApplication" ADD CONSTRAINT "TestApplication_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TestBasicInfo" ADD CONSTRAINT "TestBasicInfo_testApplicationId_fkey" FOREIGN KEY ("testApplicationId") REFERENCES "TestApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TestContactInfo" ADD CONSTRAINT "TestContactInfo_testApplicationId_fkey" FOREIGN KEY ("testApplicationId") REFERENCES "TestApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TestProfession" ADD CONSTRAINT "TestProfession_testApplicationId_fkey" FOREIGN KEY ("testApplicationId") REFERENCES "TestApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "profiles" ADD CONSTRAINT "profiles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "KycVerification" ADD CONSTRAINT "KycVerification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PageView" ADD CONSTRAINT "PageView_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Activity" ADD CONSTRAINT "Activity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

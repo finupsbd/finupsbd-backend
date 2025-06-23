@@ -17,11 +17,13 @@ var MaritalStatus;
 })(MaritalStatus || (exports.MaritalStatus = MaritalStatus = {}));
 var EduLavel;
 (function (EduLavel) {
-    EduLavel["HIGHSCHOOL"] = "HIGHSCHOOL";
-    EduLavel["BACHELOR"] = "BACHELOR";
-    EduLavel["MASTER"] = "MASTER";
+    EduLavel["BELOW_SSC"] = "BELOW_SSC";
+    EduLavel["SSC"] = "SSC";
+    EduLavel["HSC"] = "HSC";
+    EduLavel["GRADUATE"] = "GRADUATE";
+    EduLavel["POST_GRADUATE"] = "POST_GRADUATE";
     EduLavel["PHD"] = "PHD";
-    EduLavel["OTHER"] = "OTHER";
+    EduLavel["OTHER_EDUCATION"] = "OTHER_EDUCATION";
 })(EduLavel || (exports.EduLavel = EduLavel = {}));
 var Religion;
 (function (Religion) {
@@ -39,10 +41,9 @@ var ResidentialStatus;
 })(ResidentialStatus || (exports.ResidentialStatus = ResidentialStatus = {}));
 var OwnershipStatus;
 (function (OwnershipStatus) {
-    OwnershipStatus["OWNED"] = "OWNED";
     OwnershipStatus["RENTED"] = "RENTED";
-    OwnershipStatus["LEASED"] = "LEASED";
-    OwnershipStatus["OTHER"] = "OTHER";
+    OwnershipStatus["FAMILY_OWNED"] = "FAMILY_OWNED";
+    OwnershipStatus["COMPANY_PROVIDED"] = "COMPANY_PROVIDED";
 })(OwnershipStatus || (exports.OwnershipStatus = OwnershipStatus = {}));
 var LoanStatus;
 (function (LoanStatus) {

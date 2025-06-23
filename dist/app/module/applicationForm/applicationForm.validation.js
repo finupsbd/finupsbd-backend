@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoanApplicationFormSchema = exports.LoanType = exports.LoanStatus = exports.OwnershipStatus = exports.ResidentialStatus = exports.Religion = exports.EduLavel = exports.MaritalStatus = exports.Gender = void 0;
+exports.LoanApplicationFormSchema = exports.employmentInformationSchema = exports.LoanType = exports.LoanStatus = exports.OwnershipStatus = exports.EduLavel = exports.ResidentialStatus = exports.Religion = exports.MaritalStatus = exports.Gender = void 0;
 const zod_1 = require("zod");
 // ── ENUMS ─────────────────────────────────────────────
 exports.Gender = zod_1.z.enum(["MALE", "FEMALE", "OTHER"], { required_error: "Gender is required" });
 exports.MaritalStatus = zod_1.z.enum(["SINGLE", "MARRIED", "DIVORCED", "WIDOWED"], { required_error: "Marital status is required" });
-exports.EduLavel = zod_1.z.enum(["HIGHSCHOOL", "BACHELOR", "MASTER", "PHD", "OTHER"], { required_error: "Educational level is required" });
 exports.Religion = zod_1.z.enum(["ISLAM", "HINDUISM", "CHRISTIANITY", "BUDDHISM", "OTHER"], { required_error: "Religion is required" });
 exports.ResidentialStatus = zod_1.z.enum(["RESIDENT", "NONRESIDENT", "TEMPORARYRESIDENT"], { required_error: "Residential status is required" });
+exports.EduLavel = zod_1.z.enum(["BELOW_SSC", "SSC", "HSC", "GRADUATE", "POST_GRADUATE", "PHD", "OTHER_EDUCATION"], { required_error: "Requre Edication lavel status is required" });
 exports.OwnershipStatus = zod_1.z.enum(["OWNED", "RENTED", "LEASED", "OTHER"]);
 exports.LoanStatus = zod_1.z.enum(["SUBMITTED", "PENDING", "IN_PROGRESS", "APPROVED", "REJECTED", "COMPLETED"]);
 exports.LoanType = zod_1.z.enum(["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN", "INSTANT_LOAN"]);
@@ -23,11 +23,13 @@ const CreditCardUser = zod_1.z.object({
 });
 const ExistingLoanUser = zod_1.z.object({
     loanType: exports.LoanType,
+    adjustmentPlan: zod_1.z.string().min(1, "Adjustment plan is required"),
+    disbursedAmount: zod_1.z.string().min(1, "Disbursed amount is required"),
     otherLoanType: zod_1.z.string().optional(),
     lenderName: zod_1.z.string().min(1, "Lender name is required"),
-    outstandingAmount: zod_1.z.number({ invalid_type_error: "Outstanding amount must be a number" }),
-    monthlyEMI: zod_1.z.number({ invalid_type_error: "Monthly EMI must be a number" }),
-    toBeClosedBeforeDisbursement: zod_1.z.boolean(),
+    outstanding: zod_1.z.string().min(1, "Outstanding is required"),
+    emi: zod_1.z.string().min(1, "EMI is required"),
+    loanInfoId: zod_1.z.string().uuid().min(1, "Loan info ID is required"),
 });
 const PersonalGuarantor = zod_1.z.object({
     mobileNumber: zod_1.z.string().min(11, "Valid mobile number is required"),
@@ -54,33 +56,55 @@ const LoanInfo = zod_1.z.object({
     creditCards: zod_1.z.array(CreditCardUser),
     existingLoans: zod_1.z.array(ExistingLoanUser),
 });
-const EmploymentInformation = zod_1.z.object({
+exports.employmentInformationSchema = zod_1.z.object({
+    id: zod_1.z.string().uuid(),
     employmentStatus: zod_1.z.string().min(1, "Employment status is required"),
-    jobTitle: zod_1.z.string(),
-    designation: zod_1.z.string(),
-    department: zod_1.z.string(),
-    employeeId: zod_1.z.string(),
-    employmentType: zod_1.z.string(),
-    dateOfJoining: zod_1.z.string(),
-    organizationName: zod_1.z.string(),
-    organizationAddress: zod_1.z.string(),
-    serviceYears: zod_1.z.number(),
-    serviceMonths: zod_1.z.number(),
-    eTin: zod_1.z.string(),
-    officialContact: zod_1.z.string(),
+    jobTitle: zod_1.z.string().min(1, "Job title is required"),
+    designation: zod_1.z.string().min(1, "Designation is required"),
+    department: zod_1.z.string().min(1, "Department is required"),
+    employeeId: zod_1.z.string().min(1, "Employee ID is required"),
+    employmentType: zod_1.z.string().min(1, "Employment type is required"),
+    dateOfJoining: zod_1.z.string().datetime("Invalid date format"), // ISO string
+    organizationName: zod_1.z.string().min(1, "Organization name is required"),
+    organizationAddress: zod_1.z.string().min(1, "Organization address is required"),
+    serviceYears: zod_1.z.number().int().nonnegative(),
+    serviceMonths: zod_1.z.number().int().min(0).max(11),
+    eTin: zod_1.z.string().min(1, "eTIN is required"),
+    officialContact: zod_1.z.string().min(1, "Official contact is required"),
     hasPreviousOrganization: zod_1.z.boolean(),
     previousOrganizationName: zod_1.z.string().optional(),
     previousDesignation: zod_1.z.string().optional(),
-    previousServiceYears: zod_1.z.number().optional(),
-    previousServiceMonths: zod_1.z.number().optional(),
-    totalExperienceYears: zod_1.z.number(),
-    totalExperienceMonths: zod_1.z.number(),
-    propertyType: zod_1.z.string(),
-    propertyValue: zod_1.z.string(),
-    grossMonthlyIncome: zod_1.z.string(),
+    previousServiceYears: zod_1.z.number().int().nonnegative().optional(),
+    previousServiceMonths: zod_1.z.number().int().min(0).max(11).optional(),
+    totalExperienceYears: zod_1.z.number().int().nonnegative(),
+    totalExperienceMonths: zod_1.z.number().int().min(0).max(11),
+    // Business-related
+    businessName: zod_1.z.string().optional(),
+    businessAddress: zod_1.z.string().optional(),
+    sharePortion: zod_1.z.string().optional(),
+    businessRegistrationNumber: zod_1.z.string().optional(),
+    tradeLicenseAge: zod_1.z.string().optional(),
+    // Professional-related
+    professionType: zod_1.z.string().optional(),
+    otherProfession: zod_1.z.string().optional(),
+    professionalTitle: zod_1.z.string().optional(),
+    institutionName: zod_1.z.string().optional(),
+    workplaceAddress: zod_1.z.string().optional(),
+    yearsOfExperience: zod_1.z.number().int().nonnegative().optional(),
+    startedPracticeSince: zod_1.z.string().datetime().optional(),
+    tin: zod_1.z.string().optional(),
+    websitePortfolioLink: zod_1.z.string().url().optional(),
+    professionalRegistrationNumber: zod_1.z.string().optional(),
+    // Property
+    propertyType: zod_1.z.string().min(1, "Property type is required"),
+    propertyValue: zod_1.z.string().min(1, "Property value is required"),
+    // Income
+    grossMonthlyIncome: zod_1.z.string().min(1),
     rentIncome: zod_1.z.string().optional(),
     otherIncome: zod_1.z.string().optional(),
-    totalIncome: zod_1.z.string(),
+    sourceOfOtherIncome: zod_1.z.string().optional(),
+    totalIncome: zod_1.z.string().min(1),
+    loanApplicationFormId: zod_1.z.string().min(1),
 });
 const ResidentialInformation = zod_1.z.object({
     presentAddress: zod_1.z.string(),
@@ -101,7 +125,7 @@ const ResidentialInformation = zod_1.z.object({
 });
 const PersonalInfo = zod_1.z.object({
     fullName: zod_1.z.string().min(1, "Full name is required"),
-    fatherOrHusbandName: zod_1.z.string().min(1, "Father or Husband name is required"),
+    fatherName: zod_1.z.string().min(1, "Father or Husband name is required"),
     motherName: zod_1.z.string().min(1, "Mother name is required"),
     spouseName: zod_1.z.string().optional(),
     dateOfBirth: zod_1.z.string().min(1, "Date of birth is required"),
@@ -110,8 +134,8 @@ const PersonalInfo = zod_1.z.object({
     gender: exports.Gender,
     maritalStatus: exports.MaritalStatus,
     educationalLevel: exports.EduLavel,
-    identificationType: zod_1.z.string(),
-    identificationNumber: zod_1.z.string(),
+    NIDNumber: zod_1.z.string(),
+    passportNumber: zod_1.z.string().optional(),
     religion: exports.Religion,
     residentialStatus: exports.ResidentialStatus,
     mobileNumber: zod_1.z.string(),
@@ -122,8 +146,8 @@ const PersonalInfo = zod_1.z.object({
 // ── FINAL MAIN SCHEMA ────────────────────────────────
 exports.LoanApplicationFormSchema = zod_1.z.object({
     personalInfo: PersonalInfo.optional(),
-    residentialInformation: ResidentialInformation.optional(),
-    employmentInformation: EmploymentInformation.optional(),
+    residentialInfo: ResidentialInformation.optional(),
+    employmentInfo: exports.employmentInformationSchema.optional(),
     loanInfo: LoanInfo.optional(),
     loanRequest: LoanRequest.optional(),
     GuarantorInfo: GuarantorInfo.optional(),

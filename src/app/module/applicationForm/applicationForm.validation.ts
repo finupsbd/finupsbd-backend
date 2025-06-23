@@ -3,12 +3,14 @@ import { z } from "zod";
 // ── ENUMS ─────────────────────────────────────────────
 export const Gender = z.enum(["MALE", "FEMALE", "OTHER"], { required_error: "Gender is required" });
 export const MaritalStatus = z.enum(["SINGLE", "MARRIED", "DIVORCED", "WIDOWED"], { required_error: "Marital status is required" });
-export const EduLavel = z.enum(["HIGHSCHOOL", "BACHELOR", "MASTER", "PHD", "OTHER"], { required_error: "Educational level is required" });
 export const Religion = z.enum(["ISLAM", "HINDUISM", "CHRISTIANITY", "BUDDHISM", "OTHER"], { required_error: "Religion is required" });
 export const ResidentialStatus = z.enum(["RESIDENT", "NONRESIDENT", "TEMPORARYRESIDENT"], { required_error: "Residential status is required" });
+export const EduLavel = z.enum(["BELOW_SSC", "SSC", "HSC", "GRADUATE", "POST_GRADUATE", "PHD", "OTHER_EDUCATION"], { required_error: "Requre Edication lavel status is required" });
 export const OwnershipStatus = z.enum(["OWNED", "RENTED", "LEASED", "OTHER"]);
 export const LoanStatus = z.enum(["SUBMITTED", "PENDING", "IN_PROGRESS", "APPROVED", "REJECTED", "COMPLETED"]);
 export const LoanType = z.enum(["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN", "INSTANT_LOAN"]);
+
+
 
 // ── SUB-SCHEMAS ──────────────────────────────────────
 const BankAccount = z.object({
@@ -24,11 +26,13 @@ const CreditCardUser = z.object({
 
 const ExistingLoanUser = z.object({
     loanType: LoanType,
+    adjustmentPlan: z.string().min(1, "Adjustment plan is required"),
+    disbursedAmount: z.string().min(1, "Disbursed amount is required"),
     otherLoanType: z.string().optional(),
     lenderName: z.string().min(1, "Lender name is required"),
-    outstandingAmount: z.number({ invalid_type_error: "Outstanding amount must be a number" }),
-    monthlyEMI: z.number({ invalid_type_error: "Monthly EMI must be a number" }),
-    toBeClosedBeforeDisbursement: z.boolean(),
+    outstanding: z.string().min(1, "Outstanding is required"),
+    emi: z.string().min(1, "EMI is required"),
+    loanInfoId: z.string().uuid().min(1, "Loan info ID is required"),
 });
 
 const PersonalGuarantor = z.object({
@@ -61,33 +65,62 @@ const LoanInfo = z.object({
     existingLoans: z.array(ExistingLoanUser),
 });
 
-const EmploymentInformation = z.object({
+export const employmentInformationSchema = z.object({
+    id: z.string().uuid(),
     employmentStatus: z.string().min(1, "Employment status is required"),
-    jobTitle: z.string(),
-    designation: z.string(),
-    department: z.string(),
-    employeeId: z.string(),
-    employmentType: z.string(),
-    dateOfJoining: z.string(),
-    organizationName: z.string(),
-    organizationAddress: z.string(),
-    serviceYears: z.number(),
-    serviceMonths: z.number(),
-    eTin: z.string(),
-    officialContact: z.string(),
+    jobTitle: z.string().min(1, "Job title is required"),
+    designation: z.string().min(1, "Designation is required"),
+    department: z.string().min(1, "Department is required"),
+    employeeId: z.string().min(1, "Employee ID is required"),
+    employmentType: z.string().min(1, "Employment type is required"),
+    dateOfJoining: z.string().datetime("Invalid date format"), // ISO string
+    organizationName: z.string().min(1, "Organization name is required"),
+    organizationAddress: z.string().min(1, "Organization address is required"),
+    serviceYears: z.number().int().nonnegative(),
+    serviceMonths: z.number().int().min(0).max(11),
+    eTin: z.string().min(1, "eTIN is required"),
+    officialContact: z.string().min(1, "Official contact is required"),
+
     hasPreviousOrganization: z.boolean(),
     previousOrganizationName: z.string().optional(),
     previousDesignation: z.string().optional(),
-    previousServiceYears: z.number().optional(),
-    previousServiceMonths: z.number().optional(),
-    totalExperienceYears: z.number(),
-    totalExperienceMonths: z.number(),
-    propertyType: z.string(),
-    propertyValue: z.string(),
-    grossMonthlyIncome: z.string(),
+    previousServiceYears: z.number().int().nonnegative().optional(),
+    previousServiceMonths: z.number().int().min(0).max(11).optional(),
+
+    totalExperienceYears: z.number().int().nonnegative(),
+    totalExperienceMonths: z.number().int().min(0).max(11),
+
+    // Business-related
+    businessName: z.string().optional(),
+    businessAddress: z.string().optional(),
+    sharePortion: z.string().optional(),
+    businessRegistrationNumber: z.string().optional(),
+    tradeLicenseAge: z.string().optional(),
+
+    // Professional-related
+    professionType: z.string().optional(),
+    otherProfession: z.string().optional(),
+    professionalTitle: z.string().optional(),
+    institutionName: z.string().optional(),
+    workplaceAddress: z.string().optional(),
+    yearsOfExperience: z.number().int().nonnegative().optional(),
+    startedPracticeSince: z.string().datetime().optional(),
+    tin: z.string().optional(),
+    websitePortfolioLink: z.string().url().optional(),
+    professionalRegistrationNumber: z.string().optional(),
+
+    // Property
+    propertyType: z.string().min(1, "Property type is required"),
+    propertyValue: z.string().min(1, "Property value is required"),
+
+    // Income
+    grossMonthlyIncome: z.string().min(1),
     rentIncome: z.string().optional(),
     otherIncome: z.string().optional(),
-    totalIncome: z.string(),
+    sourceOfOtherIncome: z.string().optional(),
+    totalIncome: z.string().min(1),
+
+    loanApplicationFormId: z.string().min(1),
 });
 
 const ResidentialInformation = z.object({
@@ -110,7 +143,7 @@ const ResidentialInformation = z.object({
 
 const PersonalInfo = z.object({
     fullName: z.string().min(1, "Full name is required"),
-    fatherOrHusbandName: z.string().min(1, "Father or Husband name is required"),
+    fatherName: z.string().min(1, "Father or Husband name is required"),
     motherName: z.string().min(1, "Mother name is required"),
     spouseName: z.string().optional(),
     dateOfBirth: z.string().min(1, "Date of birth is required"),
@@ -119,8 +152,8 @@ const PersonalInfo = z.object({
     gender: Gender,
     maritalStatus: MaritalStatus,
     educationalLevel: EduLavel,
-    identificationType: z.string(),
-    identificationNumber: z.string(),
+    NIDNumber: z.string(),
+    passportNumber: z.string().optional(),
     religion: Religion,
     residentialStatus: ResidentialStatus,
     mobileNumber: z.string(),
@@ -132,8 +165,8 @@ const PersonalInfo = z.object({
 // ── FINAL MAIN SCHEMA ────────────────────────────────
 export const LoanApplicationFormSchema = z.object({
     personalInfo: PersonalInfo.optional(),
-    residentialInformation: ResidentialInformation.optional(),
-    employmentInformation: EmploymentInformation.optional(),
+    residentialInfo: ResidentialInformation.optional(),
+    employmentInfo: employmentInformationSchema.optional(),
     loanInfo: LoanInfo.optional(),
     loanRequest: LoanRequest.optional(),
     GuarantorInfo: GuarantorInfo.optional(),

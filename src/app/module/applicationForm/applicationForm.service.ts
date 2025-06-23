@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { prisma } from '../../../app';
+import AppError from '../../error/AppError';
 import { TLoanApplicationForm } from '../../module/applicationForm/application.interface';
 import { TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
 import { generateApplicationId } from '../../utils/generateApplicationId';
@@ -7,75 +9,12 @@ import uploadBufferToCloudinary from '../../utils/loanApplicationDocumentUpload'
 
 
 
-
-// const createApplicationForm = async (
-//   payload: TFullApplicationForm,
-//   user: TMiddlewareUser
-// ) => {
-//   payload.userId = user.userId;
-//   payload.applicationId = (await generateApplicationId()) as string;
-
-//   const existingForm = await prisma.applicationForm.findUnique({
-//     where: { applicationId: payload.applicationId },
-//   });
-
-//   if (existingForm) {
-//     throw new AppError(
-//       StatusCodes.BAD_GATEWAY,
-//       `ApplicationForm with ID ${payload.applicationId} already exists.`
-//     );
-//   }
-
-
-//   const result = await prisma.applicationForm.create({
-//     data: {
-//       applicationId: payload.applicationId,
-//       userId: payload.userId,
-//       personalLoanId: payload.personalLoanId,
-//       userInfo: {
-//         create: payload.userInfo,
-//       },
-//       address: {
-//         create: payload.address,
-//       },
-//       employmentFinancialInfo: {
-//         create: payload.employmentFinancialInfo,
-//       },
-//       loanSpecifications: {
-//         create: payload.loanSpecifications,
-//       },
-//       financialObligations: {
-//         createMany: { data: payload.financialObligations },
-//       },
-//       uploadedDocuments: {
-//         createMany: {
-//           data: payload.uploadedDocuments.map((doc) => ({
-//             type: doc.type,
-//             filePath: doc.filePath,
-//             fileSizeMB: doc.fileSizeMB,
-//             fileType: doc.fileType,
-//           })),
-//         },
-//       },
-//     },
-//     include:{
-//       User: true,
-//       personalLoan: true
-//     }
-//   });
-
-//   return result;
-// };
-
-
-
-//// current word
-
 const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser, files: TUploadedFile[]) => {
-
-  const cloudinaryResults = [];
+  const cloudinaryResults: { url: any; originalName: string; mimeType: string; }[] = [];
   const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
   const filesArray: Express.Multer.File[] = Object.values(filesObj).flat();
+
+
 
   for (const file of filesArray) {
     const uploaded = await uploadBufferToCloudinary(file.buffer, file.originalname, file.mimetype);
@@ -86,103 +25,116 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
     });
   }
 
+  const applicationId = await generateApplicationId();
 
-  console.log({ cloudinaryResults })
-
-
-
-
-
-
-  const applicationId = await generateApplicationId()
-
-
-  // const existingForm = await prisma.loanApplicationForm.findUnique({
-  //   where: { applicationId: payload.applicationId },
-  // });
-
-  // if (existingForm) {
-  //   throw new AppError(
-  //     StatusCodes.BAD_GATEWAY,
-  //     `ApplicationForm with ID ${payload.applicationId} already exists.`
-  //   );
-  // }
+  const gurantorInfo = {
+    businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
+    businessGurantorPhone: payload?.guarantorInfo?.businessGuarantor?.mobileNumber ?? '',
+    personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
+    personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? ''
+  }
 
 
-
-  const result = await prisma.loanApplicationForm.create({
-    data: {
-      applicationId,
-      userId: user.userId,
-      personalInfo: {
-        create: payload.personalInfo
-      },
-      residentialInformation: {
-        create: payload.residentialInformation
-      },
-      employmentInformation: {
-        create: payload.employmentInformation
-      },
-      loanInfo: {
-        create: {
-          hasCreditCard: payload?.loanInfo?.hasCreditCard ?? false,
-          hasExistingLoan: payload?.loanInfo?.hasExistingLoan ?? false,
-          bankAccounts: {
-            create: payload?.loanInfo?.bankAccounts
+  // Begin Transaction
+  const result = await prisma.$transaction(async (tx) => {
+    const createdApplication = await tx.loanApplicationForm.create({
+      data: {
+        applicationId,
+        userId: user.userId,
+        personalInfo: {
+          create: payload.personalInfo,
+        },
+        residentialInformation: {
+          create: payload.residentialInfo,
+        },
+        // employmentInformation: {
+        //   create: payload.employmentInfo,
+        // },
+        loanInfo: {
+          create: {
+            hasCreditCard: payload?.loanInfo?.hasCreditCard ?? false,
+            hasExistingLoan: payload?.loanInfo?.hasExistingLoan ?? false,
+            bankAccounts: {
+              create: payload?.loanInfo?.bankAccounts,
+            },
+            creditCards: {
+              create: payload?.loanInfo?.creditCards,
+            },
+            existingLoans: {
+              create: payload?.loanInfo?.existingLoans,
+            },
           },
-          creditCards: {
-            create: payload?.loanInfo?.creditCards
-          },
-          existingLoans: {
-            create: payload?.loanInfo?.existingLoans
-          }
-        }
-      },
-      loanRequest: {
-        create: payload.loanRequest
-      },
-      GuarantorInfo: {
-        create: {
-          personalGuarantor: {
-            create: payload?.GuarantorInfo?.personalGuarantor
-          },
-          businessGuarantor: {
-            create: payload?.GuarantorInfo?.businessGuarantor
-          }
-        }
-      },
-      Document: {
-        create: cloudinaryResults.map(doc => ({
-          url: doc.url,
-          originalName: doc.originalName,
-          mimeType: doc.mimeType
-        }))
-      },
-    },
-    include: {
-      user: {
-        select: {
-          name: true,
-          email: true
-        }
-      },
-      GuarantorInfo: {
-        include: {
-          personalGuarantor: {
-            select: {
-              emailAddress: true,
-              mobileNumber: true
-            }
-          },
-          businessGuarantor: {
-            select: {
-              emailAddress: true,
-              mobileNumber: true
-            }
-          }
+        },
+        loanRequest: {
+          create: payload.loanRequest,
+        },
+        GuarantorInfo: {
+          create: gurantorInfo
+        },
+        Document: {
+          create: cloudinaryResults.map(doc => ({
+            url: doc.url,
+            originalName: doc.originalName,
+            mimeType: doc.mimeType,
+          })),
         }
       }
+    });
 
+
+    return createdApplication;
+  });
+
+  return result;
+};
+
+
+
+const myLoanApplication = async (user: TMiddlewareUser) => {
+  const { userId } = user
+
+  const result = await prisma.user.findUnique({
+    where: {
+      id: userId
+    },
+    include: {
+      LoanApplicationForm: {
+        include: {
+          personalInfo: true,
+          loanInfo: true,
+          Document: true,
+          loanRequest: true,
+          employmentInformation: true,
+          EligibleLoanOffer: true,
+          GuarantorInfo: true,
+          residentialInformation: true
+        }
+      }
+    }
+  })
+
+  console.log(result)
+
+  return result
+
+}
+
+
+
+
+
+const getAllApplicationForm = async () => {
+  const result = await prisma.loanApplicationForm.findMany({
+    include: {
+      personalInfo: true,
+      user: true,
+      GuarantorInfo: true,
+      loanInfo: true,
+      EligibleLoanOffer: true,
+      employmentInformation: true,
+      loanRequest: true,
+      Document: true,
+      residentialInformation: true
     }
   })
 
@@ -191,32 +143,6 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
 
 
 
-
-// const getAllApplicationForm = async () => {
-//   const result = await prisma.loanApplicationForm.findMany({
-//     include: {
-//       personalInfo: true,
-//       residentialInfo: true,
-//       employmentInfo: true,
-//       loanRequest: true,
-//       financialObligations: true,
-//       documents: true,
-//       guarantorInfo: true,
-//       user: {
-//         select: {
-//           id: true,
-//           name: true,
-//           email: true,
-//           phone: true,
-//           userId: true,
-//           role: true,
-//           profile: true,
-//         },
-//       },
-//   }})
-
-//   return result;
-// };
 
 // const updateStatus = async (id: string, payload: {status: LoanStatus, adminNotes: string}) => {
 // console.log(payload)
@@ -234,71 +160,53 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
 
 //   return result;
 // }
-// const getSingleApplication = async (id: string) => {
+const getSingleApplication = async (id: string) => {
 
-//   const result = await prisma.loanApplicationForm.findFirst({
-//     where: {id}, 
-//     include: {
-//       personalInfo: true,
-//       residentialInfo: true,
-//       employmentInfo: true,
-//       loanRequest: true,
-//       financialObligations: true,
-//       documents: true,
-//       guarantorInfo: true,
-//       user: {
-//         select: {
-//           id: true,
-//           name: true,
-//           email: true,
-//           phone: true,
-//           userId: true,
-//           role: true,
-//           profile: true,
-//         },
-//       },
-//   }
+  const result = await prisma.loanApplicationForm.findFirst({
+    where: { id },
+    include: {
+      residentialInformation: true
+    }
 
-//   })
+  })
 
-//   return result;
-// }
-// const applicationTracking = async (payload: {
-//   applicationId: string;
-//   phone: string;
-// }) => {
-//   console.log(payload);
-//   const result = await prisma.loanApplicationForm.findFirst({
-//     where: {
-//       applicationId: payload.applicationId,
-//       user: {
-//         phone: payload.phone,
-//       },
-//     },
-//     select: {
-//       status: true,
-//       adminNotes: true,
-//       applicationId: true,
-//       loanRequest: true, 
-//       user: {
-//         select: {
-//           name: true,
-//           userId: true,
-//           profile: true,
-//         },
-//       },
-//     },
-//   });
+  return result;
+}
 
-//   if (!result) {
-//     throw new AppError(
-//       404,
-//       'Application not found please enter valid Phone and Application ID'
-//     );
-//   }
+const applicationTracking = async (payload: {
+  applicationId: string;
+  phone: string;
+}) => {
+  console.log(payload);
+  const result = await prisma.loanApplicationForm.findFirst({
+    where: {
+      applicationId: payload.applicationId,
+      user: {
+        phone: payload.phone,
+      },
+    },
+    select: {
+      status: true,
+      adminNotes: true,
+      applicationId: true,
+      loanRequest: true, 
+      user: {
+        select: {
+          name: true,
+          userId: true,
+          profile: true,
+        },
+      },
+    },
+  });
 
-//   return result;
-// };
+  if (!result) {
+    throw new AppError( 404,'Application not found please enter valid Phone and Application ID'
+    );
+  }
+
+  return result;
+};
 
 // const applicationForget = async (payload: { email: string; phone: string }) => {
 //   const result = await prisma.user.findFirst({
@@ -386,35 +294,13 @@ const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddl
 
 
 
-// payload.applicationId = await generateApplicationId();
-
-// const existingForm = await prisma.loanApplicationForm.findUnique({
-//   where: { applicationId: payload.applicationId },
-// });
-
-// if (existingForm) {
-//   throw new AppError(
-//     StatusCodes.BAD_GATEWAY,
-//     `ApplicationForm with ID ${payload.applicationId} already exists.`
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
 
 export const ApplicationFromService = {
   createApplicationForm,
-  // getAllApplicationForm,
+  getAllApplicationForm,
   // updateStatus, 
-  // getSingleApplication,  
-  // applicationTracking,
+  getSingleApplication,
+  applicationTracking,
   // applicationForget, 
+  myLoanApplication
 };
