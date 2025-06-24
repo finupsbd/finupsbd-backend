@@ -7,6 +7,8 @@ import { TUserProfile } from "./profile.interface";
 
 const createProfile = async (payload: TUserProfile, user: any, image: any) => {
 
+  console.log({payload})
+
   const profileImage = await sendImageToCloud(image)
   payload.avatar = profileImage ?? undefined;
 

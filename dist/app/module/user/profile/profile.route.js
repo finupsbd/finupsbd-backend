@@ -10,5 +10,4 @@ const auth_1 = __importDefault(require("../../../middleware/auth"));
 const sendImageToCloud_1 = require("../../../utils/sendImageToCloud");
 const router = express_1.default.Router();
 router.post('/', sendImageToCloud_1.upload.single('file'), (0, auth_1.default)("USER", "ADMIN", "SUPER_ADMIN"), profile_controller_1.ProfileController.createProfile);
-// router.get('/',);
 exports.ProfileRouter = router;

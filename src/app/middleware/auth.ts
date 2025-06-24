@@ -27,7 +27,7 @@ const auth = (...requiredRoles: string[]) => {
         const user = await prisma.user.findUnique({where: {email: decode.email}})
       
         if(!user){
-            throw new AppError(StatusCodes.NOT_FOUND,"Your not Found")
+            throw new AppError(StatusCodes.NOT_FOUND,"User not Found")
         }
 
         if(!user?.isActive){

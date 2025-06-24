@@ -1,95 +1,257 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { prisma } from '../../../app';
+import { ConfigFile } from '../../../config';
 import AppError from '../../error/AppError';
 import { TLoanApplicationForm } from '../../module/applicationForm/application.interface';
-import { TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
+import { TLoanRequest, TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
+import { gurantorEmailTemplate } from '../../utils/email-template/gurantor';
 import { generateApplicationId } from '../../utils/generateApplicationId';
 import uploadBufferToCloudinary from '../../utils/loanApplicationDocumentUpload';
+import maskMobileNumber from '../../utils/maskedMobileNumber';
+import sendEmail from '../../utils/sendEmail';
 
 
 
-const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser, files: TUploadedFile[]) => {
-  const cloudinaryResults: { url: any; originalName: string; mimeType: string; }[] = [];
-  const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
-  const filesArray: Express.Multer.File[] = Object.values(filesObj).flat();
+// const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser, files: TUploadedFile[], loanRequest: TLoanRequest) => {
+//   const cloudinaryResults: { url: any; originalName: string; mimeType: string; }[] = [];
+//   const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
+//   const filesArray: Express.Multer.File[] = Object.values(filesObj).flat();
 
 
 
-  for (const file of filesArray) {
-    const uploaded = await uploadBufferToCloudinary(file.buffer, file.originalname, file.mimetype);
-    cloudinaryResults.push({
-      url: uploaded.secure_url,
-      originalName: file.originalname,
-      mimeType: file.mimetype,
-    });
-  }
+//   for (const file of filesArray) {
+//     const uploaded = await uploadBufferToCloudinary(file.buffer, file.originalname, file.mimetype);
+//     cloudinaryResults.push({
+//       url: uploaded.secure_url,
+//       originalName: file.originalname,
+//       mimeType: file.mimetype,
+//     });
+//   }
 
-  const applicationId = await generateApplicationId();
+//   const applicationId = await generateApplicationId();
 
-  const gurantorInfo = {
-    businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
-    businessGurantorPhone: payload?.guarantorInfo?.businessGuarantor?.mobileNumber ?? '',
-    personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
-    personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? ''
-  }
+//   const gurantorInfo = {
+//     businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
+//     businessGurantorPhone: payload?.guarantorInfo?.businessGuarantor?.mobileNumber ?? '',
+//     personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
+//     personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? ''
+//   }
 
 
-  // Begin Transaction
-  const result = await prisma.$transaction(async (tx) => {
-    const createdApplication = await tx.loanApplicationForm.create({
-      data: {
-        applicationId,
-        userId: user.userId,
-        personalInfo: {
-          create: payload.personalInfo,
-        },
-        residentialInformation: {
-          create: payload.residentialInfo,
-        },
-        // employmentInformation: {
-        //   create: payload.employmentInfo,
-        // },
-        loanInfo: {
-          create: {
-            hasCreditCard: payload?.loanInfo?.hasCreditCard ?? false,
-            hasExistingLoan: payload?.loanInfo?.hasExistingLoan ?? false,
-            bankAccounts: {
-              create: payload?.loanInfo?.bankAccounts,
-            },
-            creditCards: {
-              create: payload?.loanInfo?.creditCards,
-            },
-            existingLoans: {
-              create: payload?.loanInfo?.existingLoans,
+//   // Begin Transaction
+//   const result = await prisma.$transaction(async (tx) => {
+//     const createdApplication = await tx.loanApplicationForm.create({
+//       data: {
+//         applicationId,
+//         userId: user.userId,
+//         personalInfo: {
+//           create: payload.personalInfo,
+//         },
+//         residentialInformation: {
+//           create: payload.residentialInfo,
+//         },
+//         // employmentInformation: {
+//         //   create: payload.employmentInfo,
+//         // },
+//         loanInfo: {
+//           create: {
+//             hasCreditCard: payload?.loanInfo?.hasCreditCard ?? false,
+//             hasExistingLoan: payload?.loanInfo?.hasExistingLoan ?? false,
+//             bankAccounts: {
+//               create: payload?.loanInfo?.bankAccounts,
+//             },
+//             creditCards: {
+//               create: payload?.loanInfo?.creditCards,
+//             },
+//             existingLoans: {
+//               create: payload?.loanInfo?.existingLoans,
+//             },
+//           },
+//         },
+//         loanRequest: {
+//           create: payload.loanRequest,
+//         },
+//         GuarantorInfo: {
+//           create: gurantorInfo
+//         },
+//         Document: {
+//           create: cloudinaryResults.map(doc => ({
+//             url: doc.url,
+//             originalName: doc.originalName,
+//             mimeType: doc.mimeType,
+//           })),
+//         }, 
+//         EligibleLoanOffer: {
+//           create: loanRequest
+//         }
+        
+//       }, 
+      
+//       include: {
+//         GuarantorInfo: true, 
+//         user: {
+//           select: {
+//             name: true, 
+//             phone: true, 
+//             email: true
+//           }
+//         }
+//       }
+//     });
+
+
+//     return createdApplication;
+//   }, {
+//     maxWait: 10000, // Max wait time in ms before giving up acquiring a transaction
+//     timeout: 15000  // Total allowed time for the transaction to finish (in ms)
+//   });
+
+//   console.log("result",result)
+
+
+
+//   if (result) {
+//     const personaGurantor = result?.GuarantorInfo?.personalGurantorEmail
+//     const businessGurantor = result?.GuarantorInfo?.businessGurantorEmail
+
+//     console.log("email",personaGurantor, businessGurantor)
+
+//     const linkPersonalGurantor = `${ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${result?.applicationId}&id=${result?.id}`
+//     const linkBusinessGurantor = `${ConfigFile.CLIENT_URL}/guarantor-info/business-guarantor?applicationId=${result?.applicationId}&id=${result?.id}`
+
+
+//     const personaGurantorTemplate = gurantorEmailTemplate(result?.user?.phone ?? '', result?.user?.name ?? '', linkPersonalGurantor)  
+//     const businessGurantorTemplate = gurantorEmailTemplate(result?.user?.phone ?? '', result?.user?.name ?? '', linkBusinessGurantor)  
+
+//     await sendEmail(personaGurantor ?? '', "Gurantor Info Request", personaGurantorTemplate)
+//     await sendEmail(businessGurantor ?? '', "Gurantor Info Request", businessGurantorTemplate)
+
+//     console.log("email send")
+//   }
+
+
+//   return result;
+// };
+
+
+const createApplicationForm = async (
+  payload: TLoanApplicationForm,
+  user: TMiddlewareUser,
+  files: TUploadedFile[],
+  loanRequest: TLoanRequest
+) => {
+  try {
+    // Parse files and upload to Cloudinary
+    const cloudinaryResults: { url: string; originalName: string; mimeType: string }[] = [];
+    const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
+    const filesArray: Express.Multer.File[] = Object.values(filesObj).flat();
+
+    for (const file of filesArray) {
+      try {
+        const uploaded = await uploadBufferToCloudinary(file.buffer, file.originalname, file.mimetype);
+        cloudinaryResults.push({
+          url: uploaded.secure_url,
+          originalName: file.originalname,
+          mimeType: file.mimetype,
+        });
+      } catch (err) {
+        console.error(`Failed to upload ${file.originalname}:`, err);
+        // Optionally: continue or throw depending on business rules
+      }
+    }
+
+    console.log("Loan Request", loanRequest)
+
+    const applicationId = await generateApplicationId();
+
+    const guarantorInfo = {
+      businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
+      businessGurantorPhone: payload?.guarantorInfo?.businessGuarantor?.mobileNumber ?? '',
+      personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
+      personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? '',
+    };
+
+    // Begin DB Transaction
+    const createdApplication = await prisma.$transaction(async (tx) => {
+      return await tx.loanApplicationForm.create({
+        data: {
+          applicationId,
+          userId: user.userId,
+
+          personalInfo: { create: payload.personalInfo },
+          residentialInformation: { create: payload.residentialInfo },
+
+          loanInfo: {
+            create: {
+              hasCreditCard: payload.loanInfo?.hasCreditCard ?? false,
+              hasExistingLoan: payload.loanInfo?.hasExistingLoan ?? false,
+              bankAccounts: { create: payload.loanInfo?.bankAccounts ?? [] },
+              creditCards: { create: payload.loanInfo?.creditCards ?? [] },
+              existingLoans: { create: payload.loanInfo?.existingLoans ?? [] },
             },
           },
+
+          loanRequest: { create: payload.loanRequest },
+          GuarantorInfo: { create: guarantorInfo },
+
+          Document: {
+            create: cloudinaryResults.map((doc) => ({
+              url: doc.url,
+              originalName: doc.originalName,
+              mimeType: doc.mimeType,
+            })),
+          },
+
+          EligibleLoanOffer: {
+            create: loanRequest,
+          },
         },
-        loanRequest: {
-          create: payload.loanRequest,
+
+        include: {
+          GuarantorInfo: true,
+          user: {
+            select: { name: true, phone: true, email: true },
+          },
         },
-        GuarantorInfo: {
-          create: gurantorInfo
-        },
-        Document: {
-          create: cloudinaryResults.map(doc => ({
-            url: doc.url,
-            originalName: doc.originalName,
-            mimeType: doc.mimeType,
-          })),
-        }
-      }
+      });
+    }, {
+      maxWait: 10000,
+      timeout: 15000,
     });
 
+    // Notify Guarantors via Email
+    const { GuarantorInfo, user: applicant } = createdApplication;
 
+    const emailTasks: Promise<any>[] = [];
+
+    if (GuarantorInfo?.personalGurantorEmail) {
+      const personalGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
+      const personalTemplate = gurantorEmailTemplate(applicant.phone ?? '', applicant.name ?? '', personalGuarantorLink);
+      emailTasks.push(sendEmail(GuarantorInfo.personalGurantorEmail, "Personal Guarantor Info Request", personalTemplate));
+    }
+
+    if (GuarantorInfo?.businessGurantorEmail) {
+      const businessGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/business-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
+      const businessTemplate = gurantorEmailTemplate(applicant.phone ?? '', applicant.name ?? '', businessGuarantorLink);
+      emailTasks.push(sendEmail(GuarantorInfo.businessGurantorEmail, "Business Guarantor Info Request", businessTemplate));
+    }
+
+    await Promise.all(emailTasks);
+
+    console.log("All emails sent successfully.");
     return createdApplication;
-  }, {
-    maxWait: 10000, // Max wait time in ms before giving up acquiring a transaction
-    timeout: 15000  // Total allowed time for the transaction to finish (in ms)
-  });
 
-  return result;
+  } catch (error) {
+    console.error("Error while creating loan application form:", error);
+    let message = "Failed to process loan application. Please try again.";
+    if (error && typeof error === "object" && "message" in error && typeof (error as any).message === "string") {
+      message = (error as any).message;
+    }
+    throw new AppError(502, message);
+  }
 };
+
 
 
 
@@ -132,12 +294,28 @@ const getAllApplicationForm = async () => {
       personalInfo: true,
       user: true,
       GuarantorInfo: true,
-      loanInfo: true,
+      loanInfo: {
+        include: {
+          bankAccounts: true, 
+          creditCards: true, 
+          existingLoans: true,
+        }
+      },
       EligibleLoanOffer: true,
       employmentInformation: true,
       loanRequest: true,
       Document: true,
-      residentialInformation: true
+      residentialInformation: true,
+      PersonalGuarantor: {
+        include: {
+          document: true
+        }
+      }, 
+      BusinessGuarantor: {
+        include: {
+          document: true
+        }
+      }, 
     }
   })
 
@@ -211,91 +389,92 @@ const applicationTracking = async (payload: {
   return result;
 };
 
-// const applicationForget = async (payload: { email: string; phone: string }) => {
-//   const result = await prisma.user.findFirst({
-//     where: {
-//       phone: payload.phone,
-//     },
-//     include: {
-//       ApplicationForm: {
-//         select: {
-//           applicationId: true,
-//           loanSpecifications: {
-//             select: {
-//               loanType: true,
-//             },
-//           },
-//         },
-//       },
-//     },
-//   });
+const applicationForget = async (payload: { email: string; phone: string }) => {
+  const result = await prisma.user.findFirst({
+    where: {
+      OR: [
+        { email: payload.email },
+        { phone: payload.phone }
+      ],
+    },
+    include: {
+      LoanApplicationForm: {
+        select: {
+          applicationId: true,
+          EligibleLoanOffer: true
+        }
+      }, 
+    },
+  });
 
-//   if (
-//     !result ||
-//     !result.ApplicationForm ||
-//     result.ApplicationForm.length === 0
-//   ) {
-//     throw new AppError(404, 'No application found for this user.');
-//   }
+  console.log(result)
+
+  if (!result || !result.LoanApplicationForm ||result.LoanApplicationForm.length === 0) {
+    throw new AppError(404, 'No Loan application found!');
+  }
 
 //   // Prepare application details for email
-//   const applications = result.ApplicationForm.map((app) => ({
-//     applicationId: app.applicationId,
-//     loanType: app.loanSpecifications?.loanType || 'Unknown',
-//   }));
+  const applications = result.LoanApplicationForm.map((app) => ({
+    applicationId: app.applicationId,
+    loanType: app.EligibleLoanOffer?.loanType || 'Unknown',
+  }));
 
-//   const applicationDetails = applications
-//     .map(
-//       (app) =>
-//         `<li><strong>Application ID:</strong> ${app.applicationId}, <strong>Loan Type:</strong> ${app.loanType}</li>`
-//     )
-//     .join('');
-//   console.log(applicationDetails);
-//   const subject = 'Your Application ID';
-//   const html = `
-//   <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-//     <div style="text-align: center; background-color: #28a745; color: #ffffff; padding: 15px 0; border-radius: 8px 8px 0 0;">
-//       <h2 style="margin: 0; font-size: 20px;">FinupsBD</h2>
-//       <p style="margin: 0; font-size: 14px;">Helping you achieve your financial goals</p>
-//     </div>
-//     <p style="font-size: 16px; font-weight: bold; color: #444;">Dear ${result?.name},</p>
-//     <p style="font-size: 14px; color: #555;">
-//       Thank you for submitting your application. We have successfully received your details, and they are now under review. Below are the details of your application:
-//     </p>
-//     <ul style="font-size: 14px; color: #444; padding-left: 20px; list-style-type: disc;">
-//       ${applicationDetails}
-//     </ul>
-//     <p style="font-size: 14px; color: #555;">
-//       If you have any questions or need further assistance, please don't hesitate to contact our support team at 
-//       <a href="mailto:finupsbd@gmail.com" style="color: #28a745; text-decoration: underline; font-weight: bold;">finupsbd@gmail.com</a>.
-//     </p>
-//     <p style="font-size: 14px; color: #555;">
-//       We appreciate your trust in us and look forward to serving you.
-//     </p>
-//     <p style="font-size: 14px; color: #555;">Best regards,</p>
-//     <p style="font-size: 16px; font-weight: bold; color: #28a745;">FinupsBD Team</p>
-//     <footer style="margin-top: 20px; background-color: #f4f4f4; padding: 10px; border-radius: 8px; text-align: center; font-size: 12px; color: #777;">
-//       <p style="margin: 0;">© 2025 FinupsBD. All rights reserved.</p>
-//     </footer>
-//   </div>
-// `;
+  const applicationDetails = applications
+    .map(
+      (app) =>
+        `<li><strong>Application ID:</strong> ${app.applicationId}, <strong>Loan Type:</strong> ${app.loanType}</li>`
+    )
+    .join('');
+  console.log(applicationDetails);
+  const subject = 'Your Application ID';
 
-
-//   await sendEmail(result.email, subject, html);
-
-//   const maskedPhoneNumber = maskMobileNumber(result.phone)
-//   const userEmail = result.email
-//   // const maskedEmailAddress =  maskMobileNumber(result.email)
+  const html = `
+  <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <div style="text-align: center; background-color: #28a745; color: #ffffff; padding: 15px 0; border-radius: 8px 8px 0 0;">
+      <h2 style="margin: 0; font-size: 20px;">FinupsBD</h2>
+      <p style="margin: 0; font-size: 14px;">Helping you achieve your financial goals</p>
+    </div>
+    <p style="font-size: 16px; font-weight: bold; color: #444;">Dear ${result?.name},</p>
+    <p style="font-size: 14px; color: #555;">
+      Thank you for submitting your application. We have successfully received your details, and they are now under review. Below are the details of your application:
+    </p>
+    <ul style="font-size: 14px; color: #444; padding-left: 20px; list-style-type: disc;">
+      ${applicationDetails}
+    </ul>
+    <p style="font-size: 14px; color: #555;">
+      If you have any questions or need further assistance, please don't hesitate to contact our support team at 
+      <a href="mailto:finupsbd@gmail.com" style="color: #28a745; text-decoration: underline; font-weight: bold;">finupsbd@gmail.com</a>.
+    </p>
+    <p style="font-size: 14px; color: #555;">
+      We appreciate your trust in us and look forward to serving you.
+    </p>
+    <p style="font-size: 14px; color: #555;">Best regards,</p>
+    <p style="font-size: 16px; font-weight: bold; color: #28a745;">FinupsBD Team</p>
+    <footer style="margin-top: 20px; background-color: #f4f4f4; padding: 10px; border-radius: 8px; text-align: center; font-size: 12px; color: #777;">
+      <p style="margin: 0;">© 2025 FinupsBD. All rights reserved.</p>
+    </footer>
+  </div>
+`;
 
 
-//   return {
-//     maskedPhoneNumber,
-//     userEmail
-//   };
-// };
+  await sendEmail(result.email, subject, html);
+
+  const maskedPhoneNumber = maskMobileNumber(result.phone)
+  const userEmail = result.email
+  const maskedEmailAddress =  maskMobileNumber(result.email)
 
 
+  return {
+    maskedPhoneNumber,
+    userEmail,
+    maskedEmailAddress
+  };
+};
 
+
+const applicantGuarantorInfo = async()=>{
+
+}
 
 
 export const ApplicationFromService = {
@@ -304,6 +483,6 @@ export const ApplicationFromService = {
   // updateStatus, 
   getSingleApplication,
   applicationTracking,
-  // applicationForget, 
+  applicationForget, 
   myLoanApplication
 };

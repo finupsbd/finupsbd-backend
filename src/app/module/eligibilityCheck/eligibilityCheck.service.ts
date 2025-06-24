@@ -5,6 +5,7 @@ import { prisma } from "../../../app";
 import { TEligibilityCheck } from "./eligibilityCheck.interface";
 import personalLoan from "./eligibilityCheck/personalLoan";
 import { instantLoan } from "./eligibilityCheck/instantLoan";
+import debounce from 'lodash/debounce';
 // import homeLoan from "./eligibilityCheck/homeLoan";
 // import smeLoan from "./eligibilityCheck/smeLoan";
 
@@ -61,7 +62,7 @@ const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string
   }
 
   return handler(eligibilityCheckEntry as unknown as TEligibilityCheck, query);
-};
+}
 
 
 

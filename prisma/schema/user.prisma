@@ -29,7 +29,6 @@ model User {
   InstantLoan         InstantLoan[]
   CreditCard          CreditCard[]
   Comment             Comment[]
-  TestApplication     TestApplication[]
   LoanApplicationForm LoanApplicationForm[]
 
   @@index([email])
@@ -50,6 +49,7 @@ model Profile {
   city             String
   userId           String            @unique
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@map("profiles")
 }
 

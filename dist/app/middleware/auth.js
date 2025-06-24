@@ -32,7 +32,7 @@ const auth = (...requiredRoles) => {
         const decode = yield jsonwebtoken_1.default.verify(token, config_1.ConfigFile.JWT_ACCESS_SECRET);
         const user = yield app_1.prisma.user.findUnique({ where: { email: decode.email } });
         if (!user) {
-            throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "Your not Found");
+            throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "User not Found");
         }
         if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
             throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, "You are not valid user");

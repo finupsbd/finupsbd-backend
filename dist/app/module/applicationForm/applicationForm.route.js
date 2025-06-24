@@ -12,16 +12,13 @@ const route = express_1.default.Router();
 const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage() }); // keeps files in memory
 route.post('/create-application', (0, auth_1.default)('USER', 'SUPER_ADMIN', 'ADMIN'), upload.fields([
     { name: 'files', maxCount: 10 }, // your uploaded files
-    { name: 'data', maxCount: 1 } // your stringified JSON
+    { name: 'data', maxCount: 1 },
+    { name: 'loanRequest', maxCount: 1 } // your stringified JSON
 ]), applicationForm_controller_1.ApplicationController.createApplicationForm);
-route.post('/applicant-guarator-info', upload.array("files"), applicationForm_controller_1.ApplicationController.applicantGuarantorInfo);
+///gurantor in update
+route.post('/applicant-guarator-info-personal', upload.array("files"), applicationForm_controller_1.ApplicationController.applicantGuarantorInfoPersonal);
+route.post('/applicant-guarator-info-business', upload.array("files"), applicationForm_controller_1.ApplicationController.applicantGuarantorInfoBusiness);
 route.get('/my-loan-application', (0, auth_1.default)('USER', 'SUPER_ADMIN', 'ADMIN'), applicationForm_controller_1.ApplicationController.myLoanApplication);
-// route.patch(
-//   '/update-status/:id',
-//   auth('SUPER_ADMIN', 'ADMIN'),
-//   validateRequest(ApplicationValidationSchema.ApplicationStatusUpdateValidation),
-//   ApplicationController.statusUpdate
-// ); 
 route.get('/', applicationForm_controller_1.ApplicationController.getAllApplicationForm);
 route.post('/application-tracking', applicationForm_controller_1.ApplicationController.applicationTracking);
 route.post('/application-forget', applicationForm_controller_1.ApplicationController.applicationForget);

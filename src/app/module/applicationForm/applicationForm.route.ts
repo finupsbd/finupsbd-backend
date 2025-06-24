@@ -18,25 +18,21 @@ const upload = multer({ storage: multer.memoryStorage() }); // keeps files in me
 
 route.post('/create-application', auth('USER', 'SUPER_ADMIN', 'ADMIN'),  upload.fields([
     { name: 'files', maxCount: 10 },     // your uploaded files
-    { name: 'data', maxCount: 1 }        // your stringified JSON
+    { name: 'data', maxCount: 1 }, 
+    { name: 'loanRequest', maxCount: 1 }    // your stringified JSON
 ]), ApplicationController.createApplicationForm);
 
 
-route.post('/applicant-guarator-info', upload.array("files"), ApplicationController.applicantGuarantorInfo);
+///gurantor in update
+
+route.post('/applicant-guarator-info-personal', upload.array("files"), ApplicationController.applicantGuarantorInfoPersonal);
+
+route.post('/applicant-guarator-info-business', upload.array("files"), ApplicationController.applicantGuarantorInfoBusiness);
+
+
 
 
 route.get('/my-loan-application',auth('USER', 'SUPER_ADMIN', 'ADMIN'), ApplicationController.myLoanApplication)      
-
-
-
-// route.patch(
-//   '/update-status/:id',
-//   auth('SUPER_ADMIN', 'ADMIN'),
-//   validateRequest(ApplicationValidationSchema.ApplicationStatusUpdateValidation),
-//   ApplicationController.statusUpdate
-// ); 
-
-
 
 route.get('/', ApplicationController.getAllApplicationForm);
 route.post('/application-tracking', ApplicationController.applicationTracking)

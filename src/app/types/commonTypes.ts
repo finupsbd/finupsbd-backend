@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export const blacklistedTokens: Set<string> = new Set();
 
 export type TMiddlewareUser = {
@@ -31,3 +32,23 @@ export type TUploadedFile = {
 };
 
 
+
+
+export interface TLoanRequest {
+  bankName: string
+  bankImage: string
+  loanType: LoanType
+  amount: string
+  eligibleLoan: string
+  interestRate: string
+  periodMonths: number
+  processingFee: string
+}
+
+enum LoanType {
+  PERSONAL_LOAN = 'PERSONAL_LOAN',
+  HOME_LOAN = 'HOME_LOAN',
+  CAR_LOAN = 'CAR_LOAN',
+  SME_LOAN = 'SME_LOAN',
+  INSTANT_LOAN = 'INSTANT_LOAN'
+}

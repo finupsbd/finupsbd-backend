@@ -14,6 +14,7 @@ exports.ProfileServices = void 0;
 const app_1 = require("../../../../app");
 const sendImageToCloud_1 = require("../../../utils/sendImageToCloud");
 const createProfile = (payload, user, image) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log({ payload });
     const profileImage = yield (0, sendImageToCloud_1.sendImageToCloud)(image);
     payload.avatar = profileImage !== null && profileImage !== void 0 ? profileImage : undefined;
     yield app_1.prisma.user.update({

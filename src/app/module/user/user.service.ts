@@ -110,7 +110,7 @@ const meProfile = async (user: any) => {
       emailVerified: true,
       LoanApplicationForm: {
         include: {
-          user: true,
+           loanRequest: true, 
         }
       }
     },
