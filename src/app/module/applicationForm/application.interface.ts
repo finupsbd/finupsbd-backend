@@ -10,7 +10,7 @@ export type TLoanApplicationForm = {
   userId: string;
   personalInfo?: PersonalInfo;
   residentialInfo?: ResidentialInformation;
-  employmentInformation?: EmploymentInformation;
+  employmentInfo?: EmploymentInformation;
   loanInfo?: LoanInfo;
   loanRequest?: LoanRequest;
   guarantorInfo?: GuarantorInfo;
@@ -58,7 +58,7 @@ export type ResidentialInformation = {
 };
 
 export type EmploymentInformation = {
-  employmentStatus: string;
+  employmentStatus: EmploymentStatus;
   jobTitle: string;
   designation: string;
   department: string;
@@ -87,6 +87,8 @@ export type EmploymentInformation = {
   sharePortion?: string;
   businessRegistrationNumber?: string;
   tradeLicenseAge?: string;
+  businessOwnerType: BOwnerType;
+  businessType: BusinessType;
 
   // Professional-related
   professionType?: string;
@@ -101,10 +103,9 @@ export type EmploymentInformation = {
   professionalRegistrationNumber?: string;
 
   // Property
-  propertyType: string;
-  propertyValue: string;
-
+  properties: Properties[];
   // Income
+  
   grossMonthlyIncome: string;
   rentIncome?: string;
   otherIncome?: string;
@@ -172,8 +173,44 @@ export type PersonalGuarantor = {
   emailAddress: string;
 };
 
+export type Properties = {
+  propertyType: PropertyType;
+  propertyValue: string
+}
 
 
+
+export enum PropertyType {
+  RESIDENTIAL = "RESIDENTIAL",
+  COMMERCIAL = "COMMERCIAL",
+  LAND = "LAND",
+  APARTMENT = "APARTMENT",
+  HOUSE = "HOUSE",
+  OTHER = "OTHER"
+}
+
+
+enum EmploymentStatus {
+  SALARIED =  "SALARIED",
+  SELF_EMPLOYED = "SELF_EMPLOYED",
+  BUSINESS_OWNER =  "BUSINESS_OWNER"
+}
+
+
+enum BOwnerType {
+  PROPRIETORSHIP = "PROPRIETORSHIP",
+  PARTNERSHIP = "PARTNERSHIP",
+  PUBLIC_LIMITED_COMPANY = "PUBLIC_LIMITED_COMPANY",
+}
+
+
+enum BusinessType {
+  WHOLESALE = "WHOLESALE",
+  RETAIL = "RETAIL", 
+  SERVICES =  "SERVICES",
+  MANUFACTURING = "MANUFACTURING",
+  OTHER = "OTHER"
+}
 
 
 export enum Gender {

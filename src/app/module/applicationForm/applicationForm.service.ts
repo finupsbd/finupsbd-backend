@@ -3,16 +3,18 @@
 import { prisma } from '../../../app';
 import { ConfigFile } from '../../../config';
 import AppError from '../../error/AppError';
-import { TLoanApplicationForm } from '../../module/applicationForm/application.interface';
+import validateRequest from '../../middleware/validateRequest';
 import { TLoanRequest, TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
 import { gurantorEmailTemplate } from '../../utils/email-template/gurantor';
 import { generateApplicationId } from '../../utils/generateApplicationId';
 import uploadBufferToCloudinary from '../../utils/loanApplicationDocumentUpload';
 import maskMobileNumber from '../../utils/maskedMobileNumber';
 import sendEmail from '../../utils/sendEmail';
+import { LoanApplicationFormSchema, TLoanApplicationForm } from './applicationForm.validation';
 
 
 
+///// old after terjaction
 // const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser, files: TUploadedFile[], loanRequest: TLoanRequest) => {
 //   const cloudinaryResults: { url: any; originalName: string; mimeType: string; }[] = [];
 //   const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
@@ -85,9 +87,9 @@ import sendEmail from '../../utils/sendEmail';
 //         EligibleLoanOffer: {
 //           create: loanRequest
 //         }
-        
+
 //       }, 
-      
+
 //       include: {
 //         GuarantorInfo: true, 
 //         user: {
@@ -135,12 +137,21 @@ import sendEmail from '../../utils/sendEmail';
 // };
 
 
+
+
+
+
+
+
 const createApplicationForm = async (
-  payload: TLoanApplicationForm,
+  data: TLoanApplicationForm,
   user: TMiddlewareUser,
   files: TUploadedFile[],
   loanRequest: TLoanRequest
 ) => {
+
+  const payload = LoanApplicationFormSchema.parse(data)
+
   try {
     // Parse files and upload to Cloudinary
     const cloudinaryResults: { url: string; originalName: string; mimeType: string }[] = [];
@@ -161,7 +172,6 @@ const createApplicationForm = async (
       }
     }
 
-    console.log("Loan Request", loanRequest)
 
     const applicationId = await generateApplicationId();
 
@@ -181,7 +191,12 @@ const createApplicationForm = async (
 
           personalInfo: { create: payload.personalInfo },
           residentialInformation: { create: payload.residentialInfo },
-
+          // employmentInformation: {
+          //   create: {
+          //     ...payload.employmentInfo  , 
+          //     properties: {create: payload?.employmentInfo?.properties ?? []}
+          //   }
+          // },
           loanInfo: {
             create: {
               hasCreditCard: payload.loanInfo?.hasCreditCard ?? false,
@@ -296,13 +311,17 @@ const getAllApplicationForm = async () => {
       GuarantorInfo: true,
       loanInfo: {
         include: {
-          bankAccounts: true, 
-          creditCards: true, 
+          bankAccounts: true,
+          creditCards: true,
           existingLoans: true,
         }
       },
       EligibleLoanOffer: true,
-      employmentInformation: true,
+      employmentInformation: {
+        include: {
+          properties: true
+        }
+      },
       loanRequest: true,
       Document: true,
       residentialInformation: true,
@@ -310,12 +329,12 @@ const getAllApplicationForm = async () => {
         include: {
           document: true
         }
-      }, 
+      },
       BusinessGuarantor: {
         include: {
           document: true
         }
-      }, 
+      },
     }
   })
 
@@ -371,6 +390,7 @@ const applicationTracking = async (payload: {
       adminNotes: true,
       applicationId: true,
       loanRequest: true,
+      EligibleLoanOffer: true,
       user: {
         select: {
           name: true,
@@ -403,17 +423,17 @@ const applicationForget = async (payload: { email: string; phone: string }) => {
           applicationId: true,
           EligibleLoanOffer: true
         }
-      }, 
+      },
     },
   });
 
   console.log(result)
 
-  if (!result || !result.LoanApplicationForm ||result.LoanApplicationForm.length === 0) {
+  if (!result || !result.LoanApplicationForm || result.LoanApplicationForm.length === 0) {
     throw new AppError(404, 'No Loan application found!');
   }
 
-//   // Prepare application details for email
+  //   // Prepare application details for email
   const applications = result.LoanApplicationForm.map((app) => ({
     applicationId: app.applicationId,
     loanType: app.EligibleLoanOffer?.loanType || 'Unknown',
@@ -461,7 +481,7 @@ const applicationForget = async (payload: { email: string; phone: string }) => {
 
   const maskedPhoneNumber = maskMobileNumber(result.phone)
   const userEmail = result.email
-  const maskedEmailAddress =  maskMobileNumber(result.email)
+  const maskedEmailAddress = maskMobileNumber(result.email)
 
 
   return {
@@ -472,9 +492,6 @@ const applicationForget = async (payload: { email: string; phone: string }) => {
 };
 
 
-const applicantGuarantorInfo = async()=>{
-
-}
 
 
 export const ApplicationFromService = {
@@ -483,6 +500,6 @@ export const ApplicationFromService = {
   // updateStatus, 
   getSingleApplication,
   applicationTracking,
-  applicationForget, 
+  applicationForget,
   myLoanApplication
 };

@@ -1,0 +1,15 @@
+-- AlterTable
+ALTER TABLE "EmploymentInformation" ALTER COLUMN "department" DROP NOT NULL,
+ALTER COLUMN "employeeId" DROP NOT NULL,
+ALTER COLUMN "dateOfJoining" DROP NOT NULL,
+ALTER COLUMN "organizationName" DROP NOT NULL,
+ALTER COLUMN "organizationAddress" DROP NOT NULL,
+ALTER COLUMN "serviceYears" DROP NOT NULL,
+ALTER COLUMN "serviceMonths" DROP NOT NULL,
+ALTER COLUMN "eTin" DROP NOT NULL,
+ALTER COLUMN "previousOrganizationName" DROP NOT NULL,
+ALTER COLUMN "previousDesignation" DROP NOT NULL,
+ALTER COLUMN "previousServiceYears" DROP NOT NULL,
+ALTER COLUMN "previousServiceMonths" DROP NOT NULL,
+ALTER COLUMN "totalExperienceYears" DROP NOT NULL,
+ALTER COLUMN "totalExperienceMonths" DROP NOT NULL;

@@ -19,8 +19,6 @@ const createApplicationForm = catchAsync(async (req, res) => {
   const rawData = req.body.data;
   const loanRequest = req.body.loanRequest;
 
-  console.log(JSON.parse(rawData))
-
 
   const result = await ApplicationFromService.createApplicationForm(
     JSON.parse(rawData),

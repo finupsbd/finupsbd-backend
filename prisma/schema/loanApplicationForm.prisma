@@ -86,31 +86,31 @@ model EmploymentInformation {
   employmentStatus EmploymentStatus? // Enum
 
   /// for salaried  person
-  jobTitle                 String
-  designation              String
-  department               String
-  employeeId               String
+
+  designation              String?
+  department               String?
+  employeeId               String?
   employmentType           EmploymentType? // Enum
-  dateOfJoining            DateTime
-  organizationName         String
-  organizationAddress      String
-  serviceYears             String
-  serviceMonths            String
-  eTin                     String
+  dateOfJoining            DateTime?
+  organizationName         String?
+  organizationAddress      String?
+  serviceYears             String?
+  serviceMonths            String?
+  eTin                     String?
   officialContact          String?
   hasPreviousOrganization  Boolean
-  previousOrganizationName String
-  previousDesignation      String
-  previousServiceYears     String
-  previousServiceMonths    String
-  totalExperienceYears     String
-  totalExperienceMonths    String
+  previousOrganizationName String?
+  previousDesignation      String?
+  previousServiceYears     String?
+  previousServiceMonths    String?
+  totalExperienceYears     String?
+  totalExperienceMonths    String?
 
   /// for business person
   businessName               String
   businessAddress            String
-  businessOwnerType          BOwnerType
-  businessType               BusinessType // Enum
+  businessOwnerType          BOwnerType?
+  businessType               BusinessType? // Enum
   sharePortion               String
   businessRegistrationNumber String
   tradeLicenseAge            String
@@ -120,7 +120,7 @@ model EmploymentInformation {
   institutionName                String
   workplaceAddress               String
   yearsOfExperience              String
-  startedPracticeSince           DateTime
+  startedPracticeSince           String
   tin                            String
   websitePortfolioLink           String
   professionalRegistrationNumber String
@@ -148,6 +148,9 @@ model Properties {
   employmentInformation   EmploymentInformation? @relation(fields: [employmentInformationId], references: [id], onDelete: Cascade)
   employmentInformationId String?
 }
+
+
+
 
 /////------------------------------------------------------------------------------------------------------------------------------------------------------------
 
