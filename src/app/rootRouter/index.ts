@@ -14,7 +14,7 @@ import { CarLoanRouter } from '../module/loans/carLoan/carLoan.route'
 import { SMELoanRouter } from '../module/loans/smeLoan/smeLoan.route'
 import { InstantLoanRouter } from '../module/loans/instantLoan/instantLoan.route'
 import { UserBankAuthRouter } from '../module/bankProtal/userBankAuth/userBankAuth.route'
-import { LoansBankRouter } from '../module/bankProtal/LoansBanks/LoansBank.route'
+import { SuperAdminApplicationRouter } from '../module/dashboard/superAdmin/application/application.route'
 const router = express.Router()
 
 
@@ -83,9 +83,10 @@ const moduleRouter = [
         route: UserBankAuthRouter
     },
     {
-        path: '/bank-portal/loans',
-        route: LoansBankRouter
+        path: '/super-admin',
+        route: SuperAdminApplicationRouter
     },
+    
 ]
 
 

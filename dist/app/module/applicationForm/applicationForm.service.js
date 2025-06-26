@@ -22,6 +22,8 @@ const generateApplicationId_1 = require("../../utils/generateApplicationId");
 const loanApplicationDocumentUpload_1 = __importDefault(require("../../utils/loanApplicationDocumentUpload"));
 const maskedMobileNumber_1 = __importDefault(require("../../utils/maskedMobileNumber"));
 const sendEmail_1 = __importDefault(require("../../utils/sendEmail"));
+const applicationForm_validation_1 = require("./applicationForm.validation");
+///// old after terjaction
 // const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser, files: TUploadedFile[], loanRequest: TLoanRequest) => {
 //   const cloudinaryResults: { url: any; originalName: string; mimeType: string; }[] = [];
 //   const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
@@ -119,8 +121,10 @@ const sendEmail_1 = __importDefault(require("../../utils/sendEmail"));
 //   }
 //   return result;
 // };
-const createApplicationForm = (payload, user, files, loanRequest) => __awaiter(void 0, void 0, void 0, function* () {
+const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+    console.log({ data });
+    const payload = applicationForm_validation_1.LoanApplicationFormSchema.parse(data);
     try {
         // Parse files and upload to Cloudinary
         const cloudinaryResults = [];
@@ -140,7 +144,6 @@ const createApplicationForm = (payload, user, files, loanRequest) => __awaiter(v
                 // Optionally: continue or throw depending on business rules
             }
         }
-        console.log("Loan Request", loanRequest);
         const applicationId = yield (0, generateApplicationId_1.generateApplicationId)();
         const guarantorInfo = {
             businessGurantorEmail: (_c = (_b = (_a = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _a === void 0 ? void 0 : _a.businessGuarantor) === null || _b === void 0 ? void 0 : _b.emailAddress) !== null && _c !== void 0 ? _c : '',
@@ -157,6 +160,12 @@ const createApplicationForm = (payload, user, files, loanRequest) => __awaiter(v
                     userId: user.userId,
                     personalInfo: { create: payload.personalInfo },
                     residentialInformation: { create: payload.residentialInfo },
+                    // employmentInformation: {
+                    //   create: {
+                    //     ...payload.employmentInfo  , 
+                    //     properties: {create: payload?.employmentInfo?.properties ?? []}
+                    //   }
+                    // },
                     loanInfo: {
                         create: {
                             hasCreditCard: (_b = (_a = payload.loanInfo) === null || _a === void 0 ? void 0 : _a.hasCreditCard) !== null && _b !== void 0 ? _b : false,
@@ -254,7 +263,11 @@ const getAllApplicationForm = () => __awaiter(void 0, void 0, void 0, function* 
                 }
             },
             EligibleLoanOffer: true,
-            employmentInformation: true,
+            employmentInformation: {
+                include: {
+                    properties: true
+                }
+            },
             loanRequest: true,
             Document: true,
             residentialInformation: true,
@@ -309,6 +322,7 @@ const applicationTracking = (payload) => __awaiter(void 0, void 0, void 0, funct
             adminNotes: true,
             applicationId: true,
             loanRequest: true,
+            EligibleLoanOffer: true,
             user: {
                 select: {
                     name: true,
@@ -393,8 +407,6 @@ const applicationForget = (payload) => __awaiter(void 0, void 0, void 0, functio
         userEmail,
         maskedEmailAddress
     };
-});
-const applicantGuarantorInfo = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.ApplicationFromService = {
     createApplicationForm,

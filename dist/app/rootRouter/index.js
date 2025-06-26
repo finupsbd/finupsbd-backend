@@ -20,7 +20,7 @@ const carLoan_route_1 = require("../module/loans/carLoan/carLoan.route");
 const smeLoan_route_1 = require("../module/loans/smeLoan/smeLoan.route");
 const instantLoan_route_1 = require("../module/loans/instantLoan/instantLoan.route");
 const userBankAuth_route_1 = require("../module/bankProtal/userBankAuth/userBankAuth.route");
-const LoansBank_route_1 = require("../module/bankProtal/LoansBanks/LoansBank.route");
+const application_route_1 = require("../module/dashboard/superAdmin/application/application.route");
 const router = express_1.default.Router();
 const moduleRouter = [
     {
@@ -84,8 +84,8 @@ const moduleRouter = [
         route: userBankAuth_route_1.UserBankAuthRouter
     },
     {
-        path: '/bank-portal/loans',
-        route: LoansBank_route_1.LoansBankRouter
+        path: '/super-admin',
+        route: application_route_1.SuperAdminApplicationRouter
     },
 ];
 moduleRouter.forEach(item => router.use(item.path, item.route));

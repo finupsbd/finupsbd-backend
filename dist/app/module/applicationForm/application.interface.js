@@ -1,7 +1,36 @@
 "use strict";
 /* eslint-disable no-unused-vars */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoanType = exports.LoanStatus = exports.OwnershipStatus = exports.ResidentialStatus = exports.Religion = exports.EduLavel = exports.MaritalStatus = exports.Gender = void 0;
+exports.LoanType = exports.LoanStatus = exports.OwnershipStatus = exports.ResidentialStatus = exports.Religion = exports.EduLavel = exports.MaritalStatus = exports.Gender = exports.PropertyType = void 0;
+var PropertyType;
+(function (PropertyType) {
+    PropertyType["RESIDENTIAL"] = "RESIDENTIAL";
+    PropertyType["COMMERCIAL"] = "COMMERCIAL";
+    PropertyType["LAND"] = "LAND";
+    PropertyType["APARTMENT"] = "APARTMENT";
+    PropertyType["HOUSE"] = "HOUSE";
+    PropertyType["OTHER"] = "OTHER";
+})(PropertyType || (exports.PropertyType = PropertyType = {}));
+var EmploymentStatus;
+(function (EmploymentStatus) {
+    EmploymentStatus["SALARIED"] = "SALARIED";
+    EmploymentStatus["SELF_EMPLOYED"] = "SELF_EMPLOYED";
+    EmploymentStatus["BUSINESS_OWNER"] = "BUSINESS_OWNER";
+})(EmploymentStatus || (EmploymentStatus = {}));
+var BOwnerType;
+(function (BOwnerType) {
+    BOwnerType["PROPRIETORSHIP"] = "PROPRIETORSHIP";
+    BOwnerType["PARTNERSHIP"] = "PARTNERSHIP";
+    BOwnerType["PUBLIC_LIMITED_COMPANY"] = "PUBLIC_LIMITED_COMPANY";
+})(BOwnerType || (BOwnerType = {}));
+var BusinessType;
+(function (BusinessType) {
+    BusinessType["WHOLESALE"] = "WHOLESALE";
+    BusinessType["RETAIL"] = "RETAIL";
+    BusinessType["SERVICES"] = "SERVICES";
+    BusinessType["MANUFACTURING"] = "MANUFACTURING";
+    BusinessType["OTHER"] = "OTHER";
+})(BusinessType || (BusinessType = {}));
 var Gender;
 (function (Gender) {
     Gender["MALE"] = "MALE";

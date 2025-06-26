@@ -27,7 +27,6 @@ const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(
     const user = req.user;
     const rawData = req.body.data;
     const loanRequest = req.body.loanRequest;
-    console.log(JSON.parse(rawData));
     const result = yield applicationForm_service_1.ApplicationFromService.createApplicationForm(JSON.parse(rawData), user, files, JSON.parse(loanRequest));
     (0, sendResponce_1.default)(res, {
         success: true,

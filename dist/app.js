@@ -28,13 +28,27 @@ const app = (0, express_1.default)();
 exports.prisma = new client_1.PrismaClient({
     log: ['query', 'info', 'warn', 'error'],
 });
+app.use((0, cors_1.default)({
+    origin: [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://admin.finupsbd.com",
+        "https://stage.finupsbd.com",
+    ],
+    credentials: true, // Allow cookies and authentication headers
+}));
+app.options('*', (0, cors_1.default)({
+    origin: [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://admin.finupsbd.com",
+        "https://stage.finupsbd.com",
+    ],
+    credentials: true,
+}));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json({ limit: "50mb" }));
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)({
-    origin: ["http://localhost:3000", "http://localhost:3001", "https://finupsbd-admin-dashboard.vercel.app", "https://finupsbd-fronend-developer.vercel.app"],
-    credentials: true, // Allow cookies and authentication headers
-}));
 (0, DB_1.default)();
 app.use(passport_1.default.initialize());
 app.use('/api/v1', rootRouter_1.RootRouter);
