@@ -149,7 +149,6 @@ const createApplicationForm = async (
   loanRequest: TLoanRequest
 ) => {
 
-  console.log({data})
   const payload = LoanApplicationFormSchema.parse(data)
 
   try {
@@ -181,6 +180,8 @@ const createApplicationForm = async (
       personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
       personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? '',
     };
+
+
 
     // Begin DB Transaction
     const createdApplication = await prisma.$transaction(async (tx) => {
