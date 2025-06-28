@@ -3,7 +3,6 @@
 import { prisma } from '../../../app';
 import { ConfigFile } from '../../../config';
 import AppError from '../../error/AppError';
-import validateRequest from '../../middleware/validateRequest';
 import { TLoanRequest, TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
 import { gurantorEmailTemplate } from '../../utils/email-template/gurantor';
 import { generateApplicationId } from '../../utils/generateApplicationId';
@@ -176,7 +175,7 @@ const createApplicationForm = async (
 
     const applicationId = await generateApplicationId();
 
-    const guarantorInfo = {
+    const guarantorInfoData = {
       businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
       businessGurantorPhone: payload?.guarantorInfo?.businessGuarantor?.mobileNumber ?? '',
       personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
@@ -209,9 +208,9 @@ const createApplicationForm = async (
           },
 
           loanRequest: { create: payload.loanRequest },
-          GuarantorInfo: { create: guarantorInfo },
+          guarantorInfo: { create: guarantorInfoData },
 
-          Document: {
+          document: {
             create: cloudinaryResults.map((doc) => ({
               url: doc.url,
               originalName: doc.originalName,
@@ -219,13 +218,13 @@ const createApplicationForm = async (
             })),
           },
 
-          EligibleLoanOffer: {
+          eligibleLoanOffer: {
             create: loanRequest,
           },
         },
 
         include: {
-          GuarantorInfo: true,
+          guarantorInfo: true,
           user: {
             select: { name: true, phone: true, email: true },
           },
@@ -237,20 +236,20 @@ const createApplicationForm = async (
     });
 
     // Notify Guarantors via Email
-    const { GuarantorInfo, user: applicant } = createdApplication;
+    const { guarantorInfo, user: applicant } = createdApplication;
 
     const emailTasks: Promise<any>[] = [];
 
-    if (GuarantorInfo?.personalGurantorEmail) {
+    if (guarantorInfo?.personalGurantorEmail) {
       const personalGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
       const personalTemplate = gurantorEmailTemplate(applicant.phone ?? '', applicant.name ?? '', personalGuarantorLink);
-      emailTasks.push(sendEmail(GuarantorInfo.personalGurantorEmail, "Personal Guarantor Info Request", personalTemplate));
+      emailTasks.push(sendEmail(guarantorInfo.personalGurantorEmail, "Personal Guarantor Info Request", personalTemplate));
     }
 
-    if (GuarantorInfo?.businessGurantorEmail) {
+    if (guarantorInfo?.businessGurantorEmail) {
       const businessGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/business-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
       const businessTemplate = gurantorEmailTemplate(applicant.phone ?? '', applicant.name ?? '', businessGuarantorLink);
-      emailTasks.push(sendEmail(GuarantorInfo.businessGurantorEmail, "Business Guarantor Info Request", businessTemplate));
+      emailTasks.push(sendEmail(guarantorInfo.businessGurantorEmail, "Business Guarantor Info Request", businessTemplate));
     }
 
     await Promise.all(emailTasks);
@@ -283,11 +282,11 @@ const myLoanApplication = async (user: TMiddlewareUser) => {
         include: {
           personalInfo: true,
           loanInfo: true,
-          Document: true,
+          document: true,
           loanRequest: true,
           employmentInformation: true,
-          EligibleLoanOffer: true,
-          GuarantorInfo: true,
+          eligibleLoanOffer: true,
+          guarantorInfo: true,
           residentialInformation: true
         }
       }
@@ -309,7 +308,7 @@ const getAllApplicationForm = async () => {
     include: {
       personalInfo: true,
       user: true,
-      GuarantorInfo: true,
+      guarantorInfo: true,
       loanInfo: {
         include: {
           bankAccounts: true,
@@ -317,21 +316,21 @@ const getAllApplicationForm = async () => {
           existingLoans: true,
         }
       },
-      EligibleLoanOffer: true,
+      eligibleLoanOffer: true,
       employmentInformation: {
         include: {
           properties: true
         }
       },
       loanRequest: true,
-      Document: true,
+      document: true,
       residentialInformation: true,
-      PersonalGuarantor: {
+      personalGuarantor: {
         include: {
           document: true
         }
       },
-      BusinessGuarantor: {
+      businessGuarantor: {
         include: {
           document: true
         }
@@ -391,7 +390,7 @@ const applicationTracking = async (payload: {
       adminNotes: true,
       applicationId: true,
       loanRequest: true,
-      EligibleLoanOffer: true,
+      eligibleLoanOffer: true,
       user: {
         select: {
           name: true,
@@ -422,7 +421,7 @@ const applicationForget = async (payload: { email: string; phone: string }) => {
       LoanApplicationForm: {
         select: {
           applicationId: true,
-          EligibleLoanOffer: true
+          eligibleLoanOffer: true
         }
       },
     },
@@ -437,7 +436,7 @@ const applicationForget = async (payload: { email: string; phone: string }) => {
   //   // Prepare application details for email
   const applications = result.LoanApplicationForm.map((app) => ({
     applicationId: app.applicationId,
-    loanType: app.EligibleLoanOffer?.loanType || 'Unknown',
+    loanType: app.eligibleLoanOffer?.loanType || 'Unknown',
   }));
 
   const applicationDetails = applications

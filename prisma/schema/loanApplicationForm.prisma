@@ -17,11 +17,11 @@ model LoanApplicationForm {
   employmentInformation  EmploymentInformation?
   loanInfo               LoanInfo?
   loanRequest            LoanRequest?
-  EligibleLoanOffer      EligibleLoanOffer?
-  Document               Document[]
-  GuarantorInfo          GuarantorInfo?
-  BusinessGuarantor      BusinessGuarantor?
-  PersonalGuarantor      PersonalGuarantor?
+  eligibleLoanOffer      EligibleLoanOffer?
+  document               Document[]
+  guarantorInfo          GuarantorInfo?
+  businessGuarantor      BusinessGuarantor?
+  personalGuarantor      PersonalGuarantor?
 
   @@index([applicationId, status, isActive, isDeleted])
   @@map("loanApplicationForm")

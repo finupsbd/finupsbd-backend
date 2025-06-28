@@ -8,10 +8,9 @@ import AppError from "../error/AppError";
 import { StatusCodes } from "http-status-codes";
 
 
-const auth = (...requiredRoles: string[]) => {
+const adminAuth = (...requiredRoles: string[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const token = req.headers.authorization?.split(' ')[1];
-
+      const token =  req.cookies?.refreshToken?.split(' ')[0]
 
         if (!token) {
             throw new AppError(StatusCodes.UNAUTHORIZED, "You are unauthorized")
@@ -21,8 +20,7 @@ const auth = (...requiredRoles: string[]) => {
             throw new AppError(StatusCodes.UNAUTHORIZED, "You are unauthorized")
         }
 
-        const decode = await jwt.verify(token, ConfigFile.JWT_ACCESS_SECRET as string) as JwtPayload
-
+        const decode = await jwt.verify(token, ConfigFile.JWT_REFRESH_SECRET as string) as JwtPayload
 
         const user = await prisma.user.findUnique({ where: { email: decode.email } })
 
@@ -49,7 +47,7 @@ const auth = (...requiredRoles: string[]) => {
 
 
 
-export default auth
+export default adminAuth
 
 
 

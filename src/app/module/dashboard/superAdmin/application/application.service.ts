@@ -1,38 +1,93 @@
 import { prisma } from "../../../../../app"
+import { safeUserSelect } from "../../../../utils/prisma/selects";
+
 
 
 const getAllApplication = async () => {
 
 
+  const [applications, total] = await Promise.all([
+    prisma.loanApplicationForm.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        eligibleLoanOffer: {
+          select: {
+            eligibleLoan: true,
+            bankName: true,
+            loanType: true,
+          },
+        },
+        loanRequest: {
+          select: {
+            loanAmount: true,
+          },
+        },
+      },
+    }),
+    prisma.loanApplicationForm.count()
+  ]);
 
-    const applications = await prisma.loanApplicationForm.findMany(
+  console.log(total)
 
-    {
+  return applications
+};
+
+
+
+
+
+const getSingleApplication = async (id: string) => {
+
+
+  const result = prisma.loanApplicationForm.findFirst({
+    where: { id },
+    include: {
+      personalInfo: true,
+      user: { select: safeUserSelect },
+      guarantorInfo: true,
+      loanInfo: {
         include: {
-            user: {
-                select: {
-                    name: true
-                }
-            },
-            EligibleLoanOffer: {
-                select: {
-                    eligibleLoan: true,
-                    bankName: true, 
-                    loanType: true,
-                }
-            }, 
-            loanRequest: {
-                select: {
-                    loanAmount: true
-                }
-            }
+          bankAccounts: true,
+          creditCards: true,
+          existingLoans: true,
         }
-    })
+      },
+      eligibleLoanOffer: true,
+      employmentInformation: {
+        include: {
+          properties: true
+        }
+      },
+      loanRequest: true,
+      document: true,
+      residentialInformation: true,
+      personalGuarantor: {
+        include: {
+          document: true
+        }
+      },
+      businessGuarantor: {
+        include: {
+          document: true
+        }
+      },
+    }
+  })
 
-    return applications
-}
+
+  return result
+};
+
+
+
+
 
 
 export const ApplicationServides = {
-    getAllApplication
+  getAllApplication,
+  getSingleApplication
 }

@@ -9,3 +9,4 @@ datasource db {
   directUrl    = env("DIRECT_URL")
   // relationMode = "prisma"
 }
+

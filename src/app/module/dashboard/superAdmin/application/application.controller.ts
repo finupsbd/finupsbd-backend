@@ -7,7 +7,6 @@ import { ApplicationServides } from "./application.service";
 
 const getAllApplication = catchAsync(async (req, res) => {
 
-    
 
     const result = await ApplicationServides.getAllApplication()
 
@@ -19,7 +18,23 @@ const getAllApplication = catchAsync(async (req, res) => {
       });
 })
 
+const getSingleApplication = catchAsync(async (req, res) => {
+
+    const id = req.params?.id
+
+
+    const result = await ApplicationServides.getSingleApplication(id)
+
+     sendResponses(res, {
+        success: true,
+        message: 'Retrive Single application',
+        statusCode: StatusCodes.OK,
+        data: result
+      });
+})
+
 
 export const ApplicarionController = {
-    getAllApplication,
+    getSingleApplication,
+    getAllApplication
 }
