@@ -26,6 +26,18 @@ const getAllApplication = (0, catchAsync_1.default)((req, res) => __awaiter(void
         data: result
     });
 }));
+const getSingleApplication = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
+    const result = yield application_service_1.ApplicationServides.getSingleApplication(id);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Retrive Single application',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
+}));
 exports.ApplicarionController = {
-    getAllApplication,
+    getSingleApplication,
+    getAllApplication
 };

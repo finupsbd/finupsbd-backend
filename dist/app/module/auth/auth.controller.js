@@ -43,9 +43,14 @@ const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, 
     const result = yield auth_service_1.AuthServices.login(req.body);
     const { refreshToken, accessToken } = result;
     res.cookie('refreshToken', refreshToken, {
-        secure: config_1.ConfigFile.NODE_ENV === 'production',
-        sameSite: config_1.ConfigFile.NODE_ENV === 'production' ? 'none' : 'lax',
         httpOnly: true,
+        secure: config_1.ConfigFile.NODE_ENV === 'production',
+        sameSite: 'none',
+    });
+    res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: config_1.ConfigFile.NODE_ENV === 'production',
+        sameSite: 'none',
     });
     (0, sendResponce_1.default)(res, {
         success: true,
