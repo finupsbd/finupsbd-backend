@@ -34,6 +34,10 @@ const getAllApplication = () => __awaiter(void 0, void 0, void 0, function* () {
                     },
                 },
             },
+            take: 10,
+            orderBy: {
+                createdAt: "desc"
+            }
         }),
         app_1.prisma.loanApplicationForm.count()
     ]);
@@ -41,7 +45,7 @@ const getAllApplication = () => __awaiter(void 0, void 0, void 0, function* () {
     return applications;
 });
 const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = app_1.prisma.loanApplicationForm.findFirst({
+    const result = app_1.prisma.loanApplicationForm.findUnique({
         where: { id },
         include: {
             personalInfo: true,
@@ -73,7 +77,7 @@ const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function*
                     document: true
                 }
             },
-        }
+        },
     });
     return result;
 });

@@ -22,6 +22,8 @@ const getSingleApplication = catchAsync(async (req, res) => {
 
     const id = req.params?.id
 
+    console.log(id)
+
 
     const result = await ApplicationServides.getSingleApplication(id)
 

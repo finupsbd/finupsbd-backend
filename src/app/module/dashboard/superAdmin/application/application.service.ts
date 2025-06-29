@@ -27,6 +27,10 @@ const getAllApplication = async () => {
           },
         },
       },
+      take: 10,
+      orderBy: {
+        createdAt: "desc"
+      }
     }),
     prisma.loanApplicationForm.count()
   ]);
@@ -43,7 +47,7 @@ const getAllApplication = async () => {
 const getSingleApplication = async (id: string) => {
 
 
-  const result = prisma.loanApplicationForm.findFirst({
+  const result = prisma.loanApplicationForm.findUnique({
     where: { id },
     include: {
       personalInfo: true,
@@ -75,7 +79,7 @@ const getSingleApplication = async (id: string) => {
           document: true
         }
       },
-    }
+    },
   })
 
 

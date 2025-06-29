@@ -54,7 +54,7 @@ const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, 
     });
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: 'User login successfully',
+        message: 'User login successfully!',
         statusCode: http_status_codes_1.StatusCodes.OK,
         data: { accessToken },
     });
