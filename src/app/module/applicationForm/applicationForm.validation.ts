@@ -12,6 +12,7 @@ export const LoanType = z.enum(["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_L
 export const ProfessionType = z.enum(["DOCTOR", "ENGINEER", "ARCHITECT", "ACCOUNTANT", "ARTIST", "TEACHER", "FREELANCER","OTHER"]);
 export const PropertyType = z.enum(["RESIDENTIAL", "COMMERCIAL", "LAND", "APARTMENT", "HOUSE", "OTHER"]);
 export const EmploymentStatus = z.enum(["SALARIED", "SELF_EMPLOYED", "BUSINESS_OWNER"]);
+export const EmploymentType = z.enum(["PERMANENT", "CONTRACTUAL", "PARTTIME", "PROBATION"]);
 
 
 
@@ -77,7 +78,7 @@ export const employmentInformationSchema = z.object({
   designation: z.string().min(1, "Designation is required").optional(),
   department: z.string().min(1, "Department is required").optional(),
   employeeId: z.string().min(1, "Employee ID is required").optional(),
-  employmentType: z.string().min(1, "Employment type is required").optional(),
+  employmentType: EmploymentType,
   dateOfJoining: z.string().datetime("Invalid date format").optional(),
   organizationName: z.string().min(1, "Organization name is required").optional(),
   organizationAddress: z.string().min(1, "Organization address is required").optional(),
@@ -85,7 +86,7 @@ export const employmentInformationSchema = z.object({
   serviceMonths: z.string().min(1, "serviceMonths  is required").optional(),
   eTin: z.string().min(1, "eTIN is required").optional(),
   officialContact: z.string().min(1, "Official contact is required").optional(),
-  hasPreviousOrganization: z.boolean(),
+  hasPreviousOrganization: z.boolean().optional(),
   previousOrganizationName: z.string().optional(),
   previousDesignation: z.string().optional(),
   previousServiceYears: z.string().optional(),

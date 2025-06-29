@@ -71,7 +71,7 @@ model ResidentialInformation {
   permanentDivision        String?
   permanentLengthOfStay    String?
   permanentOwnershipStatus OwnershipStatus?
-  permanentThana           String?
+  permanentThana           String?   
   permanentPostalCode      String?
 
   // tie back to the loan application or user
@@ -90,7 +90,6 @@ model EmploymentInformation {
   designation              String?
   department               String?
   employeeId               String?
-  employmentType           EmploymentType? // Enum
   dateOfJoining            DateTime?
   organizationName         String?
   organizationAddress      String?
@@ -98,42 +97,44 @@ model EmploymentInformation {
   serviceMonths            String?
   eTin                     String?
   officialContact          String?
-  hasPreviousOrganization  Boolean
+  hasPreviousOrganization  Boolean?
   previousOrganizationName String?
   previousDesignation      String?
   previousServiceYears     String?
   previousServiceMonths    String?
   totalExperienceYears     String?
   totalExperienceMonths    String?
+  employmentType           EmploymentType?
 
   /// for business person
-  businessName               String
-  businessAddress            String
+  businessName               String?
+  businessAddress            String?
   businessOwnerType          BOwnerType?
   businessType               BusinessType? // Enum
-  sharePortion               String
-  businessRegistrationNumber String
-  tradeLicenseAge            String
+  sharePortion               String?
+  businessRegistrationNumber String?
+  tradeLicenseAge            String?
 
   // Self-employed
-  professionalTitle              String
-  institutionName                String
-  workplaceAddress               String
-  yearsOfExperience              String
-  startedPracticeSince           String
-  tin                            String
-  websitePortfolioLink           String
-  professionalRegistrationNumber String
+
+  professionalTitle              String?
+  institutionName                String?
+  workplaceAddress               String?
+  yearsOfExperience              String?
+  startedPracticeSince           String?
+  tin                            String?
+  websitePortfolioLink           String?
+  professionalRegistrationNumber String?
 
   properties Properties[]
 
-  grossMonthlyIncome  String
-  rentIncome          String
-  otherIncome         String
-  sourceOfOtherIncome String
-  totalIncome         String
+  grossMonthlyIncome  String?
+  rentIncome          String?
+  otherIncome         String?
+  sourceOfOtherIncome String?
+  totalIncome         String?
   professionType      SelfEmploymentType?
-  otherProfession     String
+  otherProfession     String?
 
   // Relation
   loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)

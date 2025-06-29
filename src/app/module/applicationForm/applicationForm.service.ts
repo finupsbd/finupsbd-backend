@@ -192,12 +192,12 @@ const createApplicationForm = async (
 
           personalInfo: { create: payload.personalInfo },
           residentialInformation: { create: payload.residentialInfo },
-          // employmentInformation: {
-          //   create: {
-          //     ...payload.employmentInfo  , 
-          //     properties: {create: payload?.employmentInfo?.properties ?? []}
-          //   }
-          // },
+          employmentInformation: {
+            create: {
+              ...payload.employmentInfo,
+              properties: { create: payload?.employmentInfo?.properties ?? [] }
+            }
+          },
           loanInfo: {
             create: {
               hasCreditCard: payload.loanInfo?.hasCreditCard ?? false,
@@ -269,8 +269,6 @@ const createApplicationForm = async (
 };
 
 
-
-
 const myLoanApplication = async (user: TMiddlewareUser) => {
   const { userId } = user
 
@@ -299,9 +297,6 @@ const myLoanApplication = async (user: TMiddlewareUser) => {
   return result
 
 }
-
-
-
 
 
 const getAllApplicationForm = async () => {

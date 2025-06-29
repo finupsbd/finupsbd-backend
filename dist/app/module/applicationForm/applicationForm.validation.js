@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoanApplicationFormSchema = exports.employmentInformationSchema = exports.EmploymentStatus = exports.PropertyType = exports.ProfessionType = exports.LoanType = exports.LoanStatus = exports.OwnershipStatus = exports.EduLavel = exports.ResidentialStatus = exports.Religion = exports.MaritalStatus = exports.Gender = void 0;
+exports.LoanApplicationFormSchema = exports.employmentInformationSchema = exports.EmploymentType = exports.EmploymentStatus = exports.PropertyType = exports.ProfessionType = exports.LoanType = exports.LoanStatus = exports.OwnershipStatus = exports.EduLavel = exports.ResidentialStatus = exports.Religion = exports.MaritalStatus = exports.Gender = void 0;
 const zod_1 = require("zod");
 // ── ENUMS ─────────────────────────────────────────────
 exports.Gender = zod_1.z.enum(["MALE", "FEMALE", "OTHER"], { required_error: "Gender is required" });
@@ -14,6 +14,7 @@ exports.LoanType = zod_1.z.enum(["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_
 exports.ProfessionType = zod_1.z.enum(["DOCTOR", "ENGINEER", "ARCHITECT", "ACCOUNTANT", "ARTIST", "TEACHER", "FREELANCER", "OTHER"]);
 exports.PropertyType = zod_1.z.enum(["RESIDENTIAL", "COMMERCIAL", "LAND", "APARTMENT", "HOUSE", "OTHER"]);
 exports.EmploymentStatus = zod_1.z.enum(["SALARIED", "SELF_EMPLOYED", "BUSINESS_OWNER"]);
+exports.EmploymentType = zod_1.z.enum(["PERMANENT", "CONTRACTUAL", "PARTTIME", "PROBATION"]);
 // ── SUB-SCHEMAS ──────────────────────────────────────
 const BankAccount = zod_1.z.object({
     bankName: zod_1.z.string().min(1, "Bank name is required"),
@@ -67,7 +68,7 @@ exports.employmentInformationSchema = zod_1.z.object({
     designation: zod_1.z.string().min(1, "Designation is required").optional(),
     department: zod_1.z.string().min(1, "Department is required").optional(),
     employeeId: zod_1.z.string().min(1, "Employee ID is required").optional(),
-    employmentType: zod_1.z.string().min(1, "Employment type is required").optional(),
+    employmentType: exports.EmploymentType,
     dateOfJoining: zod_1.z.string().datetime("Invalid date format").optional(),
     organizationName: zod_1.z.string().min(1, "Organization name is required").optional(),
     organizationAddress: zod_1.z.string().min(1, "Organization address is required").optional(),
@@ -75,7 +76,7 @@ exports.employmentInformationSchema = zod_1.z.object({
     serviceMonths: zod_1.z.string().min(1, "serviceMonths  is required").optional(),
     eTin: zod_1.z.string().min(1, "eTIN is required").optional(),
     officialContact: zod_1.z.string().min(1, "Official contact is required").optional(),
-    hasPreviousOrganization: zod_1.z.boolean(),
+    hasPreviousOrganization: zod_1.z.boolean().optional(),
     previousOrganizationName: zod_1.z.string().optional(),
     previousDesignation: zod_1.z.string().optional(),
     previousServiceYears: zod_1.z.string().optional(),

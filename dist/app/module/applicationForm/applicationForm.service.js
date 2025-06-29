@@ -152,26 +152,23 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
         };
         // Begin DB Transaction
         const createdApplication = yield app_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
             return yield tx.loanApplicationForm.create({
                 data: {
                     applicationId,
                     userId: user.userId,
                     personalInfo: { create: payload.personalInfo },
                     residentialInformation: { create: payload.residentialInfo },
-                    // employmentInformation: {
-                    //   create: {
-                    //     ...payload.employmentInfo  , 
-                    //     properties: {create: payload?.employmentInfo?.properties ?? []}
-                    //   }
-                    // },
+                    employmentInformation: {
+                        create: Object.assign(Object.assign({}, payload.employmentInfo), { properties: { create: (_b = (_a = payload === null || payload === void 0 ? void 0 : payload.employmentInfo) === null || _a === void 0 ? void 0 : _a.properties) !== null && _b !== void 0 ? _b : [] } })
+                    },
                     loanInfo: {
                         create: {
-                            hasCreditCard: (_b = (_a = payload.loanInfo) === null || _a === void 0 ? void 0 : _a.hasCreditCard) !== null && _b !== void 0 ? _b : false,
-                            hasExistingLoan: (_d = (_c = payload.loanInfo) === null || _c === void 0 ? void 0 : _c.hasExistingLoan) !== null && _d !== void 0 ? _d : false,
-                            bankAccounts: { create: (_f = (_e = payload.loanInfo) === null || _e === void 0 ? void 0 : _e.bankAccounts) !== null && _f !== void 0 ? _f : [] },
-                            creditCards: { create: (_h = (_g = payload.loanInfo) === null || _g === void 0 ? void 0 : _g.creditCards) !== null && _h !== void 0 ? _h : [] },
-                            existingLoans: { create: (_k = (_j = payload.loanInfo) === null || _j === void 0 ? void 0 : _j.existingLoans) !== null && _k !== void 0 ? _k : [] },
+                            hasCreditCard: (_d = (_c = payload.loanInfo) === null || _c === void 0 ? void 0 : _c.hasCreditCard) !== null && _d !== void 0 ? _d : false,
+                            hasExistingLoan: (_f = (_e = payload.loanInfo) === null || _e === void 0 ? void 0 : _e.hasExistingLoan) !== null && _f !== void 0 ? _f : false,
+                            bankAccounts: { create: (_h = (_g = payload.loanInfo) === null || _g === void 0 ? void 0 : _g.bankAccounts) !== null && _h !== void 0 ? _h : [] },
+                            creditCards: { create: (_k = (_j = payload.loanInfo) === null || _j === void 0 ? void 0 : _j.creditCards) !== null && _k !== void 0 ? _k : [] },
+                            existingLoans: { create: (_m = (_l = payload.loanInfo) === null || _l === void 0 ? void 0 : _l.existingLoans) !== null && _m !== void 0 ? _m : [] },
                         },
                     },
                     loanRequest: { create: payload.loanRequest },
