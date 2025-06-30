@@ -3,26 +3,26 @@ import { calculateEMI } from "../utils/calculateEMI";
 import { prisma } from "../../../../app";
 import AppError from "../../../error/AppError";
 
-export const instantLoan = async ( payload: TEligibilityCheck,query: Record<string, unknown>
+export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>
 ) => {
-  const {tenure = Number(payload.expectedLoanTenure)} = query;
+  const { tenure = Number(payload.expectedLoanTenure) } = query;
 
 
-const eligibleLoan = 15000
+  const eligibleLoan = 15000
 
 
   try {
     const [loans] = await prisma.$transaction([
       prisma.instantLoan.findMany({
         include: {
-          EligibilityInstantLoan: true, 
+          EligibilityInstantLoan: true,
           FeaturesInstantLoan: true,
           FeesChargesInstantLoan: true,
         },
       }),
     ]);
 
-    
+
     if (!loans.length) {
       throw new AppError(404, "No loans found for the given criteria.");
     }
@@ -39,8 +39,8 @@ const eligibleLoan = 15000
     }
 
 
-    if (payload.haveAnyCreditCard && payload.numberOfCard) {
-      adjustedMonthlyIncome -= payload.numberOfCard * 2000;
+    if (payload.haveAnyCreditCard && payload.numberOfCreditCards) {
+      adjustedMonthlyIncome -= payload.numberOfCreditCards * 2000;
     }
 
     const suggestedLoans = loans.map((loan) => {
@@ -54,11 +54,11 @@ const eligibleLoan = 15000
         id: loan.id,
         bankName: loan.bankName,
         amount: eligibleLoan.toFixed(2),
-        periodMonths: payload.tenure ,
+        periodMonths: payload.tenure,
         loanType: loan.loanType,
         monthlyEMI: monthlyEMI.toFixed(2),
         totalRepayment: totalRepayment.toFixed(2),
-        expectedLoanTenure:tenure,
+        expectedLoanTenure: tenure,
         coverImage: loan.coverImage,
         interestRate: interest,
         processingFee: loan.processingFee,

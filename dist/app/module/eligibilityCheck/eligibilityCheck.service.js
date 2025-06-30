@@ -34,35 +34,38 @@ const instantLoan_1 = require("./eligibilityCheck/instantLoan");
 const loanHandlers = {
     [eligibilityCheck_constant_1.loanTypes.INSTANT_LOAN]: instantLoan_1.instantLoan,
     [eligibilityCheck_constant_1.loanTypes.PERSONAL_LOAN]: personalLoan_1.default,
-    // [loanTypes.HOME_LOAN]: homeLoan,
-    // [loanTypes.SME_LOAN]: smeLoan,
 };
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
     const { existingLoans = [] } = payload, eligibilityData = __rest(payload, ["existingLoans"]);
-    console.log(payload);
-    const eligibilityCheckEntry = yield app_1.prisma.eligibilityCheck.create({
-        data: Object.assign(Object.assign({}, eligibilityData), { existingLoans: {
-                create: existingLoans.map(({ existingLoanType, emiAmountBDT, interestRate }) => ({
-                    existingLoanType,
-                    emiAmountBDT,
-                    interestRate,
-                })),
-            } }),
-        include: {
-            existingLoans: {
-                select: {
-                    existingLoanType: true,
-                    emiAmountBDT: true,
-                    interestRate: true,
+    console.log({ payload });
+    try {
+        const eligibilityCheckEntry = yield app_1.prisma.eligibilityCheck.create({
+            data: Object.assign(Object.assign({}, eligibilityData), { existingLoans: {
+                    create: existingLoans.map(({ existingLoanType, emiAmountBDT, interestRate }) => ({
+                        existingLoanType,
+                        emiAmountBDT,
+                        interestRate,
+                    })),
+                } }),
+            include: {
+                existingLoans: {
+                    select: {
+                        existingLoanType: true,
+                        emiAmountBDT: true,
+                        interestRate: true,
+                    },
                 },
             },
-        },
-    });
-    const handler = loanHandlers[payload.loanType];
-    if (!handler) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, `Loan type handler not implemented for '${payload.loanType}'`);
+        });
+        const handler = loanHandlers[payload.loanType];
+        if (!handler) {
+            throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, `Loan type handler not implemented for '${payload.loanType}'`);
+        }
+        return handler(eligibilityCheckEntry, query);
     }
-    return handler(eligibilityCheckEntry, query);
+    catch (error) {
+        console.log(error);
+    }
 });
 exports.EligibilityCheckService = {
     eligibilityCheck,

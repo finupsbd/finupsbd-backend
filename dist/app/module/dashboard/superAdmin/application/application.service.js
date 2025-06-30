@@ -81,7 +81,73 @@ const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function*
     });
     return result;
 });
+const applicationFeedback = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(id, payload);
+    // const result = prisma.loanApplicationForm.findUnique({
+    //   where: { id },
+    //   include: {
+    //     personalInfo: true,
+    //     user: { select: safeUserSelect },
+    //     guarantorInfo: true,
+    //     loanInfo: {
+    //       include: {
+    //         bankAccounts: true,
+    //         creditCards: true,
+    //         existingLoans: true,
+    //       }
+    //     },
+    //     eligibleLoanOffer: true,
+    //     employmentInformation: {
+    //       include: {
+    //         properties: true
+    //       }
+    //     },
+    //     loanRequest: true,
+    //     document: true,
+    //     residentialInformation: true,
+    //     personalGuarantor: {
+    //       include: {
+    //         document: true
+    //       }
+    //     },
+    //     businessGuarantor: {
+    //       include: {
+    //         document: true
+    //       }
+    //     },
+    //   },
+    // })
+    if (payload.status == "REJECTED") {
+        yield app_1.prisma.loanApplicationForm.update({
+            where: { id },
+            data: {
+                status: payload.status,
+                isActive: false
+            }
+        });
+        return {};
+    }
+    else {
+        const result = yield app_1.prisma.loanApplicationForm.update({
+            where: { id },
+            data: {
+                status: payload.status,
+                adminNotes: payload.adminNote
+            },
+            include: {
+                user: {
+                    select: {
+                        email: true,
+                        name: true
+                    }
+                }
+            }
+        });
+        return result;
+    }
+});
 exports.ApplicationServides = {
     getAllApplication,
-    getSingleApplication
+    getSingleApplication,
+    applicationFeedback
 };

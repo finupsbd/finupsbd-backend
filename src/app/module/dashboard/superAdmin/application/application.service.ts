@@ -1,5 +1,6 @@
 import { prisma } from "../../../../../app"
 import { safeUserSelect } from "../../../../utils/prisma/selects";
+import { LoanStatus } from "../../../applicationForm/application.interface";
 
 
 
@@ -86,6 +87,73 @@ const getSingleApplication = async (id: string) => {
   return result
 };
 
+const applicationFeedback = async (id: string, payload: { status: LoanStatus, adminNote: string }) => {
+
+  console.log(id, payload)
+  // const result = prisma.loanApplicationForm.findUnique({
+  //   where: { id },
+  //   include: {
+  //     personalInfo: true,
+  //     user: { select: safeUserSelect },
+  //     guarantorInfo: true,
+  //     loanInfo: {
+  //       include: {
+  //         bankAccounts: true,
+  //         creditCards: true,
+  //         existingLoans: true,
+  //       }
+  //     },
+  //     eligibleLoanOffer: true,
+  //     employmentInformation: {
+  //       include: {
+  //         properties: true
+  //       }
+  //     },
+  //     loanRequest: true,
+  //     document: true,
+  //     residentialInformation: true,
+  //     personalGuarantor: {
+  //       include: {
+  //         document: true
+  //       }
+  //     },
+  //     businessGuarantor: {
+  //       include: {
+  //         document: true
+  //       }
+  //     },
+  //   },
+  // })
+  if (payload.status == "REJECTED") {
+    await prisma.loanApplicationForm.update({
+      where: { id },
+      data: {
+        status: payload.status,
+        isActive: false
+      }
+    })
+    return {}
+  } else {
+    const result = await prisma.loanApplicationForm.update({
+      where: { id },
+      data: {
+        status: payload.status,
+        adminNotes: payload.adminNote
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+            name: true
+          }
+        }
+      }
+    })
+
+    return result
+  }
+};
+
 
 
 
@@ -93,5 +161,6 @@ const getSingleApplication = async (id: string) => {
 
 export const ApplicationServides = {
   getAllApplication,
-  getSingleApplication
+  getSingleApplication,
+  applicationFeedback
 }

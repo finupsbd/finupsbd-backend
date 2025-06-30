@@ -19,6 +19,7 @@ const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const applicationForm_service_1 = require("./applicationForm.service");
 const FilesUploader_1 = require("../../utils/FilesUploader");
 const app_1 = require("../../../app");
+const AppError_1 = __importDefault(require("../../error/AppError"));
 const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.files || req.files.length === 0) {
         throw new Error("No files uploaded");
@@ -99,6 +100,12 @@ const applicantGuarantorInfoPersonal = (0, catchAsync_1.default)((req, res) => _
     const id = req.query.id;
     const data = req.body.data;
     const guarantorData = JSON.parse(data);
+    const isExist = yield app_1.prisma.personalGuarantor.findUnique({
+        where: { id }
+    });
+    if (isExist) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, "You already fill up this from Thank you");
+    }
     if (!files || files.length === 0) {
         return (0, sendResponce_1.default)(res, {
             success: false,
@@ -157,6 +164,12 @@ const applicantGuarantorInfoBusiness = (0, catchAsync_1.default)((req, res) => _
     const id = req.query.id;
     const data = req.body.data;
     const guarantorData = JSON.parse(data);
+    const isExist = yield app_1.prisma.businessGuarantor.findUnique({
+        where: { id }
+    });
+    if (isExist) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, "You already fill up this from Thank you");
+    }
     if (!files || files.length === 0) {
         return (0, sendResponce_1.default)(res, {
             success: false,

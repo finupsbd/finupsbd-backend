@@ -57,7 +57,7 @@ const personalLoan = (payload, query) => __awaiter(void 0, void 0, void 0, funct
             payload.monthlyIncome -= totalEmi;
         }
         if (payload === null || payload === void 0 ? void 0 : payload.haveAnyCreditCard) {
-            payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCard * 2000);
+            payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCreditCards * 2000);
         }
         const suggestedLoans = loans.map((loan) => {
             var _a;

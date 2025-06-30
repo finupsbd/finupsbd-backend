@@ -22,6 +22,7 @@ model LoanApplicationForm {
   guarantorInfo          GuarantorInfo?
   businessGuarantor      BusinessGuarantor?
   personalGuarantor      PersonalGuarantor?
+  additionalDocument     AdditionalDocument[]
 
   @@index([applicationId, status, isActive, isDeleted])
   @@map("loanApplicationForm")
@@ -71,7 +72,7 @@ model ResidentialInformation {
   permanentDivision        String?
   permanentLengthOfStay    String?
   permanentOwnershipStatus OwnershipStatus?
-  permanentThana           String?   
+  permanentThana           String?
   permanentPostalCode      String?
 
   // tie back to the loan application or user
@@ -278,6 +279,18 @@ model GuarantorInfoDocument {
 
 model Document {
   id           String   @id @default(uuid())
+  url          String
+  originalName String
+  mimeType     String
+  uploadedAt   DateTime @default(now())
+
+  loanApplicationForm   LoanApplicationForm @relation(fields: [loanApplicationFormId], references: [id], onDelete: Cascade)
+  loanApplicationFormId String
+}
+
+model AdditionalDocument {
+  id           String   @id @default(uuid())
+  fieldName    String?
   url          String
   originalName String
   mimeType     String

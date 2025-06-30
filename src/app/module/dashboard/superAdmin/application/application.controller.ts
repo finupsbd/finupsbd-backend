@@ -35,8 +35,25 @@ const getSingleApplication = catchAsync(async (req, res) => {
       });
 })
 
+const applicationFeedBack = catchAsync(async (req, res) => {
+
+    const id = req.params?.id
+
+
+console.log(req.body)
+    const result = await ApplicationServides.applicationFeedback(id, req.body)
+
+     sendResponses(res, {
+        success: true,
+        message: 'status updated application',
+        statusCode: StatusCodes.OK,
+        data: result
+      });
+})
+
 
 export const ApplicarionController = {
     getSingleApplication,
-    getAllApplication
+    getAllApplication, 
+    applicationFeedBack
 }

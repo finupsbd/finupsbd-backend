@@ -14,11 +14,13 @@ model EligibilityCheck {
   monthlyIncome       Int?
   jobLocation         String?
   haveAnyRentalIncome Boolean?
-  selectArea          String?
+  rentalArea          String?
   rentalIncome        Int?
-  haveAnyLoan         Boolean?           @default(false)
+
+  haveAnyLoan         Boolean?       @default(false)
   haveAnyCreditCard   Boolean?
-  numberOfCard        Int?
+  numberOfCreditCards Int?
+  numberOfLoans       Int?
   cardType            CardType?
   cardLimitBDT        Int?
   secondaryApplicant  Boolean?
@@ -26,17 +28,14 @@ model EligibilityCheck {
   name                String
   email               String
   phone               String
-  isAppliedLoan       Boolean            @default(false)
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @updatedAt
+  isAppliedLoan       Boolean        @default(false)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
   existingLoans       ExistingLoan[]
 
   @@index([loanType, name, email, phone, isAppliedLoan])
   @@map("eligibilityCheck")
 }
-
-
-
 
 /// New model for each existing loan
 model ExistingLoan {

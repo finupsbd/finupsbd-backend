@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
 // Enums
 export enum MainLoanType {
@@ -80,12 +81,13 @@ export interface TEligibilityCheck {
   jobLocation?: string;
 
   haveAnyRentalIncome?: boolean;
-  selectArea?: string;
+  rentalArea?: string;
   rentalIncome?: number;
 
   haveAnyLoan?: boolean;
   haveAnyCreditCard?: boolean;
-  numberOfCard?: number;
+  numberOfCreditCards?: number;
+  numberOfLoans: number;
   cardType?: CardType;
   cardLimitBDT?: number;
 

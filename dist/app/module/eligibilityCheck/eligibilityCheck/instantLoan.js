@@ -41,8 +41,8 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
             const totalEMI = payload.existingLoans.reduce((sum, loan) => sum + (loan.emiAmountBDT || 0), 0);
             adjustedMonthlyIncome -= totalEMI;
         }
-        if (payload.haveAnyCreditCard && payload.numberOfCard) {
-            adjustedMonthlyIncome -= payload.numberOfCard * 2000;
+        if (payload.haveAnyCreditCard && payload.numberOfCreditCards) {
+            adjustedMonthlyIncome -= payload.numberOfCreditCards * 2000;
         }
         const suggestedLoans = loans.map((loan) => {
             const interest = Number(loan.interestRate) || 0;

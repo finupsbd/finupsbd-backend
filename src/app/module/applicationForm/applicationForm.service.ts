@@ -136,12 +136,6 @@ import { LoanApplicationFormSchema, TLoanApplicationForm } from './applicationFo
 // };
 
 
-
-
-
-
-
-
 const createApplicationForm = async (
   data: TLoanApplicationForm,
   user: TMiddlewareUser,
@@ -336,8 +330,6 @@ const getAllApplicationForm = async () => {
 
   return result;
 };
-
-
 
 
 // const updateStatus = async (id: string, payload: {status: LoanStatus, adminNotes: string}) => {

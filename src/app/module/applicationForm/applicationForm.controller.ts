@@ -6,6 +6,7 @@ import { ApplicationFromService } from './applicationForm.service';
 import { TMiddlewareUser, TMulterFile } from '../../types/commonTypes';
 import { uploadBufferToCloudinary } from '../../utils/FilesUploader';
 import { prisma } from '../../../app';
+import AppError from '../../error/AppError';
 
 
 
@@ -23,7 +24,7 @@ const createApplicationForm = catchAsync(async (req, res) => {
   const result = await ApplicationFromService.createApplicationForm(
     JSON.parse(rawData),
     user,
-    files, 
+    files,
     JSON.parse(loanRequest),
   );
 
@@ -66,7 +67,7 @@ const getAllApplicationForm = catchAsync(async (req, res) => {
 
 const getSingleApplication = catchAsync(async (req, res) => {
 
-  const {id} = req.params;
+  const { id } = req.params;
 
 
   const result = await ApplicationFromService.getSingleApplication(id);
@@ -75,14 +76,14 @@ const getSingleApplication = catchAsync(async (req, res) => {
     success: true,
     message: 'get single application ',
     statusCode: StatusCodes.OK,
-    data: result, 
+    data: result,
   });
 });
 
 const myLoanApplication = catchAsync(async (req, res) => {
 
 
-const user = req.user as TMiddlewareUser;
+  const user = req.user as TMiddlewareUser;
 
   const result = await ApplicationFromService.myLoanApplication(user);
 
@@ -90,7 +91,7 @@ const user = req.user as TMiddlewareUser;
     success: true,
     message: 'get my loan application successfully',
     statusCode: StatusCodes.OK,
-    data: result, 
+    data: result,
   });
 });
 
@@ -120,7 +121,6 @@ const applicationForget = catchAsync(async (req, res) => {
 });
 
 
-
 ////garuantor info update with existing form
 
 const applicantGuarantorInfoPersonal = catchAsync(async (req, res) => {
@@ -130,6 +130,14 @@ const applicantGuarantorInfoPersonal = catchAsync(async (req, res) => {
 
   const data = req.body.data
   const guarantorData = JSON.parse(data)
+
+  const isExist = await prisma.personalGuarantor.findUnique({
+    where: { id }
+  })
+
+  if (isExist) {
+    throw new AppError(StatusCodes.CONFLICT, "You already fill up this from Thank you")
+  }
 
 
 
@@ -171,24 +179,24 @@ const applicantGuarantorInfoPersonal = catchAsync(async (req, res) => {
 
   console.log(uploadedFiles)
 
-console.log("applicationId", id )
+  console.log("applicationId", id)
 
   const result = await prisma.personalGuarantor.create({
     data: {
       ...guarantorData,
-      loanApplicationFormId: id, 
+      loanApplicationFormId: id,
       document: {
         create: uploadedFiles.map(doc => ({
-          format: doc.format, 
-          originalName: doc.originalName, 
+          format: doc.format,
+          originalName: doc.originalName,
           secure_url: doc.secure_url
         }))
       }
     },
-    
+
 
   })
-console.log(result)
+  console.log(result)
 
   // 4. Respond with the Cloudinary URLs / IDs (or save them to your DB here)
   return sendResponses(res, {
@@ -212,7 +220,13 @@ const applicantGuarantorInfoBusiness = catchAsync(async (req, res) => {
   const data = req.body.data
   const guarantorData = JSON.parse(data)
 
+  const isExist = await prisma.businessGuarantor.findUnique({
+    where: { id }
+  })
 
+  if (isExist) {
+    throw new AppError(StatusCodes.CONFLICT, "You already fill up this from Thank you")
+  }
 
 
   if (!files || files.length === 0) {
@@ -252,24 +266,24 @@ const applicantGuarantorInfoBusiness = catchAsync(async (req, res) => {
 
   console.log(uploadedFiles)
 
-console.log("applicationId", id )
+  console.log("applicationId", id)
 
   const result = await prisma.businessGuarantor.create({
     data: {
       ...guarantorData,
-      loanApplicationFormId: id, 
+      loanApplicationFormId: id,
       document: {
         create: uploadedFiles.map(doc => ({
-          format: doc.format, 
-          originalName: doc.originalName, 
+          format: doc.format,
+          originalName: doc.originalName,
           secure_url: doc.secure_url
         }))
       }
     },
-    
+
 
   })
-console.log(result)
+  console.log(result)
 
   // 4. Respond with the Cloudinary URLs / IDs (or save them to your DB here)
   return sendResponses(res, {
@@ -299,6 +313,6 @@ export const ApplicationController = {
   getSingleApplication,
   applicationTracking,
   applicationForget,
-  myLoanApplication, 
-  
+  myLoanApplication,
+
 };

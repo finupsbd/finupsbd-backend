@@ -76,7 +76,7 @@ const take = pageSize;
     }
 
     if (payload?.haveAnyCreditCard) {
-      payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCard! * 2000);
+      payload.monthlyIncome = payload.monthlyIncome - (payload.numberOfCreditCards! * 2000);
     }
 
 

@@ -9,4 +9,5 @@ const application_controller_1 = require("./application.controller");
 const route = express_1.default.Router();
 route.get('/get-all-application', application_controller_1.ApplicarionController.getAllApplication);
 route.get('/get-single-application/:id', application_controller_1.ApplicarionController.getSingleApplication);
+route.patch('/application-feedback/:id', application_controller_1.ApplicarionController.applicationFeedBack);
 exports.SuperAdminApplicationRouter = route;
