@@ -24,7 +24,7 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
 
 
     if (!loans.length) {
-      throw new AppError(404, "No loans found for the given criteria.");
+      throw new AppError(404, "No loans found for the given criteria!.");
     }
 
     let adjustedMonthlyIncome = Math.min(payload.monthlyIncome || 0, 50000);
