@@ -7,16 +7,10 @@ import { CreditCardController } from './creditCard.controller';
 
 const router = express.Router();
 
-router.post(
-  '/',
-  upload.single('file'),
-  CreditCardController.createCreditCard
-);
+router.post('/',upload.single('file'),CreditCardController.createCreditCard);
+
 router.get('/', CreditCardController.getAllCreditCard);
-router.patch(
-  '/:id',
-  upload.single('file'),
-  CreditCardController.updateCreditCard
-);
+
+// router.patch('/:id', upload.single('file'),CreditCardController.updateCreditCard);
 
 export const CreditCardRouter = router;

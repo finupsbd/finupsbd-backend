@@ -21,7 +21,7 @@ const creditCardValidation_1 = require("./creditCardValidation");
 const createCreditCard = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     console.log("req.body", req.body);
-    const payload = creditCardValidation_1.CreditCardValidationSchema.createCreditCardValidateSchema.parse(JSON.parse(req.body.data));
+    const payload = creditCardValidation_1.CreditCardValidationSchema.CreditCardSchema.parse(JSON.parse(req.body.data));
     const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
     if (!file) {
         throw new Error('Please upload a file');
@@ -43,20 +43,25 @@ const getAllCreditCard = (0, catchAsync_1.default)((req, res) => __awaiter(void 
         data: result,
     });
 }));
-const updateCreditCard = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const payload = creditCardValidation_1.CreditCardValidationSchema.updateCreditCardValidateSchema.parse(JSON.parse(req.body.data));
-    const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
-    const result = yield creditCard_service_1.CreditCardService.updateCreditCard(payload, file, req.params.id);
-    (0, sendResponce_1.default)(res, {
-        success: true,
-        message: 'Updated Credit Card Info Successfully',
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        data: result,
-    });
-}));
+// const updateCreditCard = catchAsync(async (req, res) => {
+//   const payload = CreditCardValidationSchema.updateCreditCardValidateSchema.parse(
+//     JSON.parse(req.body.data)
+//   );
+//   const file = req.file?.buffer;
+//   const result = await CreditCardService.updateCreditCard(
+//     payload as TCreditCard,
+//     file,
+//     req.params.id
+//   );
+//   sendResponses(res, {
+//     success: true,
+//     message: 'Updated Credit Card Info Successfully',
+//     statusCode: StatusCodes.OK,
+//     data: result,
+//   });
+// });
 exports.CreditCardController = {
     createCreditCard,
     getAllCreditCard,
-    updateCreditCard,
+    // updateCreditCard,
 };

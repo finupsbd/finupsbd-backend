@@ -85,19 +85,36 @@ const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
             profile: true,
             isActive: true,
             emailVerified: true,
-            LoanApplicationForm: {
-                include: {
-                    loanRequest: true,
-                }
-            }
         },
     });
     if (!result)
         throw new Error("User not found");
     return result;
 });
+const getAllApplication = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield app_1.prisma.loanApplicationForm.findMany({
+        where: {
+            user: {
+                id: id
+            }
+        },
+        include: {
+            eligibleLoanOffer: {
+                select: {
+                    bankName: true,
+                    loanType: true
+                }
+            }
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+    return result;
+});
 exports.UserServices = {
     getAllUser,
     meProfile,
-    getSingleUser
+    getSingleUser,
+    getAllApplication
 };

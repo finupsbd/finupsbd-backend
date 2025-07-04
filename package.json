@@ -1,7 +1,7 @@
 {
   "name": "finupsbd-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.js", 
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "start": "node dist/server.js",
@@ -16,7 +16,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "ISC", 
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.17.0",

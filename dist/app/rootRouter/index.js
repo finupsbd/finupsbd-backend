@@ -21,6 +21,7 @@ const smeLoan_route_1 = require("../module/loans/smeLoan/smeLoan.route");
 const instantLoan_route_1 = require("../module/loans/instantLoan/instantLoan.route");
 const userBankAuth_route_1 = require("../module/bankProtal/userBankAuth/userBankAuth.route");
 const application_route_1 = require("../module/dashboard/superAdmin/application/application.route");
+const creditCard_route_1 = require("../module/loans/creditCard/creditCard.route");
 const router = express_1.default.Router();
 const moduleRouter = [
     {
@@ -78,6 +79,10 @@ const moduleRouter = [
     {
         path: '/sme-loan',
         route: smeLoan_route_1.SMELoanRouter
+    },
+    {
+        path: '/credit-card',
+        route: creditCard_route_1.CreditCardRouter
     },
     {
         path: '/bank-portal/auth',

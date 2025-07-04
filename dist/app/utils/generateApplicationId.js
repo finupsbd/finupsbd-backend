@@ -45,7 +45,6 @@ function generateApplicationId() {
             const prefix = getDatePrefix();
             const sequence = "00001"; // Start sequence at 00001
             const newApplicationId = `${prefix}${sequence}`;
-            console.log({ newApplicationId });
             return newApplicationId;
         }
         if (applicationId.applicationId) {
@@ -54,7 +53,6 @@ function generateApplicationId() {
             const sequence = parseInt(applicationId.applicationId.slice(7), 10); // Extract numeric part, e.g., "00001"
             const nextSequence = (sequence + 1).toString().padStart(5, '0'); // Increment and pad with zeros
             const newApplicationId = `${prefix}${nextSequence}`; // Combine prefix and new sequence
-            console.log({ newApplicationId });
             return newApplicationId;
         }
         throw new AppError_1.default(500, "Unable to generate a new application ID."); // Fallback error handling

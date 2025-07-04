@@ -53,9 +53,26 @@ const getSingleUser = catchAsync(async (req, res) => {
 })
 
 
+  const getAllApplication = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+
+    const result = await UserServices.getAllApplication(id)
+
+
+    sendResponses(res, {
+        success: true, 
+        message: "Retrive all applications",
+        statusCode: StatusCodes.OK,
+        data: result
+    })
+})
+
+
 
 export const UserController = {
     getAllUsers,
     meProfile, 
-    getSingleUser
+    getSingleUser, 
+    getAllApplication
 }

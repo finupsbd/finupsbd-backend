@@ -104,3 +104,10 @@ export interface TEligibilityCheck {
 
   existingLoans: ExistingLoan[];
 }
+
+export type TEligiblityCheckData = {
+  queryDataBody: any
+  payload: TEligibilityCheck
+}
+
+

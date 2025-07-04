@@ -19,6 +19,7 @@ const eligibilityCheck_service_1 = require("./eligibilityCheck.service");
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const eligibilityCheck = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const query = req.query;
+    console.log(req.body);
     const result = yield eligibilityCheck_service_1.EligibilityCheckService.eligibilityCheck(req.body, query);
     (0, sendResponce_1.default)(res, {
         success: true,

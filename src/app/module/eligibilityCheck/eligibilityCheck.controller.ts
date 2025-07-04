@@ -10,6 +10,9 @@ const eligibilityCheck = catchAsync(async(req, res)=> {
 
 
     const query = req.query
+
+    console.log(req.body)
+
     const result = await EligibilityCheckService.eligibilityCheck(req.body, query); 
  
 

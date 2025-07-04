@@ -22,7 +22,6 @@ const createCreditCard = (payload, file) => __awaiter(void 0, void 0, void 0, fu
             bankName: payload.bankName,
             freeAnnualFee: payload.freeAnnualFee,
             regularAnnualFee: payload.regularAnnualFee,
-            annualFeeWaived: payload.annualFeeWaived,
             annualFeeWaivedReward: payload.annualFeeWaivedReward,
             interestPerDay: payload.interestPerDay,
             interestFreePeriod: payload.interestFreePeriod,
@@ -37,15 +36,13 @@ const createCreditCard = (payload, file) => __awaiter(void 0, void 0, void 0, fu
             processingFeeMinimum: payload.processingFeeMinimum,
             cashWithdrawalLimit: payload.cashWithdrawalLimit,
             coverImage: payload.coverImage,
-            featuresCreditCard: {
-                create: payload.featuresCreditCard,
-            },
-            eligibilityCreditCard: {
-                create: payload.eligibilityCreditCard,
-            },
-            feesChargesCreditCard: {
-                create: payload.feesChargesCreditCard,
-            },
+            latePaymentFees: payload.latePaymentFees,
+            currency: payload.currency,
+            cardFeaturesType: payload.cardFeaturesType,
+            cardNetwork: payload.cardNetwork,
+            featuresCreditCard: payload.featuresCreditCard ? { create: payload.featuresCreditCard } : undefined,
+            eligibilityCreditCard: payload.eligibilityCreditCard ? { create: payload.eligibilityCreditCard } : undefined,
+            feesChargesCreditCard: payload.feesChargesCreditCard ? { create: payload.feesChargesCreditCard } : undefined,
         },
         include: {
             featuresCreditCard: true,
@@ -65,80 +62,80 @@ const getAllCreditCard = () => __awaiter(void 0, void 0, void 0, function* () {
     });
     return result;
 });
-const updateCreditCard = (payload, file, id) => __awaiter(void 0, void 0, void 0, function* () {
-    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file) : undefined;
-    payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
-    // Handle the Bank record
-    const result = yield app_1.prisma.creditCard.upsert({
-        where: { id },
-        create: {
-            bankName: payload.bankName,
-            freeAnnualFee: payload.freeAnnualFee,
-            regularAnnualFee: payload.regularAnnualFee,
-            annualFeeWaived: payload.annualFeeWaived,
-            annualFeeWaivedReward: payload.annualFeeWaivedReward,
-            interestPerDay: payload.interestPerDay,
-            interestFreePeriod: payload.interestFreePeriod,
-            freeSupplementaryCards: payload.freeSupplementaryCards,
-            maxSupplementaryCards: payload.maxSupplementaryCards,
-            balanceTransferAvailability: payload.balanceTransferAvailability,
-            ownBankATMFee: payload.ownBankATMFee,
-            otherBankATMFee: payload.otherBankATMFee,
-            loungeFacility: payload.loungeFacility,
-            loungeVisit: payload.loungeVisit,
-            cardChequeProcessingFee: payload.cardChequeProcessingFee,
-            processingFeeMinimum: payload.processingFeeMinimum,
-            cashWithdrawalLimit: payload.cashWithdrawalLimit,
-            coverImage: payload.coverImage,
-            featuresCreditCard: {
-                create: payload.featuresCreditCard,
-            },
-            eligibilityCreditCard: {
-                create: payload.eligibilityCreditCard,
-            },
-            feesChargesCreditCard: {
-                create: payload.feesChargesCreditCard,
-            },
-        },
-        update: {
-            bankName: payload.bankName,
-            freeAnnualFee: payload.freeAnnualFee,
-            regularAnnualFee: payload.regularAnnualFee,
-            annualFeeWaived: payload.annualFeeWaived,
-            annualFeeWaivedReward: payload.annualFeeWaivedReward,
-            interestPerDay: payload.interestPerDay,
-            interestFreePeriod: payload.interestFreePeriod,
-            freeSupplementaryCards: payload.freeSupplementaryCards,
-            maxSupplementaryCards: payload.maxSupplementaryCards,
-            balanceTransferAvailability: payload.balanceTransferAvailability,
-            ownBankATMFee: payload.ownBankATMFee,
-            otherBankATMFee: payload.otherBankATMFee,
-            loungeFacility: payload.loungeFacility,
-            loungeVisit: payload.loungeVisit,
-            cardChequeProcessingFee: payload.cardChequeProcessingFee,
-            processingFeeMinimum: payload.processingFeeMinimum,
-            cashWithdrawalLimit: payload.cashWithdrawalLimit,
-            coverImage: payload.coverImage,
-            featuresCreditCard: {
-                create: payload.featuresCreditCard,
-            },
-            eligibilityCreditCard: {
-                create: payload.eligibilityCreditCard,
-            },
-            feesChargesCreditCard: {
-                create: payload.feesChargesCreditCard,
-            },
-        },
-        include: {
-            featuresCreditCard: true,
-            eligibilityCreditCard: true,
-            feesChargesCreditCard: true,
-        }
-    });
-    return result; // Return the updated or created bank record
-});
+// const updateCreditCard = async (payload: TCreditCardTypes, file: any, id: string) => {
+//     const coverImage = file ? await sendImageToCloud(file) : undefined;
+//     payload.coverImage = coverImage ?? undefined
+//     // Handle the Bank record
+//     const result = await prisma.creditCard.upsert({
+//         where: { id },
+//         create: {
+//             bankName: payload.bankName,
+//             freeAnnualFee: payload.freeAnnualFee,
+//             regularAnnualFee: payload.regularAnnualFee,
+//             annualFeeWaived: payload.annualFeeWaived,
+//             annualFeeWaivedReward: payload.annualFeeWaivedReward,
+//             interestPerDay: payload.interestPerDay,
+//             interestFreePeriod: payload.interestFreePeriod,
+//             freeSupplementaryCards: payload.freeSupplementaryCards,
+//             maxSupplementaryCards: payload.maxSupplementaryCards,
+//             balanceTransferAvailability: payload.balanceTransferAvailability,
+//             ownBankATMFee: payload.ownBankATMFee,
+//             otherBankATMFee: payload.otherBankATMFee,
+//             loungeFacility: payload.loungeFacility,
+//             loungeVisit: payload.loungeVisit,
+//             cardChequeProcessingFee: payload.cardChequeProcessingFee,
+//             processingFeeMinimum: payload.processingFeeMinimum,
+//             cashWithdrawalLimit: payload.cashWithdrawalLimit,
+//             coverImage: payload.coverImage,
+//             featuresCreditCard: {
+//                 create: payload.featuresCreditCard,
+//             },
+//             eligibilityCreditCard: {
+//                 create: payload.eligibilityCreditCard,
+//             },
+//             feesChargesCreditCard: {
+//                 create: payload.feesChargesCreditCard,
+//             },
+//         },
+//         update: {
+//             bankName: payload.bankName,
+//             freeAnnualFee: payload.freeAnnualFee,
+//             regularAnnualFee: payload.regularAnnualFee,
+//             annualFeeWaived: payload.annualFeeWaived,
+//             annualFeeWaivedReward: payload.annualFeeWaivedReward,
+//             interestPerDay: payload.interestPerDay,
+//             interestFreePeriod: payload.interestFreePeriod,
+//             freeSupplementaryCards: payload.freeSupplementaryCards,
+//             maxSupplementaryCards: payload.maxSupplementaryCards,
+//             balanceTransferAvailability: payload.balanceTransferAvailability,
+//             ownBankATMFee: payload.ownBankATMFee,
+//             otherBankATMFee: payload.otherBankATMFee,
+//             loungeFacility: payload.loungeFacility,
+//             loungeVisit: payload.loungeVisit,
+//             cardChequeProcessingFee: payload.cardChequeProcessingFee,
+//             processingFeeMinimum: payload.processingFeeMinimum,
+//             cashWithdrawalLimit: payload.cashWithdrawalLimit,
+//             coverImage: payload.coverImage,
+//             featuresCreditCard: {
+//                 create: payload.featuresCreditCard,
+//             },
+//             eligibilityCreditCard: {
+//                 create: payload.eligibilityCreditCard,
+//             },
+//             feesChargesCreditCard: {
+//                 create: payload.feesChargesCreditCard,
+//             },
+//         },
+//         include: {
+//             featuresCreditCard: true,
+//             eligibilityCreditCard: true,
+//             feesChargesCreditCard: true,
+//         }
+//     });
+//     return result;  // Return the updated or created bank record
+// };
 exports.CreditCardService = {
     createCreditCard,
     getAllCreditCard,
-    updateCreditCard,
+    // updateCreditCard,
 };

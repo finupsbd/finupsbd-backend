@@ -1,10 +1,11 @@
-import { loanTypes } from "./eligibilityCheck.constant";
+import { cardsTypes, loanTypes } from "./eligibilityCheck.constant";
 import AppError from "../../error/AppError";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../../app";
 import { TEligibilityCheck } from "./eligibilityCheck.interface";
 import personalLoan from "./eligibilityCheck/personalLoan";
 import { instantLoan } from "./eligibilityCheck/instantLoan";
+import { creditCard } from "./eligibilityCheck/creditCard";
 
 
 type LoanHandler = (data: TEligibilityCheck, query: Record<string, unknown>) => Promise<unknown>;
@@ -13,6 +14,7 @@ type LoanHandler = (data: TEligibilityCheck, query: Record<string, unknown>) => 
 const loanHandlers: Record<string, LoanHandler> = {
   [loanTypes.INSTANT_LOAN]: instantLoan,
   [loanTypes.PERSONAL_LOAN]: personalLoan,
+  [cardsTypes.CREDIT_CARD]: creditCard,
 
 };
 
@@ -21,9 +23,11 @@ const loanHandlers: Record<string, LoanHandler> = {
 
 const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
 
+    console.log({ payload })
+
   const { existingLoans = [], ...eligibilityData } = payload;
 
-  console.log({ payload })
+
 
   try {
 

@@ -108,16 +108,40 @@ const meProfile = async (user: any) => {
       profile: true,
       isActive: true,
       emailVerified: true,
-      LoanApplicationForm: {
-        include: {
-           loanRequest: true, 
-        }
-      }
     },
 
   });
   if (!result) throw new Error("User not found");
   return result;
+};
+
+
+
+const getAllApplication = async (id: string) => {
+
+  const result = await prisma.loanApplicationForm.findMany({
+    where: {
+      user: {
+        id: id
+      }
+    }, 
+    include: {
+      eligibleLoanOffer: {
+        select: {
+          bankName: true, 
+          loanType: true
+        }
+      }
+    }, 
+    orderBy: {
+      createdAt: "desc"
+    }
+  })
+
+
+
+  return result
+
 };
 
 
@@ -129,5 +153,6 @@ const meProfile = async (user: any) => {
 export const UserServices = {
   getAllUser,
   meProfile,
-  getSingleUser
+  getSingleUser,
+  getAllApplication
 };

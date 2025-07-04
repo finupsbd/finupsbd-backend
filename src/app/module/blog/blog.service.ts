@@ -7,7 +7,7 @@ import { TBlog } from './blog.interface';
 const createBlog = async (payload: TBlog, file: any, user: TMiddlewareUser ) => {
   const coverImage = await sendImageToCloud(file);
   payload.coverImage = coverImage ?? undefined;
-  payload.userId = user.userId ? user.userId : undefined;
+  // payload.userId = user.userId ? user.userId : undefined;
 
   const result = await prisma.blog.create({ data: payload as any });
   return result;
@@ -60,9 +60,16 @@ const getAllBlogs = async () => {
 };
 
 const updateBlog = async (payload: TBlog, id: string) => {
+  // Convert category string to Prisma enum if necessary
+  const { category, ...restPayload } = payload;
+  const data = {
+    ...restPayload,
+    ...(category ? { category: category as any } : {}), // Replace 'any' with the actual enum type if imported
+  };
+
   const result = await prisma.blog.update({
     where: { id },
-    data: payload,
+    data: data,
   });
   return result;
 };

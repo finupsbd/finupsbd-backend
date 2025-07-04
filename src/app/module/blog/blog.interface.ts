@@ -9,11 +9,9 @@
   
   // Blog Model Interface
   export interface TBlog {
-    id?: string;
     title: string;
     slug: string;
     content: string;
-    userId?: string;
     publishedDate?: Date | undefined;
     status: "DRAFT" |  "PUBLISHED" | "ARCHIVED";
     excerpt?: string;

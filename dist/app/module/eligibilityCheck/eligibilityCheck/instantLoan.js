@@ -31,7 +31,7 @@ const instantLoan = (payload, query) => __awaiter(void 0, void 0, void 0, functi
             }),
         ]);
         if (!loans.length) {
-            throw new AppError_1.default(404, "No loans found for the given criteria.");
+            throw new AppError_1.default(404, "No loans found for the given criteria!.");
         }
         let adjustedMonthlyIncome = Math.min(payload.monthlyIncome || 0, 50000);
         if (payload.haveAnyRentalIncome && payload.rentalIncome) {

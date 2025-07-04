@@ -10,5 +10,5 @@ const creditCard_controller_1 = require("./creditCard.controller");
 const router = express_1.default.Router();
 router.post('/', sendImageToCloud_1.upload.single('file'), creditCard_controller_1.CreditCardController.createCreditCard);
 router.get('/', creditCard_controller_1.CreditCardController.getAllCreditCard);
-router.patch('/:id', sendImageToCloud_1.upload.single('file'), creditCard_controller_1.CreditCardController.updateCreditCard);
+// router.patch('/:id', upload.single('file'),CreditCardController.updateCreditCard);
 exports.CreditCardRouter = router;

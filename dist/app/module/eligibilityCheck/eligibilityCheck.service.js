@@ -30,14 +30,16 @@ const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../app");
 const personalLoan_1 = __importDefault(require("./eligibilityCheck/personalLoan"));
 const instantLoan_1 = require("./eligibilityCheck/instantLoan");
+const creditCard_1 = require("./eligibilityCheck/creditCard");
 // Loan type handler map
 const loanHandlers = {
     [eligibilityCheck_constant_1.loanTypes.INSTANT_LOAN]: instantLoan_1.instantLoan,
     [eligibilityCheck_constant_1.loanTypes.PERSONAL_LOAN]: personalLoan_1.default,
+    [eligibilityCheck_constant_1.cardsTypes.CREDIT_CARD]: creditCard_1.creditCard,
 };
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { existingLoans = [] } = payload, eligibilityData = __rest(payload, ["existingLoans"]);
     console.log({ payload });
+    const { existingLoans = [] } = payload, eligibilityData = __rest(payload, ["existingLoans"]);
     try {
         const eligibilityCheckEntry = yield app_1.prisma.eligibilityCheck.create({
             data: Object.assign(Object.assign({}, eligibilityData), { existingLoans: {

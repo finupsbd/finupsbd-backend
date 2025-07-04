@@ -1,12 +1,15 @@
 model CreditCard {
   id                          String                 @id @default(uuid())
   bankName                    String
+  interestPerDay              String
   freeAnnualFee               String
   regularAnnualFee            String
-  annualFeeWaived             String
-  annualFeeWaivedReward       String
-  interestPerDay              String
   interestFreePeriod          String
+  latePaymentFees             String
+  currency                    Currency
+  cardFeaturesType            CardFeaturesType
+  cardNetwork                 CardNetwork
+  annualFeeWaivedReward       String
   freeSupplementaryCards      String
   maxSupplementaryCards       String
   balanceTransferAvailability String
@@ -32,15 +35,14 @@ model CreditCard {
 }
 
 model FeaturesCreditCard {
-  id            String      @id @default(uuid())
-  loanAmount    String
-  minimumAmount String
-  maximumAmount String
-  loanTenure    String
-  minimumYear   String
-  maximumYear   String
-  creditCardId  String?     @unique
-  creditCard    CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+  id           String      @id @default(uuid())
+  features1    String?
+  features2    String?
+  features3    String?
+  features4    String?
+  features5    String?
+  creditCardId String?     @unique
+  creditCard   CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
 }
 
 model EligibilityCreditCard {
@@ -56,11 +58,32 @@ model EligibilityCreditCard {
 
 model FeesChargesCreditCard {
   id                  String      @id @default(uuid())
-  processingFee       String
-  earlySettlementFee  String
-  prepaymentFee       String
-  LoanReSchedulingFee String
-  penalCharge         String
+  annualFee           String
+  annualFeeWaived     String
+  latePaymentFee      String
+  interestRate        String
+  balanceTransferRate String
   creditCardId        String?     @unique
   creditCard          CreditCard? @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+}
+
+enum Currency {
+  LOCAL
+  DUAL
+}
+
+enum CardNetwork {
+  VISA
+  MASTER
+  AMEX
+}
+
+enum CardFeaturesType {
+  SILVER
+  CLASSIC
+  STANDARD
+  GOLD
+  PLATINUM
+  SIGNATURE
+  TITANIUM
 }

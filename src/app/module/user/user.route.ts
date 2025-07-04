@@ -4,6 +4,10 @@ import auth from '../../middleware/auth';
 
 const router = express.Router();
 
+
+
+router.get('/get_all_application/:id', auth('USER'), UserController.getAllApplication);
+
 router.get(
   '/',
   auth('USER', 'ADMIN', 'SUPER_ADMIN'),
@@ -16,11 +20,9 @@ router.get(
   UserController.meProfile
 );
 
-router.get(
-  '/:id',
-  auth('USER', 'ADMIN', 'SUPER_ADMIN'),
-  UserController.getSingleUser
-);
+router.get('/:id', auth('USER', 'ADMIN', 'SUPER_ADMIN'),UserController.getSingleUser);
+
+
 
 
 

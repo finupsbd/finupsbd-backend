@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TEligibilityCheck } from "../eligibilityCheck.interface";
 import { calculateEMI } from "../utils/calculateEMI";
 import { prisma } from "../../../../app";
 import AppError from "../../../error/AppError";
 
-export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>
-) => {
+export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
   const { tenure = Number(payload.expectedLoanTenure) } = query;
 
 

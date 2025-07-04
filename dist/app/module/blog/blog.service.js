@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogService = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -16,7 +27,7 @@ const sendImageToCloud_1 = require("../../utils/sendImageToCloud");
 const createBlog = (payload, file, user) => __awaiter(void 0, void 0, void 0, function* () {
     const coverImage = yield (0, sendImageToCloud_1.sendImageToCloud)(file);
     payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
-    payload.userId = user.userId ? user.userId : undefined;
+    // payload.userId = user.userId ? user.userId : undefined;
     const result = yield app_1.prisma.blog.create({ data: payload });
     return result;
 });
@@ -66,9 +77,12 @@ const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const updateBlog = (payload, id) => __awaiter(void 0, void 0, void 0, function* () {
+    // Convert category string to Prisma enum if necessary
+    const { category } = payload, restPayload = __rest(payload, ["category"]);
+    const data = Object.assign(Object.assign({}, restPayload), (category ? { category: category } : {}));
     const result = yield app_1.prisma.blog.update({
         where: { id },
-        data: payload,
+        data: data,
     });
     return result;
 });

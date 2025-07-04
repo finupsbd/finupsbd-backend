@@ -35,7 +35,6 @@ export async function generateApplicationId() {
     const prefix = getDatePrefix();
     const sequence = "00001"; // Start sequence at 00001
     const newApplicationId = `${prefix}${sequence}`;
-    console.log({ newApplicationId });
     return newApplicationId;
   }
 
@@ -46,7 +45,6 @@ export async function generateApplicationId() {
     const nextSequence = (sequence + 1).toString().padStart(5, '0'); // Increment and pad with zeros
 
     const newApplicationId = `${prefix}${nextSequence}`; // Combine prefix and new sequence
-    console.log({ newApplicationId });
     return newApplicationId;
   }
 
