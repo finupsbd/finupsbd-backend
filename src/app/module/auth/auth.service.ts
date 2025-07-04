@@ -2,7 +2,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { prisma } from '../../../app';
-import { comparePassword, passwordHash } from '../../utils/passwordHash';
+import { passwordHash } from '../../utils/passwordHash';
 import sendEmail from '../../utils/sendEmail';
 import {
   accessTokenGenerate,
@@ -14,6 +14,7 @@ import { ConfigFile } from '../../../config';
 import { generateUserId } from '../../utils/generateUserId';
 import AppError from '../../error/AppError';
 import { StatusCodes } from 'http-status-codes';
+import { verificationPINEmailTemplate } from '../../utils/email-template/verificationPIN';
 
 
 
@@ -21,9 +22,6 @@ import { StatusCodes } from 'http-status-codes';
 
 
 const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: string, browser: string, location: string }) => {
-
-
-
 
   const isAlreadySignUpRequest = await prisma.user.findFirst({
     where: {
@@ -85,19 +83,25 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
   const result = await prisma.user.create({ data: payload });
   const MailSubject = 'Your PIN for Verification';
   const MailText = `
-  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-      <h2 style="color: #333; text-align: center; font-size: 24px; margin-bottom: 20px;">Your Verification PIN Code</h2>
-      <p style="font-size: 16px; color: #555;">Hello ${payload?.name}</p>
-      <p style="font-size: 16px; color: #555;">Your PIN code for verification is:</p>
-      <h2 style="color: #007BFF; font-size: 36px; font-weight: bold; text-align: center; margin: 20px 0;">${result?.pin}</h2>
-      <p style="font-size: 16px; color: #555;"><strong>🔒 Security Note:</strong> This PIN is valid for <strong>15 minutes</strong> only. Please do not share it with anyone.</p>
-      <p style="font-size: 16px; color: #555;">If you did not request this PIN, please ignore this email or contact our support team immediately.</p>
-      <p style="font-size: 16px; color: #555;">Thank you,</p>
-      <p style="font-size: 16px; color: #555; font-weight: bold;">PinUpsDB</p>
+  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7fa; padding: 30px;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+      <h2 style="color: #333333; text-align: center; font-size: 24px; margin-bottom: 24px;">📩 Email Verification</h2>
+      <p style="font-size: 16px; color: #555555;">Dear <strong>${payload?.name}</strong>,</p>
+      <p style="font-size: 16px; color: #555555;">Thank you for registering with us. To complete your account setup, please use the One Time Password (OTP) provided below:</p>
+      <div style="text-align: center; margin: 24px 0;">
+        <span style="display: inline-block; background-color: #e6f0ff; color: #007BFF; font-size: 36px; font-weight: bold; padding: 12px 24px; border-radius: 8px; letter-spacing: 4px;">
+          ${result?.pin}
+        </span>
+      </div>
+      <p style="font-size: 16px; color: #555555;"><strong>⚠️ Note:</strong> This OTP is valid for a limited time (15 minutes). Please do not share it with anyone to ensure the security of your account.</p>
+      <p style="font-size: 16px; color: #555555;">If you did not request this, please ignore this email or contact our support team immediately.</p>
+      <p style="font-size: 16px; color: #555555;">Best regards,</p>
+      <p style="font-size: 16px; font-weight: bold; color: #333333;">Finups BD</p>
     </div>
   </div>
 `;
+
+
   await sendEmail(payload?.email, MailSubject, MailText);
 
   // phoneOtpSend(phone, "send message")
@@ -106,8 +110,6 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
     email: result.email
   };
 };
-
-
 
 
 const login = async (payload: { email: string; password: string }) => {
@@ -165,11 +167,6 @@ const login = async (payload: { email: string; password: string }) => {
   }); // last login tracking
 
 
-
-
-
-
-
   return {
     accessToken,
     refreshToken,
@@ -203,134 +200,12 @@ const validatePin = async (payload: { email: string; pin: string }) => {
     data: { emailVerified: true },
   });
 
-  const emailSubject = 'Your PIN for Verification';
-  const bodyText = `
-   <head>
-    <style>
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
 
-      body {
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        color: #333;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-      }
-      .email-container {
-        width: 100%;
-        background-color: #f4f4f4;
-        padding: 20px 0;
-        animation: fadeIn 0.8s ease-out;
-      }
-      .email-content {
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: #ffffff;
-        padding: 40px;
-        border-radius: 8px;
-        border-top: 4px solid #28a745;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 0.8s ease-out 0.2s both;
-      }
-      .email-header {
-        text-align: center;
-        padding-bottom: 20px;
-      }
-      .email-header h2 {
-        color: #28a745;
-        font-size: 28px;
-        margin: 0;
-      }
-      .email-body {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #333;
-      }
-      .cta-button {
-        display: inline-block;
-        background-color: #28a745;
-        color: #ffffff;
-        padding: 12px 24px;
-        text-decoration: none;
-        font-size: 16px;
-        border-radius: 4px;
-        margin-top: 20px;
-        transition: background-color 0.3s ease;
-      }
-      .cta-button:hover {
-        background-color: #218838;
-      }
-      .footer {
-        text-align: center;
-        padding-top: 30px;
-        font-size: 12px;
-        color: #777;
-      }
-      .footer a {
-        color: #28a745;
-        text-decoration: none;
-      }
-      .social-icons img {
-        width: 24px;
-        margin: 0 10px;
-        opacity: 0.8;
-        transition: opacity 0.3s ease;
-      }
-      .social-icons img:hover {
-        opacity: 1;
-      }
-      @media (max-width: 600px) {
-        .email-content {
-          padding: 20px;
-        }
-        .email-header h2 {
-          font-size: 24px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <table role="presentation" class="email-container">
-      <tr>
-        <td align="center">
-          <table role="presentation" class="email-content">
-            <tr class="email-header">
-              <td>
-                <!-- You can swap this for your actual logo if you wish -->
-                <h2>Welcome to FinupsBd, ${user.name}!</h2>
-              </td>
-            </tr>
-            <tr class="email-body">
-              <td>
-                <p>Dear ${user.name},</p>
-                <p><strong>UserID:</strong> ${user.userId}</p>
-                <p>Thank you for joining <strong>FinupsBd</strong>! We’re thrilled to have you as part of our community.</p>
-                <p>At FinupsBd, our goal is to provide top-notch services and a seamless experience. Our team is here to guide you every step of the way.</p>
-                <p>To get started, explore our platform, and if you need assistance, don’t hesitate to reach out to our support team.</p>
-                <a href="https://www.finupsbd.com/" class="cta-button">Visit Website</a>
-              </td>
-            </tr>
-            <tr class="footer">
-              <td>
-                <p>&copy; ${new Date().getFullYear()} FinupsBd. All rights reserved.</p>
-                <p>Shimultoly, Gazipur</p>
-                <div class="social-icons">
-                  <a href="https://facebook.com/finupsbd"><img src="facebook-icon.png" alt="Facebook"></a>
-                  <a href="https://twitter.com/finupsbd"><img src="twitter-icon.png" alt="Twitter"></a>
-                  <a href="https://linkedin.com/company/finupsbd"><img src="linkedin-icon.png" alt="LinkedIn"></a>
-                </div>
-                <p><a href="https://finupsbd.com/unsubscribe">Unsubscribe</a></p>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-`;
+  const emailSubject = 'Your PIN for Verification';
+  const bodyText = verificationPINEmailTemplate(user?.name ?? "", user?.userId ?? "")
+
+
+
   await sendEmail(email, emailSubject, bodyText);
   return {};
 };
@@ -504,7 +379,7 @@ const changePassword = async (payload: {
 
 
 
-console.log(user)
+  console.log(user)
 
   // const userData = await prisma.user.findUnique({ where: { email } });
 
