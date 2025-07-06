@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -16,22 +7,21 @@ const app_1 = __importDefault(require("./app"));
 const config_1 = require("./config");
 let server;
 function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            server = app_1.default.listen(config_1.ConfigFile.PORT, () => {
-                console.log(`Server is running on port ${config_1.ConfigFile.PORT}`);
-            });
-        }
-        catch (error) {
-            console.log(error);
-        }
+    server = app_1.default.listen(config_1.ConfigFile.PORT, () => {
+        console.log(`Server is running on port ${config_1.ConfigFile.PORT}`);
+    });
+    server.on('error', (error) => {
+        console.error('Server startup error:', error);
+        process.exit(1);
     });
 }
 main();
-// Handle uncaught exceptions
-process.on('unhandledRejection', (reason) => {
-    console.log('Unhandled Promise Rejection! Shutting down the server...');
-    console.log(reason);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const shutdown = (reason, details) => {
+    console.log(`${reason}! Shutting down the server...`);
+    if (details) {
+        console.log(details);
+    }
     if (server) {
         server.close(() => {
             process.exit(1);
@@ -40,17 +30,12 @@ process.on('unhandledRejection', (reason) => {
     else {
         process.exit(1);
     }
-});
+};
 // Handle unhandled promise rejections
+process.on('unhandledRejection', (reason) => {
+    shutdown('Unhandled Promise Rejection', reason);
+});
+// Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
-    console.log('Uncaught Exception! Shutting down the server...');
-    console.log(err.name, err.message);
-    if (server) {
-        server.close(() => {
-            process.exit(1);
-        });
-    }
-    else {
-        process.exit(1);
-    }
+    shutdown('Uncaught Exception', err);
 });

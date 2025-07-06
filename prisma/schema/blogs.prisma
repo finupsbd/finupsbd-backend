@@ -7,7 +7,7 @@ model Blog {
   publishedDate   DateTime?  @default(now())
   status          PostStatus @default(PUBLISHED)
   excerpt         String?
-  category        Category
+  category        Category?
   tags            String[]
   coverImage      String?
   readingTime     Int?

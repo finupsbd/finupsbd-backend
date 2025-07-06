@@ -1,47 +1,44 @@
-
 import { Server } from 'http';
 import app from './app';
 import { ConfigFile } from './config';
 
-
 let server: Server;
 
-async function main() {
-  try {
-    server = app.listen(ConfigFile.PORT, () => {
-      console.log(`Server is running on port ${ConfigFile.PORT}`);
-    });
-  } catch (error) {
-    console.log(error);
-  }
+function main() {
+  server = app.listen(ConfigFile.PORT, () => {
+    console.log(`Server is running on port ${ConfigFile.PORT}`);
+  });
+
+  server.on('error', (error) => {
+    console.error('Server startup error:', error);
+    process.exit(1);
+  });
 }
 
 main();
 
-
-
-// Handle uncaught exceptions
-process.on('unhandledRejection', (reason) => {
-    console.log('Unhandled Promise Rejection! Shutting down the server...');
-    console.log(reason);
-    if (server) {
-      server.close(() => {
-        process.exit(1);
-      });
-    } else {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const shutdown = (reason: string, details: any) => {
+  console.log(`${reason}! Shutting down the server...`);
+  if (details) {
+    console.log(details);
+  }
+  if (server) {
+    server.close(() => {
       process.exit(1);
-    }
-  });
+    });
+  } else {
+    process.exit(1);
+  }
+};
+
 
 // Handle unhandled promise rejections
-  process.on('uncaughtException', (err) => {
-    console.log('Uncaught Exception! Shutting down the server...');
-    console.log(err.name, err.message);
-    if (server) {
-      server.close(() => {
-        process.exit(1);
-      });
-    } else {
-      process.exit(1);
-    }
-  });
+process.on('unhandledRejection', (reason) => {
+  shutdown('Unhandled Promise Rejection', reason);
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  shutdown('Uncaught Exception', err);
+});

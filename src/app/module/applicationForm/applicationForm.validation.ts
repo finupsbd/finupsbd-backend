@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // ── ENUMS ─────────────────────────────────────────────
-export const Gender = z.enum(["MALE", "FEMALE", "OTHER"], { required_error: "Gender is required" });
+export const Gender = z.enum(["MALE", "FEMALE", "OTHER"], { required_error: "Gender is required" })
 export const MaritalStatus = z.enum(["SINGLE", "MARRIED", "DIVORCED", "WIDOWED"], { required_error: "Marital status is required" });
 export const Religion = z.enum(["ISLAM", "HINDUISM", "CHRISTIANITY", "BUDDHISM", "OTHER"], { required_error: "Religion is required" });
 export const ResidentialStatus = z.enum(["RESIDENT", "NONRESIDENT", "TEMPORARYRESIDENT"], { required_error: "Residential status is required" });
@@ -9,7 +9,7 @@ export const EduLavel = z.enum(["BELOW_SSC", "SSC", "HSC", "GRADUATE", "POST_GRA
 export const OwnershipStatus = z.enum(["OWNED", "RENTED", "FAMILY_OWNED", "COMPANY_PROVIDED"]);
 export const LoanStatus = z.enum(["SUBMITTED", "PENDING", "IN_PROGRESS", "APPROVED", "REJECTED", "COMPLETED"]);
 export const LoanType = z.enum(["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN", "INSTANT_LOAN"]);
-export const ProfessionType = z.enum(["DOCTOR", "ENGINEER", "ARCHITECT", "ACCOUNTANT", "ARTIST", "TEACHER", "FREELANCER","OTHER"]);
+export const ProfessionType = z.enum(["DOCTOR", "ENGINEER", "ARCHITECT", "ACCOUNTANT", "ARTIST", "TEACHER", "FREELANCER", "OTHER"]);
 export const PropertyType = z.enum(["RESIDENTIAL", "COMMERCIAL", "LAND", "APARTMENT", "HOUSE", "OTHER"]);
 export const EmploymentStatus = z.enum(["SALARIED", "SELF_EMPLOYED", "BUSINESS_OWNER"]);
 export const EmploymentType = z.enum(["PERMANENT", "CONTRACTUAL", "PARTTIME", "PROBATION"]);
@@ -75,17 +75,17 @@ const LoanInfo = z.object({
 
 export const employmentInformationSchema = z.object({
   employmentStatus: EmploymentStatus,
-  designation: z.string().min(1, "Designation is required").optional(),
-  department: z.string().min(1, "Department is required").optional(),
-  employeeId: z.string().min(1, "Employee ID is required").optional(),
-  employmentType: EmploymentType,
-  dateOfJoining: z.string().datetime("Invalid date format").optional(),
-  organizationName: z.string().min(1, "Organization name is required").optional(),
-  organizationAddress: z.string().min(1, "Organization address is required").optional(),
-  serviceYears: z.string().min(1, "serviceYears  is required").optional(),
-  serviceMonths: z.string().min(1, "serviceMonths  is required").optional(),
-  eTin: z.string().min(1, "eTIN is required").optional(),
-  officialContact: z.string().min(1, "Official contact is required").optional(),
+  designation: z.string().optional(),
+  department: z.string().optional(),
+  employeeId: z.string().optional(),
+  employmentType: EmploymentType.optional(),
+  dateOfJoining: z.string().optional(),
+  organizationName: z.string().optional(),
+  organizationAddress: z.string().optional(),
+  serviceYears: z.string().optional(),
+  serviceMonths: z.string().optional(),
+  eTin: z.string().optional(),
+  officialContact: z.string().optional(),
   hasPreviousOrganization: z.boolean().optional(),
   previousOrganizationName: z.string().optional(),
   previousDesignation: z.string().optional(),
