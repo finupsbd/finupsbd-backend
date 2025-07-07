@@ -14,7 +14,7 @@ const globalErrorHandler = (err, req, res, next) => {
     var _a;
     let newMessage = "Something went's wrong";
     const error = {};
-    let statusCode = http_status_codes_1.StatusCodes.BAD_REQUEST;
+    let statusCode = http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR;
     if (err instanceof jsonwebtoken_1.TokenExpiredError) {
         res.status(401).json({
             success: false,

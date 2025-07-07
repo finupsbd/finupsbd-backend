@@ -19,7 +19,7 @@ const globalErrorHandler = (
 ) => {
   let newMessage = "Something went's wrong";
   const error = {};
-  let statusCode = StatusCodes.BAD_REQUEST;
+  let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 
   
 
