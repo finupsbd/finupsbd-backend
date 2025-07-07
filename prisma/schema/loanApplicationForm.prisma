@@ -305,7 +305,7 @@ model AdditionalDocument {
 model EligibleLoanOffer {
   id                    String              @id @default(uuid())
   bankName              String
-  bankImage             String
+  bankImage             String?
   loanType              LoanType
   amount                String
   eligibleLoan          String
