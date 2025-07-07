@@ -1,8 +1,20 @@
 -- CreateEnum
+CREATE TYPE "Category" AS ENUM ('LOAN', 'CREDIT_CARD', 'CREDIT_SCORE', 'CUSTOMER_SUCCESS');
+
+-- CreateEnum
 CREATE TYPE "PostStatus" AS ENUM ('DRAFT', 'PUBLISHED', 'ARCHIVED');
 
 -- CreateEnum
-CREATE TYPE "MainLoanType" AS ENUM ('PERSONAL_LOAN', 'HOME_LOAN', 'CAR_LOAN', 'SME_LOAN', 'INSTANT_LOAN');
+CREATE TYPE "Currency" AS ENUM ('LOCAL', 'DUAL');
+
+-- CreateEnum
+CREATE TYPE "CardNetwork" AS ENUM ('VISA', 'MASTER', 'AMEX');
+
+-- CreateEnum
+CREATE TYPE "CardFeaturesType" AS ENUM ('SILVER', 'CLASSIC', 'STANDARD', 'GOLD', 'PLATINUM', 'SIGNATURE', 'TITANIUM');
+
+-- CreateEnum
+CREATE TYPE "MainLoanType" AS ENUM ('PERSONAL_LOAN', 'HOME_LOAN', 'CAR_LOAN', 'SME_LOAN', 'INSTANT_LOAN', 'CREDIT_CARD', 'DEBIT_CARD');
 
 -- CreateEnum
 CREATE TYPE "EGender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
@@ -77,6 +89,12 @@ CREATE TYPE "LoanType" AS ENUM ('PERSONAL_LOAN', 'HOME_LOAN', 'CAR_LOAN', 'SME_L
 CREATE TYPE "DocumentType" AS ENUM ('PASSPORT_PHOTO', 'NATIONAL_ID', 'BIRTH_CERTIFICATE', 'INCOME_PROOF', 'BANK_STATEMENT', 'TIN_CERTIFICATE', 'EMPLOYMENT_PROOF', 'UTILITY_BILL', 'PROPERTY_DOCUMENT', 'SUPPORTING_DOCUMENT');
 
 -- CreateEnum
+CREATE TYPE "NotificationType" AS ENUM ('INFO', 'SUCCESS', 'WARNING', 'ERROR', 'PROMOTION', 'SYSTEM');
+
+-- CreateEnum
+CREATE TYPE "NotificationPriority" AS ENUM ('LOW', 'NORMAL', 'HIGH', 'CRITICAL');
+
+-- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN', 'SUPER_ADMIN');
 
 -- CreateEnum
@@ -100,11 +118,10 @@ CREATE TABLE "blogs" (
     "title" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
     "publishedDate" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "status" "PostStatus" NOT NULL DEFAULT 'PUBLISHED',
     "excerpt" TEXT,
-    "category" TEXT,
+    "category" "Category",
     "tags" TEXT[],
     "coverImage" TEXT,
     "readingTime" INTEGER,
@@ -115,6 +132,7 @@ CREATE TABLE "blogs" (
     "permissions" TEXT NOT NULL DEFAULT 'public',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "blogs_pkey" PRIMARY KEY ("id")
 );
@@ -199,12 +217,15 @@ CREATE TABLE "FeesChargesCarLoan" (
 CREATE TABLE "creditCards" (
     "id" TEXT NOT NULL,
     "bankName" TEXT NOT NULL,
+    "interestPerDay" TEXT NOT NULL,
     "freeAnnualFee" TEXT NOT NULL,
     "regularAnnualFee" TEXT NOT NULL,
-    "annualFeeWaived" TEXT NOT NULL,
-    "annualFeeWaivedReward" TEXT NOT NULL,
-    "interestPerDay" TEXT NOT NULL,
     "interestFreePeriod" TEXT NOT NULL,
+    "latePaymentFees" TEXT NOT NULL,
+    "currency" "Currency" NOT NULL,
+    "cardFeaturesType" "CardFeaturesType" NOT NULL,
+    "cardNetwork" "CardNetwork" NOT NULL,
+    "annualFeeWaivedReward" TEXT NOT NULL,
     "freeSupplementaryCards" TEXT NOT NULL,
     "maxSupplementaryCards" TEXT NOT NULL,
     "balanceTransferAvailability" TEXT NOT NULL,
@@ -228,12 +249,11 @@ CREATE TABLE "creditCards" (
 -- CreateTable
 CREATE TABLE "FeaturesCreditCard" (
     "id" TEXT NOT NULL,
-    "loanAmount" TEXT NOT NULL,
-    "minimumAmount" TEXT NOT NULL,
-    "maximumAmount" TEXT NOT NULL,
-    "loanTenure" TEXT NOT NULL,
-    "minimumYear" TEXT NOT NULL,
-    "maximumYear" TEXT NOT NULL,
+    "features1" TEXT,
+    "features2" TEXT,
+    "features3" TEXT,
+    "features4" TEXT,
+    "features5" TEXT,
     "creditCardId" TEXT,
 
     CONSTRAINT "FeaturesCreditCard_pkey" PRIMARY KEY ("id")
@@ -255,11 +275,11 @@ CREATE TABLE "EligibilityCreditCard" (
 -- CreateTable
 CREATE TABLE "FeesChargesCreditCard" (
     "id" TEXT NOT NULL,
-    "processingFee" TEXT NOT NULL,
-    "earlySettlementFee" TEXT NOT NULL,
-    "prepaymentFee" TEXT NOT NULL,
-    "LoanReSchedulingFee" TEXT NOT NULL,
-    "penalCharge" TEXT NOT NULL,
+    "annualFee" TEXT NOT NULL,
+    "annualFeeWaived" TEXT NOT NULL,
+    "latePaymentFee" TEXT NOT NULL,
+    "interestRate" TEXT NOT NULL,
+    "balanceTransferRate" TEXT NOT NULL,
     "creditCardId" TEXT,
 
     CONSTRAINT "FeesChargesCreditCard_pkey" PRIMARY KEY ("id")
@@ -281,11 +301,12 @@ CREATE TABLE "eligibilityCheck" (
     "monthlyIncome" INTEGER,
     "jobLocation" TEXT,
     "haveAnyRentalIncome" BOOLEAN,
-    "selectArea" TEXT,
+    "rentalArea" TEXT,
     "rentalIncome" INTEGER,
     "haveAnyLoan" BOOLEAN DEFAULT false,
     "haveAnyCreditCard" BOOLEAN,
-    "numberOfCard" INTEGER,
+    "numberOfCreditCards" INTEGER,
+    "numberOfLoans" INTEGER,
     "cardType" "CardType",
     "cardLimitBDT" INTEGER,
     "secondaryApplicant" BOOLEAN,
@@ -442,7 +463,7 @@ CREATE TABLE "loanApplicationForm" (
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "adminNotes" TEXT,
-    "applicationId" TEXT,
+    "applicationId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
@@ -503,47 +524,46 @@ CREATE TABLE "ResidentialInformation" (
 CREATE TABLE "EmploymentInformation" (
     "id" TEXT NOT NULL,
     "employmentStatus" "EmploymentStatus",
-    "jobTitle" TEXT NOT NULL,
-    "designation" TEXT NOT NULL,
-    "department" TEXT NOT NULL,
-    "employeeId" TEXT NOT NULL,
-    "employmentType" "EmploymentType",
-    "dateOfJoining" TIMESTAMP(3) NOT NULL,
-    "organizationName" TEXT NOT NULL,
-    "organizationAddress" TEXT NOT NULL,
-    "serviceYears" TEXT NOT NULL,
-    "serviceMonths" TEXT NOT NULL,
-    "eTin" TEXT NOT NULL,
+    "designation" TEXT,
+    "department" TEXT,
+    "employeeId" TEXT,
+    "dateOfJoining" TIMESTAMP(3),
+    "organizationName" TEXT,
+    "organizationAddress" TEXT,
+    "serviceYears" TEXT,
+    "serviceMonths" TEXT,
+    "eTin" TEXT,
     "officialContact" TEXT,
-    "hasPreviousOrganization" BOOLEAN NOT NULL,
-    "previousOrganizationName" TEXT NOT NULL,
-    "previousDesignation" TEXT NOT NULL,
-    "previousServiceYears" TEXT NOT NULL,
-    "previousServiceMonths" TEXT NOT NULL,
-    "totalExperienceYears" TEXT NOT NULL,
-    "totalExperienceMonths" TEXT NOT NULL,
-    "businessName" TEXT NOT NULL,
-    "businessAddress" TEXT NOT NULL,
-    "businessOwnerType" "BOwnerType" NOT NULL,
-    "businessType" "BusinessType" NOT NULL,
-    "sharePortion" TEXT NOT NULL,
-    "businessRegistrationNumber" TEXT NOT NULL,
-    "tradeLicenseAge" TEXT NOT NULL,
-    "professionalTitle" TEXT NOT NULL,
-    "institutionName" TEXT NOT NULL,
-    "workplaceAddress" TEXT NOT NULL,
-    "yearsOfExperience" TEXT NOT NULL,
-    "startedPracticeSince" TIMESTAMP(3) NOT NULL,
-    "tin" TEXT NOT NULL,
-    "websitePortfolioLink" TEXT NOT NULL,
-    "professionalRegistrationNumber" TEXT NOT NULL,
-    "grossMonthlyIncome" TEXT NOT NULL,
-    "rentIncome" TEXT NOT NULL,
-    "otherIncome" TEXT NOT NULL,
-    "sourceOfOtherIncome" TEXT NOT NULL,
-    "totalIncome" TEXT NOT NULL,
+    "hasPreviousOrganization" BOOLEAN,
+    "previousOrganizationName" TEXT,
+    "previousDesignation" TEXT,
+    "previousServiceYears" TEXT,
+    "previousServiceMonths" TEXT,
+    "totalExperienceYears" TEXT,
+    "totalExperienceMonths" TEXT,
+    "employmentType" "EmploymentType",
+    "businessName" TEXT,
+    "businessAddress" TEXT,
+    "businessOwnerType" "BOwnerType",
+    "businessType" "BusinessType",
+    "sharePortion" TEXT,
+    "businessRegistrationNumber" TEXT,
+    "tradeLicenseAge" TEXT,
+    "professionalTitle" TEXT,
+    "institutionName" TEXT,
+    "workplaceAddress" TEXT,
+    "yearsOfExperience" TEXT,
+    "startedPracticeSince" TEXT,
+    "tin" TEXT,
+    "websitePortfolioLink" TEXT,
+    "professionalRegistrationNumber" TEXT,
+    "grossMonthlyIncome" TEXT,
+    "rentIncome" TEXT,
+    "otherIncome" TEXT,
+    "sourceOfOtherIncome" TEXT,
+    "totalIncome" TEXT,
     "professionType" "SelfEmploymentType",
-    "otherProfession" TEXT NOT NULL,
+    "otherProfession" TEXT,
     "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "EmploymentInformation_pkey" PRIMARY KEY ("id")
@@ -552,8 +572,8 @@ CREATE TABLE "EmploymentInformation" (
 -- CreateTable
 CREATE TABLE "Properties" (
     "id" TEXT NOT NULL,
-    "propertyType" "PropertyType" NOT NULL,
-    "propertyValue" TEXT NOT NULL,
+    "propertyType" "PropertyType",
+    "propertyValue" TEXT,
     "employmentInformationId" TEXT,
 
     CONSTRAINT "Properties_pkey" PRIMARY KEY ("id")
@@ -631,9 +651,60 @@ CREATE TABLE "GuarantorInfo" (
 );
 
 -- CreateTable
+CREATE TABLE "BusinessGuarantor" (
+    "id" TEXT NOT NULL,
+    "fullName" TEXT NOT NULL,
+    "fatherOrHusbandName" TEXT NOT NULL,
+    "motherName" TEXT NOT NULL,
+    "dateOfBirth" TIMESTAMP(3) NOT NULL,
+    "emailAddress" TEXT NOT NULL,
+    "mobileNumber" TEXT NOT NULL,
+    "nationalIdNumber" TEXT NOT NULL,
+    "nationality" TEXT NOT NULL,
+    "permanentAddress" TEXT NOT NULL,
+    "presentAddress" TEXT NOT NULL,
+    "relationWithApplicant" TEXT NOT NULL,
+    "workAddress" TEXT NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "BusinessGuarantor_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PersonalGuarantor" (
+    "id" TEXT NOT NULL,
+    "fullName" TEXT NOT NULL,
+    "fatherOrHusbandName" TEXT NOT NULL,
+    "motherName" TEXT NOT NULL,
+    "dateOfBirth" TIMESTAMP(3) NOT NULL,
+    "emailAddress" TEXT NOT NULL,
+    "mobileNumber" TEXT NOT NULL,
+    "nationalIdNumber" TEXT NOT NULL,
+    "nationality" TEXT NOT NULL,
+    "permanentAddress" TEXT NOT NULL,
+    "presentAddress" TEXT NOT NULL,
+    "relationWithApplicant" TEXT NOT NULL,
+    "workAddress" TEXT NOT NULL,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "PersonalGuarantor_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "GuarantorInfoDocument" (
+    "id" TEXT NOT NULL,
+    "secure_url" TEXT NOT NULL,
+    "format" TEXT NOT NULL,
+    "originalName" TEXT NOT NULL,
+    "personalGuarantorId" TEXT,
+    "businessGuarantorId" TEXT,
+
+    CONSTRAINT "GuarantorInfoDocument_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Document" (
     "id" TEXT NOT NULL,
-    "loanApplicationId" TEXT,
     "url" TEXT NOT NULL,
     "originalName" TEXT NOT NULL,
     "mimeType" TEXT NOT NULL,
@@ -644,16 +715,29 @@ CREATE TABLE "Document" (
 );
 
 -- CreateTable
+CREATE TABLE "AdditionalDocument" (
+    "id" TEXT NOT NULL,
+    "fieldName" TEXT,
+    "url" TEXT NOT NULL,
+    "originalName" TEXT NOT NULL,
+    "mimeType" TEXT NOT NULL,
+    "uploadedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "loanApplicationFormId" TEXT NOT NULL,
+
+    CONSTRAINT "AdditionalDocument_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "EligibleLoanOffer" (
     "id" TEXT NOT NULL,
     "bankName" TEXT NOT NULL,
     "bankImage" TEXT NOT NULL,
     "loanType" "LoanType" NOT NULL,
-    "amount" DECIMAL(12,2) NOT NULL,
-    "eligibleLoan" DECIMAL(12,2) NOT NULL,
-    "interestRate" DECIMAL(5,2) NOT NULL,
+    "amount" TEXT NOT NULL,
+    "eligibleLoan" TEXT NOT NULL,
+    "interestRate" TEXT NOT NULL,
     "periodMonths" INTEGER NOT NULL,
-    "processingFee" DECIMAL(5,2) NOT NULL,
+    "processingFee" TEXT NOT NULL,
     "loanApplicationFormId" TEXT NOT NULL,
 
     CONSTRAINT "EligibleLoanOffer_pkey" PRIMARY KEY ("id")
@@ -666,6 +750,28 @@ CREATE TABLE "newsLetter" (
     "email" TEXT NOT NULL,
 
     CONSTRAINT "newsLetter_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "notifications" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT,
+    "title" TEXT NOT NULL,
+    "message" TEXT NOT NULL,
+    "type" "NotificationType" NOT NULL DEFAULT 'INFO',
+    "actionUrl" TEXT,
+    "icon" TEXT,
+    "priority" "NotificationPriority" NOT NULL DEFAULT 'NORMAL',
+    "isRead" BOOLEAN NOT NULL DEFAULT false,
+    "readAt" TIMESTAMP(3),
+    "expiresAt" TIMESTAMP(3),
+    "scheduledAt" TIMESTAMP(3),
+    "sentAt" TIMESTAMP(3),
+    "meta" JSONB,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "notifications_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -802,47 +908,6 @@ CREATE TABLE "FeesChargesSMELoan" (
     "smeLoanId" TEXT NOT NULL,
 
     CONSTRAINT "FeesChargesSMELoan_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "TestApplication" (
-    "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    CONSTRAINT "TestApplication_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "TestBasicInfo" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "age" INTEGER NOT NULL,
-    "dob" TIMESTAMP(3) NOT NULL,
-    "testApplicationId" TEXT NOT NULL,
-
-    CONSTRAINT "TestBasicInfo_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "TestContactInfo" (
-    "id" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "testApplicationId" TEXT NOT NULL,
-
-    CONSTRAINT "TestContactInfo_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "TestProfession" (
-    "id" TEXT NOT NULL,
-    "profession" TEXT NOT NULL,
-    "monthlyIncome" DOUBLE PRECISION NOT NULL,
-    "testApplicationId" TEXT NOT NULL,
-
-    CONSTRAINT "TestProfession_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -1037,10 +1102,28 @@ CREATE UNIQUE INDEX "LoanRequest_loanApplicationFormId_key" ON "LoanRequest"("lo
 CREATE UNIQUE INDEX "GuarantorInfo_loanApplicationFormId_key" ON "GuarantorInfo"("loanApplicationFormId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "BusinessGuarantor_loanApplicationFormId_key" ON "BusinessGuarantor"("loanApplicationFormId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PersonalGuarantor_loanApplicationFormId_key" ON "PersonalGuarantor"("loanApplicationFormId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "EligibleLoanOffer_loanApplicationFormId_key" ON "EligibleLoanOffer"("loanApplicationFormId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "newsLetter_email_key" ON "newsLetter"("email");
+
+-- CreateIndex
+CREATE INDEX "notifications_userId_idx" ON "notifications"("userId");
+
+-- CreateIndex
+CREATE INDEX "notifications_isRead_idx" ON "notifications"("isRead");
+
+-- CreateIndex
+CREATE INDEX "notifications_expiresAt_idx" ON "notifications"("expiresAt");
+
+-- CreateIndex
+CREATE INDEX "notifications_scheduledAt_idx" ON "notifications"("scheduledAt");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Features_personalLoanId_key" ON "Features"("personalLoanId");
@@ -1059,18 +1142,6 @@ CREATE UNIQUE INDEX "EligibilitySMELoan_smeLoanId_key" ON "EligibilitySMELoan"("
 
 -- CreateIndex
 CREATE UNIQUE INDEX "FeesChargesSMELoan_smeLoanId_key" ON "FeesChargesSMELoan"("smeLoanId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "TestBasicInfo_testApplicationId_key" ON "TestBasicInfo"("testApplicationId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "TestContactInfo_email_key" ON "TestContactInfo"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "TestContactInfo_testApplicationId_key" ON "TestContactInfo"("testApplicationId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "TestProfession_testApplicationId_key" ON "TestProfession"("testApplicationId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
@@ -1196,10 +1267,28 @@ ALTER TABLE "LoanRequest" ADD CONSTRAINT "LoanRequest_loanApplicationFormId_fkey
 ALTER TABLE "GuarantorInfo" ADD CONSTRAINT "GuarantorInfo_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "BusinessGuarantor" ADD CONSTRAINT "BusinessGuarantor_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PersonalGuarantor" ADD CONSTRAINT "PersonalGuarantor_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "GuarantorInfoDocument" ADD CONSTRAINT "GuarantorInfoDocument_personalGuarantorId_fkey" FOREIGN KEY ("personalGuarantorId") REFERENCES "PersonalGuarantor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "GuarantorInfoDocument" ADD CONSTRAINT "GuarantorInfoDocument_businessGuarantorId_fkey" FOREIGN KEY ("businessGuarantorId") REFERENCES "BusinessGuarantor"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Document" ADD CONSTRAINT "Document_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "AdditionalDocument" ADD CONSTRAINT "AdditionalDocument_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "EligibleLoanOffer" ADD CONSTRAINT "EligibleLoanOffer_loanApplicationFormId_fkey" FOREIGN KEY ("loanApplicationFormId") REFERENCES "loanApplicationForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "personalLoans" ADD CONSTRAINT "personalLoans_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -1224,18 +1313,6 @@ ALTER TABLE "EligibilitySMELoan" ADD CONSTRAINT "EligibilitySMELoan_smeLoanId_fk
 
 -- AddForeignKey
 ALTER TABLE "FeesChargesSMELoan" ADD CONSTRAINT "FeesChargesSMELoan_smeLoanId_fkey" FOREIGN KEY ("smeLoanId") REFERENCES "smeLoan"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TestApplication" ADD CONSTRAINT "TestApplication_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TestBasicInfo" ADD CONSTRAINT "TestBasicInfo_testApplicationId_fkey" FOREIGN KEY ("testApplicationId") REFERENCES "TestApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TestContactInfo" ADD CONSTRAINT "TestContactInfo_testApplicationId_fkey" FOREIGN KEY ("testApplicationId") REFERENCES "TestApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TestProfession" ADD CONSTRAINT "TestProfession_testApplicationId_fkey" FOREIGN KEY ("testApplicationId") REFERENCES "TestApplication"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "profiles" ADD CONSTRAINT "profiles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -39,8 +39,12 @@ const globalErrorHandler = (err, req, res, next) => {
     }
     //generics error handle
     if (err instanceof AppError_1.default) {
-        newMessage = err === null || err === void 0 ? void 0 : err.message;
-        statusCode = err === null || err === void 0 ? void 0 : err.statusCode;
+        res.status(err.statusCode || 500).json({
+            success: false,
+            message: err.message || 'Something went wrong',
+            statusCode: statusCode,
+            error: err,
+        });
     }
     //Zod Validation Error handle
     if (err instanceof zod_1.ZodError) {

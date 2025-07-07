@@ -143,6 +143,8 @@ const createApplicationForm = async (
   loanRequest: TLoanRequest
 ) => {
 
+  console.log(JSON.stringify(data))
+
   const payload = LoanApplicationFormSchema.parse(data)
 
   try {

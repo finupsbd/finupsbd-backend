@@ -104,7 +104,6 @@ const logout = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0,
 }));
 const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    console.log(user);
     const result = yield auth_service_1.AuthServices.changePassword(req.body, user);
     (0, sendResponce_1.default)(res, {
         success: true,

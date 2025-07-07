@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE "EligibleLoanOffer" ALTER COLUMN "amount" SET DATA TYPE TEXT,
-ALTER COLUMN "eligibleLoan" SET DATA TYPE TEXT,
-ALTER COLUMN "interestRate" SET DATA TYPE TEXT,
-ALTER COLUMN "processingFee" SET DATA TYPE TEXT;

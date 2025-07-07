@@ -39,8 +39,8 @@ const ExistingLoanUser = z.object({
 });
 
 const PropertyItem = z.object({
-  propertyType: PropertyType,
-  propertyValue: z.string().min(1, "Property value is required"),
+  propertyType: PropertyType.optional(),
+  propertyValue: z.string().optional(),
 });
 
 const PersonalGuarantor = z.object({
@@ -125,13 +125,29 @@ export const employmentInformationSchema = z.object({
 });
 
 const ResidentialInformation = z.object({
-  presentAddress: z.string(),
-  presentDistrict: z.string(),
-  presentDivision: z.string(),
-  presentLengthOfStay: z.string(),
+  presentAddress: z
+    .string()
+    .min(5, { message: "Present address must be at least 5 characters long." }),
+
+  presentDistrict: z
+    .string()
+    .min(2, { message: "Present district is required." }),
+
+  presentDivision: z
+    .string()
+    .min(2, { message: "Present division is required." }),
+
+  presentLengthOfStay: z
+    .string()
+    .min(1, { message: "Length of stay must be specified." }),
   presentOwnershipStatus: OwnershipStatus,
   presentPostalCode: z.string(),
-  presentThana: z.string(),
+
+  presentThana: z
+    .string()
+    .min(2, { message: "Present thana is required." }),
+
+
   isPermanentSameAsPresent: z.boolean(),
   permanentAddress: z.string().optional(),
   permanentDistrict: z.string().optional(),

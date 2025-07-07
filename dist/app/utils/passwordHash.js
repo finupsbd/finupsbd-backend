@@ -22,6 +22,7 @@ const passwordHash = (password) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.passwordHash = passwordHash;
 const comparePassword = (myPlaintextPassword, hashPassword) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(myPlaintextPassword, hashPassword);
     const result = yield bcrypt_1.default.compare(myPlaintextPassword, hashPassword);
     return result;
 });

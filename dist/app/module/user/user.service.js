@@ -74,7 +74,6 @@ const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(user);
     const result = yield app_1.prisma.user.findFirst({
         where: { email: user === null || user === void 0 ? void 0 : user.email },
         select: {
@@ -87,6 +86,7 @@ const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
             emailVerified: true,
         },
     });
+    console.log({ result });
     if (!result)
         throw new Error("User not found");
     return result;

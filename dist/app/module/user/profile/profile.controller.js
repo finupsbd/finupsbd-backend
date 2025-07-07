@@ -22,7 +22,6 @@ const createProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
     const image = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
     const user = req.user;
     const profileInfo = JSON.parse(req.body.data);
-    console.log(profileInfo);
     const result = yield profile_service_1.ProfileServices.createProfile(profileInfo, user, image);
     (0, sendResponce_1.default)(res, {
         success: true,

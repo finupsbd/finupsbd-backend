@@ -21,25 +21,25 @@ const globalErrorHandler = (
   const error = {};
   let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 
-  
+
 
 
   if (err instanceof TokenExpiredError) {
-         res.status(401).json({
-          success: false,
-          message: 'Session expired. Please refresh your token or log in again.',
-          err, 
-        });
-      }
+    res.status(401).json({
+      success: false,
+      message: 'Session expired. Please refresh your token or log in again.',
+      err,
+    });
+  }
 
 
   if (err instanceof SyntaxError) {
-         res.status(500).json({
-          success: false,
-          message: `SyntaxError: ${err.message}`,
-          stack: err.stack
-        });
-      }
+    res.status(500).json({
+      success: false,
+      message: `SyntaxError: ${err.message}`,
+      stack: err.stack
+    });
+  }
 
 
 
@@ -56,8 +56,12 @@ const globalErrorHandler = (
 
   //generics error handle
   if (err instanceof AppError) {
-    newMessage = err?.message;
-    statusCode = err?.statusCode;
+    res.status(err.statusCode || 500).json({
+      success: false,
+      message:  err.message || 'Something went wrong',
+      statusCode: statusCode,
+      error: err,
+    });
   }
 
 

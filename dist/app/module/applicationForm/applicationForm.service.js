@@ -123,6 +123,7 @@ const applicationForm_validation_1 = require("./applicationForm.validation");
 // };
 const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+    console.log(JSON.stringify(data));
     const payload = applicationForm_validation_1.LoanApplicationFormSchema.parse(data);
     try {
         // Parse files and upload to Cloudinary
