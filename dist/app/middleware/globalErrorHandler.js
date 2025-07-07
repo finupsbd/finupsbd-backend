@@ -12,9 +12,9 @@ const zod_1 = require("zod");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const globalErrorHandler = (err, req, res, next) => {
     var _a;
-    let newMessage = "Something went's wrong";
+    const newMessage = "Something went's wrong";
     const error = {};
-    let statusCode = http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR;
+    const statusCode = http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR;
     if (err instanceof jsonwebtoken_1.TokenExpiredError) {
         res.status(401).json({
             success: false,
@@ -29,13 +29,8 @@ const globalErrorHandler = (err, req, res, next) => {
             stack: err.stack
         });
     }
-    if (err.headersSent) {
-        res.status(400).json({
-            success: false,
-            message: 'Invalid input data',
-            error,
-            stack: err.stack,
-        }); // Or just return, depending on your flow
+    if (res.headersSent) {
+        return;
     }
     //generics error handle
     if (err instanceof AppError_1.default) {

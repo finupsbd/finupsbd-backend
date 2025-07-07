@@ -17,9 +17,10 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  let newMessage = "Something went's wrong";
+
+  const newMessage = "Something went's wrong";
   const error = {};
-  let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  const statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 
 
 
@@ -43,14 +44,8 @@ const globalErrorHandler = (
 
 
 
-  if (err.headersSent) {
-
-    res.status(400).json({
-      success: false,
-      message: 'Invalid input data',
-      error,
-      stack: err.stack,
-    }); // Or just return, depending on your flow
+  if (res.headersSent) {
+    return;
   }
 
 
