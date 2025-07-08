@@ -7,6 +7,12 @@ exports.decrypt = exports.encrypt = void 0;
 const crypto_1 = __importDefault(require("crypto"));
 const config_1 = require("../../config");
 const algorithm = 'aes-256-cbc';
+if (!config_1.ConfigFile.SECRET_KEY) {
+    throw new Error('SECRET_KEY is missing in ConfigFile!');
+}
+if (!config_1.ConfigFile.HMAC_KEY) {
+    throw new Error('HMAC_KEY is missing in ConfigFile!');
+}
 const key = Buffer.from(config_1.ConfigFile.SECRET_KEY, 'hex'); // 32-byte key (256-bit)
 const hmacKey = Buffer.from(config_1.ConfigFile.HMAC_KEY, 'utf8'); // Any strong secret
 const encrypt = (text) => {

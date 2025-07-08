@@ -3,6 +3,15 @@ import { ConfigFile } from '../../config';
 
 
 const algorithm = 'aes-256-cbc';
+
+if (!ConfigFile.SECRET_KEY) {
+  throw new Error('SECRET_KEY is missing in ConfigFile!');
+}
+
+if (!ConfigFile.HMAC_KEY) {
+  throw new Error('HMAC_KEY is missing in ConfigFile!');
+}
+
 const key = Buffer.from(ConfigFile.SECRET_KEY!, 'hex');     // 32-byte key (256-bit)
 const hmacKey = Buffer.from(ConfigFile.HMAC_KEY!, 'utf8');  // Any strong secret
 
