@@ -1,14 +1,14 @@
 {
   "name": "finupsbd-backend",
   "version": "1.0.0",
-  "main": "index.js", 
+  "main": "index.js",
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "start": "node dist/server.js",
     "lint:fix": "eslint src/**/*.ts --fix",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
     "build": "prisma generate && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "format": "prettier . --write",
     "postinstall": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
@@ -16,7 +16,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC", 
+  "license": "ISC",
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.17.0",
@@ -25,6 +25,7 @@
     "@types/cors": "^2.8.17",
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.0",
+    "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/lodash": "^4.17.18",
     "@types/multer": "^1.4.12",
@@ -35,7 +36,9 @@
     "@types/pdf-parse": "^1.1.5",
     "eslint": "^9.14.0",
     "globals": "^15.14.0",
+    "jest": "^30.0.4",
     "prisma": "^6.4.1",
+    "ts-jest": "^29.4.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.2"
   },

@@ -36,6 +36,11 @@ app.use(passport.initialize());
 
 app.use('/api/v1', RootRouter);
 
+
+app.use('/__nextjs_original-stack-frames', (req, res) => {
+  res.status(204).end();
+});
+
 // Simple server health-check endpoint
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({

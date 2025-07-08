@@ -228,7 +228,7 @@ model BusinessGuarantor {
   fatherOrHusbandName   String
   motherName            String
   dateOfBirth           DateTime
-  emailAddress          String
+  emailAddress          String?
   mobileNumber          String
   nationalIdNumber      String
   nationality           String
@@ -249,7 +249,7 @@ model PersonalGuarantor {
   fatherOrHusbandName   String
   motherName            String
   dateOfBirth           DateTime
-  emailAddress          String
+  emailAddress          String?
   mobileNumber          String
   nationalIdNumber      String
   nationality           String

@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationServides = void 0;
 const app_1 = require("../../../../../app");
+const encryption_1 = require("../../../../utils/encryption");
 const selects_1 = require("../../../../utils/prisma/selects");
 const getAllApplication = () => __awaiter(void 0, void 0, void 0, function* () {
     const [applications, total] = yield Promise.all([
@@ -45,7 +46,8 @@ const getAllApplication = () => __awaiter(void 0, void 0, void 0, function* () {
     return applications;
 });
 const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = app_1.prisma.loanApplicationForm.findUnique({
+    var _a;
+    const result = yield app_1.prisma.loanApplicationForm.findUnique({
         where: { id },
         include: {
             personalInfo: true,
@@ -78,6 +80,9 @@ const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function*
                 }
             },
         },
+    });
+    (_a = result === null || result === void 0 ? void 0 : result.loanInfo) === null || _a === void 0 ? void 0 : _a.bankAccounts.map(bank => {
+        return bank.accountNumber = (0, encryption_1.decrypt)(bank.accountNumber);
     });
     return result;
 });

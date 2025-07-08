@@ -68,6 +68,9 @@ app.use(express_1.default.urlencoded({ extended: true }));
 (0, DB_1.default)();
 app.use(passport_1.default.initialize());
 app.use('/api/v1', rootRouter_1.RootRouter);
+app.use('/__nextjs_original-stack-frames', (req, res) => {
+    res.status(204).end();
+});
 // Simple server health-check endpoint
 app.get('/', (req, res) => {
     res.status(200).json({
