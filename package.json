@@ -1,7 +1,7 @@
 {
   "name": "finupsbd-backend",
   "version": "1.0.0",
-  "main": "index.js", 
+  "main": "index.js",
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "start": "node dist/server.js",
@@ -16,7 +16,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC", 
+  "license": "ISC",
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.17.0",
@@ -36,6 +36,7 @@
     "eslint": "^9.14.0",
     "globals": "^15.14.0",
     "prisma": "^6.4.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.2"
   },
