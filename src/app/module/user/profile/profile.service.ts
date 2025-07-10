@@ -1,21 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "../../../../app";
-import { TMiddlewareUser } from "../../../types/commonTypes";
-import { sendImageToCloud } from "../../../utils/sendImageToCloud";
+import { TMiddlewareUser, TMulterFile } from "../../../types/commonTypes";
+import { saveSingleFile } from "../../../utils/file-uploads/saveSingleFile";
 import { TUserProfile } from "./profile.interface";
 
 const createProfile = async (
   payload: TUserProfile,
   user: TMiddlewareUser,
-  image?: any
+  file?: TMulterFile
 ): Promise<void> => {
   try {
     if (!user?.userId) {
       throw new Error("Invalid user ID.");
     }
 
-    if (image) {
-      const profileImage = await sendImageToCloud(image);
+    console.log(file)
+
+    // if (file) {
+    //   const profileImage = await sendImageToCloud(image);
+    //   if (profileImage) {
+    //     payload.avatar = profileImage;
+    //   }
+    // }
+ if (file) {
+      const profileImage = await saveSingleFile(file?.buffer, file?.originalname, "profileImages", user.email);
       if (profileImage) {
         payload.avatar = profileImage;
       }

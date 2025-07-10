@@ -120,3 +120,21 @@ Unique constraint failed on the fields: (`loanApplicationFormId`)
     at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
     at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=0caf3b85-b059-4ae6-8e4f-e865e0cbf564","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:183:49\n\n  180 \n  181 console.log(\"applicationId\", id)\n  182 \n→ 183 const result = await prisma.personalGuarantor.create(\nUnique constraint failed on the fields: (`loanApplicationFormId`)"}
 --------------------------------------------------------------
+[2025-07-10 23:25:46] ERROR: Error: Invalid password! please input valid password.
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:147:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"Invalid password! please input valid password."}
+--------------------------------------------------------------
+[2025-07-10 23:28:03] ERROR: Error: You old password and new password are same. Please provide different password
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:406:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/change-password","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You old password and new password are same. Please provide different password"}
+--------------------------------------------------------------
+[2025-07-10 23:28:10] ERROR: Error: You old password and new password are same. Please provide different password
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:406:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/change-password","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You old password and new password are same. Please provide different password"}
+--------------------------------------------------------------
+[2025-07-10 23:29:48] ERROR: unhandledRejection: Invalid cloud_name djr5gjijg
+  No stack trace {"error":{"message":"Invalid cloud_name djr5gjijg","name":"Error","http_code":401},"rejection":true,"date":"Thu Jul 10 2025 23:29:48 GMT+0600 (Bangladesh Standard Time)","process":{"pid":19756,"uid":null,"gid":null,"cwd":"C:\\client-project\\finupsbd-backend","execPath":"C:\\Program Files\\nodejs\\node.exe","version":"v22.11.0","argv":["C:\\Program Files\\nodejs\\node.exe","./src/server.ts"],"memoryUsage":{"rss":98762752,"heapTotal":33583104,"heapUsed":30929688,"external":3085333,"arrayBuffers":470252}},"os":{"loadavg":[0,0,0],"uptime":91679.484},"trace":[]}
+--------------------------------------------------------------

@@ -12,14 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfileServices = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const app_1 = require("../../../../app");
-const sendImageToCloud_1 = require("../../../utils/sendImageToCloud");
-const createProfile = (payload, user, image) => __awaiter(void 0, void 0, void 0, function* () {
+const saveSingleFile_1 = require("../../../utils/file-uploads/saveSingleFile");
+const createProfile = (payload, user, file) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!(user === null || user === void 0 ? void 0 : user.userId)) {
             throw new Error("Invalid user ID.");
         }
-        if (image) {
-            const profileImage = yield (0, sendImageToCloud_1.sendImageToCloud)(image);
+        console.log(file);
+        // if (file) {
+        //   const profileImage = await sendImageToCloud(image);
+        //   if (profileImage) {
+        //     payload.avatar = profileImage;
+        //   }
+        // }
+        if (file) {
+            const profileImage = yield (0, saveSingleFile_1.saveSingleFile)(file === null || file === void 0 ? void 0 : file.buffer, file === null || file === void 0 ? void 0 : file.originalname, "profileImages", user.email);
             if (profileImage) {
                 payload.avatar = profileImage;
             }

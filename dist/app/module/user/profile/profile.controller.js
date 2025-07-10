@@ -18,11 +18,10 @@ const catchAsync_1 = __importDefault(require("../../../utils/catchAsync"));
 const profile_service_1 = require("./profile.service");
 const sendResponce_1 = __importDefault(require("../../../utils/sendResponce"));
 const createProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const image = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
+    const file = req.file;
     const user = req.user;
     const profileInfo = JSON.parse(req.body.data);
-    const result = yield profile_service_1.ProfileServices.createProfile(profileInfo, user, image);
+    const result = yield profile_service_1.ProfileServices.createProfile(profileInfo, user, file);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: "Profile create successfully",

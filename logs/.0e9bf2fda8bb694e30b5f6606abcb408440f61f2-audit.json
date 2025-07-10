@@ -9,6 +9,11 @@
             "date": 1752150700665,
             "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-10.log",
             "hash": "7c02f1da6dc5c6efd139e7f50ece09d545b65bfc4104b648d75bb177eb876ac6"
+        },
+        {
+            "date": 1752175457709,
+            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-11.log",
+            "hash": "5fc97e7811b4568e3a9383c23ce0b0f2801d75a19d4e8b54ed07d8aad0945cd0"
         }
     ],
     "hashType": "sha256"

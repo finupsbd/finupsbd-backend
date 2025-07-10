@@ -22,14 +22,18 @@ const path_1 = __importDefault(require("path"));
  * @param folder - Folder name inside /uploads
  * @returns string - Relative path to store in database
  */
-const saveSingleFile = (buffer, originalName, folder) => __awaiter(void 0, void 0, void 0, function* () {
+const saveSingleFile = (buffer, originalName, folder, id) => __awaiter(void 0, void 0, void 0, function* () {
     // (e.g., /uploads/folder/)
     const uploadsDir = path_1.default.join(process.cwd(), 'uploads', folder);
     if (!fs_1.default.existsSync(uploadsDir)) {
         fs_1.default.mkdirSync(uploadsDir, { recursive: true });
     }
+    let fileName = '';
     const ext = path_1.default.extname(originalName) || '';
-    const fileName = `${Date.now()}-${ext}`;
+    fileName = `${Date.now()}-${ext}`;
+    if (id) {
+        fileName = `${id}-${Date.now()}-${ext}`;
+    }
     const filePath = path_1.default.join(uploadsDir, fileName);
     yield fs_1.default.promises.writeFile(filePath, buffer);
     // Return the relative path (e.g., /uploads/loanDocuments/abc.pdf)
