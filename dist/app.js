@@ -62,11 +62,12 @@ app.use((0, cors_1.default)({
 }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json({ limit: "50mb" }));
-app.use(express_1.default.urlencoded({ extended: true }));
+app.use(express_1.default.urlencoded({ limit: '25mb', extended: true }));
 // Note: Automatic seeding on every start is disabled.
 // import seedSuperAdmin from './app/DB';
 (0, DB_1.default)();
 app.use(passport_1.default.initialize());
+app.use("/uploads", express_1.default.static("uploads"));
 app.use('/api/v1', rootRouter_1.RootRouter);
 app.use('/__nextjs_original-stack-frames', (req, res) => {
     res.status(204).end();
