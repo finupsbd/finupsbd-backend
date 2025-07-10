@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import path from 'path';
 import { prisma } from '../../../app';
 import { ConfigFile } from '../../../config';
 import AppError from '../../error/AppError';
@@ -8,11 +6,10 @@ import { TLoanRequest, TMiddlewareUser, TUploadedFile } from '../../types/common
 import { gurantorEmailTemplate } from '../../utils/email-template/gurantor';
 import { encrypt } from '../../utils/encryption';
 import { generateApplicationId } from '../../utils/generateApplicationId';
-import uploadBufferToCloudinary from '../../utils/loanApplicationDocumentUpload';
 import maskMobileNumber from '../../utils/maskedMobileNumber';
 import sendEmail from '../../utils/sendEmail';
 import { LoanApplicationFormSchema, TLoanApplicationForm } from './applicationForm.validation';
-import { saveFileLoanApplication } from '../../utils/saveFileLoanApplication';
+import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanApplication';
 
 
 

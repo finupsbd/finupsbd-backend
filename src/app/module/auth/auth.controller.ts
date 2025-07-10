@@ -35,11 +35,6 @@ const validatePin = catchAsync(async (req, res) => {
   });
 });
 
-
-
-
-
-
 const login = catchAsync(async (req, res) => {
   const result = await AuthServices.login(req.body);
 
@@ -66,9 +61,6 @@ const login = catchAsync(async (req, res) => {
   })
 });
 
-
-
-
 const forgetPassword = catchAsync(async (req, res) => {
   const result = await AuthServices.forgetPassword(req.body);
 
@@ -81,9 +73,6 @@ const forgetPassword = catchAsync(async (req, res) => {
   })
 
 });
-
-
-
 
 const resetPassword = catchAsync(async (req, res) => {
   const result = await AuthServices.resetPassword(req.body);
@@ -128,16 +117,9 @@ const logout = catchAsync(async (req, res) => {
   }
 });
 
-
 const changePassword = catchAsync(async (req, res) => {
   const user = req.user
-
- 
-
-
   const result = await AuthServices.changePassword(req.body, user as TMiddlewareUser);
-
-
   sendResponce(res, {
     success: true,
     message: 'Password chnage successfully ',
@@ -146,8 +128,6 @@ const changePassword = catchAsync(async (req, res) => {
   })
 
 });
-
-
 
 
 export const AuthController = {

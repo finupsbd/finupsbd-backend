@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { prisma } from "../../../../app";
+import { TMulterFile } from "../../../types/commonTypes";
+import { saveSingleFile } from "../../../utils/file-uploads/saveSingleFile";
 import { sendImageToCloud } from "../../../utils/sendImageToCloud";
 import { TInstantLoan } from "./instantLoan.interface";
 
 
 
-const createInstantLoan = async (payload: TInstantLoan, file: any) => {
+const createInstantLoan = async (payload: TInstantLoan, file: TMulterFile) => {
 
-  const coverImage = file ? await sendImageToCloud(file) : undefined;
+  const coverImage = file?.buffer ? await saveSingleFile(file.buffer, file.originalname, "CreateLoans") : undefined;
+  // const coverImage = file ? await sendImageToCloud(file) : undefined;
   payload.coverImage = coverImage ?? undefined;
   
   const result = await prisma.instantLoan.create({

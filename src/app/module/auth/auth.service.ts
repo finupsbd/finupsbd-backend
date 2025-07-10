@@ -22,6 +22,7 @@ import { TMiddlewareUser } from '../../types/commonTypes';
 //Sign up User
 
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: string, browser: string, location: string }) => {
 
   const isAlreadySignUpRequest = await prisma.user.findFirst({

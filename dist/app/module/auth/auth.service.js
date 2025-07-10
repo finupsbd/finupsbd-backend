@@ -26,6 +26,7 @@ const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const verificationPIN_1 = require("../../utils/email-template/verificationPIN");
 //Sign up User
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
     const isAlreadySignUpRequest = yield app_1.prisma.user.findFirst({
         where: {

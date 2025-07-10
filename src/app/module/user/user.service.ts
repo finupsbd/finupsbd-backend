@@ -70,12 +70,6 @@ const getAllUser = async (query: FilterParams) => {
   }
 };
 
-
-
-
-
-
-
 const getSingleUser = async (id: string) => {
 
   const result = await prisma.user.findUnique({
@@ -88,15 +82,7 @@ const getSingleUser = async (id: string) => {
   return result;
 };
 
-
-
-
-
-
-
 const meProfile = async (user: any) => {
-
-
 
   const result = await prisma.user.findFirst({
     where: { email: user?.email as string },
@@ -116,8 +102,6 @@ const meProfile = async (user: any) => {
   if (!result) throw new Error("User not found");
   return result;
 };
-
-
 
 const getAllApplication = async (id: string) => {
 
@@ -145,9 +129,6 @@ const getAllApplication = async (id: string) => {
   return result
 
 };
-
-
-
 
 
 

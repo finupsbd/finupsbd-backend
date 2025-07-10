@@ -10,11 +10,25 @@ const client_1 = require("@prisma/client");
 const AppError_1 = __importDefault(require("../error/AppError"));
 const zod_1 = require("zod");
 const jsonwebtoken_1 = require("jsonwebtoken");
+const logger_1 = require("../utils/error-logs/logger");
 const globalErrorHandler = (err, req, res, next) => {
     var _a;
     const newMessage = "Something went's wrong";
     const error = {};
     const statusCode = http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR;
+    ///---------------------------Error Logs--------------------------------------------------------------------------------------------
+    const logPayload = {
+        method: req.method,
+        url: req.originalUrl,
+        userAgent: req.headers['user-agent'],
+        ip: req.ip,
+        errorName: err === null || err === void 0 ? void 0 : err.name,
+        errorMessage: err === null || err === void 0 ? void 0 : err.message,
+        stack: err === null || err === void 0 ? void 0 : err.stack,
+    };
+    /// genarate error log for better find error 
+    logger_1.logger.error(err.message, logPayload);
+    ///-----------------------------------------------------------------------------------------------------------------------
     if (err instanceof jsonwebtoken_1.TokenExpiredError) {
         res.status(401).json({
             success: false,
@@ -54,6 +68,7 @@ const globalErrorHandler = (err, req, res, next) => {
             stack: err.stack,
         });
     }
+    ///-----------------------------------------------------------------------------------------------------------------------
     if (err instanceof client_1.Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
             // Unique constraint failed
@@ -132,6 +147,7 @@ const globalErrorHandler = (err, req, res, next) => {
             stack: config_1.ConfigFile.NODE_ENV === 'production' ? null : err.stack,
         });
     }
+    ///-----------------------------------------------------------------------------------------------------------------------
     res.status(http_status_codes_1.StatusCodes.BAD_GATEWAY).json({
         success: false,
         message: newMessage,

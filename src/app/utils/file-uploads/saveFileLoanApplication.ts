@@ -12,7 +12,7 @@ export const saveFileLoanApplication = async (
   applicationId: string
 ): Promise<string> => {
   // NEW: define the per-application folder
-  const appFolder = path.join(__dirname,'../../../uploads/loanApplications', applicationId);
+  const appFolder = path.join(process.cwd(),'uploads/loanApplications', applicationId);
 
   // Ensure application folder exists
   if (!fs.existsSync(appFolder)) {

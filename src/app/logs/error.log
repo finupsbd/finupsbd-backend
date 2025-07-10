@@ -1,0 +1,23 @@
+[2025-07-10T12:20:08.472Z] ERROR: Error: 🔥 Test Error thrown synchronously!
+    at C:\client-project\finupsbd-backend\src\app.ts:40:9
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:280:10)
+    at initialize (C:\client-project\finupsbd-backend\node_modules\passport\lib\middleware\initialize.js:98:5)
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+[2025-07-10T12:21:20.290Z] ERROR: dfdfdfdfdfdff
+[2025-07-10T12:21:20.301Z] ERROR: Error: 🔥 Test Error thrown synchronously!
+    at C:\client-project\finupsbd-backend\src\app.ts:42:9
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:280:10)
+    at initialize (C:\client-project\finupsbd-backend\node_modules\passport\lib\middleware\initialize.js:98:5)
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)

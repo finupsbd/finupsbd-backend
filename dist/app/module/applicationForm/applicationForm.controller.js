@@ -17,9 +17,9 @@ const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const applicationForm_service_1 = require("./applicationForm.service");
-const FilesUploader_1 = require("../../utils/FilesUploader");
 const app_1 = require("../../../app");
 const AppError_1 = __importDefault(require("../../error/AppError"));
+const saveFileGuarantor_1 = require("../../utils/file-uploads/saveFileGuarantor");
 const createApplicationForm = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.files || req.files.length === 0) {
         throw new Error("No files uploaded");
@@ -99,10 +99,12 @@ const applicantGuarantorInfoPersonal = (0, catchAsync_1.default)((req, res) => _
     const files = req.files;
     const id = req.query.id;
     const data = req.body.data;
+    const applicationId = req.body.applicationId;
     const guarantorData = JSON.parse(data);
     const isExist = yield app_1.prisma.personalGuarantor.findUnique({
-        where: { id }
+        where: { id },
     });
+    console.log({ guarantorData });
     if (isExist) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, "You already fill up this from Thank you");
     }
@@ -116,46 +118,34 @@ const applicantGuarantorInfoPersonal = (0, catchAsync_1.default)((req, res) => _
     }
     // 2. Iterate over each file.buffer and upload to Cloudinary
     const uploadPromises = files.map((file, idx) => __awaiter(void 0, void 0, void 0, function* () {
-        // e.g. “guarantor/20250602_0_originalname”
-        const timestamp = Date.now();
-        const safeName = file.originalname.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_\-.]/g, '');
-        const publicId = `guarantor/${timestamp}_${idx}_${safeName}`;
         // You can set folder:"guarantor" and resource_type:"image" (or "raw" if PDF, etc.)
-        const result = yield (0, FilesUploader_1.uploadBufferToCloudinary)(file.buffer, publicId, {
-            folder: 'guarantor',
-            resource_type: 'image',
-        });
+        const result = yield (0, saveFileGuarantor_1.saveFileGuarantor)(file === null || file === void 0 ? void 0 : file.buffer, file === null || file === void 0 ? void 0 : file.originalname, "gurantor", "personalGurantor", applicationId);
         return {
             originalName: file.originalname,
-            public_id: result.public_id,
-            secure_url: result.secure_url,
-            format: result.format,
-            width: result.width,
-            height: result.height,
+            url: result,
+            mimeType: file.mimetype
         };
     }));
     // 3. Wait for all uploads
     const uploadedFiles = yield Promise.all(uploadPromises);
-    console.log(uploadedFiles);
-    console.log("applicationId", id);
-    const result = yield app_1.prisma.personalGuarantor.create({
+    yield app_1.prisma.personalGuarantor.create({
         data: Object.assign(Object.assign({}, guarantorData), { loanApplicationFormId: id, document: {
                 create: uploadedFiles.map(doc => ({
-                    format: doc.format,
+                    url: doc.url,
                     originalName: doc.originalName,
-                    secure_url: doc.secure_url
+                    mimeType: doc.mimeType
                 }))
             } }),
+        include: {
+            document: true
+        }
     });
-    console.log(result);
     // 4. Respond with the Cloudinary URLs / IDs (or save them to your DB here)
     return (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Personal Guarantor form created successfully',
         statusCode: http_status_codes_1.StatusCodes.CREATED,
-        data: {
-            uploadedFiles, // array of { originalName, public_id, secure_url, ... }
-        },
+        data: {},
     });
 }));
 ////garuantor info update with existing form Business
@@ -163,6 +153,7 @@ const applicantGuarantorInfoBusiness = (0, catchAsync_1.default)((req, res) => _
     const files = req.files;
     const id = req.query.id;
     const data = req.body.data;
+    const applicationId = req.body.applicationId;
     const guarantorData = JSON.parse(data);
     const isExist = yield app_1.prisma.businessGuarantor.findUnique({
         where: { id }
@@ -180,22 +171,12 @@ const applicantGuarantorInfoBusiness = (0, catchAsync_1.default)((req, res) => _
     }
     // 2. Iterate over each file.buffer and upload to Cloudinary
     const uploadPromises = files.map((file, idx) => __awaiter(void 0, void 0, void 0, function* () {
-        // e.g. “guarantor/20250602_0_originalname”
-        const timestamp = Date.now();
-        const safeName = file.originalname.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_\-.]/g, '');
-        const publicId = `guarantor/${timestamp}_${idx}_${safeName}`;
         // You can set folder:"guarantor" and resource_type:"image" (or "raw" if PDF, etc.)
-        const result = yield (0, FilesUploader_1.uploadBufferToCloudinary)(file.buffer, publicId, {
-            folder: 'guarantor',
-            resource_type: 'image',
-        });
+        const result = yield (0, saveFileGuarantor_1.saveFileGuarantor)(file === null || file === void 0 ? void 0 : file.buffer, file === null || file === void 0 ? void 0 : file.originalname, "gurantor", "businessGurantor", applicationId);
         return {
             originalName: file.originalname,
-            public_id: result.public_id,
-            secure_url: result.secure_url,
-            format: result.format,
-            width: result.width,
-            height: result.height,
+            url: result,
+            mimeType: file.mimetype
         };
     }));
     // 3. Wait for all uploads
@@ -205,9 +186,9 @@ const applicantGuarantorInfoBusiness = (0, catchAsync_1.default)((req, res) => _
     const result = yield app_1.prisma.businessGuarantor.create({
         data: Object.assign(Object.assign({}, guarantorData), { loanApplicationFormId: id, document: {
                 create: uploadedFiles.map(doc => ({
-                    format: doc.format,
+                    url: doc.url,
                     originalName: doc.originalName,
-                    secure_url: doc.secure_url
+                    mimeType: doc.mimeType
                 }))
             } }),
     });

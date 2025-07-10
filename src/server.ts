@@ -1,6 +1,8 @@
 import { Server } from 'http';
 import app from './app';
 import { ConfigFile } from './config';
+import { logger } from './app/utils/error-logs/logger';
+
 
 let server: Server;
 
@@ -35,10 +37,12 @@ const shutdown = (reason: string, details: any) => {
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason) => {
+
   shutdown('Unhandled Promise Rejection', reason);
 });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
+  logger.error("Uncaught Exception:", err);
   shutdown('Uncaught Exception', err);
 });

@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\client-project\\finupsbd-backend\\logs\\.0e9bf2fda8bb694e30b5f6606abcb408440f61f2-audit.json",
+    "files": [
+        {
+            "date": 1752150700665,
+            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-10.log",
+            "hash": "7c02f1da6dc5c6efd139e7f50ece09d545b65bfc4104b648d75bb177eb876ac6"
+        }
+    ],
+    "hashType": "sha256"
+}
