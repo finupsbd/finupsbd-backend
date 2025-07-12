@@ -3,6 +3,7 @@ module.exports = {
     {
       name: "finups-api",
       script: "dist/app.js",
+      autorestart: true,
       env: {
         NODE_ENV: "development",
       },

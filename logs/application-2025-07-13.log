@@ -1,0 +1,36 @@
+[2025-07-13 03:07:38] ERROR: Error: Please upload a file
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:16:11
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:9:57
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at done (C:\client-project\finupsbd-backend\node_modules\multer\lib\make-middleware.js:47:7) {"method":"POST","url":"/api/v1/instant-loan","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"Error","errorMessage":"Please upload a file"}
+--------------------------------------------------------------
+[2025-07-13 03:08:10] ERROR: Error: Please upload a file
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:16:11
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:9:57
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at done (C:\client-project\finupsbd-backend\node_modules\multer\lib\make-middleware.js:47:7) {"method":"POST","url":"/api/v1/instant-loan","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"Error","errorMessage":"Please upload a file"}
+--------------------------------------------------------------
+[2025-07-13 03:08:45] ERROR: Error: Please upload a file
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:16:11
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\module\loans\instantLoan\instantLoan.controller.ts:9:57
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at done (C:\client-project\finupsbd-backend\node_modules\multer\lib\make-middleware.js:47:7) {"method":"POST","url":"/api/v1/instant-loan","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"Error","errorMessage":"Please upload a file"}
+--------------------------------------------------------------

@@ -56,6 +56,7 @@ app.use((0, cors_1.default)({
         "https://admin.finupsbd.com",
         "https://stage.finupsbd.com",
         "https://wwww.finupsbd.com",
+        "https://api.finupsbd.com",
         "https://finupsbd-fronend-developer.vercel.app"
     ],
     credentials: true,
