@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const config_1 = require("./config");
+const logger_1 = require("./app/utils/error-logs/logger");
 let server;
 function main() {
     server = app_1.default.listen(config_1.ConfigFile.PORT, () => {
@@ -37,5 +38,6 @@ process.on('unhandledRejection', (reason) => {
 });
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
+    logger_1.logger.error("Uncaught Exception:", err);
     shutdown('Uncaught Exception', err);
 });

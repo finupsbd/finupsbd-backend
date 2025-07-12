@@ -9,6 +9,7 @@ import { RootRouter } from './app/rootRouter';
 import seedSuperAdmin from './app/DB';
 import os, { version } from "os"
 
+
 const app: Application = express();
 export const prisma = new PrismaClient();
 
@@ -25,14 +26,18 @@ app.use(cors({
 }));
 
 app.use(cookieParser());
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "60mb" }));
+app.use(express.urlencoded({ limit: '30mb', extended: true }));
 
 // Note: Automatic seeding on every start is disabled.
 // import seedSuperAdmin from './app/DB';
 seedSuperAdmin();
 
+
+
 app.use(passport.initialize());
+app.use("/uploads", express.static("uploads"));
+
 
 app.use('/api/v1', RootRouter);
 
@@ -41,11 +46,15 @@ app.use('/__nextjs_original-stack-frames', (req, res) => {
   res.status(204).end();
 });
 
+//henarate custom error 
+
+
 // Simple server health-check endpoint
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     status: true,
     message: 'FinupsBD server is up and running smoothly.',
+    developer: "Reza",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(), // in seconds
     server: {

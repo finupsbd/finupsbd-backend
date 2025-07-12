@@ -10,6 +10,10 @@ import { Prisma } from '@prisma/client';
 import AppError from '../error/AppError';
 import { ZodError } from 'zod';
 import { TokenExpiredError } from 'jsonwebtoken';
+import { logger } from '../utils/error-logs/logger';
+
+
+
 
 const globalErrorHandler = (
   err: any,
@@ -23,7 +27,21 @@ const globalErrorHandler = (
   const statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 
 
+///---------------------------Error Logs--------------------------------------------------------------------------------------------
+const logPayload = {
+    method: req.method,
+    url: req.originalUrl,
+    userAgent: req.headers['user-agent'],
+    ip: req.ip,
+    errorName: err?.name,
+    errorMessage: err?.message,
+    stack: err?.stack,
+  };
 
+  /// genarate error log for better find error 
+  logger.error( err.message, logPayload);
+
+///-----------------------------------------------------------------------------------------------------------------------
 
   if (err instanceof TokenExpiredError) {
     res.status(401).json({
@@ -33,7 +51,6 @@ const globalErrorHandler = (
     });
   }
 
-
   if (err instanceof SyntaxError) {
     res.status(500).json({
       success: false,
@@ -41,7 +58,6 @@ const globalErrorHandler = (
       stack: err.stack
     });
   }
-
 
 
   if (res.headersSent) {
@@ -53,7 +69,7 @@ const globalErrorHandler = (
   if (err instanceof AppError) {
     res.status(err.statusCode || 500).json({
       success: false,
-      message:  err.message || 'Something went wrong',
+      message: err.message || 'Something went wrong',
       statusCode: statusCode,
       error: err,
     });
@@ -75,6 +91,7 @@ const globalErrorHandler = (
     });
   }
 
+///-----------------------------------------------------------------------------------------------------------------------
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
 
@@ -160,6 +177,9 @@ const globalErrorHandler = (
       stack: ConfigFile.NODE_ENV === 'production' ? null : err.stack,
     });
   }
+
+///-----------------------------------------------------------------------------------------------------------------------
+
 
 
   res.status(StatusCodes.BAD_GATEWAY).json({

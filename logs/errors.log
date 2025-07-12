@@ -1,0 +1,140 @@
+[2025-07-10 18:33:23] ERROR: Error: 🔥 Test Error thrown synchronously!
+    at C:\client-project\finupsbd-backend\src\app.ts:42:9
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:280:10)
+    at initialize (C:\client-project\finupsbd-backend\node_modules\passport\lib\middleware\initialize.js:98:5)
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5) 
+--------------------------------------------------------------
+[2025-07-10 18:38:36] ERROR: Error: 🔥 Test Error thrown synchronously!
+    at C:\client-project\finupsbd-backend\src\app.ts:42:9
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\index.js:280:10)
+    at initialize (C:\client-project\finupsbd-backend\node_modules\passport\lib\middleware\initialize.js:98:5)
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5) {"method":"GET","url":"/error-test","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"🔥 Test Error thrown synchronously!"}
+--------------------------------------------------------------
+[2025-07-10 20:04:09] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:175:49
+
+  172 
+  173 console.log("applicationId", id)
+  174 
+→ 175 const result = await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=7443a564-6ba3-4b59-bd58-0ae91fd6bc88","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:175:49\n\n  172 \n  173 console.log(\"applicationId\", id)\n  174 \n→ 175 const result = await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-10 20:04:17] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:175:49
+
+  172 
+  173 console.log("applicationId", id)
+  174 
+→ 175 const result = await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=7443a564-6ba3-4b59-bd58-0ae91fd6bc88","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:175:49\n\n  172 \n  173 console.log(\"applicationId\", id)\n  174 \n→ 175 const result = await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-10 20:25:55] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:178:49
+
+  175 
+  176 console.log("applicationId", id)
+  177 
+→ 178 const result = await prisma.personalGuarantor.create(
+Unique constraint failed on the fields: (`loanApplicationFormId`)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=0caf3b85-b059-4ae6-8e4f-e865e0cbf564","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:178:49\n\n  175 \n  176 console.log(\"applicationId\", id)\n  177 \n→ 178 const result = await prisma.personalGuarantor.create(\nUnique constraint failed on the fields: (`loanApplicationFormId`)"}
+--------------------------------------------------------------
+[2025-07-10 20:26:18] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:180:49
+
+  177 
+  178 console.log("applicationId", id)
+  179 
+→ 180 const result = await prisma.personalGuarantor.create(
+Unique constraint failed on the fields: (`loanApplicationFormId`)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=0caf3b85-b059-4ae6-8e4f-e865e0cbf564","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:180:49\n\n  177 \n  178 console.log(\"applicationId\", id)\n  179 \n→ 180 const result = await prisma.personalGuarantor.create(\nUnique constraint failed on the fields: (`loanApplicationFormId`)"}
+--------------------------------------------------------------
+[2025-07-10 20:34:06] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:184:49
+
+  181 
+  182 console.log("applicationId", id)
+  183 
+→ 184 const result = await prisma.personalGuarantor.create(
+Unique constraint failed on the fields: (`loanApplicationFormId`)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=0caf3b85-b059-4ae6-8e4f-e865e0cbf564","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:184:49\n\n  181 \n  182 console.log(\"applicationId\", id)\n  183 \n→ 184 const result = await prisma.personalGuarantor.create(\nUnique constraint failed on the fields: (`loanApplicationFormId`)"}
+--------------------------------------------------------------
+[2025-07-10 20:34:17] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:184:49
+
+  181 
+  182 console.log("applicationId", id)
+  183 
+→ 184 const result = await prisma.personalGuarantor.create(
+Unique constraint failed on the fields: (`loanApplicationFormId`)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=0caf3b85-b059-4ae6-8e4f-e865e0cbf564","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:184:49\n\n  181 \n  182 console.log(\"applicationId\", id)\n  183 \n→ 184 const result = await prisma.personalGuarantor.create(\nUnique constraint failed on the fields: (`loanApplicationFormId`)"}
+--------------------------------------------------------------
+[2025-07-10 20:35:47] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:183:49
+
+  180 
+  181 console.log("applicationId", id)
+  182 
+→ 183 const result = await prisma.personalGuarantor.create(
+Unique constraint failed on the fields: (`loanApplicationFormId`)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=0caf3b85-b059-4ae6-8e4f-e865e0cbf564","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:183:49\n\n  180 \n  181 console.log(\"applicationId\", id)\n  182 \n→ 183 const result = await prisma.personalGuarantor.create(\nUnique constraint failed on the fields: (`loanApplicationFormId`)"}
+--------------------------------------------------------------
+[2025-07-10 23:25:46] ERROR: Error: Invalid password! please input valid password.
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:147:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"Invalid password! please input valid password."}
+--------------------------------------------------------------
+[2025-07-10 23:28:03] ERROR: Error: You old password and new password are same. Please provide different password
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:406:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/change-password","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You old password and new password are same. Please provide different password"}
+--------------------------------------------------------------
+[2025-07-10 23:28:10] ERROR: Error: You old password and new password are same. Please provide different password
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:406:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/change-password","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You old password and new password are same. Please provide different password"}
+--------------------------------------------------------------
+[2025-07-10 23:29:48] ERROR: unhandledRejection: Invalid cloud_name djr5gjijg
+  No stack trace {"error":{"message":"Invalid cloud_name djr5gjijg","name":"Error","http_code":401},"rejection":true,"date":"Thu Jul 10 2025 23:29:48 GMT+0600 (Bangladesh Standard Time)","process":{"pid":19756,"uid":null,"gid":null,"cwd":"C:\\client-project\\finupsbd-backend","execPath":"C:\\Program Files\\nodejs\\node.exe","version":"v22.11.0","argv":["C:\\Program Files\\nodejs\\node.exe","./src/server.ts"],"memoryUsage":{"rss":98762752,"heapTotal":33583104,"heapUsed":30929688,"external":3085333,"arrayBuffers":470252}},"os":{"loadavg":[0,0,0],"uptime":91679.484},"trace":[]}
+--------------------------------------------------------------

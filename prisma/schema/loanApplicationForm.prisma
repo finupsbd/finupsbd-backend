@@ -143,7 +143,7 @@ model EmploymentInformation {
 }
 
 model Properties {
-  id            String       @id @default(uuid())
+  id            String        @id @default(uuid())
   propertyType  PropertyType?
   propertyValue String?
 
@@ -266,9 +266,9 @@ model PersonalGuarantor {
 
 model GuarantorInfoDocument {
   id                  String             @id @default(uuid())
-  secure_url          String
-  format              String
+  url                 String
   originalName        String
+  mimeType            String
   personalGuarantor   PersonalGuarantor? @relation(fields: [personalGuarantorId], references: [id], onDelete: Cascade)
   personalGuarantorId String?
   businessGuarantor   BusinessGuarantor? @relation(fields: [businessGuarantorId], references: [id], onDelete: Cascade)

@@ -1,5 +1,4 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -14,16 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationFromService = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const app_1 = require("../../../app");
 const config_1 = require("../../../config");
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const gurantor_1 = require("../../utils/email-template/gurantor");
 const encryption_1 = require("../../utils/encryption");
 const generateApplicationId_1 = require("../../utils/generateApplicationId");
-const loanApplicationDocumentUpload_1 = __importDefault(require("../../utils/loanApplicationDocumentUpload"));
 const maskedMobileNumber_1 = __importDefault(require("../../utils/maskedMobileNumber"));
 const sendEmail_1 = __importDefault(require("../../utils/sendEmail"));
 const applicationForm_validation_1 = require("./applicationForm.validation");
+const saveFileLoanApplication_1 = require("../../utils/file-uploads/saveFileLoanApplication");
 ///// old after terjaction
 // const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser, files: TUploadedFile[], loanRequest: TLoanRequest) => {
 //   const cloudinaryResults: { url: any; originalName: string; mimeType: string; }[] = [];
@@ -122,39 +122,154 @@ const applicationForm_validation_1 = require("./applicationForm.validation");
 //   }
 //   return result;
 // };
+// const createApplicationForm = async (
+//   data: TLoanApplicationForm,
+//   user: TMiddlewareUser,
+//   files: TUploadedFile[],
+//   loanRequest: TLoanRequest
+// ) => {
+//   const payload = LoanApplicationFormSchema.parse(data)
+//   try {
+//     // Parse files and upload to Cloudinary
+//     const cloudinaryResults: { url: string; originalName: string; mimeType: string }[] = [];
+//     const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
+//     const filesArray: Express.Multer.File[] = Object.values(filesObj).flat();
+//     for (const file of filesArray) {
+//       try {
+//         const uploaded = await uploadBufferToCloudinary(file.buffer, file.originalname, file.mimetype);
+//         cloudinaryResults.push({
+//           url: uploaded.secure_url,
+//           originalName: file.originalname,
+//           mimeType: file.mimetype,
+//         });
+//       } catch (err) {
+//         console.error(`Failed to upload ${file.originalname}:`, err);
+//         // Optionally: continue or throw depending on business rules
+//       }
+//     }
+//     const applicationId = await generateApplicationId();
+//     payload?.loanInfo?.bankAccounts.map(bank => {
+//       return bank.accountNumber = encrypt(bank.accountNumber)
+//     })
+//     const guarantorInfoData = {
+//       businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
+//       businessGurantorPhone: payload?.guarantorInfo?.businessGuarantor?.mobileNumber ?? '',
+//       personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
+//       personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? '',
+//     };
+//     // Begin DB Transaction
+//     const createdApplication = await prisma.$transaction(async (tx) => {
+//       return await tx.loanApplicationForm.create({
+//         data: {
+//           applicationId,
+//           userId: user.userId,
+//           personalInfo: { create: payload.personalInfo },
+//           residentialInformation: { create: payload.residentialInfo },
+//           employmentInformation: {
+//             create: {
+//               ...payload.employmentInfo,
+//               properties: { create: payload?.employmentInfo?.properties ?? [] }
+//             }
+//           },
+//           loanInfo: {
+//             create: {
+//               hasCreditCard: payload.loanInfo?.hasCreditCard ?? false,
+//               hasExistingLoan: payload.loanInfo?.hasExistingLoan ?? false,
+//               bankAccounts: { create: payload.loanInfo?.bankAccounts ?? [] },
+//               creditCards: { create: payload.loanInfo?.creditCards ?? [] },
+//               existingLoans: { create: payload.loanInfo?.existingLoans ?? [] },
+//             },
+//           },
+//           loanRequest: { create: payload.loanRequest },
+//           guarantorInfo: { create: guarantorInfoData },
+//           document: {
+//             create: cloudinaryResults.map((doc) => ({
+//               url: doc.url,
+//               originalName: doc.originalName,
+//               mimeType: doc.mimeType,
+//             })),
+//           },
+//           eligibleLoanOffer: {
+//             create: loanRequest,
+//           },
+//         },
+//         include: {
+//           guarantorInfo: true,
+//           user: {
+//             select: { name: true, phone: true, email: true },
+//           },
+//           loanInfo: {
+//             include: {
+//               bankAccounts: true
+//             }
+//           }
+//         },
+//       });
+//     }, {
+//       maxWait: 10000,
+//       timeout: 15000,
+//     });
+//     // Notify Guarantors via Email
+//     const { guarantorInfo, user: applicant } = createdApplication;
+//     const emailTasks: Promise<any>[] = [];
+//     if (guarantorInfo?.personalGurantorEmail) {
+//       const personalGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
+//       const personalTemplate = gurantorEmailTemplate(applicant.phone ?? '', applicant.name ?? '', personalGuarantorLink);
+//       emailTasks.push(sendEmail(guarantorInfo.personalGurantorEmail, "Personal Guarantor Info Request", personalTemplate));
+//     }
+//     if (guarantorInfo?.businessGurantorEmail) {
+//       const businessGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/business-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
+//       const businessTemplate = gurantorEmailTemplate(applicant.phone ?? '', applicant.name ?? '', businessGuarantorLink);
+//       emailTasks.push(sendEmail(guarantorInfo.businessGurantorEmail, "Business Guarantor Info Request", businessTemplate));
+//     }
+//     try {
+//       await Promise.all(emailTasks);
+//     } catch (emailErr) {
+//       console.error("Email sending failed:", emailErr);
+//     }
+//     console.log("All emails sent successfully.");
+//     return createdApplication;
+//   } catch (error) {
+//     console.error("Error while creating loan application form:", error);
+//     let message = "Failed to process loan application. Please try again.";
+//     if (error && typeof error === "object" && "message" in error && typeof (error as any).message === "string") {
+//       message = (error as any).message;
+//     }
+//     throw new AppError(502, message);
+//   }
+// };
 const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
     const payload = applicationForm_validation_1.LoanApplicationFormSchema.parse(data);
+    const applicationId = yield (0, generateApplicationId_1.generateApplicationId)();
     try {
-        // Parse files and upload to Cloudinary
-        const cloudinaryResults = [];
-        const filesObj = files;
-        const filesArray = Object.values(filesObj).flat();
-        for (const file of filesArray) {
+        // Save files locally instead of uploading to Cloudinary
+        const savedDocuments = [];
+        const images = files.files;
+        for (const file of images) {
             try {
-                const uploaded = yield (0, loanApplicationDocumentUpload_1.default)(file.buffer, file.originalname, file.mimetype);
-                cloudinaryResults.push({
-                    url: uploaded.secure_url,
+                const savedPath = yield (0, saveFileLoanApplication_1.saveFileLoanApplication)(file.buffer, file.originalname, applicationId); // or file.originalname
+                savedDocuments.push({
+                    filePath: savedPath,
                     originalName: file.originalname,
                     mimeType: file.mimetype,
                 });
             }
             catch (err) {
-                console.error(`Failed to upload ${file.originalname}:`, err);
-                // Optionally: continue or throw depending on business rules
+                console.error(`Failed to save file ${file.fieldname}:`, err);
             }
         }
-        const applicationId = yield (0, generateApplicationId_1.generateApplicationId)();
-        (_a = payload === null || payload === void 0 ? void 0 : payload.loanInfo) === null || _a === void 0 ? void 0 : _a.bankAccounts.map(bank => {
-            return bank.accountNumber = (0, encryption_1.encrypt)(bank.accountNumber);
+        console.log(savedDocuments);
+        (_b = (_a = payload === null || payload === void 0 ? void 0 : payload.loanInfo) === null || _a === void 0 ? void 0 : _a.bankAccounts) === null || _b === void 0 ? void 0 : _b.forEach((bank) => {
+            bank.accountNumber = (0, encryption_1.encrypt)(bank.accountNumber);
         });
         const guarantorInfoData = {
-            businessGurantorEmail: (_d = (_c = (_b = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _b === void 0 ? void 0 : _b.businessGuarantor) === null || _c === void 0 ? void 0 : _c.emailAddress) !== null && _d !== void 0 ? _d : '',
-            businessGurantorPhone: (_g = (_f = (_e = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _e === void 0 ? void 0 : _e.businessGuarantor) === null || _f === void 0 ? void 0 : _f.mobileNumber) !== null && _g !== void 0 ? _g : '',
-            personalGurantorEmail: (_k = (_j = (_h = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _h === void 0 ? void 0 : _h.personalGuarantor) === null || _j === void 0 ? void 0 : _j.emailAddress) !== null && _k !== void 0 ? _k : '',
-            personalGurantorphone: (_o = (_m = (_l = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _l === void 0 ? void 0 : _l.personalGuarantor) === null || _m === void 0 ? void 0 : _m.mobileNumber) !== null && _o !== void 0 ? _o : '',
+            businessGurantorEmail: (_e = (_d = (_c = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _c === void 0 ? void 0 : _c.businessGuarantor) === null || _d === void 0 ? void 0 : _d.emailAddress) !== null && _e !== void 0 ? _e : "",
+            businessGurantorPhone: (_h = (_g = (_f = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _f === void 0 ? void 0 : _f.businessGuarantor) === null || _g === void 0 ? void 0 : _g.mobileNumber) !== null && _h !== void 0 ? _h : "",
+            personalGurantorEmail: (_l = (_k = (_j = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _j === void 0 ? void 0 : _j.personalGuarantor) === null || _k === void 0 ? void 0 : _k.emailAddress) !== null && _l !== void 0 ? _l : "",
+            personalGurantorphone: (_p = (_o = (_m = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _m === void 0 ? void 0 : _m.personalGuarantor) === null || _o === void 0 ? void 0 : _o.mobileNumber) !== null && _p !== void 0 ? _p : "",
         };
-        // Begin DB Transaction
+        // DB Transaction
         const createdApplication = yield app_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
             var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
             return yield tx.loanApplicationForm.create({
@@ -164,7 +279,9 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
                     personalInfo: { create: payload.personalInfo },
                     residentialInformation: { create: payload.residentialInfo },
                     employmentInformation: {
-                        create: Object.assign(Object.assign({}, payload.employmentInfo), { properties: { create: (_b = (_a = payload === null || payload === void 0 ? void 0 : payload.employmentInfo) === null || _a === void 0 ? void 0 : _a.properties) !== null && _b !== void 0 ? _b : [] } })
+                        create: Object.assign(Object.assign({}, payload.employmentInfo), { properties: {
+                                create: (_b = (_a = payload === null || payload === void 0 ? void 0 : payload.employmentInfo) === null || _a === void 0 ? void 0 : _a.properties) !== null && _b !== void 0 ? _b : [],
+                            } }),
                     },
                     loanInfo: {
                         create: {
@@ -178,15 +295,14 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
                     loanRequest: { create: payload.loanRequest },
                     guarantorInfo: { create: guarantorInfoData },
                     document: {
-                        create: cloudinaryResults.map((doc) => ({
-                            url: doc.url,
+                        create: savedDocuments.map((doc) => ({
+                            // save relative path for easier serving
+                            url: doc.filePath,
                             originalName: doc.originalName,
                             mimeType: doc.mimeType,
                         })),
                     },
-                    eligibleLoanOffer: {
-                        create: loanRequest,
-                    },
+                    eligibleLoanOffer: { create: loanRequest },
                 },
                 include: {
                     guarantorInfo: true,
@@ -195,9 +311,9 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
                     },
                     loanInfo: {
                         include: {
-                            bankAccounts: true
-                        }
-                    }
+                            bankAccounts: true,
+                        },
+                    },
                 },
             });
         }), {
@@ -209,12 +325,12 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
         const emailTasks = [];
         if (guarantorInfo === null || guarantorInfo === void 0 ? void 0 : guarantorInfo.personalGurantorEmail) {
             const personalGuarantorLink = `${config_1.ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
-            const personalTemplate = (0, gurantor_1.gurantorEmailTemplate)((_p = applicant.phone) !== null && _p !== void 0 ? _p : '', (_q = applicant.name) !== null && _q !== void 0 ? _q : '', personalGuarantorLink);
+            const personalTemplate = (0, gurantor_1.gurantorEmailTemplate)((_q = applicant.phone) !== null && _q !== void 0 ? _q : "", (_r = applicant.name) !== null && _r !== void 0 ? _r : "", personalGuarantorLink);
             emailTasks.push((0, sendEmail_1.default)(guarantorInfo.personalGurantorEmail, "Personal Guarantor Info Request", personalTemplate));
         }
         if (guarantorInfo === null || guarantorInfo === void 0 ? void 0 : guarantorInfo.businessGurantorEmail) {
             const businessGuarantorLink = `${config_1.ConfigFile.CLIENT_URL}/guarantor-info/business-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
-            const businessTemplate = (0, gurantor_1.gurantorEmailTemplate)((_r = applicant.phone) !== null && _r !== void 0 ? _r : '', (_s = applicant.name) !== null && _s !== void 0 ? _s : '', businessGuarantorLink);
+            const businessTemplate = (0, gurantor_1.gurantorEmailTemplate)((_s = applicant.phone) !== null && _s !== void 0 ? _s : "", (_t = applicant.name) !== null && _t !== void 0 ? _t : "", businessGuarantorLink);
             emailTasks.push((0, sendEmail_1.default)(guarantorInfo.businessGurantorEmail, "Business Guarantor Info Request", businessTemplate));
         }
         try {
@@ -229,7 +345,10 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
     catch (error) {
         console.error("Error while creating loan application form:", error);
         let message = "Failed to process loan application. Please try again.";
-        if (error && typeof error === "object" && "message" in error && typeof error.message === "string") {
+        if (error &&
+            typeof error === "object" &&
+            "message" in error &&
+            typeof error.message === "string") {
             message = error.message;
         }
         throw new AppError_1.default(502, message);

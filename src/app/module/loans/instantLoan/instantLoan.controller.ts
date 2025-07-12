@@ -11,7 +11,7 @@ const createInstantLoan = catchAsync(async (req, res) => {
     InstantLoanValidationSchema.createInstantLoanValidateSchema.parse(
       JSON.parse(req.body.data)
     );
-  const file = req.file?.buffer;
+  const file = req.file;
   if (!file) {
     throw new Error('Please upload a file');
   }

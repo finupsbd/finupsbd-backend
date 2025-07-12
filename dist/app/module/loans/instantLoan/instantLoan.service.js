@@ -12,9 +12,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InstantLoanService = void 0;
 const app_1 = require("../../../../app");
+const saveSingleFile_1 = require("../../../utils/file-uploads/saveSingleFile");
 const sendImageToCloud_1 = require("../../../utils/sendImageToCloud");
 const createInstantLoan = (payload, file) => __awaiter(void 0, void 0, void 0, function* () {
-    const coverImage = file ? yield (0, sendImageToCloud_1.sendImageToCloud)(file) : undefined;
+    const coverImage = (file === null || file === void 0 ? void 0 : file.buffer) ? yield (0, saveSingleFile_1.saveSingleFile)(file.buffer, file.originalname, "CreateLoans") : undefined;
+    // const coverImage = file ? await sendImageToCloud(file) : undefined;
     payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
     const result = yield app_1.prisma.instantLoan.create({
         data: {

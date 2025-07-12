@@ -19,9 +19,8 @@ const sendResponce_1 = __importDefault(require("../../../utils/sendResponce"));
 const personalLoan_service_1 = require("./personalLoan.service");
 const personalLoan_validation_1 = require("./personalLoan.validation");
 const createPersonalLoan = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const payload = personalLoan_validation_1.PersonalLoanValidationSchema.createPersonalLoanValidateSchema.parse(JSON.parse(req.body.data));
-    const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
+    const file = req.file;
     if (!file) {
         throw new Error('Please upload a file');
     }

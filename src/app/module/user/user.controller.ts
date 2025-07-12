@@ -18,9 +18,6 @@ const getAllUsers = catchAsync(async (req, res) => {
     })
 })
 
-
-
-
 const getSingleUser = catchAsync(async (req, res) => {
 
     const id = req.params.id
@@ -34,9 +31,6 @@ const getSingleUser = catchAsync(async (req, res) => {
         data: result
     })
 })
-
-
-
 
   const meProfile = catchAsync(async (req, res) => {
     const user = req.user
@@ -53,7 +47,6 @@ const getSingleUser = catchAsync(async (req, res) => {
         data: result
     })
 })
-
 
   const getAllApplication = catchAsync(async (req, res) => {
 

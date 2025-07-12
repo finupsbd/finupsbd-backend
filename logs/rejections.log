@@ -1,0 +1,3 @@
+[2025-07-10 23:29:48] ERROR: unhandledRejection: Invalid cloud_name djr5gjijg
+  No stack trace {"error":{"message":"Invalid cloud_name djr5gjijg","name":"Error","http_code":401},"rejection":true,"date":"Thu Jul 10 2025 23:29:48 GMT+0600 (Bangladesh Standard Time)","process":{"pid":19756,"uid":null,"gid":null,"cwd":"C:\\client-project\\finupsbd-backend","execPath":"C:\\Program Files\\nodejs\\node.exe","version":"v22.11.0","argv":["C:\\Program Files\\nodejs\\node.exe","./src/server.ts"],"memoryUsage":{"rss":98762752,"heapTotal":33583104,"heapUsed":30929688,"external":3085333,"arrayBuffers":470252}},"os":{"loadavg":[0,0,0],"uptime":91679.484},"trace":[]}
+--------------------------------------------------------------

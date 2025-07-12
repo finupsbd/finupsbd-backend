@@ -22,6 +22,7 @@ import { TMiddlewareUser } from '../../types/commonTypes';
 //Sign up User
 
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: string, browser: string, location: string }) => {
 
   const isAlreadySignUpRequest = await prisma.user.findFirst({
@@ -68,7 +69,7 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
         <p style="font-size: 16px; color: #555;"><strong>🔒 Security Note:</strong> This PIN is valid for <strong>15 minutes</strong> only. Please do not share it with anyone.</p>
         <p style="font-size: 16px; color: #555;">If you did not request this PIN, please ignore this email or contact our support team immediately.</p>
         <p style="font-size: 16px; color: #555;">Thank you,</p>
-        <p style="font-size: 16px; color: #555; font-weight: bold;">PinUpsDB</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">FinupsBD</p>
       </div>
     </div>
   `;
@@ -111,7 +112,6 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
     email: result.email
   };
 };
-
 
 const login = async (payload: { email: string; password: string }) => {
   const { email } = payload;
@@ -174,7 +174,6 @@ const login = async (payload: { email: string; password: string }) => {
   };
 };
 
-
 const validatePin = async (payload: { email: string; pin: string }) => {
   const { email, pin } = payload;
 
@@ -210,7 +209,6 @@ const validatePin = async (payload: { email: string; pin: string }) => {
   await sendEmail(email, emailSubject, bodyText);
   return {};
 };
-
 
 const forgetPassword = async (payload: { email: string }) => {
   const { email } = payload;
@@ -293,8 +291,6 @@ const forgetPassword = async (payload: { email: string }) => {
   return {};
 };
 
-
-
 const resetPassword = async (payload: {
   newPassword: string;
   email: string;
@@ -371,8 +367,6 @@ const refreshToken = async (token: string) => {
   };
 };
 
-
-
 const changePassword = async (payload: {
   oldPassword: string;
   newPassword: string;
@@ -406,6 +400,16 @@ console.log(userData)
     throw new AppError(StatusCodes.BAD_REQUEST, 'User password not found');
   }
 
+const checkSamePassword = await bcrypt.compare( payload?.newPassword, userData?.password);
+
+  if (checkSamePassword) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'You old password and new password are same. Please provide different password');
+  }
+
+
+
+
+
 
   const passwordCompare = await bcrypt.compare( payload?.oldPassword, userData?.password);
 
@@ -433,15 +437,15 @@ console.log(userData)
         <ul style="font-size: 14px; color: #555; padding-left: 20px;">
           <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
           <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
-          <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
+          <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@finupsbd.com" style="color: #007BFF;">support@finupsbd.com</a>.</li>
         </ul>
       </div>
 
       <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
 
       <div style="text-align: center;">
-        <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
-        <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
+        <p style="font-size: 16px; color: #555;">Thank you for using finupsBD!</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">The finupsBD Team</p>
       </div>
 
       <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">

@@ -19,9 +19,8 @@ const catchAsync_1 = __importDefault(require("../../../utils/catchAsync"));
 const instantLoan_validation_1 = require("./instantLoan.validation");
 const instantLoan_service_1 = require("./instantLoan.service");
 const createInstantLoan = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const payload = instantLoan_validation_1.InstantLoanValidationSchema.createInstantLoanValidateSchema.parse(JSON.parse(req.body.data));
-    const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
+    const file = req.file;
     if (!file) {
         throw new Error('Please upload a file');
     }

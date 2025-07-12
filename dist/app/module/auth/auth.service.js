@@ -26,6 +26,7 @@ const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const verificationPIN_1 = require("../../utils/email-template/verificationPIN");
 //Sign up User
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
     const isAlreadySignUpRequest = yield app_1.prisma.user.findFirst({
         where: {
@@ -63,7 +64,7 @@ const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, f
         <p style="font-size: 16px; color: #555;"><strong>🔒 Security Note:</strong> This PIN is valid for <strong>15 minutes</strong> only. Please do not share it with anyone.</p>
         <p style="font-size: 16px; color: #555;">If you did not request this PIN, please ignore this email or contact our support team immediately.</p>
         <p style="font-size: 16px; color: #555;">Thank you,</p>
-        <p style="font-size: 16px; color: #555; font-weight: bold;">PinUpsDB</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">FinupsBD</p>
       </div>
     </div>
   `;
@@ -308,6 +309,10 @@ const changePassword = (payload, user) => __awaiter(void 0, void 0, void 0, func
     if (!(userData === null || userData === void 0 ? void 0 : userData.password)) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, 'User password not found');
     }
+    const checkSamePassword = yield bcrypt_1.default.compare(payload === null || payload === void 0 ? void 0 : payload.newPassword, userData === null || userData === void 0 ? void 0 : userData.password);
+    if (checkSamePassword) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'You old password and new password are same. Please provide different password');
+    }
     const passwordCompare = yield bcrypt_1.default.compare(payload === null || payload === void 0 ? void 0 : payload.oldPassword, userData === null || userData === void 0 ? void 0 : userData.password);
     if (!passwordCompare) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, 'Please Provide valid password');
@@ -329,15 +334,15 @@ const changePassword = (payload, user) => __awaiter(void 0, void 0, void 0, func
         <ul style="font-size: 14px; color: #555; padding-left: 20px;">
           <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
           <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
-          <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
+          <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@finupsbd.com" style="color: #007BFF;">support@finupsbd.com</a>.</li>
         </ul>
       </div>
 
       <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
 
       <div style="text-align: center;">
-        <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
-        <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
+        <p style="font-size: 16px; color: #555;">Thank you for using finupsBD!</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">The finupsBD Team</p>
       </div>
 
       <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">

@@ -6,10 +6,10 @@ import { TMiddlewareUser } from "../../../types/commonTypes";
 
 const createProfile = catchAsync(async (req, res) => {
 
-    const image = req.file?.buffer
+    const file = req.file
     const user = req.user
     const profileInfo = JSON.parse(req.body.data)
-    const result = await ProfileServices.createProfile(profileInfo, user as TMiddlewareUser, image)
+    const result = await ProfileServices.createProfile(profileInfo, user as TMiddlewareUser, file)
 
 
     

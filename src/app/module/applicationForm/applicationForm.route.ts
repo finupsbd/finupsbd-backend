@@ -2,9 +2,8 @@
 import express from 'express';
 import { ApplicationController } from './applicationForm.controller';
 import auth from '../../middleware/auth';
-import validateRequest from '../../middleware/validateRequest';
 import multer from 'multer';
-import { LoanApplicationFormSchema } from './applicationForm.validation';
+
 
 
 
