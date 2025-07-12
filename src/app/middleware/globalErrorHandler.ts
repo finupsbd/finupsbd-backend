@@ -17,47 +17,46 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  let newMessage = "Something went's wrong";
-  const error = {};
-  let statusCode = StatusCodes.BAD_REQUEST;
 
-  
+  const newMessage = "Something went's wrong";
+  const error = {};
+  const statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+
+
 
 
   if (err instanceof TokenExpiredError) {
-         res.status(401).json({
-          success: false,
-          message: 'Session expired. Please refresh your token or log in again.',
-          err, 
-        });
-      }
+    res.status(401).json({
+      success: false,
+      message: 'Session expired. Please refresh your token or log in again.',
+      err,
+    });
+  }
 
 
   if (err instanceof SyntaxError) {
-         res.status(500).json({
-          success: false,
-          message: `SyntaxError: ${err.message}`,
-          stack: err.stack
-        });
-      }
-
-
-
-  if (err.headersSent) {
-
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      message: 'Invalid input data',
-      error,
-      stack: err.stack,
-    }); // Or just return, depending on your flow
+      message: `SyntaxError: ${err.message}`,
+      stack: err.stack
+    });
+  }
+
+
+
+  if (res.headersSent) {
+    return;
   }
 
 
   //generics error handle
   if (err instanceof AppError) {
-    newMessage = err?.message;
-    statusCode = err?.statusCode;
+    res.status(err.statusCode || 500).json({
+      success: false,
+      message:  err.message || 'Something went wrong',
+      statusCode: statusCode,
+      error: err,
+    });
   }
 
 

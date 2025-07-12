@@ -1,4 +1,5 @@
 import { prisma } from "../../../../../app"
+import { decrypt } from "../../../../utils/encryption";
 import { safeUserSelect } from "../../../../utils/prisma/selects";
 import { LoanStatus } from "../../../applicationForm/application.interface";
 
@@ -48,7 +49,7 @@ const getAllApplication = async () => {
 const getSingleApplication = async (id: string) => {
 
 
-  const result = prisma.loanApplicationForm.findUnique({
+  const result = await prisma.loanApplicationForm.findUnique({
     where: { id },
     include: {
       personalInfo: true,
@@ -81,6 +82,10 @@ const getSingleApplication = async (id: string) => {
         }
       },
     },
+  })
+
+  result?.loanInfo?.bankAccounts.map(bank => {
+    return bank.accountNumber = decrypt(bank.accountNumber)
   })
 
 

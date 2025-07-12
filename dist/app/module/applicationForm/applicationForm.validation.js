@@ -35,8 +35,8 @@ const ExistingLoanUser = zod_1.z.object({
     emi: zod_1.z.string().min(1, "EMI is required"),
 });
 const PropertyItem = zod_1.z.object({
-    propertyType: exports.PropertyType,
-    propertyValue: zod_1.z.string().min(1, "Property value is required"),
+    propertyType: exports.PropertyType.optional(),
+    propertyValue: zod_1.z.string().optional(),
 });
 const PersonalGuarantor = zod_1.z.object({
     mobileNumber: zod_1.z.string().min(11, "Valid mobile number is required"),
@@ -110,13 +110,23 @@ exports.employmentInformationSchema = zod_1.z.object({
     properties: zod_1.z.array(PropertyItem).optional(),
 });
 const ResidentialInformation = zod_1.z.object({
-    presentAddress: zod_1.z.string(),
-    presentDistrict: zod_1.z.string(),
-    presentDivision: zod_1.z.string(),
-    presentLengthOfStay: zod_1.z.string(),
+    presentAddress: zod_1.z
+        .string()
+        .min(5, { message: "Present address must be at least 5 characters long." }),
+    presentDistrict: zod_1.z
+        .string()
+        .min(2, { message: "Present district is required." }),
+    presentDivision: zod_1.z
+        .string()
+        .min(2, { message: "Present division is required." }),
+    presentLengthOfStay: zod_1.z
+        .string()
+        .min(1, { message: "Length of stay must be specified." }),
     presentOwnershipStatus: exports.OwnershipStatus,
     presentPostalCode: zod_1.z.string(),
-    presentThana: zod_1.z.string(),
+    presentThana: zod_1.z
+        .string()
+        .min(2, { message: "Present thana is required." }),
     isPermanentSameAsPresent: zod_1.z.boolean(),
     permanentAddress: zod_1.z.string().optional(),
     permanentDistrict: zod_1.z.string().optional(),

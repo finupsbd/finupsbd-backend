@@ -5,6 +5,7 @@ import { ConfigFile } from '../../../config';
 import AppError from '../../error/AppError';
 import { TLoanRequest, TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
 import { gurantorEmailTemplate } from '../../utils/email-template/gurantor';
+import { encrypt } from '../../utils/encryption';
 import { generateApplicationId } from '../../utils/generateApplicationId';
 import uploadBufferToCloudinary from '../../utils/loanApplicationDocumentUpload';
 import maskMobileNumber from '../../utils/maskedMobileNumber';
@@ -143,6 +144,7 @@ const createApplicationForm = async (
   loanRequest: TLoanRequest
 ) => {
 
+
   const payload = LoanApplicationFormSchema.parse(data)
 
   try {
@@ -167,6 +169,12 @@ const createApplicationForm = async (
 
 
     const applicationId = await generateApplicationId();
+
+    payload?.loanInfo?.bankAccounts.map(bank => {
+      return bank.accountNumber = encrypt(bank.accountNumber)
+    })
+
+
 
     const guarantorInfoData = {
       businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
@@ -223,6 +231,11 @@ const createApplicationForm = async (
           user: {
             select: { name: true, phone: true, email: true },
           },
+          loanInfo: {
+            include: {
+              bankAccounts: true
+            }
+          }
         },
       });
     }, {
@@ -234,6 +247,7 @@ const createApplicationForm = async (
     const { guarantorInfo, user: applicant } = createdApplication;
 
     const emailTasks: Promise<any>[] = [];
+
 
     if (guarantorInfo?.personalGurantorEmail) {
       const personalGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
@@ -247,8 +261,11 @@ const createApplicationForm = async (
       emailTasks.push(sendEmail(guarantorInfo.businessGurantorEmail, "Business Guarantor Info Request", businessTemplate));
     }
 
-    await Promise.all(emailTasks);
-
+    try {
+      await Promise.all(emailTasks);
+    } catch (emailErr) {
+      console.error("Email sending failed:", emailErr);
+    }
     console.log("All emails sent successfully.");
     return createdApplication;
 

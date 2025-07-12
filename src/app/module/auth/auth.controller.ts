@@ -4,6 +4,7 @@ import { AuthServices } from './auth.service';
 import sendResponce from '../../utils/sendResponce';
 import { ConfigFile } from '../../../config';
 import { getRequestContext } from '../../utils/super-admin-utiles/context';
+import { TMiddlewareUser } from '../../types/commonTypes';
 
 
 
@@ -131,8 +132,10 @@ const logout = catchAsync(async (req, res) => {
 const changePassword = catchAsync(async (req, res) => {
   const user = req.user
 
-  console.log(user)
-  const result = await AuthServices.changePassword(req.body, user);
+ 
+
+
+  const result = await AuthServices.changePassword(req.body, user as TMiddlewareUser);
 
 
   sendResponce(res, {

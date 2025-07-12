@@ -41,6 +41,8 @@ const getSingleUser = catchAsync(async (req, res) => {
   const meProfile = catchAsync(async (req, res) => {
     const user = req.user
 
+    console.log("000000000000000000000",{user})
+
     const result = await UserServices.meProfile(user)
 
 

@@ -27,7 +27,7 @@ export const gurantorEmailTemplate = (applicantNum: string, applicantName: strin
                   Dear,
                 </p>
                 <p style="font-size: 16px; color: #2f2f2f;">
-                  You have been nominated as a <strong>loan guarantor</strong> by <strong>${applicantName}</strong> for their personal loan application on <strong>FinUpsBD</strong>.
+                  You have been nominated as a <strong>loan guarantor</strong> by <strong>${applicantName}</strong> for their personal loan application on <strong>FinupsBD</strong>.
                 </p>
                 <p style="font-size: 16px; color: #2f2f2f;">
                   Please review and full up this form by clicking the button below.

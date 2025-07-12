@@ -144,8 +144,8 @@ model EmploymentInformation {
 
 model Properties {
   id            String       @id @default(uuid())
-  propertyType  PropertyType
-  propertyValue String
+  propertyType  PropertyType?
+  propertyValue String?
 
   employmentInformation   EmploymentInformation? @relation(fields: [employmentInformationId], references: [id], onDelete: Cascade)
   employmentInformationId String?
@@ -228,7 +228,7 @@ model BusinessGuarantor {
   fatherOrHusbandName   String
   motherName            String
   dateOfBirth           DateTime
-  emailAddress          String
+  emailAddress          String?
   mobileNumber          String
   nationalIdNumber      String
   nationality           String
@@ -249,7 +249,7 @@ model PersonalGuarantor {
   fatherOrHusbandName   String
   motherName            String
   dateOfBirth           DateTime
-  emailAddress          String
+  emailAddress          String?
   mobileNumber          String
   nationalIdNumber      String
   nationality           String
@@ -305,7 +305,7 @@ model AdditionalDocument {
 model EligibleLoanOffer {
   id                    String              @id @default(uuid())
   bankName              String
-  bankImage             String
+  bankImage             String?
   loanType              LoanType
   amount                String
   eligibleLoan          String

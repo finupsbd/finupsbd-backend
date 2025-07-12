@@ -18,6 +18,7 @@ const app_1 = require("../../../app");
 const config_1 = require("../../../config");
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const gurantor_1 = require("../../utils/email-template/gurantor");
+const encryption_1 = require("../../utils/encryption");
 const generateApplicationId_1 = require("../../utils/generateApplicationId");
 const loanApplicationDocumentUpload_1 = __importDefault(require("../../utils/loanApplicationDocumentUpload"));
 const maskedMobileNumber_1 = __importDefault(require("../../utils/maskedMobileNumber"));
@@ -122,7 +123,7 @@ const applicationForm_validation_1 = require("./applicationForm.validation");
 //   return result;
 // };
 const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
     const payload = applicationForm_validation_1.LoanApplicationFormSchema.parse(data);
     try {
         // Parse files and upload to Cloudinary
@@ -144,11 +145,14 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
             }
         }
         const applicationId = yield (0, generateApplicationId_1.generateApplicationId)();
+        (_a = payload === null || payload === void 0 ? void 0 : payload.loanInfo) === null || _a === void 0 ? void 0 : _a.bankAccounts.map(bank => {
+            return bank.accountNumber = (0, encryption_1.encrypt)(bank.accountNumber);
+        });
         const guarantorInfoData = {
-            businessGurantorEmail: (_c = (_b = (_a = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _a === void 0 ? void 0 : _a.businessGuarantor) === null || _b === void 0 ? void 0 : _b.emailAddress) !== null && _c !== void 0 ? _c : '',
-            businessGurantorPhone: (_f = (_e = (_d = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _d === void 0 ? void 0 : _d.businessGuarantor) === null || _e === void 0 ? void 0 : _e.mobileNumber) !== null && _f !== void 0 ? _f : '',
-            personalGurantorEmail: (_j = (_h = (_g = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _g === void 0 ? void 0 : _g.personalGuarantor) === null || _h === void 0 ? void 0 : _h.emailAddress) !== null && _j !== void 0 ? _j : '',
-            personalGurantorphone: (_m = (_l = (_k = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _k === void 0 ? void 0 : _k.personalGuarantor) === null || _l === void 0 ? void 0 : _l.mobileNumber) !== null && _m !== void 0 ? _m : '',
+            businessGurantorEmail: (_d = (_c = (_b = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _b === void 0 ? void 0 : _b.businessGuarantor) === null || _c === void 0 ? void 0 : _c.emailAddress) !== null && _d !== void 0 ? _d : '',
+            businessGurantorPhone: (_g = (_f = (_e = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _e === void 0 ? void 0 : _e.businessGuarantor) === null || _f === void 0 ? void 0 : _f.mobileNumber) !== null && _g !== void 0 ? _g : '',
+            personalGurantorEmail: (_k = (_j = (_h = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _h === void 0 ? void 0 : _h.personalGuarantor) === null || _j === void 0 ? void 0 : _j.emailAddress) !== null && _k !== void 0 ? _k : '',
+            personalGurantorphone: (_o = (_m = (_l = payload === null || payload === void 0 ? void 0 : payload.guarantorInfo) === null || _l === void 0 ? void 0 : _l.personalGuarantor) === null || _m === void 0 ? void 0 : _m.mobileNumber) !== null && _o !== void 0 ? _o : '',
         };
         // Begin DB Transaction
         const createdApplication = yield app_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
@@ -189,6 +193,11 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
                     user: {
                         select: { name: true, phone: true, email: true },
                     },
+                    loanInfo: {
+                        include: {
+                            bankAccounts: true
+                        }
+                    }
                 },
             });
         }), {
@@ -200,15 +209,20 @@ const createApplicationForm = (data, user, files, loanRequest) => __awaiter(void
         const emailTasks = [];
         if (guarantorInfo === null || guarantorInfo === void 0 ? void 0 : guarantorInfo.personalGurantorEmail) {
             const personalGuarantorLink = `${config_1.ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
-            const personalTemplate = (0, gurantor_1.gurantorEmailTemplate)((_o = applicant.phone) !== null && _o !== void 0 ? _o : '', (_p = applicant.name) !== null && _p !== void 0 ? _p : '', personalGuarantorLink);
+            const personalTemplate = (0, gurantor_1.gurantorEmailTemplate)((_p = applicant.phone) !== null && _p !== void 0 ? _p : '', (_q = applicant.name) !== null && _q !== void 0 ? _q : '', personalGuarantorLink);
             emailTasks.push((0, sendEmail_1.default)(guarantorInfo.personalGurantorEmail, "Personal Guarantor Info Request", personalTemplate));
         }
         if (guarantorInfo === null || guarantorInfo === void 0 ? void 0 : guarantorInfo.businessGurantorEmail) {
             const businessGuarantorLink = `${config_1.ConfigFile.CLIENT_URL}/guarantor-info/business-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
-            const businessTemplate = (0, gurantor_1.gurantorEmailTemplate)((_q = applicant.phone) !== null && _q !== void 0 ? _q : '', (_r = applicant.name) !== null && _r !== void 0 ? _r : '', businessGuarantorLink);
+            const businessTemplate = (0, gurantor_1.gurantorEmailTemplate)((_r = applicant.phone) !== null && _r !== void 0 ? _r : '', (_s = applicant.name) !== null && _s !== void 0 ? _s : '', businessGuarantorLink);
             emailTasks.push((0, sendEmail_1.default)(guarantorInfo.businessGurantorEmail, "Business Guarantor Info Request", businessTemplate));
         }
-        yield Promise.all(emailTasks);
+        try {
+            yield Promise.all(emailTasks);
+        }
+        catch (emailErr) {
+            console.error("Email sending failed:", emailErr);
+        }
         console.log("All emails sent successfully.");
         return createdApplication;
     }

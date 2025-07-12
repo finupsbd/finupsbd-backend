@@ -97,7 +97,7 @@ const getSingleUser = async (id: string) => {
 const meProfile = async (user: any) => {
 
 
-  console.log(user)
+
   const result = await prisma.user.findFirst({
     where: { email: user?.email as string },
     select: {
@@ -111,6 +111,8 @@ const meProfile = async (user: any) => {
     },
 
   });
+
+    console.log({result})
   if (!result) throw new Error("User not found");
   return result;
 };

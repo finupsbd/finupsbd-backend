@@ -15,6 +15,7 @@ import { generateUserId } from '../../utils/generateUserId';
 import AppError from '../../error/AppError';
 import { StatusCodes } from 'http-status-codes';
 import { verificationPINEmailTemplate } from '../../utils/email-template/verificationPIN';
+import { TMiddlewareUser } from '../../types/commonTypes';
 
 
 
@@ -127,11 +128,11 @@ const login = async (payload: { email: string; password: string }) => {
     throw new AppError(404, 'We can’t find an account with those details, please register your account!');
   }
 
-  // if (!user.emailVerified) {
-  //   throw new AppError(500,
-  //     'Your email is not verified. Please verify your email before logging in.'
-  //   );
-  // }
+  if (!user.emailVerified) {
+    throw new AppError(500,
+      'Your email is not verified. Please verify your email before logging in.'
+    );
+  }
 
   if (!user?.isActive) {
     throw new AppError(400, 'Your account is inactive. Please contact support.');
@@ -375,80 +376,84 @@ const refreshToken = async (token: string) => {
 const changePassword = async (payload: {
   oldPassword: string;
   newPassword: string;
-}, user: any) => {
+}, user: TMiddlewareUser) => {
+
+
+  const { email } = user
 
 
 
-  console.log(user)
+  const userData = await prisma.user.findUnique({ where: { email } });
 
-  // const userData = await prisma.user.findUnique({ where: { email } });
+console.log(userData)
+  if (!userData) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+  }
 
+  if (!userData.emailVerified) {
+    throw new AppError(StatusCodes.CONTINUE,
+      'Your email is not verified. Please verify your email before reset your password'
+    );
+  }
 
-  // if (!user) {
-  //   throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
-  // }
+  if (!userData?.isActive) {
+    throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
+  }
 
-  // //   if (!user.emailVerified) {
-  // //     throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,
-  // //       'Your email is not verified. Please verify your email before reset your password'
-  // //     );
-  // //   }
+  const passwordHashing = await passwordHash(payload?.newPassword);
 
-  // if (user?.isActive) {
-  //   throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
-  // }
-
-  // const passwordHashing = await passwordHash(payload?.newPassword);
-
-  // if (!userData?.password) {
-  //   throw new AppError(StatusCodes.BAD_REQUEST, 'User password not found');
-  // }
-  // const checkPassword = await comparePassword(payload.oldPassword, userData.password);
-
-  // if (!checkPassword) {
-  //   throw new AppError(StatusCodes.NOT_FOUND, 'Please Provide valid password');
-  // }
-
-  // await prisma.user.update({
-  //   where: { email },
-  //   data: { password: passwordHashing },
-  // });
+  if (!userData?.password) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'User password not found');
+  }
 
 
-  // const emailSubject = 'Password Changed';
-  // const bodyText = `
-  //   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
-  //   <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-  //     <h2 style="color: #333; text-align: center; font-size: 28px; margin-bottom: 20px; font-weight: bold;">Your Password Has Been Changed</h2>
-  //     <p style="font-size: 16px; color: #555; text-align: center;">Hello ${user?.name},</p>
-  //     <p style="font-size: 16px; color: #555; margin-bottom: 20px;">We wanted to let you know that your password has been successfully updated. If you initiated this change, no further action is required.</p>
+  const passwordCompare = await bcrypt.compare( payload?.oldPassword, userData?.password);
 
-  //     <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px;">
-  //       <p style="font-size: 16px; color: #555; font-weight: bold;">Important Security Information:</p>
-  //       <ul style="font-size: 14px; color: #555; padding-left: 20px;">
-  //         <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
-  //         <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
-  //         <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
-  //       </ul>
-  //     </div>
 
-  //     <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
+  if (!passwordCompare) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Please Provide valid password');
+  }
 
-  //     <div style="text-align: center;">
-  //       <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
-  //       <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
-  //     </div>
+  await prisma.user.update({
+    where: { email },
+    data: { password: passwordHashing },
+  });
 
-  //     <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">
-  //       <p>If you did not request this change, please ignore this email. This message was sent automatically, and you do not need to reply.</p>
-  //     </div>
-  //   </div>
-  // </div>
 
-  // `;
+  const emailSubject = 'Password Changed';
+  const bodyText = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+      <h2 style="color: #333; text-align: center; font-size: 28px; margin-bottom: 20px; font-weight: bold;">Your Password Has Been Changed</h2>
+      <p style="font-size: 16px; color: #555; text-align: center;">Hello ${userData?.name},</p>
+      <p style="font-size: 16px; color: #555; margin-bottom: 20px;">We wanted to let you know that your password has been successfully updated. If you initiated this change, no further action is required.</p>
 
-  // await sendEmail(email, emailSubject, bodyText);
-  // return {};
+      <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px;">
+        <p style="font-size: 16px; color: #555; font-weight: bold;">Important Security Information:</p>
+        <ul style="font-size: 14px; color: #555; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">If you did not request this change, please reset your password immediately.</li>
+          <li style="margin-bottom: 8px;">Check your account activity for any unusual behavior.</li>
+          <li style="margin-bottom: 8px;">For further assistance, contact our support team at <a href="mailto:support@pinupsdb.com" style="color: #007BFF;">support@pinupsdb.com</a>.</li>
+        </ul>
+      </div>
+
+      <p style="font-size: 16px; color: #555; text-align: center; margin-bottom: 30px;">Your security is our top priority. We take every measure to ensure your account remains protected.</p>
+
+      <div style="text-align: center;">
+        <p style="font-size: 16px; color: #555;">Thank you for using PinUpsDB!</p>
+        <p style="font-size: 16px; color: #555; font-weight: bold;">The PinUpsDB Team</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">
+        <p>If you did not request this change, please ignore this email. This message was sent automatically, and you do not need to reply.</p>
+      </div>
+    </div>
+  </div>
+
+  `;
+
+  await sendEmail(email, emailSubject, bodyText);
+  return {};
 };
 
 

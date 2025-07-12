@@ -14,23 +14,33 @@ exports.ProfileServices = void 0;
 const app_1 = require("../../../../app");
 const sendImageToCloud_1 = require("../../../utils/sendImageToCloud");
 const createProfile = (payload, user, image) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log({ payload });
-    const profileImage = yield (0, sendImageToCloud_1.sendImageToCloud)(image);
-    payload.avatar = profileImage !== null && profileImage !== void 0 ? profileImage : undefined;
-    yield app_1.prisma.user.update({
-        where: { id: user === null || user === void 0 ? void 0 : user.userId },
-        data: {
-            profile: {
-                upsert: {
-                    create: Object.assign({}, payload),
-                    update: Object.assign({}, payload)
-                }
-            }
-        },
-        include: {
-            profile: true
+    try {
+        if (!(user === null || user === void 0 ? void 0 : user.userId)) {
+            throw new Error("Invalid user ID.");
         }
-    });
+        if (image) {
+            const profileImage = yield (0, sendImageToCloud_1.sendImageToCloud)(image);
+            if (profileImage) {
+                payload.avatar = profileImage;
+            }
+        }
+        yield app_1.prisma.user.update({
+            where: { id: user.userId },
+            data: {
+                profile: {
+                    upsert: {
+                        create: Object.assign({}, payload),
+                        update: Object.assign({}, payload),
+                    },
+                },
+            },
+            include: { profile: true },
+        });
+    }
+    catch (error) {
+        console.error("Failed to create or update profile:", error);
+        throw error; // rethrow for better error tracking
+    }
 });
 exports.ProfileServices = {
     createProfile,

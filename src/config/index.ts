@@ -35,5 +35,9 @@ export const ConfigFile = {
 
     REDIS_PASSWORD: process.env.REDIS_PASSWORD,
     REDIS_HOST: process.env.REDIS_HOST,
-    REDIS_PORT: process.env.REDIS_PORT
+    REDIS_PORT: process.env.REDIS_PORT,
+
+
+    SECRET_KEY: process.env.SECRET_KEY,
+    HMAC_KEY: process.env.HMAC_KEY,
 }
