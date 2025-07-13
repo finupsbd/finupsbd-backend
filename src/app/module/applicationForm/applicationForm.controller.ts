@@ -263,7 +263,14 @@ const applicantGuarantorInfoBusiness = catchAsync(async (req, res) => {
 
   console.log("applicationId", id)
 
-  const result = await prisma.businessGuarantor.create({
+
+  const existingGuarantor = await prisma.businessGuarantor.findUnique({
+    where: { loanApplicationFormId: id }
+  });
+
+
+  if (!existingGuarantor) {
+       await prisma.businessGuarantor.create({
     data: {
       ...guarantorData,
       loanApplicationFormId: id,
@@ -275,10 +282,12 @@ const applicantGuarantorInfoBusiness = catchAsync(async (req, res) => {
         }))
       }
     },
-
-
   })
-  console.log(result)
+  } else {
+    throw new AppError(StatusCodes.CONFLICT, "You Already fillup this form")
+  }
+
+
 
   // 4. Respond with the Cloudinary URLs / IDs (or save them to your DB here)
   return sendResponses(res, {
