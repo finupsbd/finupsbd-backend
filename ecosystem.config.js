@@ -17,7 +17,7 @@ module.exports = {
       user: "finups",                            // Your server user
       host: "123.136.30.206",                    // Replace with your server IP or domain
       ref: "origin/main",                        // Branch to deploy
-      repo: "git@github.com:yourname/finupsbd-backend.git",  // Replace with your repo SSH URL
+      repo: "git@github.com:finups/finupsbd-backend.git",  // Replace with your repo SSH URL
       path: "/home/finups/finups/finupsbd-backend",           // Your deployment path
       ssh_options: "StrictHostKeyChecking=no",
       'post-deploy': "npm install && npm run build && pm2 reload ecosystem.config.js --env production",
