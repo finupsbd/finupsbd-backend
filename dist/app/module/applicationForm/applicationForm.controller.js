@@ -128,18 +128,26 @@ const applicantGuarantorInfoPersonal = (0, catchAsync_1.default)((req, res) => _
     }));
     // 3. Wait for all uploads
     const uploadedFiles = yield Promise.all(uploadPromises);
-    yield app_1.prisma.personalGuarantor.create({
-        data: Object.assign(Object.assign({}, guarantorData), { loanApplicationFormId: id, document: {
-                create: uploadedFiles.map(doc => ({
-                    url: doc.url,
-                    originalName: doc.originalName,
-                    mimeType: doc.mimeType
-                }))
-            } }),
-        include: {
-            document: true
-        }
+    const existingGuarantor = yield app_1.prisma.personalGuarantor.findUnique({
+        where: { loanApplicationFormId: id }
     });
+    if (!existingGuarantor) {
+        yield app_1.prisma.personalGuarantor.create({
+            data: Object.assign(Object.assign({}, guarantorData), { loanApplicationFormId: id, document: {
+                    create: uploadedFiles.map(doc => ({
+                        url: doc.url,
+                        originalName: doc.originalName,
+                        mimeType: doc.mimeType
+                    }))
+                } }),
+            include: {
+                document: true
+            }
+        });
+    }
+    else {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, "You Already fillup this form");
+    }
     // 4. Respond with the Cloudinary URLs / IDs (or save them to your DB here)
     return (0, sendResponce_1.default)(res, {
         success: true,
