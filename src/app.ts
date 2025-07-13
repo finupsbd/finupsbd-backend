@@ -19,7 +19,7 @@ app.use(cors({
     "http://localhost:3001",
     "https://admin.finupsbd.com",
     "https://stage.finupsbd.com",
-    "https://wwww.finupsbd.com",
+    "https://finupsbd.com",
     "https://api.finupsbd.com",
     "https://finupsbd-fronend-developer.vercel.app"
   ],
