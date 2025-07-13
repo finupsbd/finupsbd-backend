@@ -79,7 +79,7 @@ app.get('/', (req, res) => {
     res.status(200).json({
         status: true,
         message: 'FinupsBD server is up and running smoothly.',
-        developer: "Reza",
+        developer: "Reza Shamim",
         timestamp: new Date().toISOString(),
         uptime: process.uptime(), // in seconds
         server: {

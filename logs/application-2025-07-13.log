@@ -112,3 +112,23 @@ Unique constraint failed on the fields: (`loanApplicationFormId`)
     at Un.request (/home/finups/finups/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6478)
     at l (/home/finups/finups/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=491e07fa-3512-49ed-b981-0c0281a7295f","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36","ip":"::ffff:127.0.0.1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation:\n\n\nUnique constraint failed on the fields: (`loanApplicationFormId`)"}
 --------------------------------------------------------------
+[2025-07-13 20:28:36] ERROR: Error: Please Provide valid password
+    at /home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:318:15
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:5:58) {"method":"POST","url":"/api/v1/auth/change-password","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Please Provide valid password"}
+--------------------------------------------------------------
+[2025-07-13 20:28:40] ERROR: Error: Please Provide valid password
+    at /home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:318:15
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:5:58) {"method":"POST","url":"/api/v1/auth/change-password","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Please Provide valid password"}
+--------------------------------------------------------------
+[2025-07-13 20:28:57] ERROR: Error: You old password and new password are same. Please provide different password
+    at /home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:314:15
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:5:58) {"method":"POST","url":"/api/v1/auth/change-password","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"You old password and new password are same. Please provide different password"}
+--------------------------------------------------------------
+[2025-07-13 20:29:21] ERROR: Error: Invalid password! please input valid password.
+    at /home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:125:15
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Invalid password! please input valid password."}
+--------------------------------------------------------------
