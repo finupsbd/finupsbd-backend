@@ -37,7 +37,6 @@ const shutdown = (reason: string, details: any) => {
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason) => {
-
   shutdown('Unhandled Promise Rejection', reason);
 });
 

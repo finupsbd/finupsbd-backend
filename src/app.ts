@@ -8,6 +8,7 @@ import notFound from './app/middleware/notFound';
 import { RootRouter } from './app/rootRouter';
 import seedSuperAdmin from './app/DB';
 import os, { version } from "os"
+import rateLimit from 'express-rate-limit';
 
 
 const app: Application = express();
@@ -36,6 +37,16 @@ seedSuperAdmin();
 
 
 
+// Rate limiting: Allow 100 requests per 15 minutes from a single IP
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+});
+app.use(limiter);
+
+
+
 app.use(passport.initialize());
 app.use("/uploads", express.static("uploads"));
 
@@ -48,6 +59,10 @@ app.use('/__nextjs_original-stack-frames', (req, res) => {
 });
 
 //henarate custom error 
+
+
+
+
 
 
 // Simple server health-check endpoint
