@@ -6,24 +6,9 @@
     "auditLog": "C:\\client-project\\finupsbd-backend\\logs\\.0e9bf2fda8bb694e30b5f6606abcb408440f61f2-audit.json",
     "files": [
         {
-            "date": 1752150700665,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-10.log",
-            "hash": "7c02f1da6dc5c6efd139e7f50ece09d545b65bfc4104b648d75bb177eb876ac6"
-        },
-        {
-            "date": 1752175457709,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-11.log",
-            "hash": "5fc97e7811b4568e3a9383c23ce0b0f2801d75a19d4e8b54ed07d8aad0945cd0"
-        },
-        {
-            "date": 1752397457525,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-13.log",
-            "hash": "11bc3d9e0360a459f301c7eb6210103d50e95a8770177813b52f922c39b35bf9"
-        },
-        {
-            "date": 1752438006236,
+            "date": 1752511090141,
             "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-14.log",
-            "hash": "ccddcd0d5f9fce720f09279f8340f8fb329b96b1824dcf5cc59d67591e146f17"
+            "hash": "012dbf35dde9bc397c18fc86eef486562288f514dc715dfcb0ee5277a32f450e"
         }
     ],
     "hashType": "sha256"
