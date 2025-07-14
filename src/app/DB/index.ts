@@ -26,6 +26,8 @@ const seedSuperAdmin = async () => {
     const isSuperAdmin = await prisma.user.findFirst({ where: { role: "SUPER_ADMIN" } })
     if (!isSuperAdmin) {
       await prisma.user.create({ data: superUser })
+    } else {
+      return
     }
   } catch (error) {
     console.log(`Super admin create fil ${error}`)
