@@ -62,9 +62,6 @@ app.use('/__nextjs_original-stack-frames', (req, res) => {
 
 
 
-
-
-
 // Simple server health-check endpoint
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
