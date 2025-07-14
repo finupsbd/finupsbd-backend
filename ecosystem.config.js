@@ -1,4 +1,5 @@
 module.exports = {
+<<<<<<< HEAD
   apps : [{
     script: 'index.js',
     watch: '.'
@@ -6,6 +7,21 @@ module.exports = {
     script: './service-worker/',
     watch: ['./service-worker']
   }],
+=======
+  apps: [
+    {
+      name: "finups-api",
+      script: "dist/app.js",
+      autorestart: true,
+      env: {
+        NODE_ENV: "development",
+      },
+      env_production: {
+        NODE_ENV: "production",
+      },
+    },
+  ],
+>>>>>>> 78ca9f9b4b03fda780cfb2da8eba59c3903f61ed
 
   deploy : {
     production : {

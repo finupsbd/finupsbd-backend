@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [2025-07-10 18:33:23] ERROR: Error: 🔥 Test Error thrown synchronously!
     at C:\client-project\finupsbd-backend\src\app.ts:42:9
     at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
@@ -400,3 +401,5 @@ Unique constraint failed on the fields: (`phone`)
     at Generator.next (<anonymous>)
     at fulfilled (/home/finups/finups/finupsbd-backend/dist/app/module/auth/auth.service.js:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Your email is not verified. Please verify your email before logging in."}
 --------------------------------------------------------------
+=======
+>>>>>>> 78ca9f9b4b03fda780cfb2da8eba59c3903f61ed
