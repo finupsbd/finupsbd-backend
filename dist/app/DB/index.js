@@ -34,6 +34,9 @@ const seedSuperAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
         if (!isSuperAdmin) {
             yield app_1.prisma.user.create({ data: superUser });
         }
+        else {
+            return;
+        }
     }
     catch (error) {
         console.log(`Super admin create fil ${error}`);
