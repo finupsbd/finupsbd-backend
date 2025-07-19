@@ -12,12 +12,8 @@ import path from 'path';
  */
 
 
-export const saveSingleFile = async (
-  buffer: Buffer,
-  originalName: string,
-  folder: string,
-  id?: string
-): Promise<string> => {
+export const saveSingleFile = async (buffer: Buffer, originalName: string, folder: string, id?: string)
+  : Promise<string> => {
   // (e.g., /uploads/folder/)
   const uploadsDir = path.join(process.cwd(), 'uploads', folder);
 

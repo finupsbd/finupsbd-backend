@@ -23,16 +23,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogService = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const app_1 = require("../../../app");
-const sendImageToCloud_1 = require("../../utils/sendImageToCloud");
+const buildNestedComments_1 = require("../../utils/blogs/buildNestedComments");
+const saveFileBlogs_1 = require("../../utils/file-uploads/saveFileBlogs");
 const createBlog = (payload, file, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const coverImage = yield (0, sendImageToCloud_1.sendImageToCloud)(file);
+    // const coverImage = await sendImageToCloud(file);
+    var _a;
+    const existingUser = yield app_1.prisma.user.findUnique({
+        where: { id: user === null || user === void 0 ? void 0 : user.userId },
+    });
+    const coverImage = yield (0, saveFileBlogs_1.saveFileBlogs)(file.buffer, file.originalname, "blogs", (_a = existingUser === null || existingUser === void 0 ? void 0 : existingUser.userId) !== null && _a !== void 0 ? _a : "");
     payload.coverImage = coverImage !== null && coverImage !== void 0 ? coverImage : undefined;
-    // payload.userId = user.userId ? user.userId : undefined;
-    const result = yield app_1.prisma.blog.create({ data: payload });
+    if (user.userId) {
+        payload.userId = user.userId;
+    }
+    const result = yield app_1.prisma.blog.create({
+        data: Object.assign({}, payload)
+    });
     return result;
 });
 const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield app_1.prisma.blog.findMany({
+    const blogs = yield app_1.prisma.blog.findMany({
         select: {
             id: true,
             title: true,
@@ -41,40 +51,41 @@ const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
             category: true,
             tags: true,
             coverImage: true,
-            comments: {
-                select: {
-                    id: true,
-                    content: true,
-                    createdAt: true,
-                    user: {
-                        select: {
-                            id: true,
-                            name: true,
-                            email: true,
-                            profile: {
-                                select: {
-                                    avatar: true,
-                                },
-                            },
-                        },
-                    },
-                },
-            },
             user: {
                 select: {
                     id: true,
                     name: true,
                     email: true,
                     profile: {
-                        select: {
-                            avatar: true,
-                        },
-                    }
+                        select: { avatar: true },
+                    },
                 },
-            }
+            },
+            // Fetch all comments, no parent filtering
+            comments: {
+                select: {
+                    id: true,
+                    content: true,
+                    createdAt: true,
+                    parentId: true,
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            profile: {
+                                select: { avatar: true },
+                            },
+                        },
+                    },
+                },
+            },
         },
     });
-    return result;
+    // For each blog, build nested comment tree
+    blogs.forEach(blog => {
+        blog.comments = (0, buildNestedComments_1.buildNestedComments)(blog.comments);
+    });
+    return blogs;
 });
 const updateBlog = (payload, id) => __awaiter(void 0, void 0, void 0, function* () {
     // Convert category string to Prisma enum if necessary
@@ -96,7 +107,8 @@ const deleteBlog = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield app_1.prisma.blog.delete({ where: { id } });
     return result;
 });
-const commentBlog = (blogId, payload, user) => __awaiter(void 0, void 0, void 0, function* () {
+const commentBlog = (blogId, payload, parentId, user) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload, user);
     const isExistBlog = yield app_1.prisma.blog.findFirst({
         where: { id: blogId },
     });
@@ -105,9 +117,10 @@ const commentBlog = (blogId, payload, user) => __awaiter(void 0, void 0, void 0,
     }
     const result = yield app_1.prisma.comment.create({
         data: {
-            content: payload.content,
+            content: payload,
             blogId: blogId,
-            userId: user.userId ? user.userId : undefined,
+            userId: user === null || user === void 0 ? void 0 : user.userId,
+            parentId: parentId
         },
     });
     console.log(result, 'result comment blog');

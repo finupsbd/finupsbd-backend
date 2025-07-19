@@ -91,20 +91,39 @@ const meProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error("User not found");
     return result;
 });
-const getAllApplication = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllNewLoans = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield app_1.prisma.loanApplicationForm.findMany({
         where: {
             user: {
                 id: id
+            },
+            status: {
+                in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
             }
         },
         include: {
-            eligibleLoanOffer: {
-                select: {
-                    bankName: true,
-                    loanType: true
-                }
+            eligibleLoanOffer: true,
+            loanRequest: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+    return result;
+});
+const getAllExistingLoans = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield app_1.prisma.loanApplicationForm.findMany({
+        where: {
+            user: {
+                id: id
+            },
+            status: {
+                in: ["APPROVED"]
             }
+        },
+        include: {
+            eligibleLoanOffer: true,
+            loanRequest: true
         },
         orderBy: {
             createdAt: "desc"
@@ -116,5 +135,6 @@ exports.UserServices = {
     getAllUser,
     meProfile,
     getSingleUser,
-    getAllApplication
+    getAllNewLoans,
+    getAllExistingLoans
 };

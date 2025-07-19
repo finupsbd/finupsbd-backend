@@ -1,8 +1,10 @@
 "use strict";
-// Enum for Post Status
-// export enum PostStatus {
-//     DRAFT = "DRAFT",
-//     PUBLISHED = "PUBLISHED",
-//     ARCHIVED = "ARCHIVED",
-//   }
+/* eslint-disable no-unused-vars */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PostStatus = void 0;
+var PostStatus;
+(function (PostStatus) {
+    PostStatus["DRAFT"] = "DRAFT";
+    PostStatus["PUBLISHED"] = "PUBLISHED";
+    PostStatus["ARCHIVED"] = "ARCHIVED";
+})(PostStatus || (exports.PostStatus = PostStatus = {}));

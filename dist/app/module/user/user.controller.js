@@ -48,9 +48,19 @@ const meProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
         data: result
     });
 }));
-const getAllApplication = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllNewLoans = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const result = yield user_service_1.UserServices.getAllApplication(id);
+    const result = yield user_service_1.UserServices.getAllNewLoans(id);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: "Retrive all applications",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
+}));
+const getAllExistingLoans = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const result = yield user_service_1.UserServices.getAllNewLoans(id);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: "Retrive all applications",
@@ -62,5 +72,6 @@ exports.UserController = {
     getAllUsers,
     meProfile,
     getSingleUser,
-    getAllApplication
+    getAllNewLoans,
+    getAllExistingLoans
 };

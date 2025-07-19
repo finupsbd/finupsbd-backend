@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import { BlogService } from "./blog.service";
 import { BlogValidationSchema } from "./blog.validation";
 import sendResponses from "../../utils/sendResponce";
-import { TMiddlewareUser } from "../../types/commonTypes";
+import { TMiddlewareUser, TMulterFile } from "../../types/commonTypes";
+import AppError from "../../error/AppError";
 
 
 const createBlog = catchAsync(async (req, res) => {
-  const payload = BlogValidationSchema.parse(JSON.parse(req.body.data))
-  const file = req.file?.buffer
+  const payload = BlogValidationSchema.parse(JSON.parse(req.body.data)) as any
+
+  const file = req.file as TMulterFile
   const user = req.user as TMiddlewareUser;
 
   if (!user) {
@@ -68,11 +71,13 @@ const deleteBlog = catchAsync(async (req, res) => {
 
 
 const commentBlog= catchAsync(async (req, res) => {
-    const blogId = req.params?.id
-    const user = req.user as TMiddlewareUser;
-    const payload = req.body
 
-    await BlogService.commentBlog(blogId, payload, user)
+  const { content, blogId, parentId } = req.body;
+
+    const user = req.user as TMiddlewareUser;
+
+
+    await BlogService.commentBlog(blogId, content, parentId, user)
 
 
     sendResponses(res, {

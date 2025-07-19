@@ -98,33 +98,56 @@ const meProfile = async (user: any) => {
 
   });
 
-    console.log({result})
+  console.log({ result })
   if (!result) throw new Error("User not found");
   return result;
 };
 
-const getAllApplication = async (id: string) => {
+const getAllNewLoans = async (id: string) => {
 
   const result = await prisma.loanApplicationForm.findMany({
     where: {
       user: {
         id: id
+      },
+      status: {
+        in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
       }
-    }, 
+    },
     include: {
-      eligibleLoanOffer: {
-        select: {
-          bankName: true, 
-          loanType: true
-        }
-      }
-    }, 
+      eligibleLoanOffer: true,
+      loanRequest: true
+    },
     orderBy: {
       createdAt: "desc"
     }
   })
 
 
+
+  return result
+
+};
+
+const getAllExistingLoans = async (id: string) => {
+
+  const result = await prisma.loanApplicationForm.findMany({
+    where: {
+      user: {
+        id: id
+      },
+      status: {
+        in: ["APPROVED"]
+      }
+    },
+    include: {
+      eligibleLoanOffer: true,
+      loanRequest: true
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  })
 
   return result
 
@@ -137,5 +160,6 @@ export const UserServices = {
   getAllUser,
   meProfile,
   getSingleUser,
-  getAllApplication
+  getAllNewLoans,
+  getAllExistingLoans
 };

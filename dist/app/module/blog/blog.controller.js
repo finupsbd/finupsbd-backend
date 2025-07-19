@@ -13,15 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogController = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_codes_1 = require("http-status-codes");
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const blog_service_1 = require("./blog.service");
 const blog_validation_1 = require("./blog.validation");
 const sendResponce_1 = __importDefault(require("../../utils/sendResponce"));
 const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const payload = blog_validation_1.BlogValidationSchema.parse(JSON.parse(req.body.data));
-    const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
+    const file = req.file;
     const user = req.user;
     if (!user) {
         throw new Error("User is not authenticated");
@@ -67,11 +67,9 @@ const deleteBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const commentBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const blogId = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
+    const { content, blogId, parentId } = req.body;
     const user = req.user;
-    const payload = req.body;
-    yield blog_service_1.BlogService.commentBlog(blogId, payload, user);
+    yield blog_service_1.BlogService.commentBlog(blogId, content, parentId, user);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Blog Comment Successfully',

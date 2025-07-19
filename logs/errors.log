@@ -6,3 +6,702 @@
     at C:\client-project\finupsbd-backend\node_modules\express-rate-limit\dist\index.cjs:706:5
     at processTicksAndRejections (node:internal/process/task_queues:105:5) {"error":{},"rejection":true,"date":"Tue Jul 15 2025 01:35:51 GMT+0600 (Bangladesh Standard Time)","process":{"pid":17208,"uid":null,"gid":null,"cwd":"C:\\client-project\\finupsbd-backend","execPath":"C:\\Program Files\\nodejs\\node.exe","version":"v22.11.0","argv":["C:\\Program Files\\nodejs\\node.exe","./src/server.ts"],"memoryUsage":{"rss":91353088,"heapTotal":59904000,"heapUsed":30315328,"external":2624335,"arrayBuffers":162858}},"os":{"loadavg":[0,0,0],"uptime":15906.703},"trace":[{"column":5,"file":"C:\\client-project\\finupsbd-backend\\node_modules\\express-rate-limit\\dist\\index.cjs","function":null,"line":706,"method":null,"native":false},{"column":5,"file":"node:internal/process/task_queues","function":"processTicksAndRejections","line":105,"method":null,"native":false}]}
 --------------------------------------------------------------
+[2025-07-19 22:07:44] ERROR: unhandledRejection: Invalid cloud_name djr5gjijg
+  No stack trace {"error":{"message":"Invalid cloud_name djr5gjijg","name":"Error","http_code":401},"rejection":true,"date":"Sat Jul 19 2025 22:07:44 GMT+0600 (Bangladesh Standard Time)","process":{"pid":9248,"uid":null,"gid":null,"cwd":"C:\\client-project\\finupsbd-backend","execPath":"C:\\Program Files\\nodejs\\node.exe","version":"v22.11.0","argv":["C:\\Program Files\\nodejs\\node.exe","./src/server.ts"],"memoryUsage":{"rss":95412224,"heapTotal":31748096,"heapUsed":27849648,"external":4112405,"arrayBuffers":1497324}},"os":{"loadavg":[0,0,0],"uptime":1399.671},"trace":[]}
+--------------------------------------------------------------
+[2025-07-19 22:18:40] ERROR: PrismaClientValidationError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:16:36
+
+  13 payload.coverImage = coverImage ?? undefined;
+  14 // payload.userId = user.userId ? user.userId : undefined;
+  15 
+→ 16 const result = await prisma.blog.create({
+       data: {
+         title: "My First Blog Post",
+         slug: "my-first-blog-post5",
+         content: "This is the content of my first blog post.",
+         status: "PUBLISHED",
+         category: "Instant Loan",
+         coverImage: "/uploads/blogs/1752941920108-.png",
+     +   user: {
+     +     create: UserCreateWithoutBlogPostInput | UserUncheckedCreateWithoutBlogPostInput,
+     +     connectOrCreate: UserCreateOrConnectWithoutBlogPostInput,
+     +     connect: UserWhereUniqueInput
+     +   }
+       }
+     })
+
+Argument `user` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:16:36\n\n  13 payload.coverImage = coverImage ?? undefined;\n  14 // payload.userId = user.userId ? user.userId : undefined;\n  15 \n→ 16 const result = await prisma.blog.create({\n       data: {\n         title: \"My First Blog Post\",\n         slug: \"my-first-blog-post5\",\n         content: \"This is the content of my first blog post.\",\n         status: \"PUBLISHED\",\n         category: \"Instant Loan\",\n         coverImage: \"/uploads/blogs/1752941920108-.png\",\n     +   user: {\n     +     create: UserCreateWithoutBlogPostInput | UserUncheckedCreateWithoutBlogPostInput,\n     +     connectOrCreate: UserCreateOrConnectWithoutBlogPostInput,\n     +     connect: UserWhereUniqueInput\n     +   }\n       }\n     })\n\nArgument `user` is missing."}
+--------------------------------------------------------------
+[2025-07-19 22:20:31] ERROR: PrismaClientValidationError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:17:36
+
+  14 
+  15 console.log(user)
+  16 
+→ 17 const result = await prisma.blog.create({
+       data: {
+         title: "My First Blog Post",
+         slug: "my-first-blog-post5",
+         content: "This is the content of my first blog post.",
+         status: "PUBLISHED",
+         category: "Instant Loan",
+         coverImage: "/uploads/blogs/1752942031613-.png",
+     +   user: {
+     +     create: UserCreateWithoutBlogPostInput | UserUncheckedCreateWithoutBlogPostInput,
+     +     connectOrCreate: UserCreateOrConnectWithoutBlogPostInput,
+     +     connect: UserWhereUniqueInput
+     +   }
+       }
+     })
+
+Argument `user` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:17:36\n\n  14 \n  15 console.log(user)\n  16 \n→ 17 const result = await prisma.blog.create({\n       data: {\n         title: \"My First Blog Post\",\n         slug: \"my-first-blog-post5\",\n         content: \"This is the content of my first blog post.\",\n         status: \"PUBLISHED\",\n         category: \"Instant Loan\",\n         coverImage: \"/uploads/blogs/1752942031613-.png\",\n     +   user: {\n     +     create: UserCreateWithoutBlogPostInput | UserUncheckedCreateWithoutBlogPostInput,\n     +     connectOrCreate: UserCreateOrConnectWithoutBlogPostInput,\n     +     connect: UserWhereUniqueInput\n     +   }\n       }\n     })\n\nArgument `user` is missing."}
+--------------------------------------------------------------
+[2025-07-19 22:22:19] ERROR: PrismaClientValidationError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:20:36
+
+  17 
+  18 console.log(payload)
+  19 
+→ 20 const result = await prisma.blog.create({
+       data: {
+         title: "My First Blog Post",
+         slug: "my-first-blog-post5",
+         content: "This is the content of my first blog post.",
+         status: "PUBLISHED",
+         category: "Instant Loan",
+         coverImage: "/uploads/blogs/1752942139025-.png",
+     +   user: {
+     +     create: UserCreateWithoutBlogPostInput | UserUncheckedCreateWithoutBlogPostInput,
+     +     connectOrCreate: UserCreateOrConnectWithoutBlogPostInput,
+     +     connect: UserWhereUniqueInput
+     +   }
+       }
+     })
+
+Argument `user` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:20:36\n\n  17 \n  18 console.log(payload)\n  19 \n→ 20 const result = await prisma.blog.create({\n       data: {\n         title: \"My First Blog Post\",\n         slug: \"my-first-blog-post5\",\n         content: \"This is the content of my first blog post.\",\n         status: \"PUBLISHED\",\n         category: \"Instant Loan\",\n         coverImage: \"/uploads/blogs/1752942139025-.png\",\n     +   user: {\n     +     create: UserCreateWithoutBlogPostInput | UserUncheckedCreateWithoutBlogPostInput,\n     +     connectOrCreate: UserCreateOrConnectWithoutBlogPostInput,\n     +     connect: UserWhereUniqueInput\n     +   }\n       }\n     })\n\nArgument `user` is missing."}
+--------------------------------------------------------------
+[2025-07-19 22:24:56] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:20:36
+
+  17 
+  18 console.log(payload)
+  19 
+→ 20 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:20:36\n\n  17 \n  18 console.log(payload)\n  19 \n→ 20 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-19 22:27:18] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:20:36
+
+  17 
+  18 console.log(payload)
+  19 
+→ 20 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:20:36\n\n  17 \n  18 console.log(payload)\n  19 \n→ 20 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-19 22:29:24] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:22:36
+
+  19 
+  20 console.log(payload)
+  21 
+→ 22 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:22:36\n\n  19 \n  20 console.log(payload)\n  21 \n→ 22 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-19 22:29:34] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:22:36
+
+  19 
+  20 console.log(payload)
+  21 
+→ 22 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:22:36\n\n  19 \n  20 console.log(payload)\n  21 \n→ 22 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-19 22:32:14] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:22:36
+
+  19 
+  20 console.log(payload)
+  21 
+→ 22 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:22:36\n\n  19 \n  20 console.log(payload)\n  21 \n→ 22 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 01:27:54] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:22:36
+
+  19 
+  20 console.log(payload)
+  21 
+→ 22 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:22:36\n\n  19 \n  20 console.log(payload)\n  21 \n→ 22 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 01:29:23] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:22:36
+
+  19 
+  20 console.log({payload})
+  21 
+→ 22 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:22:36\n\n  19 \n  20 console.log({payload})\n  21 \n→ 22 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 01:30:38] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:29:36
+
+  26   ...(category ? { category: category as any } : {}), // Replace 'any' with the actual enum type if imported
+  27 };
+  28 
+→ 29 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:29:36\n\n  26   ...(category ? { category: category as any } : {}), // Replace 'any' with the actual enum type if imported\n  27 };\n  28 \n→ 29 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 01:32:34] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:22:36
+
+  19 
+  20 console.log({payload})
+  21 
+→ 22 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:22:36\n\n  19 \n  20 console.log({payload})\n  21 \n→ 22 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 01:34:21] ERROR: PrismaClientValidationError: 
+Invalid `prisma.user.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:22:36
+
+  19 
+  20 console.log({payload})
+  21 
+→ 22 const result = await prisma.user.create({
+       data: {
+         blogPost: {
+           create: {
+             title: "My First Blog Post",
+             slug: "my-first-blog-post5",
+             content: "This is the content of my first blog post.",
+             status: "PUBLISHED",
+             category: "CREDIT_CARD",
+             coverImage: "/uploads/blogs/1752953661921-.png",
+             userId: "f1ab28e4-b56a-45d2-96bb-f2d4bf5f62b0"
+           }
+         },
+     +   email: String
+       }
+     })
+
+Argument `email` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.user.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:22:36\n\n  19 \n  20 console.log({payload})\n  21 \n→ 22 const result = await prisma.user.create({\n       data: {\n         blogPost: {\n           create: {\n             title: \"My First Blog Post\",\n             slug: \"my-first-blog-post5\",\n             content: \"This is the content of my first blog post.\",\n             status: \"PUBLISHED\",\n             category: \"CREDIT_CARD\",\n             coverImage: \"/uploads/blogs/1752953661921-.png\",\n             userId: \"f1ab28e4-b56a-45d2-96bb-f2d4bf5f62b0\"\n           }\n         },\n     +   email: String\n       }\n     })\n\nArgument `email` is missing."}
+--------------------------------------------------------------
+[2025-07-20 01:36:30] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.blog.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:22:36
+
+  19 
+  20 console.log({payload})
+  21 
+→ 22 const result = await prisma.blog.create(
+Foreign key constraint violated: `blogs_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.blog.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:22:36\n\n  19 \n  20 console.log({payload})\n  21 \n→ 22 const result = await prisma.blog.create(\nForeign key constraint violated: `blogs_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 02:03:55] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:122:39
+
+  119 }
+  120 
+  121 
+→ 122 const result = await prisma.comment.create({
+        data: {
+          blogId: "cc882e14-3ea1-4a0d-9a5d-3e787ca118f8",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:122:39\n\n  119 }\n  120 \n  121 \n→ 122 const result = await prisma.comment.create({\n        data: {\n          blogId: \"cc882e14-3ea1-4a0d-9a5d-3e787ca118f8\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 02:04:39] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:123:39
+
+  120 }
+  121 
+  122 
+→ 123 const result = await prisma.comment.create({
+        data: {
+          blogId: "cc882e14-3ea1-4a0d-9a5d-3e787ca118f8",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:123:39\n\n  120 }\n  121 \n  122 \n→ 123 const result = await prisma.comment.create({\n        data: {\n          blogId: \"cc882e14-3ea1-4a0d-9a5d-3e787ca118f8\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 02:05:27] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:125:39
+
+  122 }
+  123 
+  124 
+→ 125 const result = await prisma.comment.create({
+        data: {
+          blogId: "cc882e14-3ea1-4a0d-9a5d-3e787ca118f8",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:125:39\n\n  122 }\n  123 \n  124 \n→ 125 const result = await prisma.comment.create({\n        data: {\n          blogId: \"cc882e14-3ea1-4a0d-9a5d-3e787ca118f8\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 02:41:48] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:131:39
+
+  128 }
+  129 
+  130 
+→ 131 const result = await prisma.comment.create({
+        data: {
+          blogId: "cc882e14-3ea1-4a0d-9a5d-3e787ca118f8",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:131:39\n\n  128 }\n  129 \n  130 \n→ 131 const result = await prisma.comment.create({\n        data: {\n          blogId: \"cc882e14-3ea1-4a0d-9a5d-3e787ca118f8\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 02:54:57] ERROR: Error: Blog not found. thank you
+    at C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:127:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:5:58) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"Error","errorMessage":"Blog not found. thank you"}
+--------------------------------------------------------------
+[2025-07-20 02:55:25] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:131:39
+
+  128 }
+  129 
+  130 
+→ 131 const result = await prisma.comment.create({
+        data: {
+          blogId: "bd358fce-24a8-456a-801e-b51ba5f98a15",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:131:39\n\n  128 }\n  129 \n  130 \n→ 131 const result = await prisma.comment.create({\n        data: {\n          blogId: \"bd358fce-24a8-456a-801e-b51ba5f98a15\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 02:57:10] ERROR: Error: Blog not found. thank you
+    at C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:127:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:5:58) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"Error","errorMessage":"Blog not found. thank you"}
+--------------------------------------------------------------
+[2025-07-20 02:58:00] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:131:39
+
+  128 }
+  129 
+  130 
+→ 131 const result = await prisma.comment.create({
+        data: {
+          blogId: "473d3c7a-4459-411d-ba47-0dadca11ea2c",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:131:39\n\n  128 }\n  129 \n  130 \n→ 131 const result = await prisma.comment.create({\n        data: {\n          blogId: \"473d3c7a-4459-411d-ba47-0dadca11ea2c\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 02:59:48] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:131:39
+
+  128 }
+  129 
+  130 
+→ 131 const result = await prisma.comment.create({
+        data: {
+          blogId: "473d3c7a-4459-411d-ba47-0dadca11ea2c",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:131:39\n\n  128 }\n  129 \n  130 \n→ 131 const result = await prisma.comment.create({\n        data: {\n          blogId: \"473d3c7a-4459-411d-ba47-0dadca11ea2c\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 03:04:10] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:139:39
+
+  136   commentData.userId = user.userId;
+  137 }
+  138 
+→ 139 const result = await prisma.comment.create({
+        data: {
+          blogId: "473d3c7a-4459-411d-ba47-0dadca11ea2c",
+          parentId: null,
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:139:39\n\n  136   commentData.userId = user.userId;\n  137 }\n  138 \n→ 139 const result = await prisma.comment.create({\n        data: {\n          blogId: \"473d3c7a-4459-411d-ba47-0dadca11ea2c\",\n          parentId: null,\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 03:07:51] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:132:39
+
+  129 
+  130 
+  131 
+→ 132 const result = await prisma.comment.create({
+        data: {
+          blogId: "473d3c7a-4459-411d-ba47-0dadca11ea2c",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:132:39\n\n  129 \n  130 \n  131 \n→ 132 const result = await prisma.comment.create({\n        data: {\n          blogId: \"473d3c7a-4459-411d-ba47-0dadca11ea2c\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 03:07:58] ERROR: PrismaClientValidationError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:132:39
+
+  129 
+  130 
+  131 
+→ 132 const result = await prisma.comment.create({
+        data: {
+          blogId: "473d3c7a-4459-411d-ba47-0dadca11ea2c",
+          userId: "2c87f4ae-7eb9-4242-a5cc-a3df29324318",
+          parentId: null,
+      +   content: String
+        }
+      })
+
+Argument `content` is missing.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:132:39\n\n  129 \n  130 \n  131 \n→ 132 const result = await prisma.comment.create({\n        data: {\n          blogId: \"473d3c7a-4459-411d-ba47-0dadca11ea2c\",\n          userId: \"2c87f4ae-7eb9-4242-a5cc-a3df29324318\",\n          parentId: null,\n      +   content: String\n        }\n      })\n\nArgument `content` is missing."}
+--------------------------------------------------------------
+[2025-07-20 03:10:05] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:132:39
+
+  129 
+  130 
+  131 
+→ 132 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:132:39\n\n  129 \n  130 \n  131 \n→ 132 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:11:10] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:132:39
+
+  129 
+  130 
+  131 
+→ 132 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:132:39\n\n  129 \n  130 \n  131 \n→ 132 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:11:50] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:132:39
+
+  129 
+  130 
+  131 
+→ 132 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:132:39\n\n  129 \n  130 \n  131 \n→ 132 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:12:30] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:132:39
+
+  129 
+  130 
+  131 
+→ 132 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:132:39\n\n  129 \n  130 \n  131 \n→ 132 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:13:11] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:132:39
+
+  129 
+  130 
+  131 
+→ 132 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:132:39\n\n  129 \n  130 \n  131 \n→ 132 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:15:38] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:134:39
+
+  131 
+  132 
+  133 
+→ 134 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:134:39\n\n  131 \n  132 \n  133 \n→ 134 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:15:53] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:134:39
+
+  131 
+  132 
+  133 
+→ 134 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:134:39\n\n  131 \n  132 \n  133 \n→ 134 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:18:09] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:142:39
+
+  139 
+  140 
+  141 
+→ 142 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:142:39\n\n  139 \n  140 \n  141 \n→ 142 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:18:39] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.comment.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:144:39
+
+  141 
+  142 
+  143 
+→ 144 const result = await prisma.comment.create(
+Foreign key constraint violated: `comments_userId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/blogs/comment","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.comment.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:144:39\n\n  141 \n  142 \n  143 \n→ 144 const result = await prisma.comment.create(\nForeign key constraint violated: `comments_userId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-07-20 03:23:04] ERROR: PrismaClientValidationError: 
+Invalid `prisma.blog.findMany()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:42:36
+
+  39 
+  40 
+  41 const getAllBlogs = async () => {
+→ 42   const result = await prisma.blog.findMany({
+         select: {
+           id: true,
+           title: true,
+           slug: true,
+           content: true,
+           category: true,
+           tags: true,
+           coverImage: true,
+           comments: {
+             include: {
+               select: {
+               ~~~~~~
+                 id: true,
+                 content: true,
+                 createdAt: true,
+                 user: {
+                   select: {
+                     id: true,
+                     name: true,
+                     email: true,
+                     profile: {
+                       select: {
+                         avatar: true
+                       }
+                     }
+                   }
+                 }
+               },
+       ?       user?: true,
+       ?       blog?: true,
+       ?       parent?: true,
+       ?       replies?: true
+             }
+           },
+           user: {
+             select: {
+               id: true,
+               name: true,
+               email: true,
+               profile: {
+                 select: {
+                   avatar: true
+                 }
+               }
+             }
+           }
+         }
+       })
+
+Unknown field `select` for include statement on model `Comment`. Available options are marked with ?.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"GET","url":"/api/v1/blogs/","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.blog.findMany()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\blog\\blog.service.ts:42:36\n\n  39 \n  40 \n  41 const getAllBlogs = async () => {\n→ 42   const result = await prisma.blog.findMany({\n         select: {\n           id: true,\n           title: true,\n           slug: true,\n           content: true,\n           category: true,\n           tags: true,\n           coverImage: true,\n           comments: {\n             include: {\n               select: {\n               ~~~~~~\n                 id: true,\n                 content: true,\n                 createdAt: true,\n                 user: {\n                   select: {\n                     id: true,\n                     name: true,\n                     email: true,\n                     profile: {\n                       select: {\n                         avatar: true\n                       }\n                     }\n                   }\n                 }\n               },\n       ?       user?: true,\n       ?       blog?: true,\n       ?       parent?: true,\n       ?       replies?: true\n             }\n           },\n           user: {\n             select: {\n               id: true,\n               name: true,\n               email: true,\n               profile: {\n                 select: {\n                   avatar: true\n                 }\n               }\n             }\n           }\n         }\n       })\n\nUnknown field `select` for include statement on model `Comment`. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-07-20 04:12:14] ERROR: Error: We can’t find an account with those details, please register your account!
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:128:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please register your account!"}
+--------------------------------------------------------------

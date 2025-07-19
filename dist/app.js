@@ -47,6 +47,7 @@ const notFound_1 = __importDefault(require("./app/middleware/notFound"));
 const rootRouter_1 = require("./app/rootRouter");
 const DB_1 = __importDefault(require("./app/DB"));
 const os_1 = __importStar(require("os"));
+const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const app = (0, express_1.default)();
 exports.prisma = new client_1.PrismaClient();
 app.use((0, cors_1.default)({
@@ -67,6 +68,13 @@ app.use(express_1.default.urlencoded({ limit: '30mb', extended: true }));
 // Note: Automatic seeding on every start is disabled.
 // import seedSuperAdmin from './app/DB';
 (0, DB_1.default)();
+// Rate limiting: Allow 100 requests per 15 minutes from a single IP
+const limiter = (0, express_rate_limit_1.default)({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP, please try again later.',
+});
+app.use(limiter);
 app.use(passport_1.default.initialize());
 app.use("/uploads", express_1.default.static("uploads"));
 app.use('/api/v1', rootRouter_1.RootRouter);

@@ -1,20 +1,42 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from '../../../app';
-import { TMiddlewareUser } from '../../types/commonTypes';
-import { sendImageToCloud } from '../../utils/sendImageToCloud';
+import { TMiddlewareUser, TMulterFile } from '../../types/commonTypes';
+import { buildNestedComments } from '../../utils/blogs/buildNestedComments';
+import { saveFileBlogs } from '../../utils/file-uploads/saveFileBlogs';
 import { TBlog } from './blog.interface';
 
-const createBlog = async (payload: TBlog, file: any, user: TMiddlewareUser ) => {
-  const coverImage = await sendImageToCloud(file);
-  payload.coverImage = coverImage ?? undefined;
-  // payload.userId = user.userId ? user.userId : undefined;
 
-  const result = await prisma.blog.create({ data: payload as any });
+
+
+const createBlog = async (payload: TBlog, file: TMulterFile, user: TMiddlewareUser) => {
+
+  // const coverImage = await sendImageToCloud(file);
+
+  const existingUser = await prisma.user.findUnique({
+    where: { id: user?.userId },
+  })
+
+
+  const coverImage = await saveFileBlogs(file.buffer, file.originalname, "blogs", existingUser?.userId ?? "");
+  payload.coverImage = coverImage ?? undefined;
+
+
+  if (user.userId) {
+    payload.userId = user.userId;
+  }
+
+
+  const result = await prisma.blog.create({
+    data: {
+      ...payload
+    } as any
+  })
   return result;
 };
 
+
 const getAllBlogs = async () => {
-  const result = await prisma.blog.findMany({
+  const blogs = await prisma.blog.findMany({
     select: {
       id: true,
       title: true,
@@ -23,41 +45,46 @@ const getAllBlogs = async () => {
       category: true,
       tags: true,
       coverImage: true,
-      comments: {
-        select: {
-          id: true,
-          content: true,
-          createdAt: true,
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-              profile: {
-                select: {
-                  avatar: true,
-                },
-              },
-            },
-          },
-        },
-      },
       user: {
         select: {
           id: true,
           name: true,
           email: true,
           profile: {
-            select: {
-              avatar: true,
-            },
-          }
+            select: { avatar: true },
+          },
         },
-      }
+      },
+      // Fetch all comments, no parent filtering
+      comments: {
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          parentId: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              profile: {
+                select: { avatar: true },
+              },
+            },
+          },
+        },
+      },
     },
   });
-  return result;
+
+  // For each blog, build nested comment tree
+  blogs.forEach(blog => {
+    blog.comments = buildNestedComments(blog.comments);
+  });
+
+  return blogs;
 };
+
+
 
 const updateBlog = async (payload: TBlog, id: string) => {
   // Convert category string to Prisma enum if necessary
@@ -89,11 +116,16 @@ const deleteBlog = async (id: string) => {
 
 
 
-const commentBlog = async (blogId: string, payload: {content: string}, user: TMiddlewareUser ) => {
+
+const commentBlog = async (blogId: string, payload: string, parentId: string, user: TMiddlewareUser) => {
+
+  console.log(payload, user)
 
   const isExistBlog = await prisma.blog.findFirst({
-    where: { id : blogId },
+    where: { id: blogId },
   });
+
+
   if (!isExistBlog) {
     throw new Error('Blog not found. thank you');
   }
@@ -102,18 +134,17 @@ const commentBlog = async (blogId: string, payload: {content: string}, user: TMi
   const result = await prisma.comment.create(
     {
       data: {
-        content: payload.content,
+        content: payload,
         blogId: blogId,
-        userId: user.userId ? user.userId : undefined,
+        userId: user?.userId,
+        parentId: parentId
       },
-    } as any
+    }
   );
 
   console.log(result, 'result comment blog');
 
   return result;
-
-
 };
 
 export const BlogService = {
@@ -123,4 +154,3 @@ export const BlogService = {
   deleteBlog,
   commentBlog
 };
-                      
