@@ -107,7 +107,7 @@ const globalErrorHandler = (err, req, res, next) => {
             // Default for other Prisma errors
             res.status(500).json({
                 success: false,
-                message: 'A database error occurred.',
+                message: 'Database error occurred. Please try again later.',
                 error: err,
             });
         }
@@ -148,10 +148,10 @@ const globalErrorHandler = (err, req, res, next) => {
         });
     }
     ///-----------------------------------------------------------------------------------------------------------------------
-    res.status(http_status_codes_1.StatusCodes.BAD_GATEWAY).json({
+    res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({
         success: false,
         message: newMessage,
-        statusCode: statusCode,
+        statusCode: http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR,
         error: error,
         stack: config_1.ConfigFile.NODE_ENV === 'production' ? null : err.stack,
     });

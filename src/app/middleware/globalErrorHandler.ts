@@ -27,8 +27,10 @@ const globalErrorHandler = (
   const statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
 
 
-///---------------------------Error Logs--------------------------------------------------------------------------------------------
-const logPayload = {
+
+
+  ///---------------------------Error Logs--------------------------------------------------------------------------------------------
+  const logPayload = {
     method: req.method,
     url: req.originalUrl,
     userAgent: req.headers['user-agent'],
@@ -39,9 +41,9 @@ const logPayload = {
   };
 
   /// genarate error log for better find error 
-  logger.error( err.message, logPayload);
+  logger.error(err.message, logPayload);
 
-///-----------------------------------------------------------------------------------------------------------------------
+  ///-----------------------------------------------------------------------------------------------------------------------
 
   if (err instanceof TokenExpiredError) {
     res.status(401).json({
@@ -91,7 +93,7 @@ const logPayload = {
     });
   }
 
-///-----------------------------------------------------------------------------------------------------------------------
+  ///-----------------------------------------------------------------------------------------------------------------------
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
 
@@ -130,7 +132,7 @@ const logPayload = {
       // Default for other Prisma errors
       res.status(500).json({
         success: false,
-        message: 'A database error occurred.',
+        message: 'Database error occurred. Please try again later.',
         error: err,
       });
     }
@@ -178,14 +180,14 @@ const logPayload = {
     });
   }
 
-///-----------------------------------------------------------------------------------------------------------------------
+  ///-----------------------------------------------------------------------------------------------------------------------
 
 
 
-  res.status(StatusCodes.BAD_GATEWAY).json({
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     success: false,
     message: newMessage,
-    statusCode: statusCode,
+    statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
     error: error,
     stack: ConfigFile.NODE_ENV === 'production' ? null : err.stack,
   });
