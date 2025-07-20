@@ -36,7 +36,8 @@ const createBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const getAllBlogs = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_service_1.BlogService.getAllBlogs();
+    const queryOptions = req.body;
+    const result = yield blog_service_1.BlogService.getAllBlogs(queryOptions);
     (0, sendResponce_1.default)(res, {
         success: true,
         message: 'Blogs retrieve successfully',
@@ -77,10 +78,22 @@ const commentBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: {},
     });
 }));
+const getSingleBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const blogId = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
+    const result = yield blog_service_1.BlogService.getSingleBlog(blogId);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: 'Retrive blog Successfully',
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result,
+    });
+}));
 exports.BlogController = {
     createBlog,
     updateBlog,
     getAllBlogs,
     deleteBlog,
-    commentBlog
+    commentBlog,
+    getSingleBlog
 };

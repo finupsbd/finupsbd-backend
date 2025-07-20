@@ -39,6 +39,11 @@
             "date": 1752953175950,
             "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-20.log",
             "hash": "f3d7e73a6194f1641237e07df4ba0e0735d479a7de4fbff4d44c3c6554458342"
+        },
+        {
+            "date": 1753041704556,
+            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-07-21.log",
+            "hash": "430e5207aaef357334130b06d669727d9cbaf06f406924fb55a2033636052b2b"
         }
     ],
     "hashType": "sha256"

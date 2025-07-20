@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BlogService = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const app_1 = require("../../../app");
-const buildNestedComments_1 = require("../../utils/blogs/buildNestedComments");
+const blogQueryBuilder_1 = require("../../buidler/blogQueryBuilder");
 const saveFileBlogs_1 = require("../../utils/file-uploads/saveFileBlogs");
 const createBlog = (payload, file, user) => __awaiter(void 0, void 0, void 0, function* () {
     // const coverImage = await sendImageToCloud(file);
@@ -41,50 +41,30 @@ const createBlog = (payload, file, user) => __awaiter(void 0, void 0, void 0, fu
     });
     return result;
 });
-const getAllBlogs = () => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield app_1.prisma.blog.findMany({
-        select: {
-            id: true,
-            title: true,
-            slug: true,
-            content: true,
-            category: true,
-            tags: true,
-            coverImage: true,
-            user: {
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    profile: {
-                        select: { avatar: true },
-                    },
-                },
-            },
-            // Fetch all comments, no parent filtering
-            comments: {
-                select: {
-                    id: true,
-                    content: true,
-                    createdAt: true,
-                    parentId: true,
-                    user: {
-                        select: {
-                            id: true,
-                            name: true,
-                            profile: {
-                                select: { avatar: true },
-                            },
-                        },
-                    },
+const getAllBlogs = (queryOptions) => __awaiter(void 0, void 0, void 0, function* () {
+    const builder = new blogQueryBuilder_1.BlogQueryBuilder(queryOptions);
+    const queryArgs = builder.buildFindManyArgs();
+    const select = {
+        id: true,
+        title: true,
+        slug: true,
+        content: true,
+        category: true,
+        tags: true,
+        coverImage: true,
+        user: {
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                profile: {
+                    select: { avatar: true },
                 },
             },
         },
-    });
-    // For each blog, build nested comment tree
-    blogs.forEach(blog => {
-        blog.comments = (0, buildNestedComments_1.buildNestedComments)(blog.comments);
-    });
+    };
+    queryArgs.select = select;
+    const blogs = yield app_1.prisma.blog.findMany(queryArgs);
     return blogs;
 });
 const updateBlog = (payload, id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -126,10 +106,55 @@ const commentBlog = (blogId, payload, parentId, user) => __awaiter(void 0, void 
     console.log(result, 'result comment blog');
     return result;
 });
+const getSingleBlog = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log({ id });
+    const result = yield app_1.prisma.blog.findUnique({
+        where: { id },
+        select: {
+            id: true,
+            title: true,
+            slug: true,
+            content: true,
+            category: true,
+            tags: true,
+            coverImage: true,
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    profile: {
+                        select: { avatar: true },
+                    },
+                },
+            },
+            // Fetch all comments, no parent filtering
+            comments: {
+                select: {
+                    id: true,
+                    content: true,
+                    createdAt: true,
+                    parentId: true,
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            profile: {
+                                select: { avatar: true },
+                            },
+                        },
+                    },
+                },
+            },
+        }
+    });
+    return result;
+});
 exports.BlogService = {
     createBlog,
     updateBlog,
     getAllBlogs,
     deleteBlog,
-    commentBlog
+    commentBlog,
+    getSingleBlog
 };
