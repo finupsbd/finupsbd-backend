@@ -58,6 +58,7 @@ const getAllBlogs = async (queryOptions: TQueryOptions) => {
         },
       },
     },
+
   }
 
   queryArgs.select = select

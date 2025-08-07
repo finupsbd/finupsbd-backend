@@ -1397,3 +1397,18 @@ Please either use `include` or `select`, but not both at the same time.
     at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
     at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13) {"method":"POST","url":"/api/v1/blogs/create-blog","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"SyntaxError","errorMessage":"Expected double-quoted property name in JSON at position 378 (line 7 column 1)"}
 --------------------------------------------------------------
+[2025-07-27 22:16:35] ERROR: TypeError: Cannot read properties of undefined (reading 'buffer')
+    at C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:21:47
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:5:58) {"method":"POST","url":"/api/v1/blogs/create-blog","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"TypeError","errorMessage":"Cannot read properties of undefined (reading 'buffer')"}
+--------------------------------------------------------------
+[2025-07-27 22:16:44] ERROR: TypeError: Cannot read properties of undefined (reading 'buffer')
+    at C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:21:47
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\blog\blog.service.ts:5:58) {"method":"POST","url":"/api/v1/blogs/create-blog","userAgent":"PostmanRuntime/7.44.1","ip":"::1","errorName":"TypeError","errorMessage":"Cannot read properties of undefined (reading 'buffer')"}
+--------------------------------------------------------------
+[2025-07-27 23:02:10] ERROR: Error: We can’t find an account with those details, please register your account!
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:128:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please register your account!"}
+--------------------------------------------------------------
