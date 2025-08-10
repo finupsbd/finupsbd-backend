@@ -22,6 +22,7 @@ app.use(cors({
     "https://stage.finupsbd.com",
     "https://finupsbd.com",
     "https://api.finupsbd.com",
+    "https://finupsbd-admin-dashboard.vercel.app",
     "https://finupsbd-fronend-developer.vercel.app"
   ],
   credentials: true,
