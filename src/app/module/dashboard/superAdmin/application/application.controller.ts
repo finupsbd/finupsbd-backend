@@ -8,52 +8,74 @@ import { ApplicationServides } from "./application.service";
 const getAllApplication = catchAsync(async (req, res) => {
 
 
-    const result = await ApplicationServides.getAllApplication()
+  const result = await ApplicationServides.getAllApplication()
 
-     sendResponses(res, {
-        success: true,
-        message: 'Retrive all application',
-        statusCode: StatusCodes.OK,
-        data: result
-      });
+  sendResponses(res, {
+    success: true,
+    message: 'Retrive all application',
+    statusCode: StatusCodes.OK,
+    data: result
+  });
 })
 
 const getSingleApplication = catchAsync(async (req, res) => {
 
-    const id = req.params?.id
+  const id = req.params?.id
 
-    console.log(id)
+  console.log(id)
 
 
-    const result = await ApplicationServides.getSingleApplication(id)
+  const result = await ApplicationServides.getSingleApplication(id)
 
-     sendResponses(res, {
-        success: true,
-        message: 'Retrive Single application',
-        statusCode: StatusCodes.OK,
-        data: result
-      });
+  sendResponses(res, {
+    success: true,
+    message: 'Retrive Single application',
+    statusCode: StatusCodes.OK,
+    data: result
+  });
 })
 
 const applicationFeedBack = catchAsync(async (req, res) => {
+  const id = req.params?.id
+  const result = await ApplicationServides.applicationFeedback(id, req.body)
+  sendResponses(res, {
+    success: true,
+    message: 'status updated application',
+    statusCode: StatusCodes.OK,
+    data: result
+  });
+})
 
-    const id = req.params?.id
+const dashboardHome = catchAsync(async (req, res) => {
+
+  const result = await ApplicationServides.dashboardHome()
+
+  sendResponses(res, {
+    success: true,
+    message: 'dashboard home page data retrive',
+    statusCode: StatusCodes.OK,
+    data: result
+  });
+})
+
+const getAllusers = catchAsync(async (req, res) => {
 
 
-console.log(req.body)
-    const result = await ApplicationServides.applicationFeedback(id, req.body)
+  const result = await ApplicationServides.dashboardHome()
 
-     sendResponses(res, {
-        success: true,
-        message: 'status updated application',
-        statusCode: StatusCodes.OK,
-        data: result
-      });
+  sendResponses(res, {
+    success: true,
+    message: 'Retrive All users',
+    statusCode: StatusCodes.OK,
+    data: result
+  });
 })
 
 
 export const ApplicarionController = {
-    getSingleApplication,
-    getAllApplication, 
-    applicationFeedBack
+  getSingleApplication,
+  getAllApplication,
+  applicationFeedBack,
+  dashboardHome,
+  getAllusers
 }

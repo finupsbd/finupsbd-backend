@@ -1,7 +1,13 @@
+import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../../../../app"
+import AppError from "../../../../error/AppError";
 import { decrypt } from "../../../../utils/encryption";
 import { safeUserSelect } from "../../../../utils/prisma/selects";
 import { LoanStatus } from "../../../applicationForm/application.interface";
+import sendEmail from "../../../../utils/sendEmail";
+import { applicationRejected } from "../../../../utils/email-template/applicationRejected";
+import { loanStatusEmail } from "../../../../utils/email-template/loanStatusEmail";
+
 
 
 
@@ -41,7 +47,6 @@ const getAllApplication = async () => {
 
   return applications
 };
-
 
 
 
@@ -92,57 +97,43 @@ const getSingleApplication = async (id: string) => {
   return result
 };
 
-const applicationFeedback = async (id: string, payload: { status: LoanStatus, adminNote: string }) => {
+
+
+const applicationFeedback = async (id: string, payload: { status: LoanStatus, adminNote: string, additionalDocuments: boolean }) => {
 
   console.log(id, payload)
-  // const result = prisma.loanApplicationForm.findUnique({
-  //   where: { id },
-  //   include: {
-  //     personalInfo: true,
-  //     user: { select: safeUserSelect },
-  //     guarantorInfo: true,
-  //     loanInfo: {
-  //       include: {
-  //         bankAccounts: true,
-  //         creditCards: true,
-  //         existingLoans: true,
-  //       }
-  //     },
-  //     eligibleLoanOffer: true,
-  //     employmentInformation: {
-  //       include: {
-  //         properties: true
-  //       }
-  //     },
-  //     loanRequest: true,
-  //     document: true,
-  //     residentialInformation: true,
-  //     personalGuarantor: {
-  //       include: {
-  //         document: true
-  //       }
-  //     },
-  //     businessGuarantor: {
-  //       include: {
-  //         document: true
-  //       }
-  //     },
-  //   },
-  // })
+
+  const result = await prisma.loanApplicationForm.findUnique({ where: { id }, include: { user: { select: { email: true, name: true, userId: true } } } })
+
+  if (!result) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
+  }
+
+
   if (payload.status == "REJECTED") {
     await prisma.loanApplicationForm.update({
       where: { id },
       data: {
         status: payload.status,
+        adminNotes: payload.adminNote,
+        additionalDocuments: payload.additionalDocuments,
         isActive: false
       }
     })
-    return {}
+
+    const emailSubject = "Loan Application Status: REJECTED"
+
+    const bodyText = applicationRejected(result?.user?.name ?? '', result?.applicationId ?? '', payload?.adminNote ?? '')
+
+    await sendEmail(result?.user?.email, emailSubject, bodyText)
+
+    return "Email Send Successfully"
   } else {
     const result = await prisma.loanApplicationForm.update({
       where: { id },
       data: {
         status: payload.status,
+        additionalDocuments: payload.additionalDocuments,
         adminNotes: payload.adminNote
       },
       include: {
@@ -155,17 +146,114 @@ const applicationFeedback = async (id: string, payload: { status: LoanStatus, ad
       }
     })
 
-    return result
+
+    const emailSubject = "Loan Application Status Update"
+
+    const templatePayload = {
+      name: result?.user?.name ?? "",
+      applicationID: result?.applicationId ?? "",
+      status: result?.status ?? "",
+      reason: payload?.adminNote ?? ""
+    }
+
+    const bodyText = loanStatusEmail(templatePayload)
+    await sendEmail(result?.user?.email, emailSubject, bodyText)
+
+
+    return "Email Send Successfully"
   }
 };
 
 
 
+const dashboardHome = async () => {
+
+  // Define time ranges
+  const startOfThisMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  const startOfLastMonth = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
+  const endOfLastMonth = new Date(startOfThisMonth.getTime() - 1); // last day of last month
+
+
+  // Users
+  const usersThisMonth = await prisma.user.count({
+    where: { createdAt: { gte: startOfThisMonth } },
+  });
+
+  const usersLastMonth = await prisma.user.count({
+    where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+  });
+
+
+  // Applications
+  const applicationsThisMonth = await prisma.loanApplicationForm.count({
+    where: { createdAt: { gte: startOfThisMonth } },
+  });
+  const applicationsLastMonth = await prisma.loanApplicationForm.count({
+    where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+  });
+
+
+
+
+
+  // Growth formula
+  const calcGrowth = (prev: number, current: number) => {
+    if (prev === 0 && current > 0) return "+100%"; // avoid divide-by-zero
+    if (prev === 0 && current === 0) return "0%";
+
+    const growth = ((current - prev) / prev) * 100;
+    return (growth < 0 ? 0 : growth).toFixed(2) + "%";
+  };
+
+  const userGrowth = calcGrowth(usersLastMonth, usersThisMonth);
+  const applicantGrowth = calcGrowth(applicationsLastMonth, applicationsThisMonth);
+
+
+  const totalUsers = await prisma.user.count()
+  const totalApplications = await prisma.loanApplicationForm.count()
+
+
+  const last5Application = await prisma.loanApplicationForm.findMany({
+    orderBy: {
+      createdAt: "desc"
+    },
+    take: 5,
+    select: {
+      status: true,
+      applicationId: true,
+      user: {
+        select: {
+          name: true
+        }
+      }
+    },
+  })
+
+
+
+  console.log(userGrowth, applicantGrowth)
+
+  return {
+    totalUsers,
+    totalApplications,
+    userGrowth,
+    applicantGrowth,
+    last5Application
+  }
+}
+
+
+
+const getAllusers = async () => {
+  return "user"
+}
 
 
 
 export const ApplicationServides = {
   getAllApplication,
   getSingleApplication,
-  applicationFeedback
+  applicationFeedback,
+  dashboardHome,
+  getAllusers
 }

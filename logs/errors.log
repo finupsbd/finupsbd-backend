@@ -1412,3 +1412,81 @@ Please either use `include` or `select`, but not both at the same time.
     at Generator.next (<anonymous>)
     at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please register your account!"}
 --------------------------------------------------------------
+[2025-08-11 03:39:33] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:142:53
+
+  139   })
+  140   return {}
+  141 } else {
+→ 142   const result = await prisma.loanApplicationForm.update(
+An operation failed because it depends on one or more records that were required but not found. Record to update not found.
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/f870b938-9768-4f37-928c-aac5a682827c","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\dashboard\\superAdmin\\application\\application.service.ts:142:53\n\n  139   })\n  140   return {}\n  141 } else {\n→ 142   const result = await prisma.loanApplicationForm.update(\nAn operation failed because it depends on one or more records that were required but not found. Record to update not found."}
+--------------------------------------------------------------
+[2025-08-14 21:43:44] ERROR: TokenExpiredError: jwt expired
+    at C:\client-project\finupsbd-backend\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (C:\client-project\finupsbd-backend\node_modules\jsonwebtoken\verify.js:97:14)
+    at Object.module.exports [as verify] (C:\client-project\finupsbd-backend\node_modules\jsonwebtoken\verify.js:101:10)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:26:34
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25 {"method":"GET","url":"/api/v1/users/8ebeef56-fbb0-41fd-846e-f0da93c74658","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"TokenExpiredError","errorMessage":"jwt expired"}
+--------------------------------------------------------------
+[2025-08-15 01:21:13] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:142:53
+
+  139   })
+  140   return {}
+  141 } else {
+→ 142   const result = await prisma.loanApplicationForm.update(
+An operation failed because it depends on one or more records that were required but not found. Record to update not found.
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/f870b938-9768-4f37-928c-aac5a682827c","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\dashboard\\superAdmin\\application\\application.service.ts:142:53\n\n  139   })\n  140   return {}\n  141 } else {\n→ 142   const result = await prisma.loanApplicationForm.update(\nAn operation failed because it depends on one or more records that were required but not found. Record to update not found."}
+--------------------------------------------------------------
+[2025-08-15 01:22:26] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:142:53
+
+  139   })
+  140   return {}
+  141 } else {
+→ 142   const result = await prisma.loanApplicationForm.update(
+An operation failed because it depends on one or more records that were required but not found. Record to update not found.
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/f870b938-9768-4f37-928c-aac5a682827c","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\dashboard\\superAdmin\\application\\application.service.ts:142:53\n\n  139   })\n  140   return {}\n  141 } else {\n→ 142   const result = await prisma.loanApplicationForm.update(\nAn operation failed because it depends on one or more records that were required but not found. Record to update not found."}
+--------------------------------------------------------------
+[2025-08-15 01:24:08] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:107:53
+
+  104   })
+  105   return {}
+  106 } else {
+→ 107   const result = await prisma.loanApplicationForm.update(
+An operation failed because it depends on one or more records that were required but not found. Record to update not found.
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/f870b938-9768-4f37-928c-aac5a682827c","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\dashboard\\superAdmin\\application\\application.service.ts:107:53\n\n  104   })\n  105   return {}\n  106 } else {\n→ 107   const result = await prisma.loanApplicationForm.update(\nAn operation failed because it depends on one or more records that were required but not found. Record to update not found."}
+--------------------------------------------------------------
+[2025-08-15 01:25:40] ERROR: Error: Application not found
+    at C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:101:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:5:58) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/f870b938-9768-4f37-928c-aac5a682827c","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"Error","errorMessage":"Application not found"}
+--------------------------------------------------------------
+[2025-08-15 02:26:42] ERROR: TypeError: (0 , loanStatusEmail_1.applicationRejected) is not a function
+    at C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:120:41
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:5:58) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/ab220e71-16e3-4347-af2f-445e5819ae2b","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"TypeError","errorMessage":"(0 , loanStatusEmail_1.applicationRejected) is not a function"}
+--------------------------------------------------------------

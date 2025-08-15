@@ -23,13 +23,20 @@ const loanHandlers: Record<string, LoanHandler> = {
 
 const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
 
-    console.log({ payload })
+  console.log(payload, query)
 
   const { existingLoans = [], ...eligibilityData } = payload;
 
 
 
   try {
+
+    const isExistData = await prisma.eligibilityCheck.findFirst({ where: { email: eligibilityData?.email } })
+
+    if (isExistData) return
+
+
+
 
     const eligibilityCheckEntry = await prisma.eligibilityCheck.create({
       data: {

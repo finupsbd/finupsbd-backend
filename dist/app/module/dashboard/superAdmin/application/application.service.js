@@ -8,11 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationServides = void 0;
+const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../../../app");
+const AppError_1 = __importDefault(require("../../../../error/AppError"));
 const encryption_1 = require("../../../../utils/encryption");
 const selects_1 = require("../../../../utils/prisma/selects");
+const sendEmail_1 = __importDefault(require("../../../../utils/sendEmail"));
+const applicationRejected_1 = require("../../../../utils/email-template/applicationRejected");
+const loanStatusEmail_1 = require("../../../../utils/email-template/loanStatusEmail");
 const getAllApplication = () => __awaiter(void 0, void 0, void 0, function* () {
     const [applications, total] = yield Promise.all([
         app_1.prisma.loanApplicationForm.findMany({
@@ -87,56 +95,33 @@ const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function*
     return result;
 });
 const applicationFeedback = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
     console.log(id, payload);
-    // const result = prisma.loanApplicationForm.findUnique({
-    //   where: { id },
-    //   include: {
-    //     personalInfo: true,
-    //     user: { select: safeUserSelect },
-    //     guarantorInfo: true,
-    //     loanInfo: {
-    //       include: {
-    //         bankAccounts: true,
-    //         creditCards: true,
-    //         existingLoans: true,
-    //       }
-    //     },
-    //     eligibleLoanOffer: true,
-    //     employmentInformation: {
-    //       include: {
-    //         properties: true
-    //       }
-    //     },
-    //     loanRequest: true,
-    //     document: true,
-    //     residentialInformation: true,
-    //     personalGuarantor: {
-    //       include: {
-    //         document: true
-    //       }
-    //     },
-    //     businessGuarantor: {
-    //       include: {
-    //         document: true
-    //       }
-    //     },
-    //   },
-    // })
+    const result = yield app_1.prisma.loanApplicationForm.findUnique({ where: { id }, include: { user: { select: { email: true, name: true, userId: true } } } });
+    if (!result) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "Application not found");
+    }
     if (payload.status == "REJECTED") {
         yield app_1.prisma.loanApplicationForm.update({
             where: { id },
             data: {
                 status: payload.status,
+                adminNotes: payload.adminNote,
+                additionalDocuments: payload.additionalDocuments,
                 isActive: false
             }
         });
-        return {};
+        const emailSubject = "Loan Application Status: REJECTED";
+        const bodyText = (0, applicationRejected_1.applicationRejected)((_b = (_a = result === null || result === void 0 ? void 0 : result.user) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : '', (_c = result === null || result === void 0 ? void 0 : result.applicationId) !== null && _c !== void 0 ? _c : '', (_d = payload === null || payload === void 0 ? void 0 : payload.adminNote) !== null && _d !== void 0 ? _d : '');
+        yield (0, sendEmail_1.default)((_e = result === null || result === void 0 ? void 0 : result.user) === null || _e === void 0 ? void 0 : _e.email, emailSubject, bodyText);
+        return "Email Send Successfully";
     }
     else {
         const result = yield app_1.prisma.loanApplicationForm.update({
             where: { id },
             data: {
                 status: payload.status,
+                additionalDocuments: payload.additionalDocuments,
                 adminNotes: payload.adminNote
             },
             include: {
@@ -148,11 +133,81 @@ const applicationFeedback = (id, payload) => __awaiter(void 0, void 0, void 0, f
                 }
             }
         });
-        return result;
+        const emailSubject = "Loan Application Status Update";
+        const templatePayload = {
+            name: (_g = (_f = result === null || result === void 0 ? void 0 : result.user) === null || _f === void 0 ? void 0 : _f.name) !== null && _g !== void 0 ? _g : "",
+            applicationID: (_h = result === null || result === void 0 ? void 0 : result.applicationId) !== null && _h !== void 0 ? _h : "",
+            status: (_j = result === null || result === void 0 ? void 0 : result.status) !== null && _j !== void 0 ? _j : "",
+            reason: (_k = payload === null || payload === void 0 ? void 0 : payload.adminNote) !== null && _k !== void 0 ? _k : ""
+        };
+        const bodyText = (0, loanStatusEmail_1.loanStatusEmail)(templatePayload);
+        yield (0, sendEmail_1.default)((_l = result === null || result === void 0 ? void 0 : result.user) === null || _l === void 0 ? void 0 : _l.email, emailSubject, bodyText);
+        return "Email Send Successfully";
     }
+});
+const dashboardHome = () => __awaiter(void 0, void 0, void 0, function* () {
+    // Define time ranges
+    const startOfThisMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    const startOfLastMonth = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
+    const endOfLastMonth = new Date(startOfThisMonth.getTime() - 1); // last day of last month
+    // Users
+    const usersThisMonth = yield app_1.prisma.user.count({
+        where: { createdAt: { gte: startOfThisMonth } },
+    });
+    const usersLastMonth = yield app_1.prisma.user.count({
+        where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+    });
+    // Applications
+    const applicationsThisMonth = yield app_1.prisma.loanApplicationForm.count({
+        where: { createdAt: { gte: startOfThisMonth } },
+    });
+    const applicationsLastMonth = yield app_1.prisma.loanApplicationForm.count({
+        where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
+    });
+    // Growth formula
+    const calcGrowth = (prev, current) => {
+        if (prev === 0 && current > 0)
+            return "+100%"; // avoid divide-by-zero
+        if (prev === 0 && current === 0)
+            return "0%";
+        const growth = ((current - prev) / prev) * 100;
+        return (growth < 0 ? 0 : growth).toFixed(2) + "%";
+    };
+    const userGrowth = calcGrowth(usersLastMonth, usersThisMonth);
+    const applicantGrowth = calcGrowth(applicationsLastMonth, applicationsThisMonth);
+    const totalUsers = yield app_1.prisma.user.count();
+    const totalApplications = yield app_1.prisma.loanApplicationForm.count();
+    const last5Application = yield app_1.prisma.loanApplicationForm.findMany({
+        orderBy: {
+            createdAt: "desc"
+        },
+        take: 5,
+        select: {
+            status: true,
+            applicationId: true,
+            user: {
+                select: {
+                    name: true
+                }
+            }
+        },
+    });
+    console.log(userGrowth, applicantGrowth);
+    return {
+        totalUsers,
+        totalApplications,
+        userGrowth,
+        applicantGrowth,
+        last5Application
+    };
+});
+const getAllusers = () => __awaiter(void 0, void 0, void 0, function* () {
+    return "user";
 });
 exports.ApplicationServides = {
     getAllApplication,
     getSingleApplication,
-    applicationFeedback
+    applicationFeedback,
+    dashboardHome,
+    getAllusers
 };
