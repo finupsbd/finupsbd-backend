@@ -31,13 +31,6 @@ const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string
 
   try {
 
-    const isExistData = await prisma.eligibilityCheck.findFirst({ where: { email: eligibilityData?.email } })
-
-    if (isExistData) return
-
-
-
-
     const eligibilityCheckEntry = await prisma.eligibilityCheck.create({
       data: {
         ...eligibilityData,

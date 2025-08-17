@@ -77,6 +77,7 @@ const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function*
             loanRequest: true,
             document: true,
             residentialInformation: true,
+            additionalDocument: true,
             personalGuarantor: {
                 include: {
                     document: true

@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
+//146589aae72b0ccdf2adbef61c73397a-16bc1610-8cf1e183
 const transporter = nodemailer_1.default.createTransport({
     host: 'smtp.gmail.com',
     port: 587,

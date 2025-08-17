@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../../../app';
+import AppError from '../../error/AppError';
+import { TUploadedFile } from '../../types/commonTypes';
+import { saveFileAdditional } from '../../utils/file-uploads/saveFileAdditional';
 
 
 type FilterParams = {
@@ -155,11 +159,115 @@ const getAllExistingLoans = async (id: string) => {
 
 
 
+const getApplication = async (id: string) => {
+
+  const result = await prisma.loanApplicationForm.findUnique(
+    {
+      where: { id }
+    })
+
+  console.log(result)
+
+  return result
+
+};
+
+const createAdiDoc = async (id: string, files: TUploadedFile[]) => {
+
+  const isExistApplication = await prisma.loanApplicationForm.findUnique({ where: { id } })
+
+  if (!isExistApplication) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
+  }
+
+
+
+  try {
+    // Save files locally instead of uploading to Cloudinary
+    const savedDocuments: {
+      filePath: string;
+      originalName: string;
+      mimeType: string;
+    }[] = [];
+
+    const images: TUploadedFile[] = files
+
+
+    for (const file of images) {
+
+      try {
+        const savedPath = await saveFileAdditional(file.buffer, file.originalname, isExistApplication?.applicationId); // or file.originalname
+        savedDocuments.push({
+          filePath: savedPath,
+          originalName: file.originalname,
+          mimeType: file.mimetype,
+        });
+      } catch (err) {
+        console.error(`Failed to save file ${file.fieldname}:`, err);
+      }
+    }
+
+
+    console.log(savedDocuments)
+
+
+    const uploadFileIntoDb = await prisma.additionalDocument.createMany({
+      data: savedDocuments.map((doc) => ({
+        url: doc.filePath,
+        originalName: doc.originalName,
+        mimeType: doc.mimeType,
+        loanApplicationFormId: id,
+      })),
+    });
+  
+    if(uploadFileIntoDb.count > 0){
+      await prisma.loanApplicationForm.update({
+        where: {id}, 
+        data: {
+          status: "SUBMITTED",
+          additionalDocumentSubmit: true,
+          additionalDocuments: false
+        }
+      })
+
+    }
+
+
+
+  
+
+    // const result = prisma.loanApplicationForm.create({
+    //   data: {
+    //     additionalDocument: {
+    //       create: savedDocuments.map((doc) => ({
+    //         // save relative path for easier serving
+    //         url: doc.filePath,
+    //         originalName: doc.originalName,
+    //         mimeType: doc.mimeType,
+    //       })),
+    //     },
+    //   }
+    // })
+
+
+
+  } catch (err) {
+    console.error(`Failed to save file :`, err);
+  }
+}
+
+
+
+
+
+
 
 export const UserServices = {
   getAllUser,
   meProfile,
   getSingleUser,
   getAllNewLoans,
-  getAllExistingLoans
+  getAllExistingLoans,
+  getApplication,
+  createAdiDoc
 };

@@ -39,6 +39,16 @@
             "date": 1755198624656,
             "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-15.log",
             "hash": "1e1da914a5675ed180c4136ee4173b16a604e63197e4a04351054bf6e419e526"
+        },
+        {
+            "date": 1755286526018,
+            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-16.log",
+            "hash": "d38f87078ccb91cb5c209298027a02539b61af6717a2e8d18b049e1a1539a3fd"
+        },
+        {
+            "date": 1755417438010,
+            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-17.log",
+            "hash": "2825b47d149314da1336a3ec37d4b832c9a5cf012dc5a19d5c72c6cc8a48115f"
         }
     ],
     "hashType": "sha256"

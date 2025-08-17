@@ -41,9 +41,6 @@ const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, f
     console.log(payload, query);
     const { existingLoans = [] } = payload, eligibilityData = __rest(payload, ["existingLoans"]);
     try {
-        const isExistData = yield app_1.prisma.eligibilityCheck.findFirst({ where: { email: eligibilityData === null || eligibilityData === void 0 ? void 0 : eligibilityData.email } });
-        if (isExistData)
-            return;
         const eligibilityCheckEntry = yield app_1.prisma.eligibilityCheck.create({
             data: Object.assign(Object.assign({}, eligibilityData), { existingLoans: {
                     create: existingLoans.map(({ existingLoanType, emiAmountBDT, interestRate }) => ({

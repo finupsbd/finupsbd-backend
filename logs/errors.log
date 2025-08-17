@@ -1490,3 +1490,501 @@ An operation failed because it depends on one or more records that were required
     at Generator.next (<anonymous>)
     at fulfilled (C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:5:58) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/ab220e71-16e3-4347-af2f-445e5819ae2b","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"TypeError","errorMessage":"(0 , loanStatusEmail_1.applicationRejected) is not a function"}
 --------------------------------------------------------------
+[2025-08-16 02:13:33] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/users/get-application/1cf8a39f-01b4-4202-ba97-a75c311947d2","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:14:27] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/users/get-application/1cf8a39f-01b4-4202-ba97-a75c311947d2","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:16:14] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/users/get-application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:16:16] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/users/get-application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:17:40] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/users/get-application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:18:08] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/users/get-application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:18:35] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:18:38] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:19:46] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:19:52] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:20:21] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:21:06] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:21:33] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:21:41] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:23:14] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:23:18] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:24:02] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:26:21] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:28:43] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:28:59] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:29:47] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:30:58] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:31:02] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:31:03] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:31:18] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:33:18] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 02:34:21] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:35:28] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:36:19] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:37:13] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:39:16] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:40:10] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:40:40] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:19:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:41:22] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:44:06] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/05a3ab39-734d-45f6-bdb1-c1d62919a5d3","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-16 04:44:32] ERROR: Error: Invalid password! please input valid password.
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:147:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"Invalid password! please input valid password."}
+--------------------------------------------------------------
+[2025-08-16 04:54:54] ERROR: Error: No loans found for the given criteria!.
+    at C:\client-project\finupsbd-backend\src\app\module\eligibilityCheck\eligibilityCheck\instantLoan.ts:27:13
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\eligibilityCheck\eligibilityCheck\instantLoan.ts:5:58) {"method":"POST","url":"/api/v1/eligibility-check?amount=undefined&intersteRate=undefined&searchTermundefined&sortOrder=undefined&page=undefined&sortKey=undefined&tenure=1","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"No loans found for the given criteria!."}
+--------------------------------------------------------------
+[2025-08-16 17:34:29] ERROR: Error: We can’t find an account with those details, please register your account!
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:128:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please register your account!"}
+--------------------------------------------------------------
+[2025-08-16 17:34:38] ERROR: Error: We can’t find an account with those details, please register your account!
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:128:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please register your account!"}
+--------------------------------------------------------------
+[2025-08-16 17:35:18] ERROR: Error: Invalid password! please input valid password.
+    at C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:147:11
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\auth\auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"Invalid password! please input valid password."}
+--------------------------------------------------------------
+[2025-08-17 21:07:17] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-17 21:07:18] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"GET","url":"/api/v1/application/43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"node","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-17 22:35:35] ERROR: Error: You are unauthorized
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:4:12)
+    at C:\client-project\finupsbd-backend\src\app\middleware\auth.ts:12:81
+    at C:\client-project\finupsbd-backend\src\app\utils\catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (C:\client-project\finupsbd-backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\client-project\finupsbd-backend\node_modules\express\lib\router\route.js:119:3) {"method":"POST","url":"/api/v1/users/create-addi-doc/43d6223b%208640%204ebc%209fe9%20d4bb9daa47ef","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-08-17 23:03:48] ERROR: Error: Application not found
+    at C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:179:9
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:5:58) {"method":"POST","url":"/api/v1/users/create-addi-doc/43d6223b%208640%204ebc%209fe9%20d4bb9daa47ef","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"Error","errorMessage":"Application not found"}
+--------------------------------------------------------------
+[2025-08-17 23:55:54] ERROR: SyntaxError: Expected double-quoted property name in JSON at position 98 (line 5 column 1)
+    at JSON.parse (<anonymous>)
+    at parse (C:\client-project\finupsbd-backend\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\client-project\finupsbd-backend\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at invokeCallback (C:\client-project\finupsbd-backend\node_modules\raw-body\index.js:238:16)
+    at done (C:\client-project\finupsbd-backend\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\client-project\finupsbd-backend\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at processTicksAndRejections (node:internal/process/task_queues:90:21) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"SyntaxError","errorMessage":"Expected double-quoted property name in JSON at position 98 (line 5 column 1)"}
+--------------------------------------------------------------

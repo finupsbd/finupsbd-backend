@@ -40,6 +40,8 @@ const login = catchAsync(async (req, res) => {
 
   const { refreshToken, accessToken } = result;
 
+  console.log(refreshToken)
+
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: ConfigFile.NODE_ENV === 'production',

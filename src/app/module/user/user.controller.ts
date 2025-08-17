@@ -79,11 +79,46 @@ const getSingleUser = catchAsync(async (req, res) => {
 })
 
 
+  const getApplication = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+
+    const result = await UserServices.getApplication(id)
+
+
+    sendResponses(res, {
+        success: true, 
+        message: "Retrive all applications",
+        statusCode: StatusCodes.OK,
+        data: result
+    })
+})
+
+  const createAddiDoc = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+
+    const files = req.files as Express.Multer.File[]
+
+    const result = await UserServices.createAdiDoc(id, files)
+
+
+    sendResponses(res, {
+        success: true, 
+        message: "Retrive all applications",
+        statusCode: StatusCodes.OK,
+        data: result
+    })
+})
+
+
 
 export const UserController = {
     getAllUsers,
     meProfile, 
     getSingleUser, 
     getAllNewLoans, 
-    getAllExistingLoans
+    getAllExistingLoans, 
+    getApplication,
+    createAddiDoc
 }

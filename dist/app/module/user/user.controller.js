@@ -68,10 +68,33 @@ const getAllExistingLoans = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         data: result
     });
 }));
+const getApplication = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const result = yield user_service_1.UserServices.getApplication(id);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: "Retrive all applications",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
+}));
+const createAddiDoc = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const files = req.files;
+    const result = yield user_service_1.UserServices.createAdiDoc(id, files);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: "Retrive all applications",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
+}));
 exports.UserController = {
     getAllUsers,
     meProfile,
     getSingleUser,
     getAllNewLoans,
-    getAllExistingLoans
+    getAllExistingLoans,
+    getApplication,
+    createAddiDoc
 };

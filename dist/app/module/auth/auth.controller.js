@@ -42,6 +42,7 @@ const validatePin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
 const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.login(req.body);
     const { refreshToken, accessToken } = result;
+    console.log(refreshToken);
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: config_1.ConfigFile.NODE_ENV === 'production',

@@ -76,6 +76,7 @@ const getSingleApplication = async (id: string) => {
       loanRequest: true,
       document: true,
       residentialInformation: true,
+      additionalDocument: true,
       personalGuarantor: {
         include: {
           document: true

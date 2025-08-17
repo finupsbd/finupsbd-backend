@@ -23,12 +23,11 @@ const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
-        console.log({ token });
         if (!token) {
             throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, "You are unauthorized");
         }
         if (commonTypes_1.blacklistedTokens.has(token)) {
-            throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, "You are unauthorized");
+            throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, "You are unauthorized!");
         }
         const decode = yield jsonwebtoken_1.default.verify(token, config_1.ConfigFile.JWT_ACCESS_SECRET);
         const user = yield app_1.prisma.user.findUnique({ where: { email: decode.email } });

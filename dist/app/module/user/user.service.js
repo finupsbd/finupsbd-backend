@@ -8,10 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
+const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../app");
+const AppError_1 = __importDefault(require("../../error/AppError"));
+const saveFileAdditional_1 = require("../../utils/file-uploads/saveFileAdditional");
 const getAllUser = (query) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
@@ -131,10 +137,77 @@ const getAllExistingLoans = (id) => __awaiter(void 0, void 0, void 0, function* 
     });
     return result;
 });
+const getApplication = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield app_1.prisma.loanApplicationForm.findUnique({
+        where: { id }
+    });
+    console.log(result);
+    return result;
+});
+const createAdiDoc = (id, files) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExistApplication = yield app_1.prisma.loanApplicationForm.findUnique({ where: { id } });
+    if (!isExistApplication) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "Application not found");
+    }
+    try {
+        // Save files locally instead of uploading to Cloudinary
+        const savedDocuments = [];
+        const images = files;
+        for (const file of images) {
+            try {
+                const savedPath = yield (0, saveFileAdditional_1.saveFileAdditional)(file.buffer, file.originalname, isExistApplication === null || isExistApplication === void 0 ? void 0 : isExistApplication.applicationId); // or file.originalname
+                savedDocuments.push({
+                    filePath: savedPath,
+                    originalName: file.originalname,
+                    mimeType: file.mimetype,
+                });
+            }
+            catch (err) {
+                console.error(`Failed to save file ${file.fieldname}:`, err);
+            }
+        }
+        console.log(savedDocuments);
+        const uploadFileIntoDb = yield app_1.prisma.additionalDocument.createMany({
+            data: savedDocuments.map((doc) => ({
+                url: doc.filePath,
+                originalName: doc.originalName,
+                mimeType: doc.mimeType,
+                loanApplicationFormId: id,
+            })),
+        });
+        if (uploadFileIntoDb.count > 0) {
+            yield app_1.prisma.loanApplicationForm.update({
+                where: { id },
+                data: {
+                    status: "SUBMITTED",
+                    additionalDocumentSubmit: true,
+                    additionalDocuments: false
+                }
+            });
+        }
+        // const result = prisma.loanApplicationForm.create({
+        //   data: {
+        //     additionalDocument: {
+        //       create: savedDocuments.map((doc) => ({
+        //         // save relative path for easier serving
+        //         url: doc.filePath,
+        //         originalName: doc.originalName,
+        //         mimeType: doc.mimeType,
+        //       })),
+        //     },
+        //   }
+        // })
+    }
+    catch (err) {
+        console.error(`Failed to save file :`, err);
+    }
+});
 exports.UserServices = {
     getAllUser,
     meProfile,
     getSingleUser,
     getAllNewLoans,
-    getAllExistingLoans
+    getAllExistingLoans,
+    getApplication,
+    createAdiDoc
 };
