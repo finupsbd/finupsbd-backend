@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes"
 import catchAsync from "../../utils/catchAsync"
 import { UserServices } from "./user.service"
 import sendResponses from "../../utils/sendResponce";
+import { TMiddlewareUser } from "../../types/commonTypes";
 
 
 
@@ -97,15 +98,16 @@ const getSingleUser = catchAsync(async (req, res) => {
   const createAddiDoc = catchAsync(async (req, res) => {
 
     const id = req.params.id
+    const user = req.user as TMiddlewareUser
 
     const files = req.files as Express.Multer.File[]
 
-    const result = await UserServices.createAdiDoc(id, files)
+    const result = await UserServices.createAdiDoc(id, files, user)
 
 
     sendResponses(res, {
         success: true, 
-        message: "Retrive all applications",
+        message: "Document upload successfull",
         statusCode: StatusCodes.OK,
         data: result
     })

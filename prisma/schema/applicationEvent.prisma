@@ -1,0 +1,11 @@
+model ApplicationEvent {
+    id String @id @default(uuid())
+
+    eventType   String // e.g., SUBMITTED, APPROVED, REJECTED, FILE_UPLOADED
+    description String? // extra details
+    createdBy   String? // admin/user id
+    createdAt   DateTime @default(now())
+
+    applicationId       String
+    LoanApplicationForm LoanApplicationForm @relation(fields: [applicationId], references: [id])
+}

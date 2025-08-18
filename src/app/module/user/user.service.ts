@@ -2,8 +2,9 @@
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../../../app';
 import AppError from '../../error/AppError';
-import { TUploadedFile } from '../../types/commonTypes';
+import { TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
 import { saveFileAdditional } from '../../utils/file-uploads/saveFileAdditional';
+import { ApplicationEventType } from '../../types/audit';
 
 
 type FilterParams = {
@@ -172,90 +173,227 @@ const getApplication = async (id: string) => {
 
 };
 
-const createAdiDoc = async (id: string, files: TUploadedFile[]) => {
 
-  const isExistApplication = await prisma.loanApplicationForm.findUnique({ where: { id } })
 
-  if (!isExistApplication) {
-    throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
+// const createAdiDoc = async (id: string, files: TUploadedFile[]) => {
+
+//   const isExistApplication = await prisma.loanApplicationForm.findUnique({ where: { id } })
+
+//   if (!isExistApplication) {
+//     throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
+//   }
+
+
+
+//   try {
+//     // Save files locally instead of uploading to Cloudinary
+//     const savedDocuments: {
+//       filePath: string;
+//       originalName: string;
+//       mimeType: string;
+//     }[] = [];
+
+//     const images: TUploadedFile[] = files
+
+
+//     for (const file of images) {
+
+//       try {
+//         const savedPath = await saveFileAdditional(file.buffer, file.originalname, isExistApplication?.applicationId); // or file.originalname
+//         savedDocuments.push({
+//           filePath: savedPath,
+//           originalName: file.originalname,
+//           mimeType: file.mimetype,
+//         });
+//       } catch (err) {
+//         console.error(`Failed to save file ${file.fieldname}:`, err);
+//       }
+//     }
+
+
+//     console.log(savedDocuments)
+
+
+//     const uploadFileIntoDb = await prisma.additionalDocument.createMany({
+//       data: savedDocuments.map((doc) => ({
+//         url: doc.filePath,
+//         originalName: doc.originalName,
+//         mimeType: doc.mimeType,
+//         loanApplicationFormId: id,
+//       })),
+//     });
+
+//     if (uploadFileIntoDb.count > 0) {
+//       await prisma.loanApplicationForm.update({
+//         where: { id },
+//         data: {
+//           status: "PENDING",
+//           adminNotes: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.",
+//           additionalDocumentSubmit: true,
+//           additionalDocuments: false
+//         }
+//       })
+
+//       await prisma.applicationEvent.create({
+//         data: {
+//           applicationId: isExistApplication?.applicationId,
+//           eventType: "STATUS_UPDATED",
+//           description: `Status changed to ${newStatus}`,
+//           createdBy: userId,
+//         },
+//       })
+
+//     }
+
+
+//   } catch (err) {
+//     console.error(`Failed to save file :`, err);
+//   }
+// }
+
+
+
+
+
+
+export const createAdiDoc = async (
+  id: string,                      // LoanApplicationForm.id
+  files: TUploadedFile[],
+  user: TMiddlewareUser           // who triggered this action
+) => {
+  if (!files?.length) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "No files provided");
   }
 
+  const app = await prisma.loanApplicationForm.findUnique({
+    where: { id },
+    select: { id: true, applicationId: true }, // applicationId = human readable code
+  });
 
+  if (!app) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Application not found");
+  }
 
-  try {
-    // Save files locally instead of uploading to Cloudinary
-    const savedDocuments: {
-      filePath: string;
-      originalName: string;
-      mimeType: string;
-    }[] = [];
+  // Persist files to disk
+  const savedDocuments: {
+    filePath: string;
+    originalName: string;
+    mimeType: string;
+    size?: number;
+  }[] = [];
 
-    const images: TUploadedFile[] = files
-
-
-    for (const file of images) {
-
-      try {
-        const savedPath = await saveFileAdditional(file.buffer, file.originalname, isExistApplication?.applicationId); // or file.originalname
-        savedDocuments.push({
-          filePath: savedPath,
-          originalName: file.originalname,
-          mimeType: file.mimetype,
-        });
-      } catch (err) {
-        console.error(`Failed to save file ${file.fieldname}:`, err);
-      }
+  for (const file of files) {
+    try {
+      const savedPath = await saveFileAdditional(
+        file.buffer,
+        file.originalname,
+        app.applicationId // use human-friendly code in the path
+      );
+      savedDocuments.push({
+        filePath: savedPath,
+        originalName: file.originalname,
+        mimeType: file.mimetype,
+        size: file.size,
+      });
+    } catch (err) {
+      // log a file-level error event (outside the tx) so you still get a breadcrumb
+      await prisma.applicationEvent.create({
+        data: {
+          applicationId: app.id, // IMPORTANT: relational id
+          eventType: "FILE_PERSISTED_ERROR",
+          description: `Failed to save file "${file.originalname}"`,
+          createdBy: user?.userId,
+        },
+      });
+      // continue; do not throw here to allow other files to process
+      // or, choose to throw to fail the whole request if ANY file fails
     }
+  }
 
+  if (!savedDocuments.length) {
+    throw new AppError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Failed to save files"
+    );
+  }
 
-    console.log(savedDocuments)
+  const newStatus = "PENDING" as const;
+  const adminNote =
+    "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.";
 
-
-    const uploadFileIntoDb = await prisma.additionalDocument.createMany({
+  // One transaction = DB writes + audit events
+  return await prisma.$transaction(async (tx) => {
+    // 1) Insert file rows
+    const createDocs = await tx.additionalDocument.createMany({
       data: savedDocuments.map((doc) => ({
         url: doc.filePath,
         originalName: doc.originalName,
         mimeType: doc.mimeType,
-        loanApplicationFormId: id,
+        loanApplicationFormId: app.id,
       })),
     });
-  
-    if(uploadFileIntoDb.count > 0){
-      await prisma.loanApplicationForm.update({
-        where: {id}, 
-        data: {
-          status: "SUBMITTED",
-          additionalDocumentSubmit: true,
-          additionalDocuments: false
-        }
-      })
 
+    if (createDocs.count === 0) {
+      throw new AppError(
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        "Files could not be recorded"
+      );
     }
 
+    // 2) Update application status/flags/notes
+    const updated = await tx.loanApplicationForm.update({
+      where: { id: app.id },
+      data: {
+        status: newStatus,
+        adminNotes: adminNote,
+        additionalDocumentSubmit: true,
+        additionalDocuments: false,
+      },
+      select: { id: true, status: true, adminNotes: true, applicationId: true },
+    });
 
+    // 3) Create audit events (bulk)
+    const events: {
+      applicationId: string;
+      eventType: ApplicationEventType;
+      description?: string;
+      createdBy?: string | null;
+    }[] = [];
 
-  
+    events.push({
+      applicationId: app.id,
+      eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+      description: `${createDocs.count} file(s) uploaded`,
+      createdBy: user?.userId,
+    });
 
-    // const result = prisma.loanApplicationForm.create({
-    //   data: {
-    //     additionalDocument: {
-    //       create: savedDocuments.map((doc) => ({
-    //         // save relative path for easier serving
-    //         url: doc.filePath,
-    //         originalName: doc.originalName,
-    //         mimeType: doc.mimeType,
-    //       })),
-    //     },
-    //   }
-    // })
+    events.push({
+      applicationId: app.id,
+      eventType: "STATUS_UPDATED",
+      description: `Feedback:${createDocs?.count}Status changed to ${updated.status}`,
+      createdBy: user?.userId,
+    });
 
+    events.push({
+      applicationId: app.id,
+      eventType: "ADMIN_NOTE_ADDED",
+      description: "Admin note updated after additional documents",
+      createdBy: user?.userId,
+    });
 
+    await tx.applicationEvent.createMany({ data: events });
 
-  } catch (err) {
-    console.error(`Failed to save file :`, err);
-  }
-}
-
+    return {
+      success: true,
+      message: "Additional documents submitted and events recorded",
+      data: {
+        applicationId: updated.applicationId,
+        status: updated.status,
+        uploadedCount: createDocs.count,
+      },
+    };
+  });
+};
 
 
 

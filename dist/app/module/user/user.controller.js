@@ -80,11 +80,12 @@ const getApplication = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
 }));
 const createAddiDoc = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const user = req.user;
     const files = req.files;
-    const result = yield user_service_1.UserServices.createAdiDoc(id, files);
+    const result = yield user_service_1.UserServices.createAdiDoc(id, files, user);
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: "Retrive all applications",
+        message: "Document upload successfull",
         statusCode: http_status_codes_1.StatusCodes.OK,
         data: result
     });

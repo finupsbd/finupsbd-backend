@@ -25,6 +25,7 @@ model LoanApplicationForm {
   businessGuarantor      BusinessGuarantor?
   personalGuarantor      PersonalGuarantor?
   additionalDocument     AdditionalDocument[]
+  applicationEvent       ApplicationEvent[]
 
   @@index([applicationId, status, isActive, isDeleted])
   @@map("loanApplicationForm")

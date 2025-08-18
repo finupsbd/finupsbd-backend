@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserServices = void 0;
+exports.UserServices = exports.createAdiDoc = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../app");
@@ -144,64 +144,166 @@ const getApplication = (id) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(result);
     return result;
 });
-const createAdiDoc = (id, files) => __awaiter(void 0, void 0, void 0, function* () {
-    const isExistApplication = yield app_1.prisma.loanApplicationForm.findUnique({ where: { id } });
-    if (!isExistApplication) {
+// const createAdiDoc = async (id: string, files: TUploadedFile[]) => {
+//   const isExistApplication = await prisma.loanApplicationForm.findUnique({ where: { id } })
+//   if (!isExistApplication) {
+//     throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
+//   }
+//   try {
+//     // Save files locally instead of uploading to Cloudinary
+//     const savedDocuments: {
+//       filePath: string;
+//       originalName: string;
+//       mimeType: string;
+//     }[] = [];
+//     const images: TUploadedFile[] = files
+//     for (const file of images) {
+//       try {
+//         const savedPath = await saveFileAdditional(file.buffer, file.originalname, isExistApplication?.applicationId); // or file.originalname
+//         savedDocuments.push({
+//           filePath: savedPath,
+//           originalName: file.originalname,
+//           mimeType: file.mimetype,
+//         });
+//       } catch (err) {
+//         console.error(`Failed to save file ${file.fieldname}:`, err);
+//       }
+//     }
+//     console.log(savedDocuments)
+//     const uploadFileIntoDb = await prisma.additionalDocument.createMany({
+//       data: savedDocuments.map((doc) => ({
+//         url: doc.filePath,
+//         originalName: doc.originalName,
+//         mimeType: doc.mimeType,
+//         loanApplicationFormId: id,
+//       })),
+//     });
+//     if (uploadFileIntoDb.count > 0) {
+//       await prisma.loanApplicationForm.update({
+//         where: { id },
+//         data: {
+//           status: "PENDING",
+//           adminNotes: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.",
+//           additionalDocumentSubmit: true,
+//           additionalDocuments: false
+//         }
+//       })
+//       await prisma.applicationEvent.create({
+//         data: {
+//           applicationId: isExistApplication?.applicationId,
+//           eventType: "STATUS_UPDATED",
+//           description: `Status changed to ${newStatus}`,
+//           createdBy: userId,
+//         },
+//       })
+//     }
+//   } catch (err) {
+//     console.error(`Failed to save file :`, err);
+//   }
+// }
+const createAdiDoc = (id, // LoanApplicationForm.id
+files, user // who triggered this action
+) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!(files === null || files === void 0 ? void 0 : files.length)) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, "No files provided");
+    }
+    const app = yield app_1.prisma.loanApplicationForm.findUnique({
+        where: { id },
+        select: { id: true, applicationId: true }, // applicationId = human readable code
+    });
+    if (!app) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "Application not found");
     }
-    try {
-        // Save files locally instead of uploading to Cloudinary
-        const savedDocuments = [];
-        const images = files;
-        for (const file of images) {
-            try {
-                const savedPath = yield (0, saveFileAdditional_1.saveFileAdditional)(file.buffer, file.originalname, isExistApplication === null || isExistApplication === void 0 ? void 0 : isExistApplication.applicationId); // or file.originalname
-                savedDocuments.push({
-                    filePath: savedPath,
-                    originalName: file.originalname,
-                    mimeType: file.mimetype,
-                });
-            }
-            catch (err) {
-                console.error(`Failed to save file ${file.fieldname}:`, err);
-            }
+    // Persist files to disk
+    const savedDocuments = [];
+    for (const file of files) {
+        try {
+            const savedPath = yield (0, saveFileAdditional_1.saveFileAdditional)(file.buffer, file.originalname, app.applicationId // use human-friendly code in the path
+            );
+            savedDocuments.push({
+                filePath: savedPath,
+                originalName: file.originalname,
+                mimeType: file.mimetype,
+                size: file.size,
+            });
         }
-        console.log(savedDocuments);
-        const uploadFileIntoDb = yield app_1.prisma.additionalDocument.createMany({
+        catch (err) {
+            // log a file-level error event (outside the tx) so you still get a breadcrumb
+            yield app_1.prisma.applicationEvent.create({
+                data: {
+                    applicationId: app.id, // IMPORTANT: relational id
+                    eventType: "FILE_PERSISTED_ERROR",
+                    description: `Failed to save file "${file.originalname}"`,
+                    createdBy: user === null || user === void 0 ? void 0 : user.userId,
+                },
+            });
+            // continue; do not throw here to allow other files to process
+            // or, choose to throw to fail the whole request if ANY file fails
+        }
+    }
+    if (!savedDocuments.length) {
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, "Failed to save files");
+    }
+    const newStatus = "PENDING";
+    const adminNote = "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.";
+    // One transaction = DB writes + audit events
+    return yield app_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+        // 1) Insert file rows
+        const createDocs = yield tx.additionalDocument.createMany({
             data: savedDocuments.map((doc) => ({
                 url: doc.filePath,
                 originalName: doc.originalName,
                 mimeType: doc.mimeType,
-                loanApplicationFormId: id,
+                loanApplicationFormId: app.id,
             })),
         });
-        if (uploadFileIntoDb.count > 0) {
-            yield app_1.prisma.loanApplicationForm.update({
-                where: { id },
-                data: {
-                    status: "SUBMITTED",
-                    additionalDocumentSubmit: true,
-                    additionalDocuments: false
-                }
-            });
+        if (createDocs.count === 0) {
+            throw new AppError_1.default(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, "Files could not be recorded");
         }
-        // const result = prisma.loanApplicationForm.create({
-        //   data: {
-        //     additionalDocument: {
-        //       create: savedDocuments.map((doc) => ({
-        //         // save relative path for easier serving
-        //         url: doc.filePath,
-        //         originalName: doc.originalName,
-        //         mimeType: doc.mimeType,
-        //       })),
-        //     },
-        //   }
-        // })
-    }
-    catch (err) {
-        console.error(`Failed to save file :`, err);
-    }
+        // 2) Update application status/flags/notes
+        const updated = yield tx.loanApplicationForm.update({
+            where: { id: app.id },
+            data: {
+                status: newStatus,
+                adminNotes: adminNote,
+                additionalDocumentSubmit: true,
+                additionalDocuments: false,
+            },
+            select: { id: true, status: true, adminNotes: true, applicationId: true },
+        });
+        // 3) Create audit events (bulk)
+        const events = [];
+        events.push({
+            applicationId: app.id,
+            eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+            description: `${createDocs.count} file(s) uploaded`,
+            createdBy: user === null || user === void 0 ? void 0 : user.userId,
+        });
+        events.push({
+            applicationId: app.id,
+            eventType: "STATUS_UPDATED",
+            description: `Feedback:${createDocs === null || createDocs === void 0 ? void 0 : createDocs.count}Status changed to ${updated.status}`,
+            createdBy: user === null || user === void 0 ? void 0 : user.userId,
+        });
+        events.push({
+            applicationId: app.id,
+            eventType: "ADMIN_NOTE_ADDED",
+            description: "Admin note updated after additional documents",
+            createdBy: user === null || user === void 0 ? void 0 : user.userId,
+        });
+        yield tx.applicationEvent.createMany({ data: events });
+        return {
+            success: true,
+            message: "Additional documents submitted and events recorded",
+            data: {
+                applicationId: updated.applicationId,
+                status: updated.status,
+                uploadedCount: createDocs.count,
+            },
+        };
+    }));
 });
+exports.createAdiDoc = createAdiDoc;
 exports.UserServices = {
     getAllUser,
     meProfile,
@@ -209,5 +311,5 @@ exports.UserServices = {
     getAllNewLoans,
     getAllExistingLoans,
     getApplication,
-    createAdiDoc
+    createAdiDoc: exports.createAdiDoc
 };

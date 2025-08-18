@@ -1988,3 +1988,559 @@ An operation failed because it depends on one or more records that were required
     at endReadableNT (node:internal/streams/readable:1698:12)
     at processTicksAndRejections (node:internal/process/task_queues:90:21) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"SyntaxError","errorMessage":"Expected double-quoted property name in JSON at position 98 (line 5 column 1)"}
 --------------------------------------------------------------
+[2025-08-18 01:50:42] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:185:36
+
+  182 
+  183 
+  184 if (!existingGuarantor) {
+→ 185   await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:185:36\n\n  182 \n  183 \n  184 if (!existingGuarantor) {\n→ 185   await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-08-18 01:50:57] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:185:36
+
+  182 
+  183 
+  184 if (!existingGuarantor) {
+→ 185   await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:185:36\n\n  182 \n  183 \n  184 if (!existingGuarantor) {\n→ 185   await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-08-18 01:51:03] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:185:36
+
+  182 
+  183 
+  184 if (!existingGuarantor) {
+→ 185   await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:185:36\n\n  182 \n  183 \n  184 if (!existingGuarantor) {\n→ 185   await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-08-18 01:51:40] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:185:36
+
+  182 
+  183 
+  184 if (!existingGuarantor) {
+→ 185   await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:185:36\n\n  182 \n  183 \n  184 if (!existingGuarantor) {\n→ 185   await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-08-18 01:51:55] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:185:36
+
+  182 
+  183 
+  184 if (!existingGuarantor) {
+→ 185   await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:185:36\n\n  182 \n  183 \n  184 if (!existingGuarantor) {\n→ 185   await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-08-18 01:52:50] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:185:36
+
+  182 
+  183 
+  184 if (!existingGuarantor) {
+→ 185   await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:185:36\n\n  182 \n  183 \n  184 if (!existingGuarantor) {\n→ 185   await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-08-18 01:53:44] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:185:36
+
+  182 
+  183 
+  184 if (!existingGuarantor) {
+→ 185   await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:185:36\n\n  182 \n  183 \n  184 if (!existingGuarantor) {\n→ 185   await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-08-18 01:55:17] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.personalGuarantor.create()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\applicationForm\applicationForm.controller.ts:185:36
+
+  182 
+  183 
+  184 if (!existingGuarantor) {
+→ 185   await prisma.personalGuarantor.create(
+Foreign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7447)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/application/applicant-guarator-info-personal?id=43d6223b-8640-4ebc-9fe9-d4bb9daa47ef","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.personalGuarantor.create()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\applicationForm\\applicationForm.controller.ts:185:36\n\n  182 \n  183 \n  184 if (!existingGuarantor) {\n→ 185   await prisma.personalGuarantor.create(\nForeign key constraint violated: `PersonalGuarantor_loanApplicationFormId_fkey (index)`"}
+--------------------------------------------------------------
+[2025-08-18 05:57:52] ERROR: PrismaClientValidationError: 
+Invalid `tx.applicationEvent.createMany()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:395:31
+
+  392   createdBy: currentUserId,
+  393 });
+  394 
+→ 395 await tx.applicationEvent.createMany({
+        data: [
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+            description: "3 file(s) uploaded",
+            meta: {
+              files: [
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475072593-KSA_CV.pdf",
+                  name: "KSA CV.pdf",
+                  type: "application/pdf",
+                  size: 3119346
+                },
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475072596-LoanApplicationDocs_1_.pdf",
+                  name: "LoanApplicationDocs[1].pdf",
+                  type: "application/pdf",
+                  size: 169123
+                },
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475072597-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  name: "Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  type: "application/pdf",
+                  size: 452910
+                }
+              ]
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "STATUS_UPDATED",
+            description: "Status changed to PENDING",
+            meta: {
+              to: "PENDING"
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADMIN_NOTE_ADDED",
+            description: "Admin note updated after additional documents",
+            meta: {
+              note: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps."
+            },
+            createdBy: undefined
+          }
+        ]
+      })
+
+Unknown argument `meta`. Available options are marked with ?.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/users/create-addi-doc/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"node","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `tx.applicationEvent.createMany()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\user\\user.service.ts:395:31\n\n  392   createdBy: currentUserId,\n  393 });\n  394 \n→ 395 await tx.applicationEvent.createMany({\n        data: [\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADDITIONAL_DOCUMENTS_UPLOADED\",\n            description: \"3 file(s) uploaded\",\n            meta: {\n              files: [\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475072593-KSA_CV.pdf\",\n                  name: \"KSA CV.pdf\",\n                  type: \"application/pdf\",\n                  size: 3119346\n                },\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475072596-LoanApplicationDocs_1_.pdf\",\n                  name: \"LoanApplicationDocs[1].pdf\",\n                  type: \"application/pdf\",\n                  size: 169123\n                },\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475072597-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  name: \"Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  type: \"application/pdf\",\n                  size: 452910\n                }\n              ]\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"STATUS_UPDATED\",\n            description: \"Status changed to PENDING\",\n            meta: {\n              to: \"PENDING\"\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADMIN_NOTE_ADDED\",\n            description: \"Admin note updated after additional documents\",\n            meta: {\n              note: \"Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.\"\n            },\n            createdBy: undefined\n          }\n        ]\n      })\n\nUnknown argument `meta`. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-08-18 06:00:08] ERROR: PrismaClientValidationError: 
+Invalid `tx.applicationEvent.createMany()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:395:31
+
+  392   createdBy: currentUserId,
+  393 });
+  394 
+→ 395 await tx.applicationEvent.createMany({
+        data: [
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+            description: "2 file(s) uploaded",
+            meta: {
+              files: [
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475208252-LoanApplicationDocs_1_.pdf",
+                  name: "LoanApplicationDocs[1].pdf",
+                  type: "application/pdf",
+                  size: 169123
+                },
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475208253-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  name: "Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  type: "application/pdf",
+                  size: 452910
+                }
+              ]
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "STATUS_UPDATED",
+            description: "Status changed to PENDING",
+            meta: {
+              to: "PENDING"
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADMIN_NOTE_ADDED",
+            description: "Admin note updated after additional documents",
+            meta: {
+              note: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps."
+            },
+            createdBy: undefined
+          }
+        ]
+      })
+
+Unknown argument `meta`. Available options are marked with ?.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/users/create-addi-doc/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"node","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `tx.applicationEvent.createMany()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\user\\user.service.ts:395:31\n\n  392   createdBy: currentUserId,\n  393 });\n  394 \n→ 395 await tx.applicationEvent.createMany({\n        data: [\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADDITIONAL_DOCUMENTS_UPLOADED\",\n            description: \"2 file(s) uploaded\",\n            meta: {\n              files: [\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475208252-LoanApplicationDocs_1_.pdf\",\n                  name: \"LoanApplicationDocs[1].pdf\",\n                  type: \"application/pdf\",\n                  size: 169123\n                },\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475208253-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  name: \"Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  type: \"application/pdf\",\n                  size: 452910\n                }\n              ]\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"STATUS_UPDATED\",\n            description: \"Status changed to PENDING\",\n            meta: {\n              to: \"PENDING\"\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADMIN_NOTE_ADDED\",\n            description: \"Admin note updated after additional documents\",\n            meta: {\n              note: \"Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.\"\n            },\n            createdBy: undefined\n          }\n        ]\n      })\n\nUnknown argument `meta`. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-08-18 06:01:14] ERROR: PrismaClientValidationError: 
+Invalid `tx.applicationEvent.createMany()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:395:31
+
+  392   createdBy: currentUserId,
+  393 });
+  394 
+→ 395 await tx.applicationEvent.createMany({
+        data: [
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+            description: "2 file(s) uploaded",
+            meta: {
+              files: [
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475274426-LoanApplicationDocs_1_.pdf",
+                  name: "LoanApplicationDocs[1].pdf",
+                  type: "application/pdf",
+                  size: 169123
+                },
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475274427-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  name: "Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  type: "application/pdf",
+                  size: 452910
+                }
+              ]
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "STATUS_UPDATED",
+            description: "Status changed to PENDING",
+            meta: {
+              to: "PENDING"
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADMIN_NOTE_ADDED",
+            description: "Admin note updated after additional documents",
+            meta: {
+              note: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps."
+            },
+            createdBy: undefined
+          }
+        ]
+      })
+
+Unknown argument `meta`. Available options are marked with ?.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/users/create-addi-doc/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"node","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `tx.applicationEvent.createMany()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\user\\user.service.ts:395:31\n\n  392   createdBy: currentUserId,\n  393 });\n  394 \n→ 395 await tx.applicationEvent.createMany({\n        data: [\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADDITIONAL_DOCUMENTS_UPLOADED\",\n            description: \"2 file(s) uploaded\",\n            meta: {\n              files: [\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475274426-LoanApplicationDocs_1_.pdf\",\n                  name: \"LoanApplicationDocs[1].pdf\",\n                  type: \"application/pdf\",\n                  size: 169123\n                },\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475274427-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  name: \"Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  type: \"application/pdf\",\n                  size: 452910\n                }\n              ]\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"STATUS_UPDATED\",\n            description: \"Status changed to PENDING\",\n            meta: {\n              to: \"PENDING\"\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADMIN_NOTE_ADDED\",\n            description: \"Admin note updated after additional documents\",\n            meta: {\n              note: \"Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.\"\n            },\n            createdBy: undefined\n          }\n        ]\n      })\n\nUnknown argument `meta`. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-08-18 06:01:52] ERROR: PrismaClientValidationError: 
+Invalid `tx.applicationEvent.createMany()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:395:31
+
+  392   createdBy: currentUserId,
+  393 });
+  394 
+→ 395 await tx.applicationEvent.createMany({
+        data: [
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+            description: "2 file(s) uploaded",
+            meta: {
+              files: [
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475311853-LoanApplicationDocs_1_.pdf",
+                  name: "LoanApplicationDocs[1].pdf",
+                  type: "application/pdf",
+                  size: 169123
+                },
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475311854-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  name: "Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  type: "application/pdf",
+                  size: 452910
+                }
+              ]
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "STATUS_UPDATED",
+            description: "Status changed to PENDING",
+            meta: {
+              to: "PENDING"
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADMIN_NOTE_ADDED",
+            description: "Admin note updated after additional documents",
+            meta: {
+              note: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps."
+            },
+            createdBy: undefined
+          }
+        ]
+      })
+
+Unknown argument `meta`. Available options are marked with ?.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/users/create-addi-doc/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"node","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `tx.applicationEvent.createMany()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\user\\user.service.ts:395:31\n\n  392   createdBy: currentUserId,\n  393 });\n  394 \n→ 395 await tx.applicationEvent.createMany({\n        data: [\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADDITIONAL_DOCUMENTS_UPLOADED\",\n            description: \"2 file(s) uploaded\",\n            meta: {\n              files: [\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475311853-LoanApplicationDocs_1_.pdf\",\n                  name: \"LoanApplicationDocs[1].pdf\",\n                  type: \"application/pdf\",\n                  size: 169123\n                },\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475311854-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  name: \"Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  type: \"application/pdf\",\n                  size: 452910\n                }\n              ]\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"STATUS_UPDATED\",\n            description: \"Status changed to PENDING\",\n            meta: {\n              to: \"PENDING\"\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADMIN_NOTE_ADDED\",\n            description: \"Admin note updated after additional documents\",\n            meta: {\n              note: \"Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.\"\n            },\n            createdBy: undefined\n          }\n        ]\n      })\n\nUnknown argument `meta`. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-08-18 06:02:59] ERROR: PrismaClientValidationError: 
+Invalid `prisma.applicationEvent.createMany()` invocation:
+
+{
+  data: [
+    {
+      applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+      eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+      description: "2 file(s) uploaded",
+      meta: {
+        files: [
+          {
+            path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475379265-LoanApplicationDocs_1_.pdf",
+            name: "LoanApplicationDocs[1].pdf",
+            type: "application/pdf",
+            size: 169123
+          },
+          {
+            path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475379266-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+            name: "Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+            type: "application/pdf",
+            size: 452910
+          }
+        ]
+      },
+      createdBy: undefined
+    },
+    {
+      applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+      eventType: "STATUS_UPDATED",
+      description: "Status changed to PENDING",
+      meta: {
+        to: "PENDING"
+      },
+      createdBy: undefined
+    },
+    {
+      applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+      eventType: "ADMIN_NOTE_ADDED",
+      description: "Admin note updated after additional documents",
+      meta: {
+        note: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps."
+      },
+      createdBy: undefined
+    }
+  ]
+}
+
+Unknown argument `meta`. Available options are marked with ?.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/users/create-addi-doc/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"node","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.applicationEvent.createMany()` invocation:\n\n{\n  data: [\n    {\n      applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n      eventType: \"ADDITIONAL_DOCUMENTS_UPLOADED\",\n      description: \"2 file(s) uploaded\",\n      meta: {\n        files: [\n          {\n            path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475379265-LoanApplicationDocs_1_.pdf\",\n            name: \"LoanApplicationDocs[1].pdf\",\n            type: \"application/pdf\",\n            size: 169123\n          },\n          {\n            path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475379266-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n            name: \"Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n            type: \"application/pdf\",\n            size: 452910\n          }\n        ]\n      },\n      createdBy: undefined\n    },\n    {\n      applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n      eventType: \"STATUS_UPDATED\",\n      description: \"Status changed to PENDING\",\n      meta: {\n        to: \"PENDING\"\n      },\n      createdBy: undefined\n    },\n    {\n      applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n      eventType: \"ADMIN_NOTE_ADDED\",\n      description: \"Admin note updated after additional documents\",\n      meta: {\n        note: \"Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.\"\n      },\n      createdBy: undefined\n    }\n  ]\n}\n\nUnknown argument `meta`. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-08-18 06:03:18] ERROR: PrismaClientValidationError: 
+Invalid `prisma.applicationEvent.createMany()` invocation:
+
+{
+  data: [
+    {
+      applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+      eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+      description: "2 file(s) uploaded",
+      meta: {
+        files: [
+          {
+            path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475397918-LoanApplicationDocs_1_.pdf",
+            name: "LoanApplicationDocs[1].pdf",
+            type: "application/pdf",
+            size: 169123
+          },
+          {
+            path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475397920-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+            name: "Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+            type: "application/pdf",
+            size: 452910
+          }
+        ]
+      },
+      createdBy: undefined
+    },
+    {
+      applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+      eventType: "STATUS_UPDATED",
+      description: "Status changed to PENDING",
+      meta: {
+        to: "PENDING"
+      },
+      createdBy: undefined
+    },
+    {
+      applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+      eventType: "ADMIN_NOTE_ADDED",
+      description: "Admin note updated after additional documents",
+      meta: {
+        note: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps."
+      },
+      createdBy: undefined
+    }
+  ]
+}
+
+Unknown argument `meta`. Available options are marked with ?.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/users/create-addi-doc/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"node","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.applicationEvent.createMany()` invocation:\n\n{\n  data: [\n    {\n      applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n      eventType: \"ADDITIONAL_DOCUMENTS_UPLOADED\",\n      description: \"2 file(s) uploaded\",\n      meta: {\n        files: [\n          {\n            path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475397918-LoanApplicationDocs_1_.pdf\",\n            name: \"LoanApplicationDocs[1].pdf\",\n            type: \"application/pdf\",\n            size: 169123\n          },\n          {\n            path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475397920-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n            name: \"Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n            type: \"application/pdf\",\n            size: 452910\n          }\n        ]\n      },\n      createdBy: undefined\n    },\n    {\n      applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n      eventType: \"STATUS_UPDATED\",\n      description: \"Status changed to PENDING\",\n      meta: {\n        to: \"PENDING\"\n      },\n      createdBy: undefined\n    },\n    {\n      applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n      eventType: \"ADMIN_NOTE_ADDED\",\n      description: \"Admin note updated after additional documents\",\n      meta: {\n        note: \"Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.\"\n      },\n      createdBy: undefined\n    }\n  ]\n}\n\nUnknown argument `meta`. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-08-18 06:12:09] ERROR: PrismaClientValidationError: 
+Invalid `tx.applicationEvent.createMany()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:395:31
+
+  392   createdBy: currentUserId,
+  393 });
+  394 
+→ 395 await tx.applicationEvent.createMany({
+        data: [
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+            description: "1 file(s) uploaded",
+            meta: {
+              files: [
+                {
+                  path: "/uploads/AdditionalFiles/325081700001/325081700001-1755475929172-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  name: "Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf",
+                  type: "application/pdf",
+                  size: 452910
+                }
+              ]
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "STATUS_UPDATED",
+            description: "Status changed to PENDING",
+            meta: {
+              to: "PENDING"
+            },
+            createdBy: undefined
+          },
+          {
+            applicationId: "17b91052-fee3-499d-98d4-0992e559c6fe",
+            eventType: "ADMIN_NOTE_ADDED",
+            description: "Admin note updated after additional documents",
+            meta: {
+              note: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps."
+            },
+            createdBy: undefined
+          }
+        ]
+      })
+
+Unknown argument `meta`. Available options are marked with ?.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"POST","url":"/api/v1/users/create-addi-doc/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"node","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `tx.applicationEvent.createMany()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\user\\user.service.ts:395:31\n\n  392   createdBy: currentUserId,\n  393 });\n  394 \n→ 395 await tx.applicationEvent.createMany({\n        data: [\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADDITIONAL_DOCUMENTS_UPLOADED\",\n            description: \"1 file(s) uploaded\",\n            meta: {\n              files: [\n                {\n                  path: \"/uploads/AdditionalFiles/325081700001/325081700001-1755475929172-Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  name: \"Marriage_Biodata_Khairul_Islam_Shayon_Enhanced.pdf\",\n                  type: \"application/pdf\",\n                  size: 452910\n                }\n              ]\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"STATUS_UPDATED\",\n            description: \"Status changed to PENDING\",\n            meta: {\n              to: \"PENDING\"\n            },\n            createdBy: undefined\n          },\n          {\n            applicationId: \"17b91052-fee3-499d-98d4-0992e559c6fe\",\n            eventType: \"ADMIN_NOTE_ADDED\",\n            description: \"Admin note updated after additional documents\",\n            meta: {\n              note: \"Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.\"\n            },\n            createdBy: undefined\n          }\n        ]\n      })\n\nUnknown argument `meta`. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-08-18 06:16:36] ERROR: ReferenceError: currentUserId is not defined
+    at C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:367:18
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\client-project\finupsbd-backend\src\app\module\user\user.service.ts:5:58) {"method":"POST","url":"/api/v1/users/create-addi-doc/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"node","ip":"::1","errorName":"ReferenceError","errorMessage":"currentUserId is not defined"}
+--------------------------------------------------------------
+[2025-08-18 06:37:38] ERROR: PrismaClientValidationError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:133:53
+
+  130 
+  131   return "Email Send Successfully"
+  132 } else {
+→ 133   const result = await prisma.loanApplicationForm.update({
+          where: {
+            id: "17b91052-fee3-499d-98d4-0992e559c6fe"
+          },
+          data: {
+            status: "APPROVE",
+                    ~~~~~~~~~
+            additionalDocuments: false,
+            adminNotes: "Application Rejects"
+          },
+          include: {
+            user: {
+              select: {
+                email: true,
+                name: true
+              }
+            }
+          }
+        })
+
+Invalid value for argument `status`. Expected LoanStatus.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\dashboard\\superAdmin\\application\\application.service.ts:133:53\n\n  130 \n  131   return \"Email Send Successfully\"\n  132 } else {\n→ 133   const result = await prisma.loanApplicationForm.update({\n          where: {\n            id: \"17b91052-fee3-499d-98d4-0992e559c6fe\"\n          },\n          data: {\n            status: \"APPROVE\",\n                    ~~~~~~~~~\n            additionalDocuments: false,\n            adminNotes: \"Application Rejects\"\n          },\n          include: {\n            user: {\n              select: {\n                email: true,\n                name: true\n              }\n            }\n          }\n        })\n\nInvalid value for argument `status`. Expected LoanStatus."}
+--------------------------------------------------------------
