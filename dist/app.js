@@ -48,6 +48,7 @@ const rootRouter_1 = require("./app/rootRouter");
 const DB_1 = __importDefault(require("./app/DB"));
 const os_1 = __importStar(require("os"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
+const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 exports.prisma = new client_1.PrismaClient();
 app.use((0, cors_1.default)({
@@ -77,7 +78,7 @@ const limiter = (0, express_rate_limit_1.default)({
 });
 app.use(limiter);
 app.use(passport_1.default.initialize());
-app.use("/uploads", express_1.default.static("uploads"));
+app.use("/uploads", express_1.default.static(path_1.default.join(process.cwd(), "uploads")));
 app.use('/api/v1', rootRouter_1.RootRouter);
 app.use('/__nextjs_original-stack-frames', (req, res) => {
     res.status(204).end();

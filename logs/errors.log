@@ -2544,3 +2544,37 @@ Invalid value for argument `status`. Expected LoanStatus.
     at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
     at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/17b91052-fee3-499d-98d4-0992e559c6fe","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\dashboard\\superAdmin\\application\\application.service.ts:133:53\n\n  130 \n  131   return \"Email Send Successfully\"\n  132 } else {\n→ 133   const result = await prisma.loanApplicationForm.update({\n          where: {\n            id: \"17b91052-fee3-499d-98d4-0992e559c6fe\"\n          },\n          data: {\n            status: \"APPROVE\",\n                    ~~~~~~~~~\n            additionalDocuments: false,\n            adminNotes: \"Application Rejects\"\n          },\n          include: {\n            user: {\n              select: {\n                email: true,\n                name: true\n              }\n            }\n          }\n        })\n\nInvalid value for argument `status`. Expected LoanStatus."}
 --------------------------------------------------------------
+[2025-08-18 06:50:48] ERROR: PrismaClientValidationError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+C:\client-project\finupsbd-backend\src\app\module\dashboard\superAdmin\application\application.service.ts:133:53
+
+  130 
+  131   return "Email Send Successfully"
+  132 } else {
+→ 133   const result = await prisma.loanApplicationForm.update({
+          where: {
+            id: "8d47255c-0a05-4e02-b02f-a6683d67e5d1"
+          },
+          data: {
+            status: "APPROVE",
+                    ~~~~~~~~~
+            additionalDocuments: undefined,
+            adminNotes: "Application Rejects"
+          },
+          include: {
+            user: {
+              select: {
+                email: true,
+                name: true
+              }
+            }
+          }
+        })
+
+Invalid value for argument `status`. Expected LoanStatus.
+    at Pn (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:29:1363)
+    at Un.handleRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:7090)
+    at Un.handleAndLogRequestError (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6771)
+    at Un.request (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:121:6478)
+    at l (C:\client-project\finupsbd-backend\node_modules\@prisma\client\runtime\library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/8d47255c-0a05-4e02-b02f-a6683d67e5d1","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\nC:\\client-project\\finupsbd-backend\\src\\app\\module\\dashboard\\superAdmin\\application\\application.service.ts:133:53\n\n  130 \n  131   return \"Email Send Successfully\"\n  132 } else {\n→ 133   const result = await prisma.loanApplicationForm.update({\n          where: {\n            id: \"8d47255c-0a05-4e02-b02f-a6683d67e5d1\"\n          },\n          data: {\n            status: \"APPROVE\",\n                    ~~~~~~~~~\n            additionalDocuments: undefined,\n            adminNotes: \"Application Rejects\"\n          },\n          include: {\n            user: {\n              select: {\n                email: true,\n                name: true\n              }\n            }\n          }\n        })\n\nInvalid value for argument `status`. Expected LoanStatus."}
+--------------------------------------------------------------

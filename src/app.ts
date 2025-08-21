@@ -9,6 +9,7 @@ import { RootRouter } from './app/rootRouter';
 import seedSuperAdmin from './app/DB';
 import os, { version } from "os"
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 
 
 const app: Application = express();
@@ -49,7 +50,7 @@ app.use(limiter);
 
 
 app.use(passport.initialize());
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 
 app.use('/api/v1', RootRouter);
