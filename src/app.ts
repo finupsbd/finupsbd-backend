@@ -80,7 +80,7 @@ app.get('/', (req: Request, res: Response) => {
     },
     application: {
       name: 'FinupsBD',
-      environment: process.env.NODE_ENV || 'development',
+      environment: process.env.NODE_ENV || 'development.',
       version,
     },
     request: {
