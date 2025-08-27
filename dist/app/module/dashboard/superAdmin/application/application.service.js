@@ -95,15 +95,26 @@ const getSingleApplication = (id) => __awaiter(void 0, void 0, void 0, function*
     });
     return result;
 });
-const applicationFeedback = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const applicationFeedback = (id, payload, adminId // pass the admin user id (or role)
+) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
     console.log(id, payload);
-    const result = yield app_1.prisma.loanApplicationForm.findUnique({ where: { id }, include: { user: { select: { email: true, name: true, userId: true } } } });
+    const result = yield app_1.prisma.loanApplicationForm.findUnique({
+        where: { id },
+        include: {
+            user: {
+                select: { email: true, name: true, userId: true }
+            }
+        }
+    });
     if (!result) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "Application not found");
     }
-    if (payload.status == "REJECTED") {
-        yield app_1.prisma.loanApplicationForm.update({
+    // Store old status before update
+    const previousStatus = result.status;
+    let updated;
+    if (payload.status === "REJECTED") {
+        updated = yield app_1.prisma.loanApplicationForm.update({
             where: { id },
             data: {
                 status: payload.status,
@@ -112,38 +123,62 @@ const applicationFeedback = (id, payload) => __awaiter(void 0, void 0, void 0, f
                 isActive: false
             }
         });
+        // Log to ApplicationEvent
+        yield app_1.prisma.applicationEvent.create({
+            data: {
+                applicationId: id,
+                eventType: "STATUS_CHANGED",
+                stateBefore: previousStatus,
+                stateAfter: payload.status,
+                feedback: payload.adminNote,
+                severity: "ERROR",
+                createdRole: "SUPER_ADMIN"
+            }
+        });
+        // Email
         const emailSubject = "Loan Application Status: REJECTED";
-        const bodyText = (0, applicationRejected_1.applicationRejected)((_b = (_a = result === null || result === void 0 ? void 0 : result.user) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : '', (_c = result === null || result === void 0 ? void 0 : result.applicationId) !== null && _c !== void 0 ? _c : '', (_d = payload === null || payload === void 0 ? void 0 : payload.adminNote) !== null && _d !== void 0 ? _d : '');
+        const bodyText = (0, applicationRejected_1.applicationRejected)((_b = (_a = result === null || result === void 0 ? void 0 : result.user) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "", (_c = result === null || result === void 0 ? void 0 : result.applicationId) !== null && _c !== void 0 ? _c : "", (_d = payload === null || payload === void 0 ? void 0 : payload.adminNote) !== null && _d !== void 0 ? _d : "");
         yield (0, sendEmail_1.default)((_e = result === null || result === void 0 ? void 0 : result.user) === null || _e === void 0 ? void 0 : _e.email, emailSubject, bodyText);
-        return "Email Send Successfully";
+        return "Email Sent Successfully";
     }
     else {
-        const result = yield app_1.prisma.loanApplicationForm.update({
+        updated = yield app_1.prisma.loanApplicationForm.update({
             where: { id },
             data: {
                 status: payload.status,
                 additionalDocuments: payload.additionalDocuments,
-                adminNotes: payload.adminNote
+                adminNotes: payload.adminNote,
+                isActive: true
             },
             include: {
                 user: {
-                    select: {
-                        email: true,
-                        name: true
-                    }
+                    select: { email: true, name: true }
                 }
             }
         });
+        // Log to ApplicationEvent
+        yield app_1.prisma.applicationEvent.create({
+            data: {
+                applicationId: id,
+                eventType: "STATUS_CHANGED",
+                stateBefore: previousStatus,
+                stateAfter: payload.status,
+                feedback: payload.adminNote,
+                severity: "INFO",
+                createdRole: "SUPER_ADMIN"
+            }
+        });
+        // Email
         const emailSubject = "Loan Application Status Update";
         const templatePayload = {
-            name: (_g = (_f = result === null || result === void 0 ? void 0 : result.user) === null || _f === void 0 ? void 0 : _f.name) !== null && _g !== void 0 ? _g : "",
-            applicationID: (_h = result === null || result === void 0 ? void 0 : result.applicationId) !== null && _h !== void 0 ? _h : "",
-            status: (_j = result === null || result === void 0 ? void 0 : result.status) !== null && _j !== void 0 ? _j : "",
+            name: (_g = (_f = updated === null || updated === void 0 ? void 0 : updated.user) === null || _f === void 0 ? void 0 : _f.name) !== null && _g !== void 0 ? _g : "",
+            applicationID: (_h = updated === null || updated === void 0 ? void 0 : updated.applicationId) !== null && _h !== void 0 ? _h : "",
+            status: (_j = updated === null || updated === void 0 ? void 0 : updated.status) !== null && _j !== void 0 ? _j : "",
             reason: (_k = payload === null || payload === void 0 ? void 0 : payload.adminNote) !== null && _k !== void 0 ? _k : ""
         };
         const bodyText = (0, loanStatusEmail_1.loanStatusEmail)(templatePayload);
-        yield (0, sendEmail_1.default)((_l = result === null || result === void 0 ? void 0 : result.user) === null || _l === void 0 ? void 0 : _l.email, emailSubject, bodyText);
-        return "Email Send Successfully";
+        yield (0, sendEmail_1.default)((_l = updated === null || updated === void 0 ? void 0 : updated.user) === null || _l === void 0 ? void 0 : _l.email, emailSubject, bodyText);
+        return "Email Sent Successfully";
     }
 });
 const dashboardHome = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -205,10 +240,23 @@ const dashboardHome = () => __awaiter(void 0, void 0, void 0, function* () {
 const getAllusers = () => __awaiter(void 0, void 0, void 0, function* () {
     return "user";
 });
+const getStatusEvents = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield app_1.prisma.applicationEvent.findMany({
+        where: {
+            applicationId: id,
+            eventType: "STATUS_CHANGED"
+        },
+        orderBy: {
+            createdAt: "desc"
+        },
+    });
+    return result;
+});
 exports.ApplicationServides = {
     getAllApplication,
     getSingleApplication,
     applicationFeedback,
     dashboardHome,
-    getAllusers
+    getAllusers,
+    getStatusEvents
 };

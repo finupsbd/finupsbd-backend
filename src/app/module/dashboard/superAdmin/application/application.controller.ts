@@ -72,10 +72,26 @@ const getAllusers = catchAsync(async (req, res) => {
 })
 
 
+const getStatusEvents = catchAsync(async (req, res) => {
+
+  const id = req.params?.id
+
+  const result = await ApplicationServides.getStatusEvents(id)
+
+  sendResponses(res, {
+    success: true,
+    message: 'Retrive All Events',
+    statusCode: StatusCodes.OK,
+    data: result
+  });
+})
+
+
 export const ApplicarionController = {
   getSingleApplication,
   getAllApplication,
   applicationFeedBack,
   dashboardHome,
-  getAllusers
+  getAllusers,
+  getStatusEvents
 }

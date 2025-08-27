@@ -114,6 +114,21 @@ const getSingleUser = catchAsync(async (req, res) => {
 })
 
 
+const getAgreementDoc = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+    const result = await UserServices.getAgreementDoc(id)
+    
+
+    sendResponses(res, {
+        success: true, 
+        message: "Retrieve Agreement doc successfully.",
+        statusCode: StatusCodes.CREATED,
+        data: result
+    })
+})
+
+
 
 export const UserController = {
     getAllUsers,
@@ -122,5 +137,6 @@ export const UserController = {
     getAllNewLoans, 
     getAllExistingLoans, 
     getApplication,
-    createAddiDoc
+    createAddiDoc,
+    getAgreementDoc
 }

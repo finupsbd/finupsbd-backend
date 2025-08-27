@@ -13,6 +13,7 @@ route.get('/get-all-users', ApplicarionController.getAllusers)
 route.get('/get-all-application', ApplicarionController.getAllApplication)
 route.get('/get-single-application/:id', ApplicarionController.getSingleApplication)
 route.patch('/application-feedback/:id', ApplicarionController.applicationFeedBack)
+route.get('/status-events/:id', ApplicarionController.getStatusEvents)
 
 
 

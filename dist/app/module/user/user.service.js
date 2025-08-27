@@ -12,12 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserServices = exports.createAdiDoc = void 0;
+exports.UserServices = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_codes_1 = require("http-status-codes");
 const app_1 = require("../../../app");
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const saveFileAdditional_1 = require("../../utils/file-uploads/saveFileAdditional");
+const number_to_words_1 = require("number-to-words");
+const dayjs_1 = __importDefault(require("dayjs"));
+const numberToBanglaWords_1 = require("../../utils/numberToBanglaWords");
+const calculateEMI_1 = require("../../utils/calculateEMI");
 const getAllUser = (query) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
@@ -103,9 +107,9 @@ const getAllNewLoans = (id) => __awaiter(void 0, void 0, void 0, function* () {
             user: {
                 id: id
             },
-            status: {
-                in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
-            }
+            // status: {
+            //   in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
+            // }
         },
         include: {
             eligibleLoanOffer: true,
@@ -139,171 +143,236 @@ const getAllExistingLoans = (id) => __awaiter(void 0, void 0, void 0, function* 
 });
 const getApplication = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield app_1.prisma.loanApplicationForm.findUnique({
-        where: { id }
+        where: { id },
+        include: {
+            eligibleLoanOffer: {
+                select: {
+                    loanType: true,
+                }
+            },
+        }
     });
     console.log(result);
     return result;
 });
-// const createAdiDoc = async (id: string, files: TUploadedFile[]) => {
-//   const isExistApplication = await prisma.loanApplicationForm.findUnique({ where: { id } })
-//   if (!isExistApplication) {
-//     throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
-//   }
-//   try {
-//     // Save files locally instead of uploading to Cloudinary
-//     const savedDocuments: {
-//       filePath: string;
-//       originalName: string;
-//       mimeType: string;
-//     }[] = [];
-//     const images: TUploadedFile[] = files
-//     for (const file of images) {
-//       try {
-//         const savedPath = await saveFileAdditional(file.buffer, file.originalname, isExistApplication?.applicationId); // or file.originalname
-//         savedDocuments.push({
-//           filePath: savedPath,
-//           originalName: file.originalname,
-//           mimeType: file.mimetype,
-//         });
-//       } catch (err) {
-//         console.error(`Failed to save file ${file.fieldname}:`, err);
-//       }
-//     }
-//     console.log(savedDocuments)
-//     const uploadFileIntoDb = await prisma.additionalDocument.createMany({
-//       data: savedDocuments.map((doc) => ({
-//         url: doc.filePath,
-//         originalName: doc.originalName,
-//         mimeType: doc.mimeType,
-//         loanApplicationFormId: id,
-//       })),
-//     });
-//     if (uploadFileIntoDb.count > 0) {
-//       await prisma.loanApplicationForm.update({
-//         where: { id },
-//         data: {
-//           status: "PENDING",
-//           adminNotes: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.",
-//           additionalDocumentSubmit: true,
-//           additionalDocuments: false
-//         }
-//       })
-//       await prisma.applicationEvent.create({
-//         data: {
-//           applicationId: isExistApplication?.applicationId,
-//           eventType: "STATUS_UPDATED",
-//           description: `Status changed to ${newStatus}`,
-//           createdBy: userId,
-//         },
-//       })
-//     }
-//   } catch (err) {
-//     console.error(`Failed to save file :`, err);
-//   }
-// }
-const createAdiDoc = (id, // LoanApplicationForm.id
-files, user // who triggered this action
-) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(files === null || files === void 0 ? void 0 : files.length)) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.BAD_REQUEST, "No files provided");
-    }
-    const app = yield app_1.prisma.loanApplicationForm.findUnique({
-        where: { id },
-        select: { id: true, applicationId: true }, // applicationId = human readable code
-    });
-    if (!app) {
+const createAdiDoc = (id, files, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExistApplication = yield app_1.prisma.loanApplicationForm.findUnique({ where: { id } });
+    if (!isExistApplication) {
         throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "Application not found");
     }
-    // Persist files to disk
-    const savedDocuments = [];
-    for (const file of files) {
-        try {
-            const savedPath = yield (0, saveFileAdditional_1.saveFileAdditional)(file.buffer, file.originalname, app.applicationId // use human-friendly code in the path
-            );
-            savedDocuments.push({
-                filePath: savedPath,
-                originalName: file.originalname,
-                mimeType: file.mimetype,
-                size: file.size,
-            });
+    try {
+        // Save files locally instead of uploading to Cloudinary
+        const savedDocuments = [];
+        const images = files;
+        for (const file of images) {
+            try {
+                const savedPath = yield (0, saveFileAdditional_1.saveFileAdditional)(file.buffer, file.originalname, isExistApplication === null || isExistApplication === void 0 ? void 0 : isExistApplication.applicationId); // or file.originalname
+                savedDocuments.push({
+                    filePath: savedPath,
+                    originalName: file.originalname,
+                    mimeType: file.mimetype,
+                });
+            }
+            catch (err) {
+                console.error(`Failed to save file ${file.fieldname}:`, err);
+            }
         }
-        catch (err) {
-            // log a file-level error event (outside the tx) so you still get a breadcrumb
-            yield app_1.prisma.applicationEvent.create({
-                data: {
-                    applicationId: app.id, // IMPORTANT: relational id
-                    eventType: "FILE_PERSISTED_ERROR",
-                    description: `Failed to save file "${file.originalname}"`,
-                    createdBy: user === null || user === void 0 ? void 0 : user.userId,
-                },
-            });
-            // continue; do not throw here to allow other files to process
-            // or, choose to throw to fail the whole request if ANY file fails
-        }
-    }
-    if (!savedDocuments.length) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, "Failed to save files");
-    }
-    const newStatus = "PENDING";
-    const adminNote = "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.";
-    // One transaction = DB writes + audit events
-    return yield app_1.prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
-        // 1) Insert file rows
-        const createDocs = yield tx.additionalDocument.createMany({
+        const uploadFileIntoDb = yield app_1.prisma.additionalDocument.createMany({
             data: savedDocuments.map((doc) => ({
                 url: doc.filePath,
                 originalName: doc.originalName,
                 mimeType: doc.mimeType,
-                loanApplicationFormId: app.id,
+                loanApplicationFormId: id,
             })),
         });
-        if (createDocs.count === 0) {
-            throw new AppError_1.default(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, "Files could not be recorded");
+        if (uploadFileIntoDb.count > 0) {
+            yield app_1.prisma.loanApplicationForm.update({
+                where: { id },
+                data: {
+                    status: "PENDING",
+                    adminNotes: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.",
+                    additionalDocumentSubmit: true,
+                    additionalDocuments: false
+                }
+            });
         }
-        // 2) Update application status/flags/notes
-        const updated = yield tx.loanApplicationForm.update({
-            where: { id: app.id },
-            data: {
-                status: newStatus,
-                adminNotes: adminNote,
-                additionalDocumentSubmit: true,
-                additionalDocuments: false,
-            },
-            select: { id: true, status: true, adminNotes: true, applicationId: true },
-        });
-        // 3) Create audit events (bulk)
-        const events = [];
-        events.push({
-            applicationId: app.id,
-            eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
-            description: `${createDocs.count} file(s) uploaded`,
-            createdBy: user === null || user === void 0 ? void 0 : user.userId,
-        });
-        events.push({
-            applicationId: app.id,
-            eventType: "STATUS_UPDATED",
-            description: `Feedback:${createDocs === null || createDocs === void 0 ? void 0 : createDocs.count}Status changed to ${updated.status}`,
-            createdBy: user === null || user === void 0 ? void 0 : user.userId,
-        });
-        events.push({
-            applicationId: app.id,
-            eventType: "ADMIN_NOTE_ADDED",
-            description: "Admin note updated after additional documents",
-            createdBy: user === null || user === void 0 ? void 0 : user.userId,
-        });
-        yield tx.applicationEvent.createMany({ data: events });
-        return {
-            success: true,
-            message: "Additional documents submitted and events recorded",
-            data: {
-                applicationId: updated.applicationId,
-                status: updated.status,
-                uploadedCount: createDocs.count,
-            },
-        };
-    }));
+    }
+    catch (err) {
+        console.error(`Failed to save file :`, err);
+    }
 });
-exports.createAdiDoc = createAdiDoc;
+// const createAdiDoc = async (
+//   id: string,                      // LoanApplicationForm.id
+//   files: TUploadedFile[],
+//   user: TMiddlewareUser           // who triggered this action
+// ) => {
+//   if (!files?.length) {
+//     throw new AppError(StatusCodes.BAD_REQUEST, "No files provided");
+//   }
+//   const app = await prisma.loanApplicationForm.findUnique({
+//     where: { id },
+//     select: { id: true, applicationId: true }, // applicationId = human readable code
+//   });
+//   if (!app) {
+//     throw new AppError(StatusCodes.NOT_FOUND, "Application not found");
+//   }
+//   // Persist files to disk
+//   const savedDocuments: {
+//     filePath: string;
+//     originalName: string;
+//     mimeType: string;
+//     size?: number;
+//   }[] = [];
+//   for (const file of files) {
+//     try {
+//       const savedPath = await saveFileAdditional(
+//         file.buffer,
+//         file.originalname,
+//         app.applicationId // use human-friendly code in the path
+//       );
+//       savedDocuments.push({
+//         filePath: savedPath,
+//         originalName: file.originalname,
+//         mimeType: file.mimetype,
+//         size: file.size,
+//       });
+//     } catch (err) {
+//       // log a file-level error event (outside the tx) so you still get a breadcrumb
+//       await prisma.applicationEvent.create({
+//         data: {
+//           applicationId: app.id, // IMPORTANT: relational id
+//           eventType: "OTHER",
+//           description: `Failed to save file "${file.originalname}"`,
+//           createdBy: user?.userId,
+//         },
+//       });
+//       // continue; do not throw here to allow other files to process
+//       // or, choose to throw to fail the whole request if ANY file fails
+//     }
+//   }
+//   if (!savedDocuments.length) {
+//     throw new AppError(
+//       StatusCodes.INTERNAL_SERVER_ERROR,
+//       "Failed to save files"
+//     );
+//   }
+//   const newStatus = "PENDING" as const;
+//   const adminNote =
+//     "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.";
+//   // One transaction = DB writes + audit events
+//   return await prisma.$transaction(async (tx) => {
+//     // 1) Insert file rows
+//     const createDocs = await tx.additionalDocument.createMany({
+//       data: savedDocuments.map((doc) => ({
+//         url: doc.filePath,
+//         originalName: doc.originalName,
+//         mimeType: doc.mimeType,
+//         loanApplicationFormId: app.id,
+//       })),
+//     });
+//     if (createDocs.count === 0) {
+//       throw new AppError(
+//         StatusCodes.INTERNAL_SERVER_ERROR,
+//         "Files could not be recorded"
+//       );
+//     }
+//     // 2) Update application status/flags/notes
+//     const updated = await tx.loanApplicationForm.update({
+//       where: { id: app.id },
+//       data: {
+//         status: newStatus,
+//         adminNotes: adminNote,
+//         additionalDocumentSubmit: true,
+//         additionalDocuments: false,
+//       },
+//       select: { id: true, status: true, adminNotes: true, applicationId: true },
+//     });
+//     // 3) Create audit events (bulk)
+//     const events: {
+//       applicationId: string;
+//       eventType: ApplicationEventType;
+//       description?: string;
+//       createdBy?: string | null;
+//     }[] = [];
+//     events.push({
+//       applicationId: app.id,
+//       eventType: "ADDITIONAL_DOCUMENTS_UPLOADED",
+//       description: `${createDocs.count} file(s) uploaded`,
+//       createdBy: user?.userId,
+//     });
+//     events.push({
+//       applicationId: app.id,
+//       eventType: "STATUS_UPDATED",
+//       description: `Feedback:${createDocs?.count}Status changed to ${updated.status}`,
+//       createdBy: user?.userId,
+//     });
+//     events.push({
+//       applicationId: app.id,
+//       eventType: "ADMIN_NOTE_ADDED",
+//       description: "Admin note updated after additional documents",
+//       createdBy: user?.userId,
+//     });
+//     await tx.applicationEvent.createMany({ data: events });
+//     return {
+//       success: true,
+//       message: "Additional documents submitted and events recorded",
+//       data: {
+//         applicationId: updated.applicationId,
+//         status: updated.status,
+//         uploadedCount: createDocs.count,
+//       },
+//     };
+//   });
+// };
+const getAgreementDoc = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x;
+    try {
+        const result = yield app_1.prisma.loanApplicationForm.findUnique({
+            where: { id },
+            include: {
+                user: true,
+                personalInfo: true,
+                loanRequest: true,
+                residentialInformation: true,
+                eligibleLoanOffer: true
+            }
+        });
+        if (!result) {
+            throw new AppError_1.default(http_status_codes_1.StatusCodes.NOT_FOUND, "Application not found");
+        }
+        const loanAmountInWord = (0, number_to_words_1.toWords)(Number((_a = result === null || result === void 0 ? void 0 : result.loanRequest) === null || _a === void 0 ? void 0 : _a.loanAmount) || 0) + " taka only";
+        const loanAmountInBangla = (0, numberToBanglaWords_1.numberToBanglaWords)(Number((_b = result === null || result === void 0 ? void 0 : result.loanRequest) === null || _b === void 0 ? void 0 : _b.loanAmount));
+        const dueDate = (0, dayjs_1.default)((result === null || result === void 0 ? void 0 : result.updatedAt) || "").add(((_c = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _c === void 0 ? void 0 : _c.periodMonths) || 0, "month").format("YYYY-MM-DD");
+        const presentAddress = `${((_d = result === null || result === void 0 ? void 0 : result.residentialInformation) === null || _d === void 0 ? void 0 : _d.presentAddress) || ""}, ${((_e = result === null || result === void 0 ? void 0 : result.residentialInformation) === null || _e === void 0 ? void 0 : _e.presentThana) || ""}, ${((_f = result === null || result === void 0 ? void 0 : result.residentialInformation) === null || _f === void 0 ? void 0 : _f.presentDistrict) || ""}\n ${((_g = result === null || result === void 0 ? void 0 : result.residentialInformation) === null || _g === void 0 ? void 0 : _g.presentDivision) || ""} - ${((_h = result === null || result === void 0 ? void 0 : result.residentialInformation) === null || _h === void 0 ? void 0 : _h.presentPostalCode) || ""}`;
+        const calculateEMIValue = Math.round((0, calculateEMI_1.calculateEMI)(Number((_j = result === null || result === void 0 ? void 0 : result.loanRequest) === null || _j === void 0 ? void 0 : _j.loanAmount), Number((_k = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _k === void 0 ? void 0 : _k.interestRate) || 0, Number((_l = result === null || result === void 0 ? void 0 : result.loanRequest) === null || _l === void 0 ? void 0 : _l.loanTenure)));
+        console.log(presentAddress);
+        const data = {
+            id: result === null || result === void 0 ? void 0 : result.id,
+            applicationId: result === null || result === void 0 ? void 0 : result.applicationId,
+            fullName: (_m = result === null || result === void 0 ? void 0 : result.personalInfo) === null || _m === void 0 ? void 0 : _m.fullName,
+            nid: (_o = result === null || result === void 0 ? void 0 : result.personalInfo) === null || _o === void 0 ? void 0 : _o.NIDNumber,
+            loanName: (_p = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _p === void 0 ? void 0 : _p.bankName,
+            loanType: (_q = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _q === void 0 ? void 0 : _q.loanType,
+            presrntAddress: presentAddress,
+            requstedAmount: (_r = result === null || result === void 0 ? void 0 : result.loanRequest) === null || _r === void 0 ? void 0 : _r.loanAmount,
+            eligibleLoan: (_s = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _s === void 0 ? void 0 : _s.eligibleLoan,
+            interestRate: (_t = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _t === void 0 ? void 0 : _t.interestRate,
+            periodMonths: (_u = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _u === void 0 ? void 0 : _u.periodMonths,
+            monthlyEMI: calculateEMIValue,
+            processingFee: (_v = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _v === void 0 ? void 0 : _v.processingFee,
+            loanAmountInWord: loanAmountInWord,
+            loanAmountInBangla: loanAmountInBangla,
+            loanTenure: (_w = result === null || result === void 0 ? void 0 : result.eligibleLoanOffer) === null || _w === void 0 ? void 0 : _w.periodMonths,
+            emiStartDate: (_x = result === null || result === void 0 ? void 0 : result.loanRequest) === null || _x === void 0 ? void 0 : _x.emiStartDate,
+            applicationDate: result === null || result === void 0 ? void 0 : result.updatedAt,
+            dueDate: dueDate
+        };
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
 exports.UserServices = {
     getAllUser,
     meProfile,
@@ -311,5 +380,6 @@ exports.UserServices = {
     getAllNewLoans,
     getAllExistingLoans,
     getApplication,
-    createAdiDoc: exports.createAdiDoc
+    createAdiDoc,
+    getAgreementDoc
 };

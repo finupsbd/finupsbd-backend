@@ -21,6 +21,8 @@ router.get('/:id', auth('USER', 'ADMIN', 'SUPER_ADMIN'), UserController.getSingl
 router.get('/get-application/:id', auth('USER'), UserController.getApplication);
 router.post('/create-addi-doc/:id', upload.array("files", 10), auth('USER'), UserController.createAddiDoc);
 
+router.get('/agreement-doc/:id',  UserController.getAgreementDoc);
+
 
 
 

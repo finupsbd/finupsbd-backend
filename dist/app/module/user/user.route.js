@@ -17,4 +17,5 @@ router.get('/my-profile', (0, auth_1.default)('USER', 'ADMIN', 'SUPER_ADMIN'), u
 router.get('/:id', (0, auth_1.default)('USER', 'ADMIN', 'SUPER_ADMIN'), user_controller_1.UserController.getSingleUser);
 router.get('/get-application/:id', (0, auth_1.default)('USER'), user_controller_1.UserController.getApplication);
 router.post('/create-addi-doc/:id', upload.array("files", 10), (0, auth_1.default)('USER'), user_controller_1.UserController.createAddiDoc);
+router.get('/agreement-doc/:id', user_controller_1.UserController.getAgreementDoc);
 exports.UserRouter = router;

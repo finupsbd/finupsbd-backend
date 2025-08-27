@@ -11,5 +11,6 @@ route.get('/get-all-users', application_controller_1.ApplicarionController.getAl
 route.get('/get-all-application', application_controller_1.ApplicarionController.getAllApplication);
 route.get('/get-single-application/:id', application_controller_1.ApplicarionController.getSingleApplication);
 route.patch('/application-feedback/:id', application_controller_1.ApplicarionController.applicationFeedBack);
+route.get('/status-events/:id', application_controller_1.ApplicarionController.getStatusEvents);
 route.get('/dashboard-home', application_controller_1.ApplicarionController.dashboardHome);
 exports.SuperAdminApplicationRouter = route;

@@ -90,6 +90,16 @@ const createAddiDoc = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result
     });
 }));
+const getAgreementDoc = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const result = yield user_service_1.UserServices.getAgreementDoc(id);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: "Retrieve Agreement doc successfully.",
+        statusCode: http_status_codes_1.StatusCodes.CREATED,
+        data: result
+    });
+}));
 exports.UserController = {
     getAllUsers,
     meProfile,
@@ -97,5 +107,6 @@ exports.UserController = {
     getAllNewLoans,
     getAllExistingLoans,
     getApplication,
-    createAddiDoc
+    createAddiDoc,
+    getAgreementDoc
 };

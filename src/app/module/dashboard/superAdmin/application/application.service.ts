@@ -100,19 +100,32 @@ const getSingleApplication = async (id: string) => {
 
 
 
-const applicationFeedback = async (id: string, payload: { status: LoanStatus, adminNote: string, additionalDocuments: boolean }) => {
+const applicationFeedback = async (
+  id: string,
+  payload: { status: LoanStatus; adminNote: string; additionalDocuments: boolean },
+  adminId?: string // pass the admin user id (or role)
+) => {
+  console.log(id, payload);
 
-  console.log(id, payload)
-
-  const result = await prisma.loanApplicationForm.findUnique({ where: { id }, include: { user: { select: { email: true, name: true, userId: true } } } })
+  const result = await prisma.loanApplicationForm.findUnique({
+    where: { id },
+    include: {
+      user: {
+        select: { email: true, name: true, userId: true }
+      }
+    }
+  });
 
   if (!result) {
-    throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
+    throw new AppError(StatusCodes.NOT_FOUND, "Application not found");
   }
 
+  // Store old status before update
+  const previousStatus = result.status;
 
-  if (payload.status == "REJECTED") {
-    await prisma.loanApplicationForm.update({
+  let updated;
+  if (payload.status === "REJECTED") {
+    updated = await prisma.loanApplicationForm.update({
       where: { id },
       data: {
         status: payload.status,
@@ -120,48 +133,72 @@ const applicationFeedback = async (id: string, payload: { status: LoanStatus, ad
         additionalDocuments: payload.additionalDocuments,
         isActive: false
       }
-    })
+    });
 
-    const emailSubject = "Loan Application Status: REJECTED"
+    // Log to ApplicationEvent
+    await prisma.applicationEvent.create({
+      data: {
+        applicationId: id,
+        eventType: "STATUS_CHANGED",
+        stateBefore: previousStatus,
+        stateAfter: payload.status,
+        feedback: payload.adminNote,
+        severity: "ERROR",
+        createdRole: "SUPER_ADMIN"
+      }
+    });
 
-    const bodyText = applicationRejected(result?.user?.name ?? '', result?.applicationId ?? '', payload?.adminNote ?? '')
+    // Email
+    const emailSubject = "Loan Application Status: REJECTED";
+    const bodyText = applicationRejected(
+      result?.user?.name ?? "",
+      result?.applicationId ?? "",
+      payload?.adminNote ?? ""
+    );
+    await sendEmail(result?.user?.email, emailSubject, bodyText);
 
-    await sendEmail(result?.user?.email, emailSubject, bodyText)
-
-    return "Email Send Successfully"
+    return "Email Sent Successfully";
   } else {
-    const result = await prisma.loanApplicationForm.update({
+    updated = await prisma.loanApplicationForm.update({
       where: { id },
       data: {
         status: payload.status,
         additionalDocuments: payload.additionalDocuments,
-        adminNotes: payload.adminNote
+        adminNotes: payload.adminNote,
+        isActive: true
       },
       include: {
         user: {
-          select: {
-            email: true,
-            name: true
-          }
+          select: { email: true, name: true }
         }
       }
-    })
+    });
 
+    // Log to ApplicationEvent
+    await prisma.applicationEvent.create({
+      data: {
+        applicationId: id,
+        eventType: "STATUS_CHANGED",
+        stateBefore: previousStatus,
+        stateAfter: payload.status,
+        feedback: payload.adminNote,
+        severity: "INFO",
+        createdRole: "SUPER_ADMIN"
+      }
+    });
 
-    const emailSubject = "Loan Application Status Update"
-
+    // Email
+    const emailSubject = "Loan Application Status Update";
     const templatePayload = {
-      name: result?.user?.name ?? "",
-      applicationID: result?.applicationId ?? "",
-      status: result?.status ?? "",
+      name: updated?.user?.name ?? "",
+      applicationID: updated?.applicationId ?? "",
+      status: updated?.status ?? "",
       reason: payload?.adminNote ?? ""
-    }
+    };
+    const bodyText = loanStatusEmail(templatePayload);
+    await sendEmail(updated?.user?.email, emailSubject, bodyText);
 
-    const bodyText = loanStatusEmail(templatePayload)
-    await sendEmail(result?.user?.email, emailSubject, bodyText)
-
-
-    return "Email Send Successfully"
+    return "Email Sent Successfully";
   }
 };
 
@@ -250,11 +287,32 @@ const getAllusers = async () => {
 }
 
 
+const getStatusEvents = async (id: string) => {
+
+  const result = await prisma.applicationEvent.findMany({
+    where: { 
+      applicationId: id, 
+      eventType: "STATUS_CHANGED"
+    },
+    
+    orderBy: {
+      createdAt: "desc"
+    }, 
+  })
+
+  return result
+}
+
+
+
+
+
 
 export const ApplicationServides = {
   getAllApplication,
   getSingleApplication,
   applicationFeedback,
   dashboardHome,
-  getAllusers
+  getAllusers,
+  getStatusEvents
 }
