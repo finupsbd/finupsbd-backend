@@ -29,7 +29,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/lodash": "^4.17.18",
     "@types/multer": "^1.4.12",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.18.0",
     "@types/nodemailer": "^6.4.17",
     "@types/number-to-words": "^1.2.3",
     "@types/passport": "^1.0.17",
