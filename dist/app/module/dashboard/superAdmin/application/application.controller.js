@@ -49,24 +49,6 @@ const applicationFeedBack = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         data: result
     });
 }));
-const dashboardHome = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield application_service_1.ApplicationServides.dashboardHome();
-    (0, sendResponce_1.default)(res, {
-        success: true,
-        message: 'dashboard home page data retrive',
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        data: result
-    });
-}));
-const getAllusers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield application_service_1.ApplicationServides.dashboardHome();
-    (0, sendResponce_1.default)(res, {
-        success: true,
-        message: 'Retrive All users',
-        statusCode: http_status_codes_1.StatusCodes.OK,
-        data: result
-    });
-}));
 const getStatusEvents = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.id;
@@ -82,7 +64,5 @@ exports.ApplicarionController = {
     getSingleApplication,
     getAllApplication,
     applicationFeedBack,
-    dashboardHome,
-    getAllusers,
     getStatusEvents
 };

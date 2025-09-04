@@ -41,7 +41,7 @@ const auth = (...requiredRoles) => {
         //     throw new AppError(StatusCodes.BAD_REQUEST,"You are not valid user")
         // }
         if (requiredRoles && !requiredRoles.includes(decode === null || decode === void 0 ? void 0 : decode.role)) {
-            throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'you are not authorized role ');
+            throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, 'you are not authorized role');
         }
         req.user = decode;
         next();

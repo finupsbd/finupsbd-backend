@@ -2823,3 +2823,215 @@ Argument `where` of type UserWhereUniqueInput needs at least one of `id`, `email
     at Generator.next (<anonymous>)
     at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"Error","errorMessage":"Invalid password! please input valid password."}
 --------------------------------------------------------------
+[2025-09-01 17:35:23] ERROR: Error: Application not found please enter valid Phone and Application ID
+    at /home/reza/codeing/finupsbd-backend/src/app/module/applicationForm/applicationForm.service.ts:585:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/applicationForm/applicationForm.service.ts:5:58) {"method":"POST","url":"/api/v1/application/application-tracking","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Application not found please enter valid Phone and Application ID"}
+--------------------------------------------------------------
+[2025-09-02 13:50:31] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/users/get-all-existing-loan/1c96ac3a-e0b1-4f89-91fd-58de5a11f9d4","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-02 14:39:39] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/users/get-all-new-loans/dfaaff86-dc09-43db-b5d6-5d7a1bba8bff","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-02 14:56:04] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/users/get-all-rejects-loan/dfaaff86-dc09-43db-b5d6-5d7a1bba8bff","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-03 15:04:51] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:21:41] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:21:41] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:22:29] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:23:37] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:23:37] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:29:02] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:31:29] ERROR: Error: you are not authorized role 
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:43:19
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:5:58) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"PostmanRuntime/7.45.0","ip":"::1","errorName":"Error","errorMessage":"you are not authorized role "}
+--------------------------------------------------------------
+[2025-09-04 12:42:59] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:44:34] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:44:35] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:45:24] ERROR: Error: You are unauthorized
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:18:19
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"You are unauthorized"}
+--------------------------------------------------------------
+[2025-09-04 12:46:01] ERROR: JsonWebTokenError: invalid signature
+    at /home/reza/codeing/finupsbd-backend/node_modules/jsonwebtoken/verify.js:171:19
+    at getSecret (/home/reza/codeing/finupsbd-backend/node_modules/jsonwebtoken/verify.js:97:14)
+    at Object.module.exports [as verify] (/home/reza/codeing/finupsbd-backend/node_modules/jsonwebtoken/verify.js:101:10)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:25:34
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25 {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"JsonWebTokenError","errorMessage":"invalid signature"}
+--------------------------------------------------------------
+[2025-09-04 12:46:01] ERROR: JsonWebTokenError: invalid signature
+    at /home/reza/codeing/finupsbd-backend/node_modules/jsonwebtoken/verify.js:171:19
+    at getSecret (/home/reza/codeing/finupsbd-backend/node_modules/jsonwebtoken/verify.js:97:14)
+    at Object.module.exports [as verify] (/home/reza/codeing/finupsbd-backend/node_modules/jsonwebtoken/verify.js:101:10)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:25:34
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/adminAuth.ts:12:81
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25 {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"JsonWebTokenError","errorMessage":"invalid signature"}
+--------------------------------------------------------------
+[2025-09-04 12:47:08] ERROR: Error: you are not authorized role 
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:44:19
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:5:58) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"you are not authorized role "}
+--------------------------------------------------------------
+[2025-09-04 12:47:49] ERROR: Error: you are not authorized role 
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:44:19
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/middleware/auth.ts:5:58) {"method":"GET","url":"/api/v1/super-admin/dashboard/dashboard-home","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"you are not authorized role "}
+--------------------------------------------------------------

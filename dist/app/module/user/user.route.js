@@ -12,6 +12,7 @@ const router = express_1.default.Router();
 const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage() }); // keeps files in memory
 router.get('/get-all-new-loans/:id', (0, auth_1.default)('USER'), user_controller_1.UserController.getAllNewLoans);
 router.get('/get-all-existing-loan/:id', (0, auth_1.default)('USER'), user_controller_1.UserController.getAllExistingLoans);
+router.get('/get-all-rejects-loan/:id', (0, auth_1.default)('USER'), user_controller_1.UserController.getAllRejectsLoans);
 router.get('/', (0, auth_1.default)('USER', 'ADMIN', 'SUPER_ADMIN'), user_controller_1.UserController.getAllUsers);
 router.get('/my-profile', (0, auth_1.default)('USER', 'ADMIN', 'SUPER_ADMIN'), user_controller_1.UserController.meProfile);
 router.get('/:id', (0, auth_1.default)('USER', 'ADMIN', 'SUPER_ADMIN'), user_controller_1.UserController.getSingleUser);

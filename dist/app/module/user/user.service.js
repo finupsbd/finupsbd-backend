@@ -107,9 +107,9 @@ const getAllNewLoans = (id) => __awaiter(void 0, void 0, void 0, function* () {
             user: {
                 id: id
             },
-            // status: {
-            //   in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
-            // }
+            status: {
+                in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
+            }
         },
         include: {
             eligibleLoanOffer: true,
@@ -122,13 +122,35 @@ const getAllNewLoans = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getAllExistingLoans = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(id);
     const result = yield app_1.prisma.loanApplicationForm.findMany({
         where: {
             user: {
                 id: id
             },
             status: {
-                in: ["APPROVED"]
+                in: ["COMPLETED"]
+            }
+        },
+        include: {
+            eligibleLoanOffer: true,
+            loanRequest: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+    return result;
+});
+const getAllRejectsLoans = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(id);
+    const result = yield app_1.prisma.loanApplicationForm.findMany({
+        where: {
+            user: {
+                id: id
+            },
+            status: {
+                in: ["REJECTED"]
             }
         },
         include: {
@@ -379,6 +401,7 @@ exports.UserServices = {
     getSingleUser,
     getAllNewLoans,
     getAllExistingLoans,
+    getAllRejectsLoans,
     getApplication,
     createAdiDoc,
     getAgreementDoc

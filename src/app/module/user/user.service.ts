@@ -122,9 +122,9 @@ const getAllNewLoans = async (id: string) => {
       user: {
         id: id
       },
-      // status: {
-      //   in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
-      // }
+      status: {
+        in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
+      }
     },
     include: {
       eligibleLoanOffer: true,
@@ -142,14 +142,14 @@ const getAllNewLoans = async (id: string) => {
 };
 
 const getAllExistingLoans = async (id: string) => {
-
-  const result = await prisma.loanApplicationForm.findMany({
+ console.log(id)
+ const result = await prisma.loanApplicationForm.findMany({
     where: {
       user: {
         id: id
       },
       status: {
-        in: ["APPROVED"]
+        in: ["COMPLETED"]
       }
     },
     include: {
@@ -160,6 +160,33 @@ const getAllExistingLoans = async (id: string) => {
       createdAt: "desc"
     }
   })
+ 
+
+  return result
+
+};
+
+
+const getAllRejectsLoans = async (id: string) => {
+ console.log(id)
+ const result = await prisma.loanApplicationForm.findMany({
+    where: {
+      user: {
+        id: id
+      },
+      status: {
+        in: ["REJECTED"]
+      }
+    },
+    include: {
+      eligibleLoanOffer: true,
+      loanRequest: true
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  })
+ 
 
   return result
 
@@ -462,6 +489,7 @@ export const UserServices = {
   getSingleUser,
   getAllNewLoans,
   getAllExistingLoans,
+  getAllRejectsLoans,
   getApplication,
   createAdiDoc,
   getAgreementDoc

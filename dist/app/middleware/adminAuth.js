@@ -21,8 +21,9 @@ const AppError_1 = __importDefault(require("../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const adminAuth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a, _b;
-        const token = (_b = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.refreshToken) === null || _b === void 0 ? void 0 : _b.split(' ')[0];
+        var _a;
+        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+        console.log(token);
         if (!token) {
             throw new AppError_1.default(http_status_codes_1.StatusCodes.UNAUTHORIZED, "You are unauthorized");
         }

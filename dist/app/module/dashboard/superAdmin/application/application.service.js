@@ -181,65 +181,6 @@ const applicationFeedback = (id, payload, adminId // pass the admin user id (or 
         return "Email Sent Successfully";
     }
 });
-const dashboardHome = () => __awaiter(void 0, void 0, void 0, function* () {
-    // Define time ranges
-    const startOfThisMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-    const startOfLastMonth = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1);
-    const endOfLastMonth = new Date(startOfThisMonth.getTime() - 1); // last day of last month
-    // Users
-    const usersThisMonth = yield app_1.prisma.user.count({
-        where: { createdAt: { gte: startOfThisMonth } },
-    });
-    const usersLastMonth = yield app_1.prisma.user.count({
-        where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
-    });
-    // Applications
-    const applicationsThisMonth = yield app_1.prisma.loanApplicationForm.count({
-        where: { createdAt: { gte: startOfThisMonth } },
-    });
-    const applicationsLastMonth = yield app_1.prisma.loanApplicationForm.count({
-        where: { createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } },
-    });
-    // Growth formula
-    const calcGrowth = (prev, current) => {
-        if (prev === 0 && current > 0)
-            return "+100%"; // avoid divide-by-zero
-        if (prev === 0 && current === 0)
-            return "0%";
-        const growth = ((current - prev) / prev) * 100;
-        return (growth < 0 ? 0 : growth).toFixed(2) + "%";
-    };
-    const userGrowth = calcGrowth(usersLastMonth, usersThisMonth);
-    const applicantGrowth = calcGrowth(applicationsLastMonth, applicationsThisMonth);
-    const totalUsers = yield app_1.prisma.user.count();
-    const totalApplications = yield app_1.prisma.loanApplicationForm.count();
-    const last5Application = yield app_1.prisma.loanApplicationForm.findMany({
-        orderBy: {
-            createdAt: "desc"
-        },
-        take: 5,
-        select: {
-            status: true,
-            applicationId: true,
-            user: {
-                select: {
-                    name: true
-                }
-            }
-        },
-    });
-    console.log(userGrowth, applicantGrowth);
-    return {
-        totalUsers,
-        totalApplications,
-        userGrowth,
-        applicantGrowth,
-        last5Application
-    };
-});
-const getAllusers = () => __awaiter(void 0, void 0, void 0, function* () {
-    return "user";
-});
 const getStatusEvents = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield app_1.prisma.applicationEvent.findMany({
         where: {
@@ -256,7 +197,5 @@ exports.ApplicationServides = {
     getAllApplication,
     getSingleApplication,
     applicationFeedback,
-    dashboardHome,
-    getAllusers,
     getStatusEvents
 };

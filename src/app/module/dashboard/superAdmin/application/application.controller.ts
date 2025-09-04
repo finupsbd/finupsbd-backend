@@ -46,30 +46,6 @@ const applicationFeedBack = catchAsync(async (req, res) => {
   });
 })
 
-const dashboardHome = catchAsync(async (req, res) => {
-
-  const result = await ApplicationServides.dashboardHome()
-
-  sendResponses(res, {
-    success: true,
-    message: 'dashboard home page data retrive',
-    statusCode: StatusCodes.OK,
-    data: result
-  });
-})
-
-const getAllusers = catchAsync(async (req, res) => {
-
-
-  const result = await ApplicationServides.dashboardHome()
-
-  sendResponses(res, {
-    success: true,
-    message: 'Retrive All users',
-    statusCode: StatusCodes.OK,
-    data: result
-  });
-})
 
 
 const getStatusEvents = catchAsync(async (req, res) => {
@@ -91,7 +67,5 @@ export const ApplicarionController = {
   getSingleApplication,
   getAllApplication,
   applicationFeedBack,
-  dashboardHome,
-  getAllusers,
   getStatusEvents
 }

@@ -60,10 +60,20 @@ const getAllNewLoans = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
 }));
 const getAllExistingLoans = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const result = yield user_service_1.UserServices.getAllNewLoans(id);
+    const result = yield user_service_1.UserServices.getAllExistingLoans(id);
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: "Retrive all applications",
+        message: "get all existing loans",
+        statusCode: http_status_codes_1.StatusCodes.OK,
+        data: result
+    });
+}));
+const getAllRejectsLoans = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const result = yield user_service_1.UserServices.getAllRejectsLoans(id);
+    (0, sendResponce_1.default)(res, {
+        success: true,
+        message: "get all rejected loans",
         statusCode: http_status_codes_1.StatusCodes.OK,
         data: result
     });
@@ -106,6 +116,7 @@ exports.UserController = {
     getSingleUser,
     getAllNewLoans,
     getAllExistingLoans,
+    getAllRejectsLoans,
     getApplication,
     createAddiDoc,
     getAgreementDoc
