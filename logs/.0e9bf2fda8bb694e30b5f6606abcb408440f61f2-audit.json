@@ -6,61 +6,6 @@
     "auditLog": "C:\\client-project\\finupsbd-backend\\logs\\.0e9bf2fda8bb694e30b5f6606abcb408440f61f2-audit.json",
     "files": [
         {
-            "date": 1755173749437,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-14.log",
-            "hash": "e45ba9e66aa954584f0b2bff3e6f3a63c024a95665b9e73b8ce0fc3fb5e54c6d"
-        },
-        {
-            "date": 1755198624656,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-15.log",
-            "hash": "1e1da914a5675ed180c4136ee4173b16a604e63197e4a04351054bf6e419e526"
-        },
-        {
-            "date": 1755286526018,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-16.log",
-            "hash": "d38f87078ccb91cb5c209298027a02539b61af6717a2e8d18b049e1a1539a3fd"
-        },
-        {
-            "date": 1755417438010,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-17.log",
-            "hash": "2825b47d149314da1336a3ec37d4b832c9a5cf012dc5a19d5c72c6cc8a48115f"
-        },
-        {
-            "date": 1755459814129,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-18.log",
-            "hash": "89bfca9d380099c5b00184e3ab1a98c84eb515df44ac61028acd90f1410d9a4a"
-        },
-        {
-            "date": 1755547336059,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-19.log",
-            "hash": "1b04d11219e7d691200f61d358cf7227394ffbd12de5fce3c5cb1b77c1c6395a"
-        },
-        {
-            "date": 1755773205556,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-21.log",
-            "hash": "169f4daedaff60d85390da227efe4995001d582449823ab8d0afc700e0d4f7f5"
-        },
-        {
-            "date": 1755801437629,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-22.log",
-            "hash": "c78b95a0a958f471c3e45087cf12d0a8064eaf09677faca6ae502b0f64da291c"
-        },
-        {
-            "date": 1755958209227,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-23.log",
-            "hash": "a25fa5a33cd4b344babe6efeed9885a0c2af91b7f4e2c5705932a184588d57d2"
-        },
-        {
-            "date": 1755972381239,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-24.log",
-            "hash": "f040eb13106752ba6d23dc117f8ab9aa9d196c9561fc071c4cadfdfb9e99ea4c"
-        },
-        {
-            "date": 1756059896123,
-            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-25.log",
-            "hash": "ad2dd11783c456879f8b9de049ee2781e6a70c107961d52337190f54772a22e4"
-        },
-        {
             "date": 1756189929077,
             "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-26.log",
             "hash": "5c98e857466499895ce9d99b6f4034b8347b6cf4175e7efaea7558bb7061bda2"
@@ -69,6 +14,11 @@
             "date": 1756232582656,
             "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-08-27.log",
             "hash": "6c7b89ba214a09b8115cba7597f2b33b9be83a633be9f9fd32f1d2033e64aa9d"
+        },
+        {
+            "date": 1757312698087,
+            "name": "C:\\client-project\\finupsbd-backend\\logs\\application-2025-09-08.log",
+            "hash": "a45c591a92d716978b8baa4e5695993c732fc7f127d874c7d199f82100744f2f"
         }
     ],
     "hashType": "sha256"
