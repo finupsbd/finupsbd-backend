@@ -1,6 +1,9 @@
 import nodemailer from 'nodemailer';
 
 
+//146589aae72b0ccdf2adbef61c73397a-16bc1610-8cf1e183
+
+
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
@@ -29,3 +32,44 @@ const sendEmail = async (toEmail: string, emailSubject: string, bodyText: string
 };
 
 export default sendEmail;
+
+
+
+
+
+
+
+// import nodemailer from 'nodemailer';
+
+
+// //146589aae72b0ccdf2adbef61c73397a-16bc1610-8cf1e183
+
+
+// const transporter = nodemailer.createTransport({
+//   host: 'in-v3.mailjet.com',
+//   port: 587,
+//   secure: false, // true for port 465, false for other ports
+//   auth: {
+//     user: process.env.MAILJET_API_KEY,
+//     pass: process.env.MAILJET_SECRET_KEY,
+//   },
+// });
+
+// const sendEmail = async (toEmail: string, emailSubject: string, bodyText: string,
+//   // html: string,
+
+
+// ) => {
+//   const info = await transporter.sendMail({
+//     from: process.env.SENDER_EMAIL, // sender address
+//     to: toEmail, // list of receivers
+//     subject: emailSubject, // Subject line
+//     text: bodyText, // plain text body
+//     html: bodyText, // html body
+//   });
+
+//   console.log('Message sent: %s', info.messageId);
+//   // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+// };
+
+// export default sendEmail;

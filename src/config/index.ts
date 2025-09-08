@@ -37,6 +37,10 @@ export const ConfigFile = {
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT,
 
+    MAILJET_API_KEY: process.env.MAILJET_API_KEY,
+    MAILJET_SECRET_KEY: process.env.MAILJET_SECRET_KEY,
+    SENDER_EMAIL: process.env.SENDER_EMAIL,
+
 
     SECRET_KEY: process.env.SECRET_KEY,
     HMAC_KEY: process.env.HMAC_KEY,

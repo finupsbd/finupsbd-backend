@@ -1,62 +1,70 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from '../../../app';
-import { TMiddlewareUser } from '../../types/commonTypes';
-import { sendImageToCloud } from '../../utils/sendImageToCloud';
+import { BlogQueryBuilder } from '../../buidler/blogQueryBuilder';
+import { TMiddlewareUser, TMulterFile } from '../../types/commonTypes';
+import { saveFileBlogs } from '../../utils/file-uploads/saveFileBlogs';
 import { TBlog } from './blog.interface';
+import { TQueryOptions } from './blog.validation';
 
-const createBlog = async (payload: TBlog, file: any, user: TMiddlewareUser ) => {
-  const coverImage = await sendImageToCloud(file);
+
+
+
+const createBlog = async (payload: TBlog, file: TMulterFile, user: TMiddlewareUser) => {
+
+  // const coverImage = await sendImageToCloud(file);
+
+  const existingUser = await prisma.user.findUnique({
+    where: { id: user?.userId },
+  })
+
+
+  const coverImage = await saveFileBlogs(file.buffer, file.originalname, "blogs", existingUser?.userId ?? "");
   payload.coverImage = coverImage ?? undefined;
-  // payload.userId = user.userId ? user.userId : undefined;
 
-  const result = await prisma.blog.create({ data: payload as any });
+
+  if (user.userId) {
+    payload.userId = user.userId;
+  }
+
+
+  const result = await prisma.blog.create({
+    data: {
+      ...payload
+    } as any
+  })
   return result;
 };
 
-const getAllBlogs = async () => {
-  const result = await prisma.blog.findMany({
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      content: true,
-      category: true,
-      tags: true,
-      coverImage: true,
-      comments: {
-        select: {
-          id: true,
-          content: true,
-          createdAt: true,
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-              profile: {
-                select: {
-                  avatar: true,
-                },
-              },
-            },
-          },
+const getAllBlogs = async (queryOptions: TQueryOptions) => {
+
+  const builder = new BlogQueryBuilder(queryOptions);
+  const queryArgs = builder.buildFindManyArgs()
+
+  const select = {
+    id: true,
+    title: true,
+    slug: true,
+    content: true,
+    category: true,
+    tags: true,
+    coverImage: true,
+    user: {
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        profile: {
+          select: { avatar: true },
         },
       },
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          profile: {
-            select: {
-              avatar: true,
-            },
-          }
-        },
-      }
     },
-  });
-  return result;
+
+  }
+
+  queryArgs.select = select
+
+  const blogs = await prisma.blog.findMany(queryArgs);
+  return blogs;
 };
 
 const updateBlog = async (payload: TBlog, id: string) => {
@@ -86,14 +94,15 @@ const deleteBlog = async (id: string) => {
   return result;
 };
 
+const commentBlog = async (blogId: string, payload: string, parentId: string, user: TMiddlewareUser) => {
 
-
-
-const commentBlog = async (blogId: string, payload: {content: string}, user: TMiddlewareUser ) => {
+  console.log(payload, user)
 
   const isExistBlog = await prisma.blog.findFirst({
-    where: { id : blogId },
+    where: { id: blogId },
   });
+
+
   if (!isExistBlog) {
     throw new Error('Blog not found. thank you');
   }
@@ -102,25 +111,75 @@ const commentBlog = async (blogId: string, payload: {content: string}, user: TMi
   const result = await prisma.comment.create(
     {
       data: {
-        content: payload.content,
+        content: payload,
         blogId: blogId,
-        userId: user.userId ? user.userId : undefined,
+        userId: user?.userId,
+        parentId: parentId
       },
-    } as any
+    }
   );
 
   console.log(result, 'result comment blog');
 
   return result;
-
-
 };
+
+const getSingleBlog = async (id: string) => {
+
+  console.log({ id })
+
+  const result = await prisma.blog.findUnique(
+    {
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        content: true,
+        category: true,
+        tags: true,
+        coverImage: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            profile: {
+              select: { avatar: true },
+            },
+          },
+        },
+        // Fetch all comments, no parent filtering
+        comments: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            parentId: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                profile: {
+                  select: { avatar: true },
+                },
+              },
+            },
+          },
+        },
+      }
+    },
+  );
+
+  return result;
+};
+
 
 export const BlogService = {
   createBlog,
   updateBlog,
   getAllBlogs,
   deleteBlog,
-  commentBlog
+  commentBlog,
+  getSingleBlog
 };
-                      

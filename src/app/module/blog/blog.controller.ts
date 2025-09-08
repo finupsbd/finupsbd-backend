@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import { BlogService } from "./blog.service";
 import { BlogValidationSchema } from "./blog.validation";
 import sendResponses from "../../utils/sendResponce";
-import { TMiddlewareUser } from "../../types/commonTypes";
+import { TMiddlewareUser, TMulterFile } from "../../types/commonTypes";
+import AppError from "../../error/AppError";
 
 
 const createBlog = catchAsync(async (req, res) => {
-  const payload = BlogValidationSchema.parse(JSON.parse(req.body.data))
-  const file = req.file?.buffer
+  const payload = BlogValidationSchema.parse(JSON.parse(req.body.data)) as any
+
+  const file = req.file as TMulterFile
   const user = req.user as TMiddlewareUser;
+
 
   if (!user) {
     throw new Error("User is not authenticated");
@@ -28,7 +32,9 @@ const createBlog = catchAsync(async (req, res) => {
   });
 
 const getAllBlogs = catchAsync(async (req, res) => {
-    const result = await BlogService.getAllBlogs()
+  const queryOptions = req.body
+
+    const result = await BlogService.getAllBlogs(queryOptions)
 
 
     sendResponses(res, {
@@ -68,11 +74,13 @@ const deleteBlog = catchAsync(async (req, res) => {
 
 
 const commentBlog= catchAsync(async (req, res) => {
-    const blogId = req.params?.id
-    const user = req.user as TMiddlewareUser;
-    const payload = req.body
 
-    await BlogService.commentBlog(blogId, payload, user)
+  const { content, blogId, parentId } = req.body;
+
+    const user = req.user as TMiddlewareUser;
+
+
+    await BlogService.commentBlog(blogId, content, parentId, user)
 
 
     sendResponses(res, {
@@ -84,12 +92,27 @@ const commentBlog= catchAsync(async (req, res) => {
 
   });
 
+  const getSingleBlog = catchAsync(async (req, res) => {
+    const blogId = req.params?.id
+    const result = await BlogService.getSingleBlog(blogId)
+
+
+    sendResponses(res, {
+      success: true,
+      message: 'Retrive blog Successfully',
+      statusCode: StatusCodes.OK,
+      data: result,
+    })
+
+  });
+
   
 export const BlogController = {
     createBlog,
     updateBlog, 
     getAllBlogs, 
     deleteBlog, 
-    commentBlog
+    commentBlog, 
+    getSingleBlog
   };
   

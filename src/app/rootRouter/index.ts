@@ -14,8 +14,11 @@ import { CarLoanRouter } from '../module/loans/carLoan/carLoan.route'
 import { SMELoanRouter } from '../module/loans/smeLoan/smeLoan.route'
 import { InstantLoanRouter } from '../module/loans/instantLoan/instantLoan.route'
 import { UserBankAuthRouter } from '../module/bankProtal/userBankAuth/userBankAuth.route'
-import { SuperAdminApplicationRouter } from '../module/dashboard/superAdmin/application/application.route'
 import { CreditCardRouter } from '../module/loans/creditCard/creditCard.route'
+import { DashBoardSubRoutes } from './subRoute'
+
+
+
 const router = express.Router()
 
 
@@ -89,7 +92,7 @@ const moduleRouter = [
     },
     {
         path: '/super-admin',
-        route: SuperAdminApplicationRouter
+        route: DashBoardSubRoutes
     },
     
 ]

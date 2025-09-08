@@ -7,5 +7,4 @@ const router = express.Router();
 
 router.post('/', upload.single('file'), auth("USER", "ADMIN", "SUPER_ADMIN"), ProfileController.createProfile);
 
-
 export const ProfileRouter = router;

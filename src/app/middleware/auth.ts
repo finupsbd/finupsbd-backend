@@ -12,15 +12,14 @@ const auth = (...requiredRoles: string[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization?.split(' ')[1];
 
-        console.log({token})
-
+    
 
         if (!token) {
             throw new AppError(StatusCodes.UNAUTHORIZED, "You are unauthorized")
         }
 
         if (blacklistedTokens.has(token)) {
-            throw new AppError(StatusCodes.UNAUTHORIZED, "You are unauthorized")
+            throw new AppError(StatusCodes.UNAUTHORIZED, "You are unauthorized!")
         }
 
         const decode = await jwt.verify(token, ConfigFile.JWT_ACCESS_SECRET as string) as JwtPayload

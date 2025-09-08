@@ -127,6 +127,10 @@ export const sendImageToCloud = async (fileBuffer: Buffer) => {
   }
 };
 
+
+
+
+
 // 3️⃣ Use Multer memory storage (no local file system)
 const storage = multer.memoryStorage();
 

@@ -9,6 +9,7 @@ import { RootRouter } from './app/rootRouter';
 import seedSuperAdmin from './app/DB';
 import os, { version } from "os"
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 
 
 const app: Application = express();
@@ -22,6 +23,7 @@ app.use(cors({
     "https://stage.finupsbd.com",
     "https://finupsbd.com",
     "https://api.finupsbd.com",
+    "https://finupsbd-admin-dashboard.vercel.app",
     "https://finupsbd-fronend-developer.vercel.app"
   ],
   credentials: true,
@@ -48,7 +50,7 @@ app.use(limiter);
 
 
 app.use(passport.initialize());
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 
 app.use('/api/v1', RootRouter);
@@ -78,7 +80,7 @@ app.get('/', (req: Request, res: Response) => {
     },
     application: {
       name: 'FinupsBD',
-      environment: process.env.NODE_ENV || 'development',
+      environment: process.env.NODE_ENV || 'development.',
       version,
     },
     request: {

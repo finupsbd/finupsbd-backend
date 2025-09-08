@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes"
 import catchAsync from "../../utils/catchAsync"
 import { UserServices } from "./user.service"
 import sendResponses from "../../utils/sendResponce";
+import { TMiddlewareUser } from "../../types/commonTypes";
 
 
 
@@ -48,11 +49,26 @@ const getSingleUser = catchAsync(async (req, res) => {
     })
 })
 
-  const getAllApplication = catchAsync(async (req, res) => {
+  const getAllNewLoans = catchAsync(async (req, res) => {
 
     const id = req.params.id
 
-    const result = await UserServices.getAllApplication(id)
+    const result = await UserServices.getAllNewLoans(id)
+
+
+    sendResponses(res, {
+        success: true, 
+        message: "Retrive all applications",
+        statusCode: StatusCodes.OK,
+        data: result
+    })
+})
+
+  const getAllExistingLoans = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+
+    const result = await UserServices.getAllNewLoans(id)
 
 
     sendResponses(res, {
@@ -64,10 +80,63 @@ const getSingleUser = catchAsync(async (req, res) => {
 })
 
 
+  const getApplication = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+
+    const result = await UserServices.getApplication(id)
+
+
+    sendResponses(res, {
+        success: true, 
+        message: "Retrive all applications",
+        statusCode: StatusCodes.OK,
+        data: result
+    })
+})
+
+  const createAddiDoc = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+    const user = req.user as TMiddlewareUser
+
+    const files = req.files as Express.Multer.File[]
+
+    const result = await UserServices.createAdiDoc(id, files, user)
+
+
+    sendResponses(res, {
+        success: true, 
+        message: "Document upload successfull",
+        statusCode: StatusCodes.OK,
+        data: result
+    })
+})
+
+
+const getAgreementDoc = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+    const result = await UserServices.getAgreementDoc(id)
+    
+
+    sendResponses(res, {
+        success: true, 
+        message: "Retrieve Agreement doc successfully.",
+        statusCode: StatusCodes.CREATED,
+        data: result
+    })
+})
+
+
 
 export const UserController = {
     getAllUsers,
     meProfile, 
     getSingleUser, 
-    getAllApplication
+    getAllNewLoans, 
+    getAllExistingLoans, 
+    getApplication,
+    createAddiDoc,
+    getAgreementDoc
 }
