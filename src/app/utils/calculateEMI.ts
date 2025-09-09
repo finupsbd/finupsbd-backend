@@ -19,3 +19,6 @@ export function calculateEMI(principal:number, annualRate: number, months: numbe
 // console.log(`Interest Rate: ${interestRate}%`);
 // console.log(`Tenure: ${periodMonths} months`);
 // console.log(`Monthly EMI: ${emi} Taka`);
+
+
+

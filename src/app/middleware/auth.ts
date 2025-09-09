@@ -13,7 +13,6 @@ const auth = (...requiredRoles: string[]) => {
         const token = req.headers.authorization?.split(' ')[1];
 
     
-
         if (!token) {
             throw new AppError(StatusCodes.UNAUTHORIZED, "You are unauthorized")
         }
@@ -41,7 +40,7 @@ const auth = (...requiredRoles: string[]) => {
 
 
         if (requiredRoles && !requiredRoles.includes(decode?.role)) {
-            throw new AppError(StatusCodes.UNAUTHORIZED, 'you are not authorized role ');
+            throw new AppError(StatusCodes.UNAUTHORIZED, 'you are not authorized role');
         }
         req.user = decode
         next()

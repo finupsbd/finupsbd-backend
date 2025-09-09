@@ -68,12 +68,26 @@ const getSingleUser = catchAsync(async (req, res) => {
 
     const id = req.params.id
 
-    const result = await UserServices.getAllNewLoans(id)
+    const result = await UserServices.getAllExistingLoans(id)
 
 
     sendResponses(res, {
         success: true, 
-        message: "Retrive all applications",
+        message: "get all existing loans",
+        statusCode: StatusCodes.OK,
+        data: result
+    })
+})
+  const getAllRejectsLoans = catchAsync(async (req, res) => {
+
+    const id = req.params.id
+
+    const result = await UserServices.getAllRejectsLoans(id)
+
+
+    sendResponses(res, {
+        success: true, 
+        message: "get all rejected loans",
         statusCode: StatusCodes.OK,
         data: result
     })
@@ -136,6 +150,7 @@ export const UserController = {
     getSingleUser, 
     getAllNewLoans, 
     getAllExistingLoans, 
+    getAllRejectsLoans,
     getApplication,
     createAddiDoc,
     getAgreementDoc
