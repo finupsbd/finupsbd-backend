@@ -49,6 +49,9 @@ const DB_1 = __importDefault(require("./app/DB"));
 const os_1 = __importStar(require("os"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const path_1 = __importDefault(require("path"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const api_doc_1 = require("./lib/api-doc/api-doc");
+const authDoc_1 = require("./app/middleware/authDoc");
 const app = (0, express_1.default)();
 exports.prisma = new client_1.PrismaClient();
 app.use((0, cors_1.default)({
@@ -109,6 +112,7 @@ app.get('/', (req, res) => {
         },
     });
 });
+app.use("/api-docs", authDoc_1.authDoc, swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(api_doc_1.specs));
 // Middleware execution order corrected
 app.use(notFound_1.default);
 app.use(globalErrorHandler_1.default);

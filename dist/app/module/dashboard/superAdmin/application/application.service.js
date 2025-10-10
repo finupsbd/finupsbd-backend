@@ -43,7 +43,6 @@ const getAllApplication = () => __awaiter(void 0, void 0, void 0, function* () {
                     },
                 },
             },
-            take: 10,
             orderBy: {
                 createdAt: "desc"
             }

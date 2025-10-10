@@ -16,10 +16,14 @@ import AppError from '../../error/AppError';
 import { StatusCodes } from 'http-status-codes';
 import { verificationPINEmailTemplate } from '../../utils/email-template/verificationPIN';
 import { TMiddlewareUser } from '../../types/commonTypes';
+import phoneOtpSend from '../../utils/phoneOtpSend';
 
 
 
 //Sign up User
+
+
+
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -103,15 +107,19 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
   </div>
 `;
 
+  const phoneOtpSuccess = await phoneOtpSend(payload?.phone, `Your OTP is ${result?.pin}. Never share this code with anyone.`)
+   await sendEmail(payload?.email, MailSubject, MailText);
+  
+  console.log(phoneOtpSuccess)
 
-  await sendEmail(payload?.email, MailSubject, MailText);
-
-  // phoneOtpSend(phone, "send message")
+  console.log("massage send successfully")
 
   return {
     email: result.email
   };
 };
+
+
 
 const login = async (payload: { email: string; password: string }) => {
   const { email } = payload;
@@ -203,8 +211,6 @@ const validatePin = async (payload: { email: string; pin: string }) => {
 
   const emailSubject = 'Your PIN for Verification';
   const bodyText = verificationPINEmailTemplate(user?.name ?? "", user?.userId ?? "")
-
-
 
   await sendEmail(email, emailSubject, bodyText);
   return {};

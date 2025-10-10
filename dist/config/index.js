@@ -37,4 +37,7 @@ exports.ConfigFile = {
     SENDER_EMAIL: process.env.SENDER_EMAIL,
     SECRET_KEY: process.env.SECRET_KEY,
     HMAC_KEY: process.env.HMAC_KEY,
+    API_DOC_SECRET: process.env.API_DOC_SECRET,
+    SSL_SMS_API_TOKEN: process.env.SSL_SMS_API_TOKEN,
+    SSL_SMS_SID: process.env.SSL_SMS_SID,
 };

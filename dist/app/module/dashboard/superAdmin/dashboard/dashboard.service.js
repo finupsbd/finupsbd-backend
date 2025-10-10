@@ -68,7 +68,6 @@ const dashboardHome = () => __awaiter(void 0, void 0, void 0, function* () {
             createdAt: true
         }
     });
-    console.log(userGrowth, applicantGrowth);
     return {
         totalUsers,
         totalApplications,

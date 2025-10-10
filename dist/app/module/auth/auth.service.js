@@ -25,6 +25,7 @@ const generateUserId_1 = require("../../utils/generateUserId");
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const verificationPIN_1 = require("../../utils/email-template/verificationPIN");
+const phoneOtpSend_1 = __importDefault(require("../../utils/phoneOtpSend"));
 //Sign up User
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
@@ -96,8 +97,10 @@ const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, f
     </div>
   </div>
 `;
+    const phoneOtpSuccess = yield (0, phoneOtpSend_1.default)(payload === null || payload === void 0 ? void 0 : payload.phone, `Your OTP is ${result === null || result === void 0 ? void 0 : result.pin}. Never share this code with anyone.`);
     yield (0, sendEmail_1.default)(payload === null || payload === void 0 ? void 0 : payload.email, MailSubject, MailText);
-    // phoneOtpSend(phone, "send message")
+    console.log(phoneOtpSuccess);
+    console.log("massage send successfully");
     return {
         email: result.email
     };

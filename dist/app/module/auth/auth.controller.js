@@ -25,7 +25,7 @@ const signUp = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0,
     console.log(userSessionInfo);
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: "Cheack your email and and verify!",
+        message: "Cheack your phone or email and and verify!",
         statusCode: http_status_codes_1.StatusCodes.CREATED,
         data: result,
     });
@@ -64,7 +64,7 @@ const forgetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     const result = yield auth_service_1.AuthServices.forgetPassword(req.body);
     (0, sendResponce_1.default)(res, {
         success: true,
-        message: 'Check your email for verification!',
+        message: 'Check your phone or email for verification!',
         statusCode: http_status_codes_1.StatusCodes.OK,
         data: result
     });
