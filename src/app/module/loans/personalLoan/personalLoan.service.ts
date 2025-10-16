@@ -9,6 +9,8 @@ import { TPersonalLoan } from "./personalLoan.interface";
 
 const createPersonalLoan = async (payload: TPersonalLoan, file: TMulterFile) => {
 
+
+  
   const coverImage = file?.buffer ? await saveSingleFile(file.buffer, file.originalname, "CreateLoans") : undefined;
   // const coverImage = file ? await sendImageToCloud(file) : undefined;
   payload.coverImage = coverImage ?? undefined;

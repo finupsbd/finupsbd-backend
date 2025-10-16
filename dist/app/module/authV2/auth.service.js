@@ -25,122 +25,87 @@ const generateUserId_1 = require("../../utils/generateUserId");
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const verificationPIN_1 = require("../../utils/email-template/verificationPIN");
+const phoneOtpSend_1 = __importDefault(require("../../utils/phoneOtpSend"));
 //Sign up User
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
-    const isAlreadySignUpRequest = yield app_1.prisma.user.findFirst({
+    const { email, phone } = payload;
+    // Step 1: Check if user already exists 
+    const existingUser = yield app_1.prisma.user.findFirst({
         where: {
-            email: payload.email,
+            OR: [{ email }, { phone }],
         },
     });
-    if (isAlreadySignUpRequest) {
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, 'You have already an account please login');
-    }
-    const { email } = payload;
-    payload.password = yield (0, passwordHash_1.passwordHash)(payload.password);
-    //   const pin = crypto.randomBytes(3).toString('hex'); // 6-digit PIN
+    // Generate OTP & expiry (every time new OTP needed)
     const pin = Math.floor(100000 + Math.random() * 900000).toString();
-    const pinExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
+    const pinExpiry = new Date(Date.now() + 5 * 60 * 1000); // 15 min
+    // Step 2: If user exists
+    if (existingUser) {
+        // ✅ Case 1: Not verified -> resend OTP
+        if (!existingUser.phoneVerified) {
+            yield app_1.prisma.user.update({
+                where: { id: existingUser.id },
+                data: { pin, pinExpiry },
+            });
+            yield (0, phoneOtpSend_1.default)(phone, `Your OTP is ${pin}. It expires in 5 minutes.`);
+            return {
+                phone: existingUser.phone,
+            };
+            // throw new AppError(StatusCodes.OK, 'Check your phone for OTP. A new code has been sent.');
+        }
+        // ✅ Case 2: Already verified -> stop
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, "This phone or email is already registered. Please sign in instead.");
+    }
+    // Step 3: New user
+    payload.password = yield (0, passwordHash_1.passwordHash)(payload.password);
     payload.pin = pin;
     payload.pinExpiry = pinExpiry;
     payload.userId = yield (0, generateUserId_1.generateUserId)();
-    const userIsExist = yield app_1.prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
-    if (userIsExist) {
-        if (userIsExist && userIsExist.emailVerified === false) {
-            const sendOtp = yield app_1.prisma.user.update({ where: { email }, data: { pin: pin, pinExpiry: pinExpiry } });
-            const MailSubject = 'Your PIN for Verification';
-            const MailText = `
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
-      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-        <h2 style="color: #333; text-align: center; font-size: 24px; margin-bottom: 20px;">Your Verification PIN Code</h2>
-        <p style="font-size: 16px; color: #555;">Hello ${userIsExist === null || userIsExist === void 0 ? void 0 : userIsExist.name}</p>
-        <p style="font-size: 16px; color: #555;">Your PIN code for verification is:</p>
-        <h2 style="color: #007BFF; font-size: 36px; font-weight: bold; text-align: center; margin: 20px 0;">${sendOtp.pin}</h2>
-        <p style="font-size: 16px; color: #555;"><strong>🔒 Security Note:</strong> This PIN is valid for <strong>15 minutes</strong> only. Please do not share it with anyone.</p>
-        <p style="font-size: 16px; color: #555;">If you did not request this PIN, please ignore this email or contact our support team immediately.</p>
-        <p style="font-size: 16px; color: #555;">Thank you,</p>
-        <p style="font-size: 16px; color: #555; font-weight: bold;">FinupsBD</p>
-      </div>
-    </div>
-  `;
-            yield (0, sendEmail_1.default)(payload === null || payload === void 0 ? void 0 : payload.email, MailSubject, MailText);
-            // phoneOtpSend(phone, "send message")
-            throw new AppError_1.default(200, 'Check your email for verification PIN thank you');
-        }
-        if (userIsExist.emailVerified) {
-            throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, 'You have already verified user. Please login thank you');
-        }
-    }
     const result = yield app_1.prisma.user.create({ data: payload });
-    const MailSubject = 'Your PIN for Verification';
-    const MailText = `
-  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7fa; padding: 30px;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-      <h2 style="color: #333333; text-align: center; font-size: 24px; margin-bottom: 24px;">📩 Email Verification</h2>
-      <p style="font-size: 16px; color: #555555;">Dear <strong>${payload === null || payload === void 0 ? void 0 : payload.name}</strong>,</p>
-      <p style="font-size: 16px; color: #555555;">Thank you for registering with us. To complete your account setup, please use the One Time Password (OTP) provided below:</p>
-      <div style="text-align: center; margin: 24px 0;">
-        <span style="display: inline-block; background-color: #e6f0ff; color: #007BFF; font-size: 36px; font-weight: bold; padding: 12px 24px; border-radius: 8px; letter-spacing: 4px;">
-          ${result === null || result === void 0 ? void 0 : result.pin}
-        </span>
-      </div>
-      <p style="font-size: 16px; color: #555555;"><strong>⚠️ Note:</strong> This OTP is valid for a limited time (15 minutes). Please do not share it with anyone to ensure the security of your account.</p>
-      <p style="font-size: 16px; color: #555555;">If you did not request this, please ignore this email or contact our support team immediately.</p>
-      <p style="font-size: 16px; color: #555555;">Best regards,</p>
-      <p style="font-size: 16px; font-weight: bold; color: #333333;">Finups BD</p>
-    </div>
-  </div>
-`;
-    // const phoneOtpSuccess = await phoneOtpSend(payload?.phone, `Your OTP is ${result?.pin}. Never share this code with anyone.`)
-    yield (0, sendEmail_1.default)(payload === null || payload === void 0 ? void 0 : payload.email, MailSubject, MailText);
-    console.log("massage send successfully");
+    yield (0, phoneOtpSend_1.default)(payload.phone, `Your OTP is ${pin}. It expires in 5 minutes.`);
+    console.log("OTP sent successfully");
     return {
-        email: result.email
+        phone: result.phone,
     };
 });
 const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { email } = payload;
-    const user = yield app_1.prisma.user.findUnique({
-        where: { email },
+    const { identifier, password } = payload;
+    // Determine if input is email or phone
+    const isEmail = identifier.includes('@');
+    const user = yield app_1.prisma.user.findFirst({
+        where: isEmail
+            ? { email: identifier }
+            : { phone: identifier },
         include: {
-            profile: true
-        }
+            profile: true,
+        },
     });
     if (!user) {
-        throw new AppError_1.default(404, 'We can’t find an account with those details, please register your account!');
+        throw new AppError_1.default(404, 'We can’t find an account with those details, please check your phone or email address!');
     }
-    if (!user.emailVerified) {
-        throw new AppError_1.default(500, 'Your email is not verified. Please verify your email before logging in.');
+    if (!user.phoneVerified) {
+        throw new AppError_1.default(500, 'Your phone is not verified. Please verify your phone before logging in.');
     }
-    if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
+    if (!user.isActive) {
         throw new AppError_1.default(400, 'Your account is inactive. Please contact support.');
     }
-    const passwordCompare = yield bcrypt_1.default.compare(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password);
+    const passwordCompare = yield bcrypt_1.default.compare(password, user.password);
     if (!passwordCompare) {
-        throw new AppError_1.default(400, 'Invalid password! please input valid password.');
+        throw new AppError_1.default(400, 'Invalid password! Please input valid password.');
     }
     const jwtPayload = {
-        name: user === null || user === void 0 ? void 0 : user.name,
-        avater: (_a = user === null || user === void 0 ? void 0 : user.profile) === null || _a === void 0 ? void 0 : _a.avatar,
-        userId: user === null || user === void 0 ? void 0 : user.id,
-        role: user === null || user === void 0 ? void 0 : user.role,
-        email: user === null || user === void 0 ? void 0 : user.email,
+        name: user.name,
+        avatar: (_a = user.profile) === null || _a === void 0 ? void 0 : _a.avatar,
+        userId: user.id,
+        role: user.role,
+        email: user.email,
     };
     const accessToken = (0, tokenGenerate_1.accessTokenGenerate)(jwtPayload, '30d');
     const refreshToken = (0, tokenGenerate_1.refreshTokenGenerate)(jwtPayload, '365d');
     yield app_1.prisma.user.update({
-        where: {
-            email: user === null || user === void 0 ? void 0 : user.email,
-        },
-        data: {
-            lastLogin: new Date(),
-        },
-    }); // last login tracking
+        where: { id: user.id },
+        data: { lastLogin: new Date() },
+    });
     return {
         accessToken,
         refreshToken,
@@ -148,9 +113,9 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
-    const { email, pin } = payload;
-    console.log(email, pin);
-    const user = yield app_1.prisma.user.findUnique({ where: { email } });
+    const { phone, pin } = payload;
+    console.log(phone, pin);
+    const user = yield app_1.prisma.user.findUnique({ where: { phone } });
     if (!user) {
         throw new AppError_1.default(400, 'User not found');
     }
@@ -163,12 +128,12 @@ const validatePin = (payload) => __awaiter(void 0, void 0, void 0, function* () 
         // return { success: false, message: 'Invalid PIN' };
     }
     yield app_1.prisma.user.update({
-        where: { email },
-        data: { emailVerified: true },
+        where: { phone },
+        data: { phoneVerified: true },
     });
-    const emailSubject = 'Your PIN for Verification';
+    const emailSubject = 'Welcome';
     const bodyText = (0, verificationPIN_1.verificationPINEmailTemplate)((_a = user === null || user === void 0 ? void 0 : user.name) !== null && _a !== void 0 ? _a : "", (_b = user === null || user === void 0 ? void 0 : user.userId) !== null && _b !== void 0 ? _b : "");
-    yield (0, sendEmail_1.default)(email, emailSubject, bodyText);
+    yield (0, sendEmail_1.default)(user === null || user === void 0 ? void 0 : user.email, emailSubject, bodyText);
     return {};
 });
 const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {

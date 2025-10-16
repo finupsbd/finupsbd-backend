@@ -41,7 +41,6 @@ export const ConfigFile = {
     MAILJET_SECRET_KEY: process.env.MAILJET_SECRET_KEY,
     SENDER_EMAIL: process.env.SENDER_EMAIL,
 
-
     SECRET_KEY: process.env.SECRET_KEY,
     HMAC_KEY: process.env.HMAC_KEY,
 
@@ -49,5 +48,4 @@ export const ConfigFile = {
 
     SSL_SMS_API_TOKEN:process.env.SSL_SMS_API_TOKEN,
     SSL_SMS_SID:process.env.SSL_SMS_SID,
-
 }

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { prisma } from "../../../../app";
+import { saveSingleFile } from "../../../utils/file-uploads/saveSingleFile";
 import { sendImageToCloud } from "../../../utils/sendImageToCloud";
 import { TCreditCardTypes } from "./creditCardValidation";
 
@@ -11,7 +12,9 @@ import { TCreditCardTypes } from "./creditCardValidation";
 
 
 const createCreditCard = async (payload: TCreditCardTypes, file: any) => {
-    const coverImage = file ? await sendImageToCloud(file) : undefined;
+    
+    const coverImage = file?.buffer ? await saveSingleFile(file.buffer, file.originalname, "CreateCards") : undefined;
+    // const coverImage = file ? await sendImageToCloud(file) : undefined;
     payload.coverImage = coverImage ?? undefined
 
     console.log("payload", payload);
@@ -53,6 +56,9 @@ const createCreditCard = async (payload: TCreditCardTypes, file: any) => {
 
     return result;
 };
+
+
+
 
 const getAllCreditCard = async () => {
     const result = await prisma.creditCard.findMany({

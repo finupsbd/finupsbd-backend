@@ -3131,3 +3131,1099 @@ Unique constraint failed on the fields: (`phone`)
     at Generator.next (<anonymous>)
     at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"You have already an account please login"}
 --------------------------------------------------------------
+[2025-10-11 11:35:46] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:41:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-11 11:36:08] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:41:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-11 11:55:44] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:41:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-11 13:33:21] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "latePaymentFees"
+    ],
+    "message": "Late payment fees are required."
+  },
+  {
+    "expected": "'LOCAL' | 'DUAL'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "currency"
+    ],
+    "message": "Currency must be either 'LOCAL' or 'DUAL'."
+  },
+  {
+    "expected": "'SILVER' | 'CLASSIC' | 'STANDARD' | 'GOLD' | 'PLATINUM' | 'SIGNATURE' | 'TITANIUM'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "cardFeaturesType"
+    ],
+    "message": "Card features type must be one of: SILVER, CLASSIC, STANDARD, GOLD, PLATINUM, SIGNATURE, TITANIUM."
+  },
+  {
+    "expected": "'VISA' | 'MASTER' | 'AMEX'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "cardNetwork"
+    ],
+    "message": "Card network must be 'VISA', 'MASTER', or 'AMEX'."
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "feesChargesCreditCard",
+      "annualFee"
+    ],
+    "message": "Annual fee is required."
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "feesChargesCreditCard",
+      "annualFeeWaived"
+    ],
+    "message": "Annual fee waived information is required."
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "feesChargesCreditCard",
+      "latePaymentFee"
+    ],
+    "message": "Late payment fee is required."
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "feesChargesCreditCard",
+      "interestRate"
+    ],
+    "message": "Interest rate is required."
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "feesChargesCreditCard",
+      "balanceTransferRate"
+    ],
+    "message": "Balance transfer rate is required."
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.controller.ts:11:48
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.controller.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.controller.ts:4:12)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.controller.ts:8:56
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5) {"method":"POST","url":"/api/v1/credit-card","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"latePaymentFees\"\n    ],\n    \"message\": \"Late payment fees are required.\"\n  },\n  {\n    \"expected\": \"'LOCAL' | 'DUAL'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"currency\"\n    ],\n    \"message\": \"Currency must be either 'LOCAL' or 'DUAL'.\"\n  },\n  {\n    \"expected\": \"'SILVER' | 'CLASSIC' | 'STANDARD' | 'GOLD' | 'PLATINUM' | 'SIGNATURE' | 'TITANIUM'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"cardFeaturesType\"\n    ],\n    \"message\": \"Card features type must be one of: SILVER, CLASSIC, STANDARD, GOLD, PLATINUM, SIGNATURE, TITANIUM.\"\n  },\n  {\n    \"expected\": \"'VISA' | 'MASTER' | 'AMEX'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"cardNetwork\"\n    ],\n    \"message\": \"Card network must be 'VISA', 'MASTER', or 'AMEX'.\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"feesChargesCreditCard\",\n      \"annualFee\"\n    ],\n    \"message\": \"Annual fee is required.\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"feesChargesCreditCard\",\n      \"annualFeeWaived\"\n    ],\n    \"message\": \"Annual fee waived information is required.\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"feesChargesCreditCard\",\n      \"latePaymentFee\"\n    ],\n    \"message\": \"Late payment fee is required.\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"feesChargesCreditCard\",\n      \"interestRate\"\n    ],\n    \"message\": \"Interest rate is required.\"\n  },\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"feesChargesCreditCard\",\n      \"balanceTransferRate\"\n    ],\n    \"message\": \"Balance transfer rate is required.\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-11 13:37:30] ERROR: unhandledRejection: Invalid cloud_name djr5gjijg
+  No stack trace {"error":{"message":"Invalid cloud_name djr5gjijg","name":"Error","http_code":401},"rejection":true,"date":"Sat Oct 11 2025 13:37:30 GMT+0600 (Bangladesh Standard Time)","process":{"pid":103720,"uid":1000,"gid":1000,"cwd":"/home/reza/codeing/finupsbd-backend","execPath":"/home/reza/.nvm/versions/node/v22.19.0/bin/node","version":"v22.19.0","argv":["/home/reza/.nvm/versions/node/v22.19.0/bin/node","./src/server.ts"],"memoryUsage":{"rss":129822720,"heapTotal":42393600,"heapUsed":38787424,"external":3841500,"arrayBuffers":239466}},"os":{"loadavg":[1.33,1.24,1.47],"uptime":439833.66},"trace":[]}
+--------------------------------------------------------------
+[2025-10-11 13:39:09] ERROR: unhandledRejection: Invalid cloud_name djr5gjijg
+  No stack trace {"error":{"message":"Invalid cloud_name djr5gjijg","name":"Error","http_code":401},"rejection":true,"date":"Sat Oct 11 2025 13:39:09 GMT+0600 (Bangladesh Standard Time)","process":{"pid":114545,"uid":1000,"gid":1000,"cwd":"/home/reza/codeing/finupsbd-backend","execPath":"/home/reza/.nvm/versions/node/v22.19.0/bin/node","version":"v22.19.0","argv":["/home/reza/.nvm/versions/node/v22.19.0/bin/node","./src/server.ts"],"memoryUsage":{"rss":146292736,"heapTotal":65990656,"heapUsed":41779080,"external":3810204,"arrayBuffers":213731}},"os":{"loadavg":[2.06,1.43,1.51],"uptime":439933.3},"trace":[]}
+--------------------------------------------------------------
+[2025-10-11 13:41:21] ERROR: TypeError: The "path" argument must be of type string. Received undefined
+    at Object.extname (node:path:1519:5)
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:26:20
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:4:12)
+    at saveSingleFile (/home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:16:23)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.service.ts:15:59
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.service.ts:9:71 {"method":"POST","url":"/api/v1/credit-card","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"TypeError","errorMessage":"The \"path\" argument must be of type string. Received undefined"}
+--------------------------------------------------------------
+[2025-10-11 13:43:38] ERROR: TypeError: The "path" argument must be of type string. Received undefined
+    at Object.extname (node:path:1519:5)
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:26:20
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:4:12)
+    at saveSingleFile (/home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:16:23)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.service.ts:16:59
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.service.ts:9:71 {"method":"POST","url":"/api/v1/credit-card","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"TypeError","errorMessage":"The \"path\" argument must be of type string. Received undefined"}
+--------------------------------------------------------------
+[2025-10-11 13:43:40] ERROR: TypeError: The "path" argument must be of type string. Received undefined
+    at Object.extname (node:path:1519:5)
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:26:20
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:4:12)
+    at saveSingleFile (/home/reza/codeing/finupsbd-backend/src/app/utils/file-uploads/saveSingleFile.ts:16:23)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.service.ts:16:59
+    at Generator.next (<anonymous>)
+    at /home/reza/codeing/finupsbd-backend/src/app/module/loans/creditCard/creditCard.service.ts:9:71 {"method":"POST","url":"/api/v1/credit-card","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"TypeError","errorMessage":"The \"path\" argument must be of type string. Received undefined"}
+--------------------------------------------------------------
+[2025-10-11 15:38:16] ERROR: PrismaClientKnownRequestError: 
+Invalid `prisma.user.create()` invocation in
+/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:89:36
+
+  86   }
+  87 }
+  88 
+→ 89 const result = await prisma.user.create(
+Unique constraint failed on the fields: (`phone`)
+    at Un.handleRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:7447)
+    at Un.handleAndLogRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6771)
+    at Un.request (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6478)
+    at l (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:130:9644) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"PrismaClientKnownRequestError","errorMessage":"\nInvalid `prisma.user.create()` invocation in\n/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:89:36\n\n  86   }\n  87 }\n  88 \n→ 89 const result = await prisma.user.create(\nUnique constraint failed on the fields: (`phone`)"}
+--------------------------------------------------------------
+[2025-10-11 16:19:57] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-11 16:21:41] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-11 16:23:12] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-11 16:23:18] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-11 16:52:03] ERROR: Error: PIN has expired
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:196:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"PIN has expired"}
+--------------------------------------------------------------
+[2025-10-11 16:52:14] ERROR: Error: PIN has expired
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:196:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"PIN has expired"}
+--------------------------------------------------------------
+[2025-10-11 17:11:33] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-12 12:26:35] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:37:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/auth/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-12 12:36:48] ERROR: Error: You have already an account please login
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:37:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"You have already an account please login"}
+--------------------------------------------------------------
+[2025-10-12 12:54:21] ERROR: Error: This email is already registered. Please try signing in or use a different email.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"This email is already registered. Please try signing in or use a different email."}
+--------------------------------------------------------------
+[2025-10-12 12:57:20] ERROR: Error: This email is already registered. Please try signing in or use a different email.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"This email is already registered. Please try signing in or use a different email."}
+--------------------------------------------------------------
+[2025-10-12 12:57:43] ERROR: Error: This phone number is already registered. Please try signing in or use a different number.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:43:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"This phone number is already registered. Please try signing in or use a different number."}
+--------------------------------------------------------------
+[2025-10-12 12:58:45] ERROR: Error: This phone number is already registered. Please try signing in or use a different number.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:43:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"This phone number is already registered. Please try signing in or use a different number."}
+--------------------------------------------------------------
+[2025-10-12 14:03:53] ERROR: Error: This phone number is already registered. Please try signing in or use a different number.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:43:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"This phone number is already registered. Please try signing in or use a different number."}
+--------------------------------------------------------------
+[2025-10-12 14:04:33] ERROR: Error: This email is already registered. Please try signing in or use a different email.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"This email is already registered. Please try signing in or use a different email."}
+--------------------------------------------------------------
+[2025-10-12 14:05:30] ERROR: Error: This email is already registered. Please try signing in or use a different email.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"This email is already registered. Please try signing in or use a different email."}
+--------------------------------------------------------------
+[2025-10-12 14:05:39] ERROR: Error: This phone number is already registered. Please try signing in or use a different number.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:43:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"This phone number is already registered. Please try signing in or use a different number."}
+--------------------------------------------------------------
+[2025-10-12 14:48:20] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Phone number must be 11 digits",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Phone number must be 11 digits\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-12 14:48:32] ERROR: PrismaClientValidationError: 
+Invalid `prisma.user.findUnique()` invocation in
+/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:145:34
+
+  142 console.log(email, pin)
+  143 
+  144 
+→ 145 const user = await prisma.user.findUnique({
+        where: {
+          email: undefined,
+      ?   id?: String,
+      ?   phone?: String,
+      ?   AND?: UserWhereInput | UserWhereInput[],
+      ?   OR?: UserWhereInput[],
+      ?   NOT?: UserWhereInput | UserWhereInput[],
+      ?   userId?: StringNullableFilter | String | Null,
+      ?   name?: StringNullableFilter | String | Null,
+      ?   password?: StringFilter | String,
+      ?   pin?: StringNullableFilter | String | Null,
+      ?   pinExpiry?: DateTimeNullableFilter | DateTime | Null,
+      ?   verificationToken?: StringNullableFilter | String | Null,
+      ?   resetPasswordToken?: StringNullableFilter | String | Null,
+      ?   resetPasswordExpiry?: DateTimeNullableFilter | DateTime | Null,
+      ?   role?: EnumRoleFilter | Role,
+      ?   emailVerified?: BoolFilter | Boolean,
+      ?   phoneVerified?: BoolFilter | Boolean,
+      ?   isActive?: BoolFilter | Boolean,
+      ?   createdAt?: DateTimeFilter | DateTime,
+      ?   updatedAt?: DateTimeFilter | DateTime,
+      ?   lastLogin?: DateTimeNullableFilter | DateTime | Null,
+      ?   profile?: ProfileNullableScalarRelationFilter | ProfileWhereInput | Null,
+      ?   kycVerification?: KycVerificationNullableScalarRelationFilter | KycVerificationWhereInput | Null,
+      ?   blogPost?: BlogListRelationFilter,
+      ?   PersonalLoan?: PersonalLoanListRelationFilter,
+      ?   HomeLoan?: HomeLoanListRelationFilter,
+      ?   CarLoan?: CarLoanListRelationFilter,
+      ?   SMELoan?: SMELoanListRelationFilter,
+      ?   Session?: SessionListRelationFilter,
+      ?   PageView?: PageViewListRelationFilter,
+      ?   Activity?: ActivityListRelationFilter,
+      ?   InstantLoan?: InstantLoanListRelationFilter,
+      ?   CreditCard?: CreditCardListRelationFilter,
+      ?   Comment?: CommentListRelationFilter,
+      ?   LoanApplicationForm?: LoanApplicationFormListRelationFilter,
+      ?   notification?: NotificationListRelationFilter
+        }
+      })
+
+Argument `where` of type UserWhereUniqueInput needs at least one of `id`, `email` or `phone` arguments. Available options are marked with ?.
+    at Pn (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:29:1363)
+    at Un.handleRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:7090)
+    at Un.handleAndLogRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6771)
+    at Un.request (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6478)
+    at l (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:130:9644) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.user.findUnique()` invocation in\n/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:145:34\n\n  142 console.log(email, pin)\n  143 \n  144 \n→ 145 const user = await prisma.user.findUnique({\n        where: {\n          email: undefined,\n      ?   id?: String,\n      ?   phone?: String,\n      ?   AND?: UserWhereInput | UserWhereInput[],\n      ?   OR?: UserWhereInput[],\n      ?   NOT?: UserWhereInput | UserWhereInput[],\n      ?   userId?: StringNullableFilter | String | Null,\n      ?   name?: StringNullableFilter | String | Null,\n      ?   password?: StringFilter | String,\n      ?   pin?: StringNullableFilter | String | Null,\n      ?   pinExpiry?: DateTimeNullableFilter | DateTime | Null,\n      ?   verificationToken?: StringNullableFilter | String | Null,\n      ?   resetPasswordToken?: StringNullableFilter | String | Null,\n      ?   resetPasswordExpiry?: DateTimeNullableFilter | DateTime | Null,\n      ?   role?: EnumRoleFilter | Role,\n      ?   emailVerified?: BoolFilter | Boolean,\n      ?   phoneVerified?: BoolFilter | Boolean,\n      ?   isActive?: BoolFilter | Boolean,\n      ?   createdAt?: DateTimeFilter | DateTime,\n      ?   updatedAt?: DateTimeFilter | DateTime,\n      ?   lastLogin?: DateTimeNullableFilter | DateTime | Null,\n      ?   profile?: ProfileNullableScalarRelationFilter | ProfileWhereInput | Null,\n      ?   kycVerification?: KycVerificationNullableScalarRelationFilter | KycVerificationWhereInput | Null,\n      ?   blogPost?: BlogListRelationFilter,\n      ?   PersonalLoan?: PersonalLoanListRelationFilter,\n      ?   HomeLoan?: HomeLoanListRelationFilter,\n      ?   CarLoan?: CarLoanListRelationFilter,\n      ?   SMELoan?: SMELoanListRelationFilter,\n      ?   Session?: SessionListRelationFilter,\n      ?   PageView?: PageViewListRelationFilter,\n      ?   Activity?: ActivityListRelationFilter,\n      ?   InstantLoan?: InstantLoanListRelationFilter,\n      ?   CreditCard?: CreditCardListRelationFilter,\n      ?   Comment?: CommentListRelationFilter,\n      ?   LoanApplicationForm?: LoanApplicationFormListRelationFilter,\n      ?   notification?: NotificationListRelationFilter\n        }\n      })\n\nArgument `where` of type UserWhereUniqueInput needs at least one of `id`, `email` or `phone` arguments. Available options are marked with ?."}
+--------------------------------------------------------------
+[2025-10-12 15:01:08] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-12 15:01:16] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-12 15:01:21] ERROR: Error: PIN has expired
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:155:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"PIN has expired"}
+--------------------------------------------------------------
+[2025-10-12 15:09:52] ERROR: Error: We can’t find an account with those details, please register your account!
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:95:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please register your account!"}
+--------------------------------------------------------------
+[2025-10-12 15:10:10] ERROR: Error: Your email is not verified. Please verify your email before logging in.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:102:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Your email is not verified. Please verify your email before logging in."}
+--------------------------------------------------------------
+[2025-10-12 15:12:58] ERROR: Error: We can’t find an account with those details, please register your account!
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:95:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please register your account!"}
+--------------------------------------------------------------
+[2025-10-12 15:14:45] ERROR: Error: We can’t find an account with those details, please check your phone or email address!
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:95:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please check your phone or email address!"}
+--------------------------------------------------------------
+[2025-10-12 17:07:16] ERROR: Error: We can’t find an account with those details, please check your phone or email address!
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:95:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"We can’t find an account with those details, please check your phone or email address!"}
+--------------------------------------------------------------
+[2025-10-12 17:24:54] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-12 17:25:02] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-12 18:13:00] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:114:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-12 18:27:17] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:114:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-12 18:28:47] ERROR: Error: We can’t find an account with those details, please check your phone or email address!
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:95:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"We can’t find an account with those details, please check your phone or email address!"}
+--------------------------------------------------------------
+[2025-10-12 18:29:09] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:114:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-12 18:31:49] ERROR: Error: We can’t find an account with those details, please check your phone or email address!
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:95:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"We can’t find an account with those details, please check your phone or email address!"}
+--------------------------------------------------------------
+[2025-10-12 18:32:06] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:114:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-12 18:42:27] ERROR: Error: This email is already registered. Please try signing in or use a different email.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"This email is already registered. Please try signing in or use a different email."}
+--------------------------------------------------------------
+[2025-10-12 18:45:26] ERROR: Error: This email is already registered. Please try signing in or use a different email.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"This email is already registered. Please try signing in or use a different email."}
+--------------------------------------------------------------
+[2025-10-12 18:46:02] ERROR: Error: This email is already registered. Please try signing in or use a different email.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:40:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"This email is already registered. Please try signing in or use a different email."}
+--------------------------------------------------------------
+[2025-10-13 11:59:15] ERROR: Error: We can’t find an account with those details, please check your phone or email address!
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:95:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"We can’t find an account with those details, please check your phone or email address!"}
+--------------------------------------------------------------
+[2025-10-13 11:59:34] ERROR: Error: Your phone is not verified. Please verify your phone before logging in.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:102:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Your phone is not verified. Please verify your phone before logging in."}
+--------------------------------------------------------------
+[2025-10-13 12:01:34] ERROR: Error: Your phone is not verified. Please verify your phone before logging in.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:102:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Your phone is not verified. Please verify your phone before logging in."}
+--------------------------------------------------------------
+[2025-10-13 12:32:32] ERROR: Error: Check your phone for OTP. A new code has been sent.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:54:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Check your phone for OTP. A new code has been sent."}
+--------------------------------------------------------------
+[2025-10-13 12:33:43] ERROR: Error: Check your phone for OTP. A new code has been sent.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:54:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Check your phone for OTP. A new code has been sent."}
+--------------------------------------------------------------
+[2025-10-13 12:35:41] ERROR: Error: Check your phone for OTP. A new code has been sent.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:54:13
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Check your phone for OTP. A new code has been sent."}
+--------------------------------------------------------------
+[2025-10-13 12:37:22] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "phone"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"phone\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:38:10] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "phone"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"phone\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:38:33] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "phone"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"phone\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:45:29] ERROR: Error: This phone or email is already registered. Please sign in instead.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:61:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"This phone or email is already registered. Please sign in instead."}
+--------------------------------------------------------------
+[2025-10-13 12:47:19] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "phone"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"phone\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:51:37] ERROR: Error: This phone or email is already registered. Please sign in instead.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:61:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"This phone or email is already registered. Please sign in instead."}
+--------------------------------------------------------------
+[2025-10-13 12:54:02] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:54:24] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:55:09] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:55:50] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:55:54] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:56:29] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:56:37] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 12:59:50] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 13:00:06] ERROR: Error: Invalid PIN
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:165:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Invalid PIN"}
+--------------------------------------------------------------
+[2025-10-13 13:00:21] ERROR: Error: Invalid PIN
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:165:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Invalid PIN"}
+--------------------------------------------------------------
+[2025-10-13 13:00:28] ERROR: Error: Invalid PIN
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:165:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Invalid PIN"}
+--------------------------------------------------------------
+[2025-10-13 13:01:10] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 13:01:18] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 13:02:15] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 13:28:36] ERROR: ZodError: [
+  {
+    "validation": "regex",
+    "code": "invalid_string",
+    "message": "Invalid phone number",
+    "path": [
+      "phone"
+    ]
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/validate-pin","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"ZodError","errorMessage":"[\n  {\n    \"validation\": \"regex\",\n    \"code\": \"invalid_string\",\n    \"message\": \"Invalid phone number\",\n    \"path\": [\n      \"phone\"\n    ]\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 13:37:14] ERROR: Error: This phone or email is already registered. Please sign in instead.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:61:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"This phone or email is already registered. Please sign in instead."}
+--------------------------------------------------------------
+[2025-10-13 13:37:27] ERROR: Error: This phone or email is already registered. Please sign in instead.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:61:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/signUp","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"This phone or email is already registered. Please sign in instead."}
+--------------------------------------------------------------
+[2025-10-13 14:59:07] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:122:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-13 17:12:54] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 17:13:05] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 17:13:51] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 17:14:01] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 17:14:22] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 17:15:27] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 17:15:29] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 17:15:30] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "identifier"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at Function.process_params (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:346:12) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"string\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"identifier\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-13 17:19:46] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:122:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-13 17:21:38] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:122:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36","ip":"::1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-16 12:55:53] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:119:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------

@@ -38,7 +38,6 @@ const loanHandlers = {
     [eligibilityCheck_constant_1.cardsTypes.CREDIT_CARD]: creditCard_1.creditCard,
 };
 const eligibilityCheck = (payload, query) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload, query);
     const { existingLoans = [] } = payload, eligibilityData = __rest(payload, ["existingLoans"]);
     try {
         const eligibilityCheckEntry = yield app_1.prisma.eligibilityCheck.create({

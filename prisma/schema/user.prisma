@@ -12,6 +12,7 @@ model User {
   resetPasswordExpiry DateTime?
   role                Role                  @default(USER)
   emailVerified       Boolean               @default(false)
+  phoneVerified       Boolean               @default(false)
   isActive            Boolean               @default(true)
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt

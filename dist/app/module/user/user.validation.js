@@ -9,7 +9,7 @@ exports.emailSchema = zod_1.z
 exports.passwordSchema = zod_1.z
     .string()
     .min(6, 'Password must be at least 6 characters long');
-exports.phoneSchema = zod_1.z.string().min(1, 'Phone is required').regex(/^\d{11}$/, 'Phone number must be 11 digits');
+exports.phoneSchema = zod_1.z.string().min(1, 'Phone is required').regex(/^01[3-9]\d{8}$/, 'Invalid phone number');
 const createUserValidationSchema = zod_1.z.object({
     name: zod_1.z.string().min(1, 'Name is required'),
     email: exports.emailSchema,
@@ -18,14 +18,13 @@ const createUserValidationSchema = zod_1.z.object({
     profile: zod_1.z.object({}).optional(),
 });
 const verifyPinValidationSchema = zod_1.z.object({
-    email: exports.emailSchema,
-    // phone: phoneSchema,
+    // email: emailSchema,
+    phone: exports.phoneSchema,
     pin: zod_1.z.string().min(6, 'Password must be at least 6 characters long'),
 });
 const loginValidationSchema = zod_1.z.object({
-    email: exports.emailSchema,
-    // phone: phoneSchema,
-    password: exports.passwordSchema,
+    identifier: zod_1.z.string().min(1, 'Email or phone is required'),
+    password: zod_1.z.string().min(1, 'Password is required'),
 });
 const forgetPasswordValidationSchema = zod_1.z.object({
     email: exports.emailSchema,

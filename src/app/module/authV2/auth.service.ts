@@ -23,152 +23,117 @@ import phoneOtpSend from '../../utils/phoneOtpSend';
 //Sign up User
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: string, browser: string, location: string }) => {
 
-  const isAlreadySignUpRequest = await prisma.user.findFirst({
+const signUp = async (
+  payload: TUser,
+  userSessionInfo: { ip: string; device: string; browser: string; location: string }
+) => {
+  const { email, phone } = payload;
+
+  // Step 1: Check if user already exists 
+  const existingUser = await prisma.user.findFirst({
     where: {
-      email: payload.email,
+      OR: [{ email }, { phone }],
     },
   });
 
+  // Generate OTP & expiry (every time new OTP needed)
+  const pin = Math.floor(100000 + Math.random() * 900000).toString();
+  const pinExpiry = new Date(Date.now() + 5 * 60 * 1000); // 15 min
 
-  if (isAlreadySignUpRequest) {
-    throw new AppError(StatusCodes.CONFLICT, 'You have already an account please login');
+  // Step 2: If user exists
+  if (existingUser) {
+    // ✅ Case 1: Not verified -> resend OTP
+    if (!existingUser.phoneVerified) {
+      await prisma.user.update({
+        where: { id: existingUser.id },
+        data: { pin, pinExpiry },
+      });
+
+      await phoneOtpSend(phone, `Your OTP is ${pin}. It expires in 5 minutes.`);
+      return {
+        phone: existingUser.phone,
+      }
+      // throw new AppError(StatusCodes.OK, 'Check your phone for OTP. A new code has been sent.');
+    }
+
+    // ✅ Case 2: Already verified -> stop
+    throw new AppError(
+      StatusCodes.CONFLICT,
+      "This phone or email is already registered. Please sign in instead."
+    );
   }
 
-
-  const { email } = payload;
+  // Step 3: New user
   payload.password = await passwordHash(payload.password);
-
-  //   const pin = crypto.randomBytes(3).toString('hex'); // 6-digit PIN
-  const pin = Math.floor(100000 + Math.random() * 900000).toString();
-  const pinExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
   payload.pin = pin;
   payload.pinExpiry = pinExpiry;
   payload.userId = await generateUserId();
 
-
-  const userIsExist = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-
-
-  if (userIsExist) {
-    if (userIsExist && userIsExist.emailVerified === false) {
-      const sendOtp = await prisma.user.update({ where: { email }, data: { pin: pin, pinExpiry: pinExpiry } });
-      const MailSubject = 'Your PIN for Verification';
-      const MailText = `
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f4f7fa; border-radius: 8px;">
-      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-        <h2 style="color: #333; text-align: center; font-size: 24px; margin-bottom: 20px;">Your Verification PIN Code</h2>
-        <p style="font-size: 16px; color: #555;">Hello ${userIsExist?.name}</p>
-        <p style="font-size: 16px; color: #555;">Your PIN code for verification is:</p>
-        <h2 style="color: #007BFF; font-size: 36px; font-weight: bold; text-align: center; margin: 20px 0;">${sendOtp.pin}</h2>
-        <p style="font-size: 16px; color: #555;"><strong>🔒 Security Note:</strong> This PIN is valid for <strong>15 minutes</strong> only. Please do not share it with anyone.</p>
-        <p style="font-size: 16px; color: #555;">If you did not request this PIN, please ignore this email or contact our support team immediately.</p>
-        <p style="font-size: 16px; color: #555;">Thank you,</p>
-        <p style="font-size: 16px; color: #555; font-weight: bold;">FinupsBD</p>
-      </div>
-    </div>
-  `;
-      await sendEmail(payload?.email, MailSubject, MailText);
-      // phoneOtpSend(phone, "send message")
-      throw new AppError(200, 'Check your email for verification PIN thank you');
-    }
-    if (userIsExist.emailVerified) {
-      throw new AppError(StatusCodes.CONFLICT, 'You have already verified user. Please login thank you');
-    }
-  }
-
   const result = await prisma.user.create({ data: payload });
-  const MailSubject = 'Your PIN for Verification';
-  const MailText = `
-  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7fa; padding: 30px;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-      <h2 style="color: #333333; text-align: center; font-size: 24px; margin-bottom: 24px;">📩 Email Verification</h2>
-      <p style="font-size: 16px; color: #555555;">Dear <strong>${payload?.name}</strong>,</p>
-      <p style="font-size: 16px; color: #555555;">Thank you for registering with us. To complete your account setup, please use the One Time Password (OTP) provided below:</p>
-      <div style="text-align: center; margin: 24px 0;">
-        <span style="display: inline-block; background-color: #e6f0ff; color: #007BFF; font-size: 36px; font-weight: bold; padding: 12px 24px; border-radius: 8px; letter-spacing: 4px;">
-          ${result?.pin}
-        </span>
-      </div>
-      <p style="font-size: 16px; color: #555555;"><strong>⚠️ Note:</strong> This OTP is valid for a limited time (15 minutes). Please do not share it with anyone to ensure the security of your account.</p>
-      <p style="font-size: 16px; color: #555555;">If you did not request this, please ignore this email or contact our support team immediately.</p>
-      <p style="font-size: 16px; color: #555555;">Best regards,</p>
-      <p style="font-size: 16px; font-weight: bold; color: #333333;">Finups BD</p>
-    </div>
-  </div>
-`;
 
-  // const phoneOtpSuccess = await phoneOtpSend(payload?.phone, `Your OTP is ${result?.pin}. Never share this code with anyone.`)
-   await sendEmail(payload?.email, MailSubject, MailText);
-  
-
-  console.log("massage send successfully")
+  await phoneOtpSend(payload.phone, `Your OTP is ${pin}. It expires in 5 minutes.`);
+  console.log("OTP sent successfully");
 
   return {
-    email: result.email
+    phone: result.phone,
   };
 };
 
-const login = async (payload: { email: string; password: string }) => {
-  const { email } = payload;
+ const login = async (payload: { identifier: string; password: string }) => {
+ 
+  const { identifier, password } = payload;
 
-  const user = await prisma.user.findUnique({
-    where: { email },
+  // Determine if input is email or phone
+  const isEmail = identifier.includes('@');
+
+  const user = await prisma.user.findFirst({
+    where: isEmail
+      ? { email: identifier }
+      : { phone: identifier },
     include: {
-      profile: true
-    }
-
+      profile: true,
+    },
   });
 
   if (!user) {
-    throw new AppError(404, 'We can’t find an account with those details, please register your account!');
-  }
-
-  if (!user.emailVerified) {
-    throw new AppError(500,
-      'Your email is not verified. Please verify your email before logging in.'
+    throw new AppError(
+      404,
+      'We can’t find an account with those details, please check your phone or email address!'
     );
   }
 
-  if (!user?.isActive) {
+  if (!user.phoneVerified) {
+    throw new AppError(
+      500,
+      'Your phone is not verified. Please verify your phone before logging in.'
+    );
+  }
+
+  if (!user.isActive) {
     throw new AppError(400, 'Your account is inactive. Please contact support.');
   }
 
-  const passwordCompare = await bcrypt.compare(
-    payload?.password,
-    user?.password
-  );
-
+  const passwordCompare = await bcrypt.compare(password, user.password);
   if (!passwordCompare) {
-    throw new AppError(400, 'Invalid password! please input valid password.');
+    throw new AppError(400, 'Invalid password! Please input valid password.');
   }
 
   const jwtPayload = {
-    name: user?.name,
-    avater: user?.profile?.avatar,
-    userId: user?.id,
-    role: user?.role,
-    email: user?.email,
+    name: user.name,
+    avatar: user.profile?.avatar,
+    userId: user.id,
+    role: user.role,
+    email: user.email,
   };
 
   const accessToken = accessTokenGenerate(jwtPayload, '30d');
   const refreshToken = refreshTokenGenerate(jwtPayload, '365d');
 
   await prisma.user.update({
-    where: {
-      email: user?.email,
-    },
-    data: {
-      lastLogin: new Date(),
-    },
-  }); // last login tracking
-
+    where: { id: user.id },
+    data: { lastLogin: new Date() },
+  });
 
   return {
     accessToken,
@@ -176,13 +141,13 @@ const login = async (payload: { email: string; password: string }) => {
   };
 };
 
-const validatePin = async (payload: { email: string; pin: string }) => {
-  const { email, pin } = payload;
+const validatePin = async (payload: { phone: string; pin: string }) => {
+  const { phone, pin } = payload;
 
-  console.log(email, pin)
+  console.log(phone, pin)
 
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({ where: { phone } });
   if (!user) {
     throw new AppError(400, 'User not found');
   }
@@ -198,15 +163,15 @@ const validatePin = async (payload: { email: string; pin: string }) => {
   }
 
   await prisma.user.update({
-    where: { email },
-    data: { emailVerified: true },
+    where: { phone },
+    data: { phoneVerified: true },
   });
 
 
-  const emailSubject = 'Your PIN for Verification';
+  const emailSubject = 'Welcome';
   const bodyText = verificationPINEmailTemplate(user?.name ?? "", user?.userId ?? "")
 
-  await sendEmail(email, emailSubject, bodyText);
+  await sendEmail(user?.email, emailSubject, bodyText);
   return {};
 };
 
@@ -459,7 +424,6 @@ const checkSamePassword = await bcrypt.compare( payload?.newPassword, userData?.
   await sendEmail(email, emailSubject, bodyText);
   return {};
 };
-
 
 
 

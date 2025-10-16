@@ -18,13 +18,13 @@ const sendResponce_1 = __importDefault(require("../../../utils/sendResponce"));
 const catchAsync_1 = __importDefault(require("../../../utils/catchAsync"));
 const creditCard_service_1 = require("./creditCard.service");
 const creditCardValidation_1 = require("./creditCardValidation");
+const AppError_1 = __importDefault(require("../../../error/AppError"));
 const createCreditCard = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     console.log("req.body", req.body);
     const payload = creditCardValidation_1.CreditCardValidationSchema.CreditCardSchema.parse(JSON.parse(req.body.data));
-    const file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer;
+    const file = req.file;
     if (!file) {
-        throw new Error('Please upload a file');
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.CONFLICT, "Please upload a file");
     }
     const result = yield creditCard_service_1.CreditCardService.createCreditCard(payload, file);
     (0, sendResponce_1.default)(res, {

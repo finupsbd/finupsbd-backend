@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RootRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const auth_route_1 = require("../module/auth/auth.route");
 const user_route_1 = require("../module/user/user.route");
 const emi_route_1 = require("../utils/emiCalculator/emi.route");
 const newsLetter_route_1 = require("../module/public/newsLetter/newsLetter.route");
@@ -22,11 +21,16 @@ const instantLoan_route_1 = require("../module/loans/instantLoan/instantLoan.rou
 const userBankAuth_route_1 = require("../module/bankProtal/userBankAuth/userBankAuth.route");
 const creditCard_route_1 = require("../module/loans/creditCard/creditCard.route");
 const subRoute_1 = require("./subRoute");
+const auth_route_1 = require("../module/authV2/auth.route");
 const router = express_1.default.Router();
 const moduleRouter = [
+    // {
+    //     path: '/auth',
+    //     route: AuthRouter
+    // },
     {
         path: '/auth',
-        route: auth_route_1.AuthRouter
+        route: auth_route_1.AuthRouterV2
     },
     {
         path: '/users',
