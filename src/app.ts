@@ -67,7 +67,6 @@ app.use('/__nextjs_original-stack-frames', (req, res) => {
 //henarate custom error 
 
 
-
 // Simple server health-check endpoint
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
@@ -94,7 +93,7 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-app.use("/api-docs", authDoc, swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(specs));
 
 
 // Middleware execution order corrected

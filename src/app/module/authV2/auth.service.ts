@@ -20,9 +20,6 @@ import phoneOtpSend from '../../utils/phoneOtpSend';
 
 
 
-//Sign up User
-
-
 
 const signUp = async (
   payload: TUser,
@@ -184,10 +181,10 @@ const forgetPassword = async (payload: { email: string }) => {
     throw new AppError(404, 'User not found! Please provide valid email !');
   }
 
-  if (!user.emailVerified) {
-    throw new AppError(502, 'Your email is not verified. Please verify your email');
+  if (!user.phoneVerified) {
+    throw new AppError(502, 'Your phone is not verified. Please verify your phone');
+  
   }
-
   if (!user?.isActive) {
     throw new AppError(502, 'Your account is inactive. Please contact support.');
   }

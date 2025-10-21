@@ -26,7 +26,6 @@ const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_codes_1 = require("http-status-codes");
 const verificationPIN_1 = require("../../utils/email-template/verificationPIN");
 const phoneOtpSend_1 = __importDefault(require("../../utils/phoneOtpSend"));
-//Sign up User
 const signUp = (payload, userSessionInfo) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, phone } = payload;
     // Step 1: Check if user already exists 
@@ -142,8 +141,8 @@ const forgetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
     if (!user) {
         throw new AppError_1.default(404, 'User not found! Please provide valid email !');
     }
-    if (!user.emailVerified) {
-        throw new AppError_1.default(502, 'Your email is not verified. Please verify your email');
+    if (!user.phoneVerified) {
+        throw new AppError_1.default(502, 'Your phone is not verified. Please verify your phone');
     }
     if (!(user === null || user === void 0 ? void 0 : user.isActive)) {
         throw new AppError_1.default(502, 'Your account is inactive. Please contact support.');

@@ -7,7 +7,7 @@ const swaggerOptions = {
     info: {
       title: "FinupsBd API", // তোমার প্রজেক্টের নাম
       version: "1.0.0",
-      description: "FinupsBd এর Backend API Documentation",
+      description: "FinupsBD Backend API Documentation",
     },
     servers: [
       {
@@ -16,7 +16,8 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./routes/*.js", "./route/*.ts"], // কোথা থেকে রুট পড়বে
+  apis: ["./src/app/module/**/*.ts", "./src/app/**/*.ts"],
+
 };
 
 

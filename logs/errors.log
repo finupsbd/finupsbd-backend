@@ -4227,3 +4227,341 @@ Argument `where` of type UserWhereUniqueInput needs at least one of `id`, `email
     at Generator.next (<anonymous>)
     at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
 --------------------------------------------------------------
+[2025-10-16 18:10:10] ERROR: Error: User not found
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:269:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/reset-password","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"User not found"}
+--------------------------------------------------------------
+[2025-10-16 18:10:24] ERROR: Error: Your email was not verifyed. Please verify your email before reset your password
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:273:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/reset-password","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Your email was not verifyed. Please verify your email before reset your password"}
+--------------------------------------------------------------
+[2025-10-16 18:11:42] ERROR: Error: Your email was not verifyed. Please verify your email before reset your password
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:273:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/reset-password","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Your email was not verifyed. Please verify your email before reset your password"}
+--------------------------------------------------------------
+[2025-10-16 18:12:06] ERROR: Error: Your email was not verifyed. Please verify your email before reset your password
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:273:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/reset-password","userAgent":"PostmanRuntime/7.48.0","ip":"::1","errorName":"Error","errorMessage":"Your email was not verifyed. Please verify your email before reset your password"}
+--------------------------------------------------------------
+[2025-10-18 15:11:31] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-18 15:11:42] ERROR: Error: Invalid password! Please input valid password.
+    at /home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/reza/codeing/finupsbd-backend/src/app/module/authV2/auth.service.ts:5:58) {"method":"POST","url":"/api/v1/auth/login","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Invalid password! Please input valid password."}
+--------------------------------------------------------------
+[2025-10-18 16:09:33] ERROR: Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-292471d5874sm21609795ad.54 - gsmtp
+    at SMTPConnection._formatError (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:1588:34)
+    at SMTPConnection.<anonymous> (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:556:26)
+    at SMTPConnection._processResponse (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:993:20)
+    at SMTPConnection._onData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:774:14)
+    at TLSSocket.SMTPConnection._onSocketData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:195:44)
+    at TLSSocket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"node","ip":"::ffff:127.0.0.1","errorName":"Error","errorMessage":"Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-292471d5874sm21609795ad.54 - gsmtp"}
+--------------------------------------------------------------
+[2025-10-18 16:57:06] ERROR: PrismaClientValidationError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+/home/reza/codeing/finupsbd-backend/src/app/module/dashboard/superAdmin/application/application.service.ts:156:48
+
+  153 
+  154   return "Email Sent Successfully";
+  155 } else {
+→ 156   updated = await prisma.loanApplicationForm.update({
+          where: {
+            id: "286826af-5b97-4768-8a63-a67f52796763"
+          },
+          data: {
+            status: "IN_PROCESS",
+                    ~~~~~~~~~~~~
+            additionalDocuments: undefined,
+            adminNotes: undefined,
+            isActive: true
+          },
+          include: {
+            user: {
+              select: {
+                email: true,
+                name: true
+              }
+            }
+          }
+        })
+
+Invalid value for argument `status`. Expected LoanStatus.
+    at Pn (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:29:1363)
+    at Un.handleRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:7090)
+    at Un.handleAndLogRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6771)
+    at Un.request (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6478)
+    at l (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/286826af-5b97-4768-8a63-a67f52796763","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\n/home/reza/codeing/finupsbd-backend/src/app/module/dashboard/superAdmin/application/application.service.ts:156:48\n\n  153 \n  154   return \"Email Sent Successfully\";\n  155 } else {\n→ 156   updated = await prisma.loanApplicationForm.update({\n          where: {\n            id: \"286826af-5b97-4768-8a63-a67f52796763\"\n          },\n          data: {\n            status: \"IN_PROCESS\",\n                    ~~~~~~~~~~~~\n            additionalDocuments: undefined,\n            adminNotes: undefined,\n            isActive: true\n          },\n          include: {\n            user: {\n              select: {\n                email: true,\n                name: true\n              }\n            }\n          }\n        })\n\nInvalid value for argument `status`. Expected LoanStatus."}
+--------------------------------------------------------------
+[2025-10-18 16:58:31] ERROR: Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-33d5df9351fsm2210913a91.16 - gsmtp
+    at SMTPConnection._formatError (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:1588:34)
+    at SMTPConnection.<anonymous> (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:556:26)
+    at SMTPConnection._processResponse (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:993:20)
+    at SMTPConnection._onData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:774:14)
+    at TLSSocket.SMTPConnection._onSocketData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:195:44)
+    at TLSSocket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-33d5df9351fsm2210913a91.16 - gsmtp"}
+--------------------------------------------------------------
+[2025-10-18 16:59:24] ERROR: Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-292471fddfesm22741775ad.88 - gsmtp
+    at SMTPConnection._formatError (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:1588:34)
+    at SMTPConnection.<anonymous> (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:556:26)
+    at SMTPConnection._processResponse (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:993:20)
+    at SMTPConnection._onData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:774:14)
+    at TLSSocket.SMTPConnection._onSocketData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:195:44)
+    at TLSSocket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-292471fddfesm22741775ad.88 - gsmtp"}
+--------------------------------------------------------------
+[2025-10-18 16:59:58] ERROR: PrismaClientValidationError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+/home/reza/codeing/finupsbd-backend/src/app/module/dashboard/superAdmin/application/application.service.ts:156:48
+
+  153 
+  154   return "Email Sent Successfully";
+  155 } else {
+→ 156   updated = await prisma.loanApplicationForm.update({
+          where: {
+            id: "9e60eb54-a57b-4ed2-9c4a-b55a9755899a"
+          },
+          data: {
+            status: "IN_PROCESS",
+                    ~~~~~~~~~~~~
+            additionalDocuments: undefined,
+            adminNotes: "Application Rejects",
+            isActive: true
+          },
+          include: {
+            user: {
+              select: {
+                email: true,
+                name: true
+              }
+            }
+          }
+        })
+
+Invalid value for argument `status`. Expected LoanStatus.
+    at Pn (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:29:1363)
+    at Un.handleRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:7090)
+    at Un.handleAndLogRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6771)
+    at Un.request (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6478)
+    at l (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\n/home/reza/codeing/finupsbd-backend/src/app/module/dashboard/superAdmin/application/application.service.ts:156:48\n\n  153 \n  154   return \"Email Sent Successfully\";\n  155 } else {\n→ 156   updated = await prisma.loanApplicationForm.update({\n          where: {\n            id: \"9e60eb54-a57b-4ed2-9c4a-b55a9755899a\"\n          },\n          data: {\n            status: \"IN_PROCESS\",\n                    ~~~~~~~~~~~~\n            additionalDocuments: undefined,\n            adminNotes: \"Application Rejects\",\n            isActive: true\n          },\n          include: {\n            user: {\n              select: {\n                email: true,\n                name: true\n              }\n            }\n          }\n        })\n\nInvalid value for argument `status`. Expected LoanStatus."}
+--------------------------------------------------------------
+[2025-10-18 17:00:26] ERROR: PrismaClientValidationError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+/home/reza/codeing/finupsbd-backend/src/app/module/dashboard/superAdmin/application/application.service.ts:156:48
+
+  153 
+  154   return "Email Sent Successfully";
+  155 } else {
+→ 156   updated = await prisma.loanApplicationForm.update({
+          where: {
+            id: "9e60eb54-a57b-4ed2-9c4a-b55a9755899a"
+          },
+          data: {
+            status: "IN_PROCESS",
+                    ~~~~~~~~~~~~
+            additionalDocuments: undefined,
+            adminNotes: "Application Rejects",
+            isActive: true
+          },
+          include: {
+            user: {
+              select: {
+                email: true,
+                name: true
+              }
+            }
+          }
+        })
+
+Invalid value for argument `status`. Expected LoanStatus.
+    at Pn (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:29:1363)
+    at Un.handleRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:7090)
+    at Un.handleAndLogRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6771)
+    at Un.request (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6478)
+    at l (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\n/home/reza/codeing/finupsbd-backend/src/app/module/dashboard/superAdmin/application/application.service.ts:156:48\n\n  153 \n  154   return \"Email Sent Successfully\";\n  155 } else {\n→ 156   updated = await prisma.loanApplicationForm.update({\n          where: {\n            id: \"9e60eb54-a57b-4ed2-9c4a-b55a9755899a\"\n          },\n          data: {\n            status: \"IN_PROCESS\",\n                    ~~~~~~~~~~~~\n            additionalDocuments: undefined,\n            adminNotes: \"Application Rejects\",\n            isActive: true\n          },\n          include: {\n            user: {\n              select: {\n                email: true,\n                name: true\n              }\n            }\n          }\n        })\n\nInvalid value for argument `status`. Expected LoanStatus."}
+--------------------------------------------------------------
+[2025-10-18 17:01:52] ERROR: PrismaClientValidationError: 
+Invalid `prisma.loanApplicationForm.update()` invocation in
+/home/reza/codeing/finupsbd-backend/src/app/module/dashboard/superAdmin/application/application.service.ts:156:48
+
+  153 
+  154   return "Email Sent Successfully";
+  155 } else {
+→ 156   updated = await prisma.loanApplicationForm.update({
+          where: {
+            id: "9e60eb54-a57b-4ed2-9c4a-b55a9755899a"
+          },
+          data: {
+            status: "IN_PROCESS",
+                    ~~~~~~~~~~~~
+            additionalDocuments: undefined,
+            adminNotes: "Application Rejects",
+            isActive: true
+          },
+          include: {
+            user: {
+              select: {
+                email: true,
+                name: true
+              }
+            }
+          }
+        })
+
+Invalid value for argument `status`. Expected LoanStatus.
+    at Pn (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:29:1363)
+    at Un.handleRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:7090)
+    at Un.handleAndLogRequestError (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6771)
+    at Un.request (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:121:6478)
+    at l (/home/reza/codeing/finupsbd-backend/node_modules/@prisma/client/runtime/library.js:130:9644) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"PrismaClientValidationError","errorMessage":"\nInvalid `prisma.loanApplicationForm.update()` invocation in\n/home/reza/codeing/finupsbd-backend/src/app/module/dashboard/superAdmin/application/application.service.ts:156:48\n\n  153 \n  154   return \"Email Sent Successfully\";\n  155 } else {\n→ 156   updated = await prisma.loanApplicationForm.update({\n          where: {\n            id: \"9e60eb54-a57b-4ed2-9c4a-b55a9755899a\"\n          },\n          data: {\n            status: \"IN_PROCESS\",\n                    ~~~~~~~~~~~~\n            additionalDocuments: undefined,\n            adminNotes: \"Application Rejects\",\n            isActive: true\n          },\n          include: {\n            user: {\n              select: {\n                email: true,\n                name: true\n              }\n            }\n          }\n        })\n\nInvalid value for argument `status`. Expected LoanStatus."}
+--------------------------------------------------------------
+[2025-10-18 17:02:54] ERROR: Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-33d5df5c288sm2246915a91.15 - gsmtp
+    at SMTPConnection._formatError (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:1588:34)
+    at SMTPConnection.<anonymous> (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:556:26)
+    at SMTPConnection._processResponse (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:993:20)
+    at SMTPConnection._onData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:774:14)
+    at TLSSocket.SMTPConnection._onSocketData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:195:44)
+    at TLSSocket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-33d5df5c288sm2246915a91.15 - gsmtp"}
+--------------------------------------------------------------
+[2025-10-18 17:12:35] ERROR: ZodError: [
+  {
+    "code": "invalid_type",
+    "expected": "object",
+    "received": "undefined",
+    "path": [
+      "body"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at param (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:365:14) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"object\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"body\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-18 17:13:04] ERROR: ZodError: [
+  {
+    "expected": "'SUBMITTED' | 'PENDING' | 'IN_PROGRESS' | 'APPROVED' | 'REJECTED' | 'COMPLETED'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "statuss"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at param (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:365:14) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"expected\": \"'SUBMITTED' | 'PENDING' | 'IN_PROGRESS' | 'APPROVED' | 'REJECTED' | 'COMPLETED'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"statuss\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-18 17:13:52] ERROR: ZodError: [
+  {
+    "expected": "'SUBMITTED' | 'PENDING' | 'IN_PROGRESS' | 'APPROVED' | 'REJECTED' | 'COMPLETED'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "statuss"
+    ],
+    "message": "Required"
+  }
+]
+    at Object.get error [as error] (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:45:31)
+    at ZodObject.parse (/home/reza/codeing/finupsbd-backend/node_modules/zod/v3/types.cjs:120:22)
+    at /home/reza/codeing/finupsbd-backend/src/app/middleware/validateRequest.ts:7:27
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/catchAsync.ts:5:25
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:149:13)
+    at Route.dispatch (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/route.js:119:3)
+    at Layer.handle [as handle_request] (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/layer.js:95:5)
+    at /home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:284:15
+    at param (/home/reza/codeing/finupsbd-backend/node_modules/express/lib/router/index.js:365:14) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"ZodError","errorMessage":"[\n  {\n    \"expected\": \"'SUBMITTED' | 'PENDING' | 'IN_PROGRESS' | 'APPROVED' | 'REJECTED' | 'COMPLETED'\",\n    \"received\": \"undefined\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"statuss\"\n    ],\n    \"message\": \"Required\"\n  }\n]"}
+--------------------------------------------------------------
+[2025-10-18 17:14:16] ERROR: Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-33d5de11601sm2290898a91.9 - gsmtp
+    at SMTPConnection._formatError (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:1588:34)
+    at SMTPConnection.<anonymous> (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:556:26)
+    at SMTPConnection._processResponse (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:993:20)
+    at SMTPConnection._onData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:774:14)
+    at TLSSocket.SMTPConnection._onSocketData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:195:44)
+    at TLSSocket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-33d5de11601sm2290898a91.9 - gsmtp"}
+--------------------------------------------------------------
+[2025-10-18 17:21:55] ERROR: Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-7a22ff1599dsm2516390b3a.4 - gsmtp
+    at SMTPConnection._formatError (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:1588:34)
+    at SMTPConnection.<anonymous> (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:556:26)
+    at SMTPConnection._processResponse (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:993:20)
+    at SMTPConnection._onData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:774:14)
+    at TLSSocket.SMTPConnection._onSocketData (/home/reza/codeing/finupsbd-backend/node_modules/nodemailer/lib/smtp-connection/index.js:195:44)
+    at TLSSocket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at TLSSocket.Readable.push (node:internal/streams/readable:392:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-7a22ff1599dsm2516390b3a.4 - gsmtp"}
+--------------------------------------------------------------
+[2025-10-18 17:31:11] ERROR: Error: Email Send Failded
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/sendEmail.ts:37:9
+    at Generator.throw (<anonymous>)
+    at rejected (/home/reza/codeing/finupsbd-backend/src/app/utils/sendEmail.ts:6:65)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Email Send Failded"}
+--------------------------------------------------------------
+[2025-10-18 17:32:06] ERROR: Error: Email Send Failded
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/sendEmail.ts:37:9
+    at Generator.throw (<anonymous>)
+    at rejected (/home/reza/codeing/finupsbd-backend/src/app/utils/sendEmail.ts:6:65)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Email Send Failded"}
+--------------------------------------------------------------
+[2025-10-20 17:31:19] ERROR: Error: Email Send Failded
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/sendEmail.ts:37:9
+    at Generator.throw (<anonymous>)
+    at rejected (/home/reza/codeing/finupsbd-backend/src/app/utils/sendEmail.ts:6:65)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Email Send Failded"}
+--------------------------------------------------------------
+[2025-10-21 10:50:17] ERROR: Error: Email Send Failded
+    at /home/reza/codeing/finupsbd-backend/src/app/utils/sendEmail.ts:37:9
+    at Generator.throw (<anonymous>)
+    at rejected (/home/reza/codeing/finupsbd-backend/src/app/utils/sendEmail.ts:6:65)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5) {"method":"PATCH","url":"/api/v1/super-admin/application/application-feedback/9e60eb54-a57b-4ed2-9c4a-b55a9755899a","userAgent":"PostmanRuntime/7.49.0","ip":"::1","errorName":"Error","errorMessage":"Email Send Failded"}
+--------------------------------------------------------------

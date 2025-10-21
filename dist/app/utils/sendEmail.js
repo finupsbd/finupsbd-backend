@@ -13,7 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
-//146589aae72b0ccdf2adbef61c73397a-16bc1610-8cf1e183
+const AppError_1 = __importDefault(require("../error/AppError"));
+const http_status_codes_1 = require("http-status-codes");
 const transporter = nodemailer_1.default.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
@@ -24,19 +25,24 @@ const transporter = nodemailer_1.default.createTransport({
     },
 });
 const sendEmail = (toEmail, emailSubject, bodyText) => __awaiter(void 0, void 0, void 0, function* () {
-    const info = yield transporter.sendMail({
-        from: process.env.NODE_MAILER_EMAIL, // sender address
-        to: toEmail, // list of receivers
-        subject: emailSubject, // Subject line
-        text: bodyText, // plain text body
-        html: bodyText, // html body
-    });
-    console.log('Message sent: %s', info.messageId);
-    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+    try {
+        const info = yield transporter.sendMail({
+            from: process.env.NODE_MAILER_EMAIL, // sender address
+            to: toEmail, // list of receivers
+            subject: emailSubject, // Subject line
+            text: bodyText, // plain text body
+            html: bodyText, // html body
+        });
+        console.log('Message sent: %s', info.messageId);
+        // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+    }
+    catch (error) {
+        console.error(error);
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, "Email Send Failded");
+    }
 });
 exports.default = sendEmail;
 // import nodemailer from 'nodemailer';
-// //146589aae72b0ccdf2adbef61c73397a-16bc1610-8cf1e183
 // const transporter = nodemailer.createTransport({
 //   host: 'in-v3.mailjet.com',
 //   port: 587,
