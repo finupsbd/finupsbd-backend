@@ -19,3 +19,11 @@ yarn-error.log*
 .cache
 .next
 out
+
+# build & logs
+/dist/
+logs/
+*.log
+
+# env files
+.env*
