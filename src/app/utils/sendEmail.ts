@@ -29,11 +29,11 @@ try {
     html: bodyText, // html body
   });
 
-  console.log('Message sent: %s', info.messageId);
+  console.log('Message sent:', info.messageId);
   // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
 } catch (error) {
   console.error(error)
-  throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, "Email Send Failded")
+  throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, `Email Send Failded`)
 }
 };
 

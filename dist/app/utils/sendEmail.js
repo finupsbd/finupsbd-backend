@@ -33,12 +33,12 @@ const sendEmail = (toEmail, emailSubject, bodyText) => __awaiter(void 0, void 0,
             text: bodyText, // plain text body
             html: bodyText, // html body
         });
-        console.log('Message sent: %s', info.messageId);
+        console.log('Message sent:', info.messageId);
         // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
     }
     catch (error) {
         console.error(error);
-        throw new AppError_1.default(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, "Email Send Failded");
+        throw new AppError_1.default(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, `Email Send Failded`);
     }
 });
 exports.default = sendEmail;
