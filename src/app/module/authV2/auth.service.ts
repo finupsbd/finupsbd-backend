@@ -100,6 +100,22 @@ const signUp = async (
     );
   }
 
+  //////// TEMP CODE only for  /////////////////////////////////////-------------------------
+
+  if (!user.phoneVerified && user.emailVerified) {
+  await prisma.user.update({
+    where: {
+      id: user.id, // 👈 use the primary key field (commonly `id` or `email`)
+    },
+    data: {
+      phoneVerified: true, // 👈 what you want to update
+    },
+  });
+  console.log("✅ Phone verified updated successfully OLD USER");
+}
+
+  //////// TEMP CODE /////////////////////////////////////-------------------------
+
   if (!user.phoneVerified) {
     throw new AppError(
       500,
@@ -148,6 +164,11 @@ const validatePin = async (payload: { phone: string; pin: string }) => {
   if (!user) {
     throw new AppError(400, 'User not found');
   }
+
+
+
+
+
 
   const currentTime = new Date();
   if (user?.pinExpiry && user?.pinExpiry < currentTime) {

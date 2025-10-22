@@ -23,6 +23,7 @@ const signUp = catchAsync(async (req, res) => {
 });
 
 const validatePin = catchAsync(async (req, res) => {
+  
   const result = await AuthServices.validatePin(req.body);
 
   sendResponce(res, {
