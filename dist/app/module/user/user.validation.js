@@ -1,0 +1,61 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserValidation = exports.phoneSchema = exports.passwordSchema = exports.emailSchema = void 0;
+const zod_1 = require("zod");
+exports.emailSchema = zod_1.z
+    .string()
+    .email('Invalid email format')
+    .min(1, 'Email is required');
+exports.passwordSchema = zod_1.z
+    .string()
+    .min(6, 'Password must be at least 6 characters long');
+exports.phoneSchema = zod_1.z.string().min(1, 'Phone is required').regex(/^01[3-9]\d{8}$/, 'Invalid phone number');
+const createUserValidationSchema = zod_1.z.object({
+    name: zod_1.z.string().min(1, 'Name is required'),
+    email: exports.emailSchema,
+    phone: exports.phoneSchema,
+    password: exports.passwordSchema,
+    profile: zod_1.z.object({}).optional(),
+});
+const verifyPinValidationSchema = zod_1.z.object({
+    // email: emailSchema,
+    phone: exports.phoneSchema,
+    pin: zod_1.z.string().min(6, 'Password must be at least 6 characters long'),
+});
+const loginValidationSchema = zod_1.z.object({
+    identifier: zod_1.z.string().min(1, 'Email or phone is required'),
+    password: zod_1.z.string().min(1, 'Password is required'),
+});
+const forgetPasswordValidationSchema = zod_1.z.object({
+    email: exports.emailSchema,
+    // phone: phoneSchema,
+});
+const resetPasswordValidationSchema = zod_1.z.object({
+    email: exports.emailSchema,
+    newPassword: exports.passwordSchema
+    // phone: phoneSchema,
+});
+const changePasswordValidationSchema = zod_1.z.object({
+    oldPassword: exports.passwordSchema,
+    newPassword: exports.passwordSchema
+    // phone: phoneSchema,
+});
+// password = z
+//   .string()
+//   .min(8, 'Password must be at least 8 characters long') // Minimum length
+//   .max(20, 'Password must not exceed 20 characters') // Maximum length
+//   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter') // At least one uppercase letter
+//   .regex(/[a-z]/, 'Password must contain at least one lowercase letter') // At least one lowercase letter
+//   .regex(/[0-9]/, 'Password must contain at least one number') // At least one number
+//   .regex(/[@$!%*?&]/, 'Password must contain at least one special character (@, $, !, %, *, ?, &)') // At least one special character
+//   .refine((value) => !/\s/.test(value), {
+//     message: 'Password must not contain spaces', // No spaces allowed
+//   });
+exports.UserValidation = {
+    createUserValidationSchema,
+    verifyPinValidationSchema,
+    loginValidationSchema,
+    forgetPasswordValidationSchema,
+    resetPasswordValidationSchema,
+    changePasswordValidationSchema
+};

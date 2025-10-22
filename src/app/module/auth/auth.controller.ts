@@ -18,7 +18,7 @@ const signUp = catchAsync(async (req, res) => {
 
   sendResponce(res, {
     success: true,
-    message: "Cheack your email and and verify!",
+    message: "Cheack your phone or email and and verify!",
     statusCode: StatusCodes.CREATED,
     data: result,
   });
@@ -69,7 +69,7 @@ const forgetPassword = catchAsync(async (req, res) => {
 
   sendResponce(res, {
     success: true,
-    message: 'Check your email for verification!',
+    message: 'Check your phone or email for verification!',
     statusCode: StatusCodes.OK,
     data: result
   })
@@ -128,7 +128,6 @@ const changePassword = catchAsync(async (req, res) => {
     statusCode: StatusCodes.OK,
     data: result
   })
-
 });
 
 

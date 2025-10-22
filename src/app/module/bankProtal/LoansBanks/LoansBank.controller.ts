@@ -37,7 +37,7 @@ const textPrompth = `You are a bank‐document validation assistant. The user re
 
 Return only the JSON and, if applicable, the observations block. `
 
-
+ 
 
 
 

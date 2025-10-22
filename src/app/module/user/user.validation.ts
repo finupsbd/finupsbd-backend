@@ -9,7 +9,7 @@ export const passwordSchema = z
   .string()
   .min(6, 'Password must be at least 6 characters long');
 
-export const phoneSchema = z.string().min(1, 'Phone is required').regex(/^\d{11}$/, 'Phone number must be 11 digits');
+export const phoneSchema = z.string().min(1, 'Phone is required').regex(/^01[3-9]\d{8}$/, 'Invalid phone number');
 
 
 
@@ -23,15 +23,14 @@ const createUserValidationSchema = z.object({
 });
 
 const verifyPinValidationSchema = z.object({
-  email: emailSchema,
-  // phone: phoneSchema,
+  // email: emailSchema,
+  phone: phoneSchema,
   pin: z.string().min(6, 'Password must be at least 6 characters long'),
 });
 
 const loginValidationSchema = z.object({
-  email: emailSchema,
-  // phone: phoneSchema,
-  password: passwordSchema,
+  identifier: z.string().min(1,'Email or phone is required'),
+  password: z.string().min(1,'Password is required'),
 });
 
 const forgetPasswordValidationSchema = z.object({

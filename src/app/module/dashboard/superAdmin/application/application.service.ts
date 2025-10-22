@@ -35,7 +35,6 @@ const getAllApplication = async () => {
           },
         },
       },
-      take: 10,
       orderBy: {
         createdAt: "desc"
       }

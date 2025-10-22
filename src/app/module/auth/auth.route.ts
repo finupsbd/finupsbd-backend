@@ -24,4 +24,4 @@ router.post('/logout', AuthController.logout)
 
 
 
-export const AuthRouter = router    
+export const AuthRouter = router 

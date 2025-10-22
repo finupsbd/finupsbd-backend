@@ -16,6 +16,7 @@ import { InstantLoanRouter } from '../module/loans/instantLoan/instantLoan.route
 import { UserBankAuthRouter } from '../module/bankProtal/userBankAuth/userBankAuth.route'
 import { CreditCardRouter } from '../module/loans/creditCard/creditCard.route'
 import { DashBoardSubRoutes } from './subRoute'
+import { AuthRouterV2 } from '../module/authV2/auth.route'
 
 
 
@@ -24,9 +25,13 @@ const router = express.Router()
 
 
 const moduleRouter = [
+    // {
+    //     path: '/auth',
+    //     route: AuthRouter
+    // },
     {
         path: '/auth',
-        route: AuthRouter
+        route: AuthRouterV2
     },
     {
         path: '/users',

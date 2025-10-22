@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer';
+import AppError from '../error/AppError';
+import { StatusCodes } from 'http-status-codes';
 
 
-//146589aae72b0ccdf2adbef61c73397a-16bc1610-8cf1e183
 
 
 const transporter = nodemailer.createTransport({
@@ -19,7 +20,8 @@ const sendEmail = async (toEmail: string, emailSubject: string, bodyText: string
 
 
 ) => {
-  const info = await transporter.sendMail({
+try {
+    const info = await transporter.sendMail({
     from: process.env.NODE_MAILER_EMAIL, // sender address
     to: toEmail, // list of receivers
     subject: emailSubject, // Subject line
@@ -27,8 +29,12 @@ const sendEmail = async (toEmail: string, emailSubject: string, bodyText: string
     html: bodyText, // html body
   });
 
-  console.log('Message sent: %s', info.messageId);
+  console.log('Message sent:', info.messageId);
   // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+} catch (error) {
+  console.error(error)
+  throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, `Email Send Failded`)
+}
 };
 
 export default sendEmail;
@@ -42,7 +48,7 @@ export default sendEmail;
 // import nodemailer from 'nodemailer';
 
 
-// //146589aae72b0ccdf2adbef61c73397a-16bc1610-8cf1e183
+
 
 
 // const transporter = nodemailer.createTransport({

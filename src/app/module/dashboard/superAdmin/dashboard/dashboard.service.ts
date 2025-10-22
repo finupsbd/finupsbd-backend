@@ -72,13 +72,9 @@ const dashboardHome = async () => {
       userId: true,
       profile: true, 
       createdAt: true
-
     }
   })
 
-
-
-  console.log(userGrowth, applicantGrowth)
 
   return {
     totalUsers,

@@ -55,14 +55,6 @@ export function generateUserIdToday(sequenceNumber: number) {
 
 
 
-
-
-
-
-
-
-
-
 import { prisma } from '../../app';
 
 // Get the last created user with a userId.

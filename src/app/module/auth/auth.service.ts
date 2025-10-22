@@ -16,6 +16,7 @@ import AppError from '../../error/AppError';
 import { StatusCodes } from 'http-status-codes';
 import { verificationPINEmailTemplate } from '../../utils/email-template/verificationPIN';
 import { TMiddlewareUser } from '../../types/commonTypes';
+import phoneOtpSend from '../../utils/phoneOtpSend';
 
 
 
@@ -31,7 +32,6 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
     },
   });
 
-  console.log(isAlreadySignUpRequest)
 
   if (isAlreadySignUpRequest) {
     throw new AppError(StatusCodes.CONFLICT, 'You have already an account please login');
@@ -54,6 +54,7 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
       email,
     },
   });
+
 
   if (userIsExist) {
     if (userIsExist && userIsExist.emailVerified === false) {
@@ -103,10 +104,11 @@ const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: str
   </div>
 `;
 
+  // const phoneOtpSuccess = await phoneOtpSend(payload?.phone, `Your OTP is ${result?.pin}. Never share this code with anyone.`)
+   await sendEmail(payload?.email, MailSubject, MailText);
+  
 
-  await sendEmail(payload?.email, MailSubject, MailText);
-
-  // phoneOtpSend(phone, "send message")
+  console.log("massage send successfully")
 
   return {
     email: result.email
@@ -203,8 +205,6 @@ const validatePin = async (payload: { email: string; pin: string }) => {
 
   const emailSubject = 'Your PIN for Verification';
   const bodyText = verificationPINEmailTemplate(user?.name ?? "", user?.userId ?? "")
-
-
 
   await sendEmail(email, emailSubject, bodyText);
   return {};
@@ -459,6 +459,8 @@ const checkSamePassword = await bcrypt.compare( payload?.newPassword, userData?.
   await sendEmail(email, emailSubject, bodyText);
   return {};
 };
+
+
 
 
 export const AuthServices = {

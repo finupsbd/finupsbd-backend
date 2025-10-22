@@ -10,6 +10,9 @@ import seedSuperAdmin from './app/DB';
 import os, { version } from "os"
 import rateLimit from 'express-rate-limit';
 import path from 'path';
+import swaggerUi from "swagger-ui-express";
+import { specs } from './lib/api-doc/api-doc';
+import { authDoc } from './app/middleware/authDoc';
 
 
 
@@ -64,7 +67,6 @@ app.use('/__nextjs_original-stack-frames', (req, res) => {
 //henarate custom error 
 
 
-
 // Simple server health-check endpoint
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
@@ -90,6 +92,9 @@ app.get('/', (req: Request, res: Response) => {
     },
   });
 });
+
+app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(specs));
+
 
 // Middleware execution order corrected
 app.use(notFound);

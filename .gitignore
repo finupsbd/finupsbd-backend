@@ -5,3 +5,17 @@ node_modules
 __tests__
 uploads
 logs
+*.log
+.DS_Store
+.idea
+.vscode
+dist
+build
+coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.cache
+.next
+out

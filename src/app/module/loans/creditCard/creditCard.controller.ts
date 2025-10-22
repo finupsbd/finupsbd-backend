@@ -3,6 +3,7 @@ import sendResponses from "../../../utils/sendResponce";
 import catchAsync from "../../../utils/catchAsync";
 import { CreditCardService } from "./creditCard.service";
 import { CreditCardValidationSchema } from "./creditCardValidation";
+import AppError from "../../../error/AppError";
 
 
 const createCreditCard = catchAsync(async (req, res) => {
@@ -11,9 +12,9 @@ const createCreditCard = catchAsync(async (req, res) => {
    CreditCardValidationSchema.CreditCardSchema.parse(
       JSON.parse(req.body.data)
     );
-  const file = req.file?.buffer;
+    const file = req.file;
   if (!file) {
-    throw new Error('Please upload a file');
+    throw new AppError(StatusCodes.CONFLICT,"Please upload a file")
   }
   const result = await CreditCardService.createCreditCard(
     payload,
