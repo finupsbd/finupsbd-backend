@@ -6,25 +6,29 @@ model Blog {
 
   publishedDate   DateTime?  @default(now())
   status          PostStatus @default(DRAFT)
-  excerpt         String?
-  category        Category
-  tags            String[]
-  coverImage      String?
+  thumbnail       String?
+  bannerImage     String?
+  excerpt         String? // short summary
   readingTime     Int?
   metaTitle       String?
   metaDescription String?
+  publishedAt     DateTime?
+  scheduledFor    DateTime?
+  views           Int        @default(0)
+  likes           Int        @default(0)
+  isFeatured      Boolean    @default(false)
   language        String     @default("en")
   permissions     String     @default("public")
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
-  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          String
+  category        Category
+  tags            String[]
+  author          User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId        String
   comments        Comment[]
 
   @@map("blogs")
 }
-
-
 
 model Comment {
   id        String  @id @default(uuid())
@@ -48,18 +52,48 @@ model Comment {
   @@map("comments")
 }
 
-
-
-
 enum Category {
-  LOAN
+  PERSONAL_LOAN
+  HOME_LOAN
+  CAR_LOAN
+  SME_LOAN
+  EDUCATION_LOAN
+  BUSINESS_LOAN
+  FINUPS_AGRIM_LOAN
+
   CREDIT_CARD
   CREDIT_SCORE
+  DEBT_MANAGEMENT
+
+  DIGITAL_BANKING
+  SAVINGS
+  MONEY_MANAGEMENT
+  INSURANCE
+  TAX_TIPS
+  INVESTMENT
+  FINANCIAL_PLANNING
+  WEALTH_BUILDING
+
+  FINTECH_NEWS
+  STARTUP_GROWTH
+  PRODUCT_UPDATE
   CUSTOMER_SUCCESS
+  MARKET_ANALYSIS
+  FRAUD_PREVENTION
+  ECONOMIC_TRENDS
+
+  FINANCIAL_EDUCATION
+  LIFESTYLE
+  TECH_TIPS
+  CAREER_ADVICE
+  SUCCESS_STORIES
+  LAST
+  OTHER
 }
 
 enum PostStatus {
   DRAFT
   PUBLISHED
+  SCHEDULED
   ARCHIVED
 }

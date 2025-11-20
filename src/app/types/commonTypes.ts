@@ -52,3 +52,6 @@ enum LoanType {
   SME_LOAN = 'SME_LOAN',
   INSTANT_LOAN = 'INSTANT_LOAN'
 }
+
+
+

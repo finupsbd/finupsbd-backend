@@ -78,4 +78,6 @@ export enum BankName {
   GRAMEEN_BANK                          = "GRAMEEN_BANK",
   JUBILEE_BANK                          = "JUBILEE_BANK",
   PALLI_SANCHAY_BANK                    = "PALLI_SANCHAY_BANK",
+  FINUPS_AGRIM                          = "FINUPS_AGRIM"
+
 }

@@ -37,6 +37,8 @@ const validatePin = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const result = await AuthServices.login(req.body);
 
+  console.log(req)
+
   const { refreshToken, accessToken } = result;
 
   console.log(refreshToken)
@@ -56,7 +58,7 @@ const login = catchAsync(async (req, res) => {
 
   sendResponce(res, {
     success: true,
-    message: 'User login successfully!',
+    message: result.role === "SUPER_ADMIN" ? "Admin Login successfully": `User login successfully!`,
     statusCode: StatusCodes.OK,
     data: { accessToken },
   })
@@ -130,6 +132,20 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 
+const forgetPasswordPhone = catchAsync(async (req, res) => {
+  const result = await AuthServices.forgetPasswordPhone(req.body);
+
+
+  sendResponce(res, {
+    success: true,
+    message: 'Check your phone for otp please verify',
+    statusCode: StatusCodes.OK,
+    data: result
+  })
+
+});
+
+
 
 
 export const AuthController = {
@@ -140,5 +156,6 @@ export const AuthController = {
   resetPassword,
   refreshToken,
   logout,
-  changePassword
+  changePassword, 
+  forgetPasswordPhone
 };

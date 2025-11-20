@@ -15,7 +15,7 @@ const eligibilityCheck = catchAsync(async(req, res)=> {
 
     sendResponses(res, {
         success: true,
-        message: 'Your Eligibility check successfully',
+        message: 'Eligibility check successfully',
         statusCode: StatusCodes.OK,
         data: result ,
       });

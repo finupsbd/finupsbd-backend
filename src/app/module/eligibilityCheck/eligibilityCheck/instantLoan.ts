@@ -13,14 +13,19 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
 
   try {
     const [loans] = await prisma.$transaction([
-      prisma.instantLoan.findMany({
-        include: {
-          EligibilityInstantLoan: true,
-          FeaturesInstantLoan: true,
-          FeesChargesInstantLoan: true,
+      prisma.loan.findMany({
+        where: {
+          loanType: payload.loanType
         },
+       include: {
+        eligibility: true, 
+        features: true, 
+        feesCharges: true
+       }
       }),
     ]);
+
+    console.log(loans)
 
 
     if (!loans.length) {
@@ -63,9 +68,9 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
         interestRate: interest,
         processingFee: loan.processingFee,
         eligibleLoan: eligibleLoan,
-        features: loan.FeaturesInstantLoan,
-        feesCharges: loan.FeesChargesInstantLoan,
-        eligibility: loan.EligibilityInstantLoan,
+        features: loan.features,
+        feesCharges: loan.feesCharges,
+        eligibility: loan.eligibility,
       };
     });
 

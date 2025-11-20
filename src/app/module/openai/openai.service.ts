@@ -23,12 +23,6 @@ async function interactWithAssistant(
       feesCharges: true,
     },
   });
-  const user = await prisma.user.findMany({
-    include: {
-      LoanApplicationForm: true, 
-      PersonalLoan: true
-    }   
-  })
 
 
   // Prepare loan details for the AI prompt

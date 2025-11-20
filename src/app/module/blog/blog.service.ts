@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from '../../../app';
-import { BlogQueryBuilder } from '../../buidler/blogQueryBuilder';
 import { TMiddlewareUser, TMulterFile } from '../../types/commonTypes';
 import { saveFileBlogs } from '../../utils/file-uploads/saveFileBlogs';
-import { TBlog } from './blog.interface';
-import { TQueryOptions } from './blog.validation';
+
+import { TEditBlogInput, TQueryOptions } from './blog.validation';
 
 
 
 
-const createBlog = async (payload: TBlog, file: TMulterFile, user: TMiddlewareUser) => {
+const createBlog = async (payload: TEditBlogInput, file: TMulterFile, user: TMiddlewareUser) => {
 
   // const coverImage = await sendImageToCloud(file);
 
@@ -19,11 +18,11 @@ const createBlog = async (payload: TBlog, file: TMulterFile, user: TMiddlewareUs
 
 
   const coverImage = await saveFileBlogs(file.buffer, file.originalname, "blogs", existingUser?.userId ?? "");
-  payload.coverImage = coverImage ?? undefined;
+  payload.bannerImage = coverImage ?? undefined;
 
 
   if (user.userId) {
-    payload.userId = user.userId;
+    payload.authorId = user.userId;
   }
 
 
@@ -35,10 +34,12 @@ const createBlog = async (payload: TBlog, file: TMulterFile, user: TMiddlewareUs
   return result;
 };
 
+
+
+
 const getAllBlogs = async (queryOptions: TQueryOptions) => {
 
-  const builder = new BlogQueryBuilder(queryOptions);
-  const queryArgs = builder.buildFindManyArgs()
+
 
   const select = {
     id: true,
@@ -47,8 +48,8 @@ const getAllBlogs = async (queryOptions: TQueryOptions) => {
     content: true,
     category: true,
     tags: true,
-    coverImage: true,
-    user: {
+    bannerImage: true,
+    author: {
       select: {
         id: true,
         name: true,
@@ -61,13 +62,13 @@ const getAllBlogs = async (queryOptions: TQueryOptions) => {
 
   }
 
-  queryArgs.select = select
 
-  const blogs = await prisma.blog.findMany(queryArgs);
+
+  const blogs = await prisma.blog.findMany({select});
   return blogs;
 };
 
-const updateBlog = async (payload: TBlog, id: string) => {
+const updateBlog = async (payload: TEditBlogInput, id: string) => {
   // Convert category string to Prisma enum if necessary
   const { category, ...restPayload } = payload;
   const data = {
@@ -128,50 +129,50 @@ const getSingleBlog = async (id: string) => {
 
   console.log({ id })
 
-  const result = await prisma.blog.findUnique(
-    {
-      where: { id },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        content: true,
-        category: true,
-        tags: true,
-        coverImage: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            profile: {
-              select: { avatar: true },
-            },
-          },
-        },
-        // Fetch all comments, no parent filtering
-        comments: {
-          select: {
-            id: true,
-            content: true,
-            createdAt: true,
-            parentId: true,
-            user: {
-              select: {
-                id: true,
-                name: true,
-                profile: {
-                  select: { avatar: true },
-                },
-              },
-            },
-          },
-        },
-      }
-    },
-  );
+  // const result = await prisma.blog.findUnique(
+  //   {
+  //     where: { id },
+  //     select: {
+  //       id: true,
+  //       title: true,
+  //       slug: true,
+  //       content: true,
+  //       category: true,
+  //       tags: true,
+  //       bannerImage: true,
+  //       user: {
+  //         select: {
+  //           id: true,
+  //           name: true,
+  //           email: true,
+  //           profile: {
+  //             select: { avatar: true },
+  //           },
+  //         },
+  //       },
+  //       // Fetch all comments, no parent filtering
+  //       comments: {
+  //         select: {
+  //           id: true,
+  //           content: true,
+  //           createdAt: true,
+  //           parentId: true,
+  //           user: {
+  //             select: {
+  //               id: true,
+  //               name: true,
+  //               profile: {
+  //                 select: { avatar: true },
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //     }
+  //   },
+  // );
 
-  return result;
+  // return result;
 };
 
 

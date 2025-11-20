@@ -1,21 +1,10 @@
-import { cardsTypes, loanTypes } from "./eligibilityCheck.constant";
-import AppError from "../../error/AppError";
-import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../../app";
 import { TEligibilityCheck } from "./eligibilityCheck.interface";
-import personalLoan from "./eligibilityCheck/personalLoan";
+import { cards } from "./eligibilityCheck/cards";
 import { instantLoan } from "./eligibilityCheck/instantLoan";
-import { creditCard } from "./eligibilityCheck/creditCard";
+import { loans } from "./eligibilityCheck/loans";
 
 
-type LoanHandler = (data: TEligibilityCheck, query: Record<string, unknown>) => Promise<unknown>;
-
-// Loan type handler map
-const loanHandlers: Record<string, LoanHandler> = {
-  [loanTypes.INSTANT_LOAN]: instantLoan,
-  [loanTypes.PERSONAL_LOAN]: personalLoan,
-  [cardsTypes.CREDIT_CARD]: creditCard,
-};
 
 
 const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
@@ -48,17 +37,28 @@ const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string
     });
 
 
-    const handler = loanHandlers[payload.loanType];
+
+const cardTypes = ["TRAVEL_CARD", "PREPAID_CARD", "CREDIT_CARD"] as const;
+
+if (eligibilityCheckEntry && cardTypes.includes(eligibilityCheckEntry.loanType as typeof cardTypes[number])) {
+  return await cards(eligibilityCheckEntry as unknown  as TEligibilityCheck, query);
+}
 
 
+const loanTypes = ["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN"] as const;
 
-    if (!handler) {
-      throw new AppError(
-        StatusCodes.BAD_REQUEST,
-        `Loan type handler not implemented for '${payload.loanType}'`
-      );
-    }
-    return handler(eligibilityCheckEntry as unknown as TEligibilityCheck, query);
+if (eligibilityCheckEntry && loanTypes.includes(eligibilityCheckEntry.loanType as typeof loanTypes[number])) {
+  return await loans(eligibilityCheckEntry as unknown  as TEligibilityCheck, query);
+}
+
+
+const InstantLoanTypes = ["INSTANT_LOAN"] as const;
+
+if (eligibilityCheckEntry && InstantLoanTypes.includes(eligibilityCheckEntry.loanType as typeof InstantLoanTypes[number])) {
+  return await instantLoan(eligibilityCheckEntry as unknown  as TEligibilityCheck, query);
+}
+
+
   } catch (error) {
     console.log(error)
   }

@@ -1,4 +1,19 @@
+
 import { prisma } from "../../../../../app";
+import { LoanTypes } from "@prisma/client";
+import { TModules } from "./dashboard.constand";
+import { CardType } from "../../../eligibilityCheck/eligibilityCheck.interface";
+import AppError from "../../../../error/AppError";
+import { StatusCodes } from "http-status-codes";
+
+
+export type TQueryPayloadType = {
+  searchTerm?: string;
+  module?: TModules;
+  isActive?: boolean;
+  page?: number;
+  limit?: number;
+};
 
 
 const dashboardHome = async () => {
@@ -64,13 +79,13 @@ const dashboardHome = async () => {
     },
   })
 
-  const last5User= await prisma.user.findMany({
-    take: 5, 
+  const last5User = await prisma.user.findMany({
+    take: 5,
     select: {
       id: true,
-      name: true, 
+      name: true,
       userId: true,
-      profile: true, 
+      profile: true,
       createdAt: true
     }
   })
@@ -81,15 +96,162 @@ const dashboardHome = async () => {
     totalApplications,
     userGrowth,
     applicantGrowth,
-    last5Application, 
+    last5Application,
     last5User
+  }
+}
+
+
+const getAllModules = async (query: TQueryPayloadType) => {
+  const { module, searchTerm, isActive, page = 1, limit = 10 } = query;
+
+  console.log(query)
+
+  const skip = (page - 1) * limit;
+
+  const loanTypes = ["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN", "INSTANT_LOAN"] as const;
+  const cardTypes = ["DEBIT_CARD", "PREPAID_CARD", "CREDIT_CARD"] as const;
+
+  try {
+    // ============ LOAN MODULE ============
+    if (!module || loanTypes.includes(module as typeof loanTypes[number])) {
+
+    const [loans, totalCount] = await Promise.all([
+      prisma.loan.findMany({
+        where: module && loanTypes.includes(module as typeof loanTypes[number])
+          ? { loanType: module as LoanTypes } 
+          : {}, // empty where means fetch all
+        skip,
+        take: Number(limit),
+        select: {
+          id: true,
+          bankName: true,
+          loanType: true,
+          isActive: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
+      prisma.loan.count({
+        where: module && loanTypes.includes(module as typeof loanTypes[number])
+          ? { loanType: module as LoanTypes }
+          : {},
+      }),
+    ]);
+
+    return {
+      data: loans,
+      pagination: {
+        total: totalCount,
+        page,
+        limit,
+        totalPages: Math.ceil(totalCount / limit),
+      },
+    };
+  }
+
+
+
+
+    // ============ CARD MODULE ============
+     if (!module || cardTypes.includes(module as typeof cardTypes[number])) {
+
+    const [cards, totalCount] = await Promise.all([
+      prisma.card.findMany({
+        where: module && cardTypes.includes(module as typeof cardTypes[number])
+          ? { cardType: module as CardType }
+          : {},
+        skip,
+        take: Number(limit),
+      }),
+      prisma.card.count({
+        where: module && cardTypes.includes(module as typeof cardTypes[number])
+          ? { cardType: module as CardType }
+          : {},
+      }),
+    ]);
+
+    return {
+      data: cards,
+      pagination: {
+        total: totalCount,
+        page,
+        limit,
+        totalPages: Math.ceil(totalCount / limit),
+      },
+    };
+  }
+
+    // ============ DEFAULT ============
+    return {
+      data: [],
+      pagination: { total: 0, page, limit, totalPages: 0 },
+      message: `Unknown module: ${module}`,
+    };
+  } catch (error) {
+    console.error("Error fetching modules:", error);
+    throw new Error("Failed to fetch modules");
+  }
+};
+
+const changeModuleStatus = async (payload: { isActive: boolean }, id: string) => {
+  try {
+
+    let updatedRecord = null
+
+
+  
+
+    // Try Loan first
+    updatedRecord = await prisma.loan
+      .update({
+        where: { id },
+        data: { isActive: payload.isActive },
+        include: {
+          eligibility: true,
+          features: true,
+          feesCharges: true
+        }
+      })
+      .catch(() => null) // skip if not found
+
+    // If not in loan, try Card
+    if (!updatedRecord) {
+      updatedRecord = await prisma.card
+        .update({
+          where: { id },
+          data: { isActive: payload.isActive },
+          include: {
+            eligibility: true,
+            features: true,
+            feesCharges: true
+          }
+        })
+        .catch(() => null)
+    }
+
+    if (!updatedRecord) {
+      throw new AppError(StatusCodes.NOT_FOUND, "Record not found in loan or card.")
+    }
+
+    return updatedRecord
+  } catch (error) {
+    console.error("❌ changeModuleStatus error:", error)
+    return error
   }
 }
 
 
 
 
+
+
+
+
+
 export const DashboardServides = {
   dashboardHome,
+  getAllModules,
+  changeModuleStatus
 }
 

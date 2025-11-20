@@ -1,7 +1,7 @@
 import express from "express"
 import { BlogController } from "./blog.controller"
 import validateRequest from "../../middleware/validateRequest"
-import { BlogValidationSchema, quearyOprions } from "./blog.validation"
+import { BlogBaseSchema, quearyOprions } from "./blog.validation"
 
 import auth from "../../middleware/auth"
 import multer from "multer"
@@ -20,7 +20,7 @@ const router = express.Router()
 router.post('/create-blog', auth("USER", "ADMIN", "SUPER_ADMIN"), upload.single("file"), BlogController.createBlog)
 router.post('/comment', auth("USER", "ADMIN", "SUPER_ADMIN"), BlogController.commentBlog)
 
-router.patch('/:id', validateRequest(BlogValidationSchema), BlogController.updateBlog)
+router.patch('/:id', validateRequest(BlogBaseSchema), BlogController.updateBlog)
 router.get('/single-blog/:id', BlogController.getSingleBlog)
 
 router.delete('/:id', BlogController.deleteBlog)

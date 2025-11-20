@@ -1,41 +1,75 @@
 import { z } from "zod";
 
+// Enums
+export const CategoryEnum = z.enum([
+  "PERSONAL_LOAN",
+  "HOME_LOAN",
+  "CAR_LOAN",
+  "SME_LOAN",
+  "EDUCATION_LOAN",
+  "BUSINESS_LOAN",
+  "FINUPS_AGRIM_LOAN",
+  "CREDIT_CARD",
+  "CREDIT_SCORE",
+  "DEBT_MANAGEMENT",
+  "DIGITAL_BANKING",
+  "SAVINGS",
+  "MONEY_MANAGEMENT",
+  "INSURANCE",
+  "TAX_TIPS",
+  "INVESTMENT",
+  "FINANCIAL_PLANNING",
+  "WEALTH_BUILDING",
+  "FINTECH_NEWS",
+  "STARTUP_GROWTH",
+  "PRODUCT_UPDATE",
+  "CUSTOMER_SUCCESS",
+  "MARKET_ANALYSIS",
+  "FRAUD_PREVENTION",
+  "ECONOMIC_TRENDS",
+  "FINANCIAL_EDUCATION",
+  "LIFESTYLE",
+  "TECH_TIPS",
+  "CAREER_ADVICE",
+  "SUCCESS_STORIES",
+  "LAST",
+  "OTHER",
+]);
 
+export const StatusEnum = z.enum([
+  "DRAFT",
+  "PUBLISHED",
+  "SCHEDULED",
+  "ARCHIVED",
+]);
 
-
-export const PostStatusSchema = z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).default("PUBLISHED");
-
-const CategoryEnum = z.enum(["CREDIT_CARD", "LOAN", "CREDIT_SCORE", "CUSTOMER_SUCCESS"]);
-
-const StatusEnum = z.enum(["PUBLISHED", "DRAFT", "ARCHIVED"]);
-// Zod schema for Blog
-export const BlogValidationSchema = z.object({
-    title: z.string(),
-    slug: z.string(),
-    content: z.string(),
-    publishedDate: z.date().optional(),
-    status: PostStatusSchema,
-    excerpt: z.string().optional(),
-    category: z.string().optional(),
-    tags: z.array(z.string()).optional(), // Array of tags
-    coverImage: z.string().optional(),
-    readingTime: z.number().optional(), // in minutes
-    metaTitle: z.string().optional(),
-    metaDescription: z.string().optional(),
-    attachments: z.array(z.string()).optional(), // Array of file URLs
-    language: z.string().optional(),
-    permissions: z.string().optional(),
+// Base Blog Schema with error messages
+export const BlogBaseSchema = z.object({
+  title: z.string({ required_error: "Title is required" }).min(3, "Title must be at least 3 characters"),
+  slug: z.string({ required_error: "Slug is required" }).min(3, "Slug must be at least 3 characters"),
+  content: z.string({ required_error: "Content is required" }).min(10, "Content must be at least 10 characters"),
+  publishedDate: z.union([z.string().optional(), z.date().optional()]).transform((val) => (val ? new Date(val) : undefined)),
+  status: StatusEnum.optional(),
+  thumbnail: z.string().url({ message: "Thumbnail must be a valid URL" }).optional(),
+  bannerImage: z.string().url({ message: "Banner image must be a valid URL" }).optional(),
+  excerpt: z.string().max(300, "Excerpt cannot exceed 300 characters").optional(),
+  readingTime: z.number({ invalid_type_error: "Reading time must be a number" }).int().optional(),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
+  publishedAt: z.union([z.string().optional(), z.date().optional()]).transform((val) => (val ? new Date(val) : undefined)).optional(),
+  scheduledFor: z.union([z.string().optional(), z.date().optional()]).transform((val) => (val ? new Date(val) : undefined)).optional(),
+  views: z.number({ invalid_type_error: "Views must be a number" }).int().optional(),
+  likes: z.number({ invalid_type_error: "Likes must be a number" }).int().optional(),
+  isFeatured: z.boolean({ invalid_type_error: "isFeatured must be true or false" }).optional(),
+  language: z.string().optional(),
+  permissions: z.string().optional(),
+  category: CategoryEnum.optional(),
+  tags: z.array(z.string({ invalid_type_error: "Tags must be strings" })).optional(),
+  authorId: z.string({ required_error: "Author ID is required" }).optional(),
 });
 
-// Zod schema for Comment
-//   export const CommentSchema = z.object({
-//     id: z.number(),
-//     content: z.string(),
-//     blogId: z.number(),
-//     blog: BlogValidationSchema, // Relationship with Blog
-//     createdAt: z.date(),
-//     updatedAt: z.date(),
-//   });
+
+
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,4 +97,9 @@ export const quearyOprions = z.object({
 
 
 export type TQueryOptions = z.infer<typeof quearyOprions>
+// Edit/Update Blog Schema
+export const editBlogSchema = BlogBaseSchema.partial(); // allows partial updates
+
+// TypeScript type
+export type TEditBlogInput = z.infer<typeof editBlogSchema>;
 

@@ -20,18 +20,17 @@ model User {
   profile             Profile?
   kycVerification     KycVerification?
   blogPost            Blog[]
-  PersonalLoan        PersonalLoan[]
-  HomeLoan            HomeLoan[]
-  CarLoan             CarLoan[]
-  SMELoan             SMELoan[]
-  Session             Session[]
-  PageView            PageView[]
-  Activity            Activity[]
+  personalLoan        PersonalLoan[]
+  session             Session[]
+  pageView            PageView[]
+  activity            Activity[]
   InstantLoan         InstantLoan[]
-  CreditCard          CreditCard[]
-  Comment             Comment[]
+  comments            Comment[]
   LoanApplicationForm LoanApplicationForm[]
   notification        Notification[]
+  loans               Loan[]
+  cards               Card[]
+  insurance           Insurance[]
 
   @@index([email])
   @@index([phone])

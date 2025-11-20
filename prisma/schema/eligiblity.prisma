@@ -59,8 +59,11 @@ enum MainLoanType {
   CAR_LOAN
   SME_LOAN
   INSTANT_LOAN
+  /// Cards
   CREDIT_CARD
   DEBIT_CARD
+  TRAVEL_CARD
+  PREPAID_CARD
 }
 
 enum EGender {
@@ -98,6 +101,8 @@ enum ExistingLoanType {
 }
 
 enum CardType {
-  CREDIT_CARD
   DEBIT_CARD
+  CREDIT_CARD
+  PREPAID_CARD
+  TRAVEL_CARD
 }

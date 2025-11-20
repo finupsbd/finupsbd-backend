@@ -100,7 +100,7 @@ const signUp = async (
     );
   }
 
-  //////// TEMP CODE only for  /////////////////////////////////////-------------------------
+  /////////////////////////////////// TEMP CODE only for  /////////////////////////////////////-------------------------
 
   if (!user.phoneVerified && user.emailVerified) {
   await prisma.user.update({
@@ -114,7 +114,7 @@ const signUp = async (
   console.log("✅ Phone verified updated successfully OLD USER");
 }
 
-  //////// TEMP CODE /////////////////////////////////////-------------------------
+  /////////////////////////////////// TEMP CODE /////////////////////////////////////-------------------------
 
   if (!user.phoneVerified) {
     throw new AppError(
@@ -151,6 +151,7 @@ const signUp = async (
   return {
     accessToken,
     refreshToken,
+    role: user?.role
   };
 };
 
@@ -275,23 +276,31 @@ const forgetPassword = async (payload: { email: string }) => {
 };
 
 const resetPassword = async (payload: {
+  phone: string;
   newPassword: string;
   email: string;
 }) => {
-  const { email, newPassword } = payload;
+  const { email, newPassword, phone } = payload;
 
-
-  const user = await prisma.user.findUnique({ where: { email } });
+console.log(email, newPassword, phone )
+  const user = await prisma.user.findFirst({
+    where: {
+      OR: [
+        { email }, 
+        { phone }
+      ]
+    }
+  });
 
   if (!user) {
     throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
   }
 
-  if (!user.emailVerified) {
-    throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,
-      'Your email was not verifyed. Please verify your email before reset your password'
-    );
-  }
+  // if (!user.emailVerified) {
+  //   throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY,
+  //     'Your email was not verifyed. Please verify your email before reset your password'
+  //   );
+  // }
 
   if (!user?.isActive) {
     throw new AppError(StatusCodes.UNPROCESSABLE_ENTITY, 'Your account is inactive. Please contact support.');
@@ -300,7 +309,7 @@ const resetPassword = async (payload: {
   const passwordHashing = await passwordHash(newPassword);
 
   await prisma.user.update({
-    where: { email },
+    where: { id: user.id }, // always use a unique field here
     data: { password: passwordHashing },
   });
 
@@ -365,12 +374,6 @@ const changePassword = async (payload: {
 console.log(userData)
   if (!userData) {
     throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
-  }
-
-  if (!userData.emailVerified) {
-    throw new AppError(StatusCodes.CONTINUE,
-      'Your email is not verified. Please verify your email before reset your password'
-    );
   }
 
   if (!userData?.isActive) {
@@ -444,6 +447,50 @@ const checkSamePassword = await bcrypt.compare( payload?.newPassword, userData?.
 };
 
 
+const forgetPasswordPhone = async (payload: { phone: string }) => {
+  const { phone } = payload;
+
+  const existingUser = await prisma.user.findUnique({ where: { phone } });
+
+  if (!existingUser) {
+    throw new AppError(404, 'User not found! Please provide valid email !');
+  }
+
+  if (!existingUser.phoneVerified) {
+    throw new AppError(502, 'you are not varified user');
+  }
+
+  if (!existingUser?.isActive) {
+    throw new AppError(502, 'Your account is inactive. Please contact support.');
+  }
+
+
+    // Generate OTP & expiry (every time new OTP needed)
+  const pin = Math.floor(100000 + Math.random() * 900000).toString();
+  const pinExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+
+   // Step 2: If user exists
+
+    // ✅ Case 1: Not verified -> resend OTP
+    if (existingUser) {
+     const result = await prisma.user.update({
+        where: { id: existingUser.id },
+        data: { pin, pinExpiry },
+      });
+
+      await phoneOtpSend(phone, `Your OTP is ${result.pin}. It expires in 5 minutes.`);
+      return {
+        phone: existingUser.phone,
+      }
+      // throw new AppError(StatusCodes.OK, 'Check your phone for OTP. A new code has been sent.');
+    }
+
+  return {};
+};
+
+
+
 
 export const AuthServices = {
   signUp,
@@ -452,6 +499,7 @@ export const AuthServices = {
   forgetPassword,
   resetPassword,
   refreshToken,
-  changePassword
+  changePassword, 
+  forgetPasswordPhone
 };
 

@@ -39,10 +39,12 @@ const forgetPasswordValidationSchema = z.object({
 });
 
 const resetPasswordValidationSchema = z.object({
-  email: emailSchema,
+  phone: phoneSchema.optional(),
+  email: emailSchema.optional(),
   newPassword: passwordSchema
-  // phone: phoneSchema,
-});
+}).refine(data => data.phone || data.email, {
+  message: "Either phone or email is required",
+});;
 
 const changePasswordValidationSchema = z.object({
   oldPassword: passwordSchema,

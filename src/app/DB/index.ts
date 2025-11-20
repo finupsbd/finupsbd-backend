@@ -30,7 +30,7 @@ const seedSuperAdmin = async () => {
       return
     }
   } catch (error) {
-    console.log(`Super admin create fil ${error}`)
+    console.log(`Super admin create filed ${error}`)
   }
 }
 

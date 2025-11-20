@@ -11,7 +11,6 @@ export const cardsTypes = {
   CREDIT_CARD: 'CREDIT_CARD',
   PREPAID_CARD: 'PREPAID_CARD',
   TRAVEL_CARD: 'TRAVEL_CARD',
-  GIFT_CARD: 'GIFT_CARD',
 };
 
 export const existingLoanTypes = {

@@ -2,14 +2,14 @@
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import { BlogService } from "./blog.service";
-import { BlogValidationSchema } from "./blog.validation";
+
 import sendResponses from "../../utils/sendResponce";
 import { TMiddlewareUser, TMulterFile } from "../../types/commonTypes";
-import AppError from "../../error/AppError";
+import { BlogBaseSchema } from "./blog.validation";
 
 
 const createBlog = catchAsync(async (req, res) => {
-  const payload = BlogValidationSchema.parse(JSON.parse(req.body.data)) as any
+  const payload = BlogBaseSchema.parse(JSON.parse(req.body.data)) as any
 
   const file = req.file as TMulterFile
   const user = req.user as TMiddlewareUser;
