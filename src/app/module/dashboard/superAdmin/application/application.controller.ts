@@ -6,9 +6,9 @@ import { ApplicationServides } from "./application.service";
 
 
 const getAllApplication = catchAsync(async (req, res) => {
+const query = req.query
 
-
-  const result = await ApplicationServides.getAllApplication()
+  const result = await ApplicationServides.getAllApplication(query)
 
   sendResponses(res, {
     success: true,

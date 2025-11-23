@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "../../../../../app"
 import AppError from "../../../../error/AppError";
@@ -7,15 +8,85 @@ import { LoanStatus } from "../../../applicationForm/application.interface";
 import sendEmail from "../../../../utils/sendEmail";
 import { applicationRejected } from "../../../../utils/email-template/applicationRejected";
 import { loanStatusEmail } from "../../../../utils/email-template/loanStatusEmail";
+import { TModules } from "../dashboard/dashboard.constand";
+
+type TLoanStatus =
+  | "SUBMITTED"
+  | "PENDING"
+  | "IN_PROGRESS"
+  | "APPROVED"
+  | "REJECTED"
+  | "COMPLETED";
+
+type TApplicationQuery = {
+  searchTerm?: string;
+  module?: TModules;
+  status?: TLoanStatus;
+  page?: number;
+  limit?: number;
+};
+
+const getAllApplication = async (query: TApplicationQuery) => {
+  const {
+    searchTerm = "",
+    module,
+    status,
+    page = 1,
+    limit = 10,
+  } = query;
+
+  const skip = (page - 1) * limit;
+
+  const whereCondition: any = {};
+
+  // ============================
+  // 🔍 Search Filter
+  // ============================
+  if (searchTerm) {
+    whereCondition.OR = [
+      {
+        user: {
+          name: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        },
+      },
+      {
+        eligibleLoanOffer: {
+          bankName: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        },
+      },
+    ];
+  }
+
+  // ============================
+  // 📌 Module Filter (loanInfo.existingLoans = module)
+  // ============================
+  if (module) {
+    whereCondition.eligibleLoanOffer = {
+      loanType: module,
+    };
+  }
+
+  // ============================
+  // ⚡ Status Filter
+  // ============================
+  if (status) {
+    whereCondition.status = status;
+  }
 
 
 
 
-const getAllApplication = async () => {
 
 
   const [applications, total] = await Promise.all([
     prisma.loanApplicationForm.findMany({
+      where: whereCondition,
       include: {
         user: {
           select: {
@@ -35,17 +106,31 @@ const getAllApplication = async () => {
           },
         },
       },
+      skip,
+      take: limit,
       orderBy: {
-        createdAt: "desc"
-      }
+        createdAt: "desc",
+      },
     }),
-    prisma.loanApplicationForm.count()
+
+    prisma.loanApplicationForm.count({
+      where: whereCondition,
+    }),
   ]);
 
-  console.log(total)
-
-  return applications
+  return {
+    data: applications,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
+
+
+
 
 const getSingleApplication = async (id: string) => {
 
@@ -199,14 +284,14 @@ const applicationFeedback = async (
 const getStatusEvents = async (id: string) => {
 
   const result = await prisma.applicationEvent.findMany({
-    where: { 
-      applicationId: id, 
+    where: {
+      applicationId: id,
       eventType: "STATUS_CHANGED"
     },
-    
+
     orderBy: {
       createdAt: "desc"
-    }, 
+    },
   })
 
   return result

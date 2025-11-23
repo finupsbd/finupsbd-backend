@@ -20,7 +20,6 @@ const getDashboardHone = catchAsync(async (req, res) => {
   });
 })
 
-
 const getAllModules = catchAsync(async (req, res) => {
 
 
@@ -36,7 +35,6 @@ const getAllModules = catchAsync(async (req, res) => {
     data: result
   });
 })
-
 
 const changeModuleStatus = catchAsync( async (req, res) => {
      const {id} =  req.params

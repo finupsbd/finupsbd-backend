@@ -131,7 +131,6 @@ const changePassword = catchAsync(async (req, res) => {
   })
 });
 
-
 const forgetPasswordPhone = catchAsync(async (req, res) => {
   const result = await AuthServices.forgetPasswordPhone(req.body);
 

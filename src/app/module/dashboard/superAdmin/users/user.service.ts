@@ -1,10 +1,39 @@
 import { prisma } from "../../../../../app"
 
 
+export type TQueryUsers = {
+  searchTerm?: string;
+  isActive?: boolean;
+  page?: number;
+  limit?: number;
+};
 
-const getAllusers = async () => {
+const getAllUsers = async (query: TQueryUsers) => {
+  const {
+    searchTerm = "",
+    isActive,
+    page = 1,
+    limit = 10,
+  } = query;
+
+  const skip = (Number(page) - 1) * Number(limit);
+
+
+  console.log(query)
+
+
+
+
   const [users, total] = await Promise.all([
     prisma.user.findMany({
+      where: {
+        OR: [
+          { name: { contains: searchTerm, mode: "insensitive" } },
+          { email: { contains: searchTerm, mode: "insensitive" } },
+          { phone: { contains: searchTerm, mode: "insensitive" } },
+          { userId: { contains: searchTerm, mode: "insensitive" } },
+        ],
+      },
       select: {
         id: true,
         userId: true,
@@ -16,19 +45,52 @@ const getAllusers = async () => {
         createdAt: true,
         lastLogin: true,
         profile: {
-          select: { avatar: true }
-        }
+          select: { avatar: true },
+        },
       },
-      orderBy: { createdAt: "desc" } // optional sorting
+      skip,
+      take: Number(limit),
+      orderBy: { createdAt: "desc" },
     }),
-    prisma.user.count()
+
+    prisma.user.count({ where: {
+        OR: [
+          { name: { contains: searchTerm, mode: "insensitive" } },
+          { email: { contains: searchTerm, mode: "insensitive" } },
+          { phone: { contains: searchTerm, mode: "insensitive" } },
+          { userId: { contains: searchTerm, mode: "insensitive" } },
+        ],
+      }, }),
   ]);
 
+
+
   return {
-    total,
-    users,
-  }
+    data: users,
+    pagination: {
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const getSingleUser = async (id: string) => {
@@ -50,7 +112,7 @@ const getSingleUser = async (id: string) => {
 
 export const DashboardUserasServides = {
 
-  getAllusers,
+  getAllUsers,
   getSingleUser
 }
 

@@ -12,26 +12,28 @@ import rateLimit from 'express-rate-limit';
 import path from 'path';
 import swaggerUi from "swagger-ui-express";
 import { specs } from './lib/api-doc/api-doc';
-import { authDoc } from './app/middleware/authDoc';
+
 
 
 
 const app: Application = express();
 export const prisma = new PrismaClient();
 
-app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "https://admin.finupsbd.com",
-    "https://stage.finupsbd.com",
-    "https://finupsbd.com",
-    "https://api.finupsbd.com",
-    "https://finupsbd-admin-dashboard.vercel.app",
-    "https://finupsbd-fronend-developer.vercel.app"
-  ],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",     // User site (dev)
+      "http://localhost:3001",     // Admin site (dev)
+      "https://finupsbd.com",      // Main site
+      "https://admin.finupsbd.com",// Admin site
+      "https://stage.finupsbd.com",
+      "https://api.finupsbd.com",
+      "https://finupsbd-fronend-developer.vercel.app",
+      "https://finupsbd-admin-dashboard.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json({ limit: "60mb" }));

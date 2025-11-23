@@ -7,8 +7,8 @@ import { DashboardUserasServides } from "./user.service";
 
 
 const getAllusers = catchAsync(async (req, res) => {
-
-  const result = await DashboardUserasServides.getAllusers()
+const query = req.query
+  const result = await DashboardUserasServides.getAllUsers(query)
 
   sendResponses(res, {
     success: true,

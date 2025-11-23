@@ -103,14 +103,16 @@ const dashboardHome = async () => {
 
 
 const getAllModules = async (query: TQueryPayloadType) => {
-  const { module, searchTerm, isActive, page = 1, limit = 10 } = query;
+  const { module,searchTerm, isActive, page = 1, limit = 10 } = query;
 
-  console.log(query)
+  console.log(searchTerm)
 
   const skip = (page - 1) * limit;
 
   const loanTypes = ["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN", "INSTANT_LOAN"] as const;
   const cardTypes = ["DEBIT_CARD", "PREPAID_CARD", "CREDIT_CARD"] as const;
+
+
 
   try {
     // ============ LOAN MODULE ============
