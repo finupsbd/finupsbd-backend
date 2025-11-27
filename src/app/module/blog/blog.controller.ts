@@ -33,8 +33,9 @@ const createBlog = catchAsync(async (req, res) => {
 
 const getAllBlogs = catchAsync(async (req, res) => {
   const queryOptions = req.body
+  const query = req.query
 
-    const result = await BlogService.getAllBlogs(queryOptions)
+    const result = await BlogService.getAllBlogs(queryOptions, query)
 
 
     sendResponses(res, {

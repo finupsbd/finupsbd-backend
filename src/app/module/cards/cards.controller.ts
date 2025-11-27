@@ -27,7 +27,9 @@ const createCard = catchAsync(async (req, res) => {
   });
 });
 
+
 const getAllCards = catchAsync(async (req, res) => {
+
   const result = await CardsService.getAllCards();
 
   sendResponses(res, {
@@ -37,6 +39,8 @@ const getAllCards = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
 
 const updateCard = catchAsync(async (req, res) => {
   const payload = CardUpdateSchema.parse(JSON.parse(req.body.data));

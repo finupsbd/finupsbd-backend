@@ -81,18 +81,6 @@ const getAllUsers = async (query: TQueryUsers) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 const getSingleUser = async (id: string) => {
   const result = await prisma.user.findUnique(
     { where: { id }, 

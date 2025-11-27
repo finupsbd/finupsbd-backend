@@ -34,7 +34,7 @@ export const CategoryEnum = z.enum([
   "SUCCESS_STORIES",
   "LAST",
   "OTHER",
-]);
+])  ;
 
 export const StatusEnum = z.enum([
   "DRAFT",
@@ -46,7 +46,7 @@ export const StatusEnum = z.enum([
 // Base Blog Schema with error messages
 export const BlogBaseSchema = z.object({
   title: z.string({ required_error: "Title is required" }).min(3, "Title must be at least 3 characters"),
-  slug: z.string({ required_error: "Slug is required" }).min(3, "Slug must be at least 3 characters"),
+  slug: z.string({ required_error: "Slug is required" }).min(3, "Slug must be at least 3 characters").optional(),
   content: z.string({ required_error: "Content is required" }).min(10, "Content must be at least 10 characters"),
   publishedDate: z.union([z.string().optional(), z.date().optional()]).transform((val) => (val ? new Date(val) : undefined)),
   status: StatusEnum.optional(),
@@ -97,6 +97,7 @@ export const quearyOprions = z.object({
 
 
 export type TQueryOptions = z.infer<typeof quearyOprions>
+export type TCategoriEnum = z.infer<typeof CategoryEnum>
 // Edit/Update Blog Schema
 export const editBlogSchema = BlogBaseSchema.partial(); // allows partial updates
 

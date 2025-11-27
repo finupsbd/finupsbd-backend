@@ -21,6 +21,24 @@ const eligibilityCheck = catchAsync(async(req, res)=> {
       });
 })
 
+
+
+const getAllCards = catchAsync(async(req, res)=> {
+
+    const query = req.query
+
+    const result = await EligibilityCheckService.getAllcards(query); 
+ 
+
+    sendResponses(res, {
+        success: true,
+        message: 'Retrive cards successfully',
+        statusCode: StatusCodes.OK,
+        data: result ,
+      });
+})
+
 export const EligibilityCheckController = {
     eligibilityCheck,
+    getAllCards
 }

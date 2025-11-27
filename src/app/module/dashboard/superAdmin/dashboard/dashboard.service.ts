@@ -87,10 +87,15 @@ const dashboardHome = async () => {
       userId: true,
       profile: true,
       createdAt: true
+    },
+    orderBy: {
+      createdAt: "desc"
     }
   })
 
 
+
+  
   return {
     totalUsers,
     totalApplications,
@@ -145,8 +150,8 @@ const getAllModules = async (query: TQueryPayloadType) => {
       data: loans,
       pagination: {
         total: totalCount,
-        page,
-        limit,
+        page: Number(page),
+        limit: Number(limit),
         totalPages: Math.ceil(totalCount / limit),
       },
     };
@@ -177,8 +182,8 @@ const getAllModules = async (query: TQueryPayloadType) => {
       data: cards,
       pagination: {
         total: totalCount,
-        page,
-        limit,
+        page: Number(page),
+        limit: Number(limit),
         totalPages: Math.ceil(totalCount / limit),
       },
     };
@@ -187,7 +192,7 @@ const getAllModules = async (query: TQueryPayloadType) => {
     // ============ DEFAULT ============
     return {
       data: [],
-      pagination: { total: 0, page, limit, totalPages: 0 },
+      pagination: { total: 0, page: Number(page), limit: Number(limit), totalPages: 0 },
       message: `Unknown module: ${module}`,
     };
   } catch (error) {

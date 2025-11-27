@@ -10,7 +10,7 @@ export const loans = async (payload: TEligibilityCheck, query: Record<string, an
     try {
         // extract pagination info (with default values)
         const page = Number(query.page) || 1;
-        const limit = Number(query.limit) || 10; // items per page
+        const limit = Number(query.limit) || 2; // items per page
         const skip = (page - 1) * limit;
         /// query
         const amount = query.amount ? Number(query.amount) : 200000;

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { prisma } from '../../../app';
 import { TMiddlewareUser, TMulterFile } from '../../types/commonTypes';
 import { saveFileBlogs } from '../../utils/file-uploads/saveFileBlogs';
-
+import { generateSlug } from '../../utils/generateSlug';
 import { TEditBlogInput, TQueryOptions } from './blog.validation';
 
 
@@ -11,6 +12,10 @@ import { TEditBlogInput, TQueryOptions } from './blog.validation';
 const createBlog = async (payload: TEditBlogInput, file: TMulterFile, user: TMiddlewareUser) => {
 
   // const coverImage = await sendImageToCloud(file);
+
+  if (payload.title) {
+    payload.slug = generateSlug(payload?.title)
+  }
 
   const existingUser = await prisma.user.findUnique({
     where: { id: user?.userId },
@@ -37,36 +42,82 @@ const createBlog = async (payload: TEditBlogInput, file: TMulterFile, user: TMid
 
 
 
-const getAllBlogs = async (queryOptions: TQueryOptions) => {
+const getAllBlogs = async (queryOptions: TQueryOptions, query: Record<string, unknown>) => {
+  const {
+    searchTerm = "",
+    categori,
+    page = 1,
+    limit = 10,
+  } = query as {
+    searchTerm?: string;
+    categori?: string;
+    page?: number | string;
+    limit?: number | string;
+  };
 
+  const skip = (Number(page) - 1) * Number(limit);
 
+  const whereConditions: any = {};
 
-  const select = {
-    id: true,
-    title: true,
-    slug: true,
-    content: true,
-    category: true,
-    tags: true,
-    bannerImage: true,
-    author: {
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        profile: {
-          select: { avatar: true },
-        },
-      },
-    },
+  if (searchTerm && typeof searchTerm === "string") {
+    whereConditions.OR = [
+      { title: { contains: searchTerm, mode: "insensitive" } },
+      { content: { contains: searchTerm, mode: "insensitive" } },
+      { category: { contains: searchTerm, mode: "insensitive" } }, // 🔥 FIXED
+      { tags: { has: searchTerm } },
+    ];
+  }
 
+  if (categori && typeof categori === "string") {
+    whereConditions.category = categori; // exact category filter
   }
 
 
 
-  const blogs = await prisma.blog.findMany({select});
-  return blogs;
+  const totalCount = await prisma.blog.count({
+    where: whereConditions,
+  });
+
+  const blogs = await prisma.blog.findMany({
+    where: whereConditions,
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      content: true,
+      category: true,
+      tags: true,
+      bannerImage: true,
+
+      author: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          profile: { select: { avatar: true } },
+        },
+      },
+    },
+    skip,
+    take: Number(limit),
+    orderBy: { createdAt: "desc" },
+  });
+
+  return {
+    data: blogs,
+    pagination: {
+      total: totalCount,
+      page: Number(page),
+      limit: Number(limit),
+      totalPages: Math.ceil(totalCount / Number(limit)),
+    },
+  };
 };
+
+
+
+
+
 
 const updateBlog = async (payload: TEditBlogInput, id: string) => {
   // Convert category string to Prisma enum if necessary
@@ -129,50 +180,50 @@ const getSingleBlog = async (id: string) => {
 
   console.log({ id })
 
-  // const result = await prisma.blog.findUnique(
-  //   {
-  //     where: { id },
-  //     select: {
-  //       id: true,
-  //       title: true,
-  //       slug: true,
-  //       content: true,
-  //       category: true,
-  //       tags: true,
-  //       bannerImage: true,
-  //       user: {
-  //         select: {
-  //           id: true,
-  //           name: true,
-  //           email: true,
-  //           profile: {
-  //             select: { avatar: true },
-  //           },
-  //         },
-  //       },
-  //       // Fetch all comments, no parent filtering
-  //       comments: {
-  //         select: {
-  //           id: true,
-  //           content: true,
-  //           createdAt: true,
-  //           parentId: true,
-  //           user: {
-  //             select: {
-  //               id: true,
-  //               name: true,
-  //               profile: {
-  //                 select: { avatar: true },
-  //               },
-  //             },
-  //           },
-  //         },
-  //       },
-  //     }
-  //   },
-  // );
+  const result = await prisma.blog.findUnique(
+    {
+      where: { id },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        content: true,
+        category: true,
+        tags: true,
+        bannerImage: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            profile: {
+              select: { avatar: true },
+            },
+          },
+        },
+        // Fetch all comments, no parent filtering
+        comments: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            parentId: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                profile: {
+                  select: { avatar: true },
+                },
+              },
+            },
+          },
+        },
+      }
+    },
+  );
 
-  // return result;
+  return result;
 };
 
 

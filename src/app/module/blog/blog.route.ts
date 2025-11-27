@@ -24,7 +24,7 @@ router.patch('/:id', validateRequest(BlogBaseSchema), BlogController.updateBlog)
 router.get('/single-blog/:id', BlogController.getSingleBlog)
 
 router.delete('/:id', BlogController.deleteBlog)
-router.post('/all-blogs', validateRequest(quearyOprions), BlogController.getAllBlogs)
+router.get('/all-blogs', BlogController.getAllBlogs)
 
 
 
