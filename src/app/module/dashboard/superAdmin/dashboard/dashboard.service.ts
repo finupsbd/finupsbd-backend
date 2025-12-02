@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { prisma } from "../../../../../app";
 import { LoanTypes } from "@prisma/client";
@@ -34,6 +35,7 @@ const dashboardHome = async () => {
   });
 
 
+
   // Applications
   const applicationsThisMonth = await prisma.loanApplicationForm.count({
     where: { createdAt: { gte: startOfThisMonth } },
@@ -54,6 +56,9 @@ const dashboardHome = async () => {
     const growth = ((current - prev) / prev) * 100;
     return (growth < 0 ? 0 : growth).toFixed(2) + "%";
   };
+
+
+
 
   const userGrowth = calcGrowth(usersLastMonth, usersThisMonth);
   const applicantGrowth = calcGrowth(applicationsLastMonth, applicationsThisMonth);
@@ -79,6 +84,8 @@ const dashboardHome = async () => {
     },
   })
 
+
+
   const last5User = await prisma.user.findMany({
     take: 5,
     select: {
@@ -95,14 +102,102 @@ const dashboardHome = async () => {
 
 
 
-  
+
+
+
+
+//////////// Eligiblity /////////////////////////////////////
+
+
+
+  // ✅ TOTAL (ALL TIME)
+  const totalEligibility = await prisma.eligibilityCheck.count()
+
+  // ✅ APPLIED TOTAL
+  const appliedTotal = await prisma.eligibilityCheck.count({
+    where: { isAppliedLoan: true }
+  })
+
+  // ✅ TODAY RANGE
+  const startOfDay = new Date()
+  startOfDay.setHours(0, 0, 0, 0)
+
+  const endOfDay = new Date()
+  endOfDay.setHours(23, 59, 59, 999)
+
+  // ✅ TODAY COUNT
+  const todayTotal = await prisma.eligibilityCheck.count({
+    where: {
+      createdAt: {
+        gte: startOfDay,
+        lte: endOfDay
+      }
+    }
+  })
+
+  // ✅ TODAY APPLIED COUNT
+  const todayApplied = await prisma.eligibilityCheck.count({
+    where: {
+      isAppliedLoan: true,
+      createdAt: {
+        gte: startOfDay,
+        lte: endOfDay
+      }
+    }
+  })
+
+  // ✅ LOAN TYPE WISE STATS
+  const loanTypeStats = await prisma.eligibilityCheck.groupBy({
+    by: ["loanType"],
+    _count: {
+      _all: true
+    }
+  })
+
+  // ✅ GENDER WISE STATS
+  const genderStats = await prisma.eligibilityCheck.groupBy({
+    by: ["gender"],
+    _count: {
+      _all: true
+    }
+  })
+
+  // ✅ PROFESSION WISE STATS
+  const professionStats = await prisma.eligibilityCheck.groupBy({
+    by: ["profession"],
+    _count: {
+      _all: true
+    }
+  })
+
+  // ✅ FORMATTERS
+  const formatStats = (data: any[], key: string) => {
+    return data.reduce((acc, row) => {
+      acc[row[key]] = row._count._all
+      return acc
+    }, {} as Record<string, number>)
+  }
+
+
+  const eligiblity = {
+    totalEligibility,
+    appliedTotal,
+    todayTotal,
+    todayApplied,
+    loanTypeStats: formatStats(loanTypeStats, "loanType"),
+    genderStats: formatStats(genderStats, "gender"),
+    professionStats: formatStats(professionStats, "profession")
+  }
+
+
   return {
     totalUsers,
     totalApplications,
     userGrowth,
     applicantGrowth,
     last5Application,
-    last5User
+    last5User, 
+    eligiblity
   }
 }
 

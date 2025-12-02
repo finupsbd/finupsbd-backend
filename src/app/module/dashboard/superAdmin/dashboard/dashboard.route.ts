@@ -5,10 +5,6 @@ import { DashboardController } from "./dashboard.controller";
 
 
 
-
-
-
-
 const route = express.Router();
 
 route.get('/dashboard-home', DashboardController.getDashboardHone)

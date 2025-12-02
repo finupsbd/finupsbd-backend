@@ -76,12 +76,12 @@ const deleteBlog = catchAsync(async (req, res) => {
 
 const commentBlog= catchAsync(async (req, res) => {
 
-  const { content, blogId, parentId } = req.body;
+
 
     const user = req.user as TMiddlewareUser;
 
 
-    await BlogService.commentBlog(blogId, content, parentId, user)
+    await BlogService.commentBlog(req.body, user)
 
 
     sendResponses(res, {

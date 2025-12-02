@@ -97,6 +97,7 @@ const getAllBlogs = async (queryOptions: TQueryOptions, query: Record<string, un
           profile: { select: { avatar: true } },
         },
       },
+
     },
     skip,
     take: Number(limit),
@@ -146,12 +147,12 @@ const deleteBlog = async (id: string) => {
   return result;
 };
 
-const commentBlog = async (blogId: string, payload: string, parentId: string, user: TMiddlewareUser) => {
+const commentBlog = async ( payload: {blogId: string, content: string}, user: TMiddlewareUser) => {
 
-  console.log(payload, user)
+
 
   const isExistBlog = await prisma.blog.findFirst({
-    where: { id: blogId },
+    where: { id: payload.blogId },
   });
 
 
@@ -163,10 +164,10 @@ const commentBlog = async (blogId: string, payload: string, parentId: string, us
   const result = await prisma.comment.create(
     {
       data: {
-        content: payload,
-        blogId: blogId,
+        content: payload.content,
+        blogId: payload.blogId,
         userId: user?.userId,
-        parentId: parentId
+        // parentId: parentId
       },
     }
   );
@@ -218,6 +219,9 @@ const getSingleBlog = async (id: string) => {
               },
             },
           },
+          orderBy: {
+            createdAt: "desc"
+          }
         },
       }
     },
