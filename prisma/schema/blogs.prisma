@@ -1,8 +1,8 @@
 model Blog {
   id      String @id @default(uuid())
   title   String
-  slug    String
-  content String
+  slug    String 
+  content String 
 
   publishedDate   DateTime?  @default(now())
   status          PostStatus @default(DRAFT)

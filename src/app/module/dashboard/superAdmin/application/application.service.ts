@@ -16,7 +16,8 @@ type TLoanStatus =
   | "IN_PROGRESS"
   | "APPROVED"
   | "REJECTED"
-  | "COMPLETED";
+  | "COMPLETED"
+  | "ALL";
 
 type TApplicationQuery = {
   searchTerm?: string;
@@ -25,6 +26,11 @@ type TApplicationQuery = {
   page?: number;
   limit?: number;
 };
+
+
+
+
+
 
 const getAllApplication = async (query: TApplicationQuery) => {
   const {
@@ -53,6 +59,12 @@ const getAllApplication = async (query: TApplicationQuery) => {
         },
       },
       {
+        applicationId: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+      {
         eligibleLoanOffer: {
           bankName: {
             contains: searchTerm,
@@ -66,7 +78,7 @@ const getAllApplication = async (query: TApplicationQuery) => {
   // ============================
   // 📌 Module Filter (loanInfo.existingLoans = module)
   // ============================
-  if (module) {
+  if (module && module !== "ALL") {
     whereCondition.eligibleLoanOffer = {
       loanType: module,
     };
@@ -75,7 +87,7 @@ const getAllApplication = async (query: TApplicationQuery) => {
   // ============================
   // ⚡ Status Filter
   // ============================
-  if (status) {
+  if (status && status !== "ALL") {
     whereCondition.status = status;
   }
 
@@ -86,7 +98,7 @@ const getAllApplication = async (query: TApplicationQuery) => {
 
   const [applications, total] = await Promise.all([
     prisma.loanApplicationForm.findMany({
-      where: whereCondition,
+      where: { ...whereCondition },
       include: {
         user: {
           select: {
@@ -107,7 +119,7 @@ const getAllApplication = async (query: TApplicationQuery) => {
         },
       },
       skip,
-      take: limit,
+      take: Number(limit),
       orderBy: {
         createdAt: "desc",
       },

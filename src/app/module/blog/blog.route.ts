@@ -5,6 +5,7 @@ import { BlogBaseSchema, quearyOprions } from "./blog.validation"
 
 import auth from "../../middleware/auth"
 import multer from "multer"
+import rateLimit from "express-rate-limit"
 
 
 
@@ -24,7 +25,7 @@ router.patch('/:id', validateRequest(BlogBaseSchema), BlogController.updateBlog)
 router.get('/single-blog/:id', BlogController.getSingleBlog)
 
 router.delete('/:id', BlogController.deleteBlog)
-router.get('/all-blogs', BlogController.getAllBlogs)
+router.get('/all-blogs', rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }), BlogController.getAllBlogs)
 
 
 

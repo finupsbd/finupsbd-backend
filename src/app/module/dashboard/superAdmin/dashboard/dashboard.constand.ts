@@ -20,7 +20,6 @@ export const ModulesCards = {
 export type TModulesCards = (typeof ModulesCards)[keyof typeof ModulesCards];
 
 
-export type TModules = TModulesLoans | TModulesCards;
-
+export type TModules = TModulesLoans | TModulesCards | "ALL";
 
 
