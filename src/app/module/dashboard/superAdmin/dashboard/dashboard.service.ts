@@ -202,99 +202,251 @@ const dashboardHome = async () => {
 }
 
 
-const getAllModules = async (query: TQueryPayloadType) => {
-  const { module,searchTerm, isActive, page = 1, limit = 10 } = query;
+// const getAllModules = async (query: TQueryPayloadType) => {
+//   const { module,searchTerm, isActive, page = 1, limit = 10 } = query;
 
-  console.log(searchTerm)
+//   console.log(searchTerm)
+
+//   const skip = (page - 1) * limit;
+
+//   const loanTypes = ["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN", "INSTANT_LOAN"] as const;
+//   const cardTypes = ["DEBIT_CARD", "PREPAID_CARD", "CREDIT_CARD"] as const;
+
+
+
+//   try {
+//     // ============ LOAN MODULE ============
+//     if (!module || loanTypes.includes(module as typeof loanTypes[number])) {
+
+//     const [loans, totalCount] = await Promise.all([
+//       prisma.loan.findMany({
+//         where: module && loanTypes.includes(module as typeof loanTypes[number])
+//           ? { loanType: module as LoanTypes } 
+//           : {}, // empty where means fetch all
+//         skip,
+//         take: Number(limit),
+//         select: {
+//           id: true,
+//           bankName: true,
+//           loanType: true,
+//           isActive: true,
+//           createdAt: true,
+//           updatedAt: true,
+//         },
+//       }),
+//       prisma.loan.count({
+//         where: module && loanTypes.includes(module as typeof loanTypes[number])
+//           ? { loanType: module as LoanTypes }
+//           : {},
+//       }),
+//     ]);
+
+//     return {
+//       data: loans,
+//       pagination: {
+//         total: totalCount,
+//         page: Number(page),
+//         limit: Number(limit),
+//         totalPages: Math.ceil(totalCount / limit),
+//       },
+//     };
+//   }
+
+
+
+
+//     // ============ CARD MODULE ============
+//      if (!module || cardTypes.includes(module as typeof cardTypes[number])) {
+
+//     const [cards, totalCount] = await Promise.all([
+//       prisma.card.findMany({
+//         where: module && cardTypes.includes(module as typeof cardTypes[number])
+//           ? { cardType: module as CardType }
+//           : {},
+//         skip,
+//         take: Number(limit),
+//       }),
+//       prisma.card.count({
+//         where: module && cardTypes.includes(module as typeof cardTypes[number])
+//           ? { cardType: module as CardType }
+//           : {},
+//       }),
+//     ]);
+
+//     return {
+//       data: cards,
+//       pagination: {
+//         total: totalCount,
+//         page: Number(page),
+//         limit: Number(limit),
+//         totalPages: Math.ceil(totalCount / limit),
+//       },
+//     };
+//   }
+
+//     // ============ DEFAULT ============
+//     return {
+//       data: [],
+//       pagination: { total: 0, page: Number(page), limit: Number(limit), totalPages: 0 },
+//       message: `Unknown module: ${module}`,
+//     };
+//   } catch (error) {
+//     console.error("Error fetching modules:", error);
+//     throw new Error("Failed to fetch modules");
+//   }
+// };
+
+
+
+const getAllModules = async (query: TQueryPayloadType) => {
+  const {
+    searchTerm = "",
+    module,
+    isActive,
+    page = 1,
+    limit = 10,
+  } = query;
+
+
+  console.log(module)
+
 
   const skip = (page - 1) * limit;
 
   const loanTypes = ["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN", "INSTANT_LOAN"] as const;
   const cardTypes = ["DEBIT_CARD", "PREPAID_CARD", "CREDIT_CARD"] as const;
 
+  // ===========================
+  // 🔎 COMMON WHERE BUILDER
+  // ===========================
+  const whereCondition: any = {};
+  // ✅ Search Filter
+  if (searchTerm) {
+    whereCondition.OR = [
+      {
+        bankName: {
+          contains: String(searchTerm),
+          mode: "insensitive",
+        },
+      },
+    ];
+  }
+  // ✅ Active Filter
+  if (typeof isActive === "boolean") {
+    whereCondition.isActive = isActive;
+  }
+
 
 
   try {
-    // ============ LOAN MODULE ============
-    if (!module || loanTypes.includes(module as typeof loanTypes[number])) {
+    // ===========================
+    // 🏦 LOANS MODULE
+    // ===========================
+    if (!module || loanTypes.includes(module as any)) {
 
-    const [loans, totalCount] = await Promise.all([
-      prisma.loan.findMany({
-        where: module && loanTypes.includes(module as typeof loanTypes[number])
-          ? { loanType: module as LoanTypes } 
-          : {}, // empty where means fetch all
-        skip,
-        take: Number(limit),
-        select: {
-          id: true,
-          bankName: true,
-          loanType: true,
-          isActive: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      }),
-      prisma.loan.count({
-        where: module && loanTypes.includes(module as typeof loanTypes[number])
-          ? { loanType: module as LoanTypes }
-          : {},
-      }),
-    ]);
+      if (module && module !== "ALL") {
+        whereCondition.loanType = module;
+      }
 
-    return {
-      data: loans,
-      pagination: {
-        total: totalCount,
-        page: Number(page),
-        limit: Number(limit),
-        totalPages: Math.ceil(totalCount / limit),
-      },
-    };
-  }
+      const [data, total] = await Promise.all([
+        prisma.loan.findMany({
+          where: whereCondition,
+          skip,
+          take: Number(limit),
+          select: {
+            id: true,
+            bankName: true,
+            loanType: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        }),
 
+        prisma.loan.count({
+          where: whereCondition,
+        }),
+      ]);
 
+      return {
+        data,
+        pagination: {
+          total,
+          page: Number(page),
+          limit : Number(limit),
+          totalPages: Math.ceil(total / limit),
+        }
+      };
+    }
 
+    // ===========================
+    // 💳 CARD MODULE
+    // ===========================
+    if (!module || cardTypes.includes(module as any)) {
+      
+      if (module && module !== "ALL") {
+        whereCondition.cardType = module;
+      }
 
-    // ============ CARD MODULE ============
-     if (!module || cardTypes.includes(module as typeof cardTypes[number])) {
+      const [data, total] = await Promise.all([
+        prisma.card.findMany({
+          where: whereCondition,
+          skip,
+          take: Number(limit),
+          select: {
+            id: true,
+            bankName: true,
+            cardType: true,
+            isActive: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        }),
 
-    const [cards, totalCount] = await Promise.all([
-      prisma.card.findMany({
-        where: module && cardTypes.includes(module as typeof cardTypes[number])
-          ? { cardType: module as CardType }
-          : {},
-        skip,
-        take: Number(limit),
-      }),
-      prisma.card.count({
-        where: module && cardTypes.includes(module as typeof cardTypes[number])
-          ? { cardType: module as CardType }
-          : {},
-      }),
-    ]);
+        prisma.card.count({
+          where: whereCondition,
+        }),
+      ]);
 
-    return {
-      data: cards,
-      pagination: {
-        total: totalCount,
-        page: Number(page),
-        limit: Number(limit),
-        totalPages: Math.ceil(totalCount / limit),
-      },
-    };
-  }
+      return {
+        data,
+        pagination: {
+          total,
+          page : Number(page),
+          limit : Number(limit),
+          totalPages: Math.ceil(total / limit),
+        }
+      };
+    }
 
-    // ============ DEFAULT ============
+    // ===========================
+    // ❌ UNKNOWN MODULE
+    // ===========================
     return {
       data: [],
-      pagination: { total: 0, page: Number(page), limit: Number(limit), totalPages: 0 },
-      message: `Unknown module: ${module}`,
+      pagination: {
+        total: 0,
+        page,
+        limit,
+        totalPages: 0,
+      },
     };
+
   } catch (error) {
     console.error("Error fetching modules:", error);
     throw new Error("Failed to fetch modules");
   }
 };
+
+
+
+
 
 const changeModuleStatus = async (payload: { isActive: boolean }, id: string) => {
   try {
