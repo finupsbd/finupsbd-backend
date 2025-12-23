@@ -5,7 +5,7 @@ import { calculateEMI } from "../utils/calculateEMI";
 import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const loans = async (payload: TEligibilityCheck, query: Record<string, any>
+export const loans = async (payload: TEligibilityCheck, query: Record<string, any>, mode: string
 ) => {
     try {
         // extract pagination info (with default values)
@@ -79,7 +79,6 @@ export const loans = async (payload: TEligibilityCheck, query: Record<string, an
 
         const suggestedLoans = loans.map((loan) => {
 
-           console.log(loans)
             const expectedLoanTenure = payload.expectedLoanTenure ?? 12; // Default to 12 months if undefined
 
             const monthlyEMI = calculateEMI(Number(amount), Number(loan.interestRate), expectedLoanTenure);
@@ -87,7 +86,7 @@ export const loans = async (payload: TEligibilityCheck, query: Record<string, an
             const eligibleLoanAmount = suggestEligibleLoanAmount(payload.monthlyIncome, Number(loan.interestRate), expectedLoanTenure);
             // Flag the loan as eligible if the EMI is less than or equal to 50% of the monthly income.
             // const eligibleLoan = monthlyEMI <= (payload.monthlyIncome * 0.5);
- console.log(expectedLoanTenure, monthlyEMI, totalRepayment, eligibleLoanAmount)
+
             return {
                 id: loan.id,
                 bankName: loan.bankName,
@@ -126,7 +125,7 @@ export const loans = async (payload: TEligibilityCheck, query: Record<string, an
 
 
         return {
-            data: suggestedLoans,
+            data: mode === "GENERAL" ? [] : suggestedLoans,
             pagination: {
                 total: totalCount,
                 page,

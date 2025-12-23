@@ -4,14 +4,13 @@ import { PublicRouter } from '../utils/emiCalculator/emi.route'
 import { NewsLetterRouter } from '../module/public/newsLetter/newsLetter.route'
 import { ProfileRouter } from '../module/user/profile/profile.route'
 import { BlogRouter } from '../module/blog/blog.route'
-import { OpenAiRouter } from '../module/openai/openai.route'
+import { AiRouter} from '../module/ai/ai.route'
 import { ApplicationRouter } from '../module/applicationForm/applicationForm.route'
 import { EligibilityCheckRouter } from '../module/eligibilityCheck/eligibilityCheck.route'
 import { UserBankAuthRouter } from '../module/bankProtal/userBankAuth/userBankAuth.route'
 import { DashBoardSubRoutes } from './subRoute'
 import { AuthRouterV2 } from '../module/authV2/auth.route'
-import { CardsRouter } from '../module/cards/cards.route'
-import { LoansRouter } from '../module/loans/loans.route'
+
 
 
 
@@ -51,8 +50,8 @@ const moduleRouter = [
         route: BlogRouter
     },
     {
-        path: '/openai',
-        route: OpenAiRouter
+        path: '/ai',
+        route: AiRouter
     },
     {
         path: '/application',

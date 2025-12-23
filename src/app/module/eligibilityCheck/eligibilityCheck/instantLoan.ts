@@ -25,7 +25,6 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
       }),
     ]);
 
-    console.log(loans)
 
 
     if (!loans.length) {
@@ -74,7 +73,6 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
       };
     });
 
-    console.log(suggestedLoans)
 
     return suggestedLoans;
   } catch (error) {

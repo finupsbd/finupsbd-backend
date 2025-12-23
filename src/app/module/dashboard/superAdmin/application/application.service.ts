@@ -125,6 +125,9 @@ const getAllApplication = async (query: TApplicationQuery) => {
       },
     }),
 
+
+
+    
     prisma.loanApplicationForm.count({
       where: whereCondition,
     }),

@@ -28,6 +28,4 @@ router.delete('/:id', BlogController.deleteBlog)
 router.get('/all-blogs', rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }), BlogController.getAllBlogs)
 
 
-
-
 export const BlogRouter = router

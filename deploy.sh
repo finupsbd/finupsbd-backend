@@ -8,7 +8,7 @@ npm run build
 npm install
 
 # Restart the application using PM2
-pm2 restart server
+pm2 restart finups-server
 
 # Save the PM2 process list
 pm2 save

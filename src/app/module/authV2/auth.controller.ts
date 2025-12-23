@@ -34,15 +34,42 @@ const validatePin = catchAsync(async (req, res) => {
   });
 });
 
+//production login code
+// const login = catchAsync(async (req, res) => {
+//   const result = await AuthServices.login(req.body);
+
+//   console.log(req)
+
+//   const { refreshToken, accessToken } = result;
+
+//   console.log(refreshToken)
+
+//   res.cookie('refreshToken', refreshToken, {
+//     httpOnly: true,
+//     secure: ConfigFile.NODE_ENV === 'production',
+//     sameSite: 'none',
+//   });
+  
+//   res.cookie('accessToken', accessToken, {
+//     httpOnly: true,
+//     secure: ConfigFile.NODE_ENV === 'production',
+//     sameSite: 'none',
+//   });
+
+
+//   sendResponce(res, {
+//     success: true,
+//     message: result.role === "SUPER_ADMIN" ? "Admin Login successfully": `User login successfully!`,
+//     statusCode: StatusCodes.OK,
+//     data: { accessToken },
+//   })
+// });
+
+
 const login = catchAsync(async (req, res) => {
   const result = await AuthServices.login(req.body);
-
-  console.log(req)
-
   const { refreshToken, accessToken } = result;
-
-  console.log(refreshToken)
-
+  
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: ConfigFile.NODE_ENV === 'production',

@@ -8,11 +8,12 @@ import { loans } from "./eligibilityCheck/loans";
 
 
 
-const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
+const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string, unknown>, mode: string) => {
 
 
   const { existingLoans = [], ...eligibilityData } = payload;
 
+  console.log(mode)
 
   try {
     const eligibilityCheckEntry = await prisma.eligibilityCheck.create({
@@ -50,7 +51,7 @@ const eligibilityCheck = async (payload: TEligibilityCheck, query: Record<string
     const loanTypes = ["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN"] as const;
 
     if (eligibilityCheckEntry && loanTypes.includes(eligibilityCheckEntry.loanType as typeof loanTypes[number])) {
-      return await loans(eligibilityCheckEntry as unknown as TEligibilityCheck, query);
+      return await loans(eligibilityCheckEntry as unknown as TEligibilityCheck, query, mode);
     }
 
 

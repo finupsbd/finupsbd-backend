@@ -39,9 +39,6 @@ const createBlog = async (payload: TEditBlogInput, file: TMulterFile, user: TMid
   return result;
 };
 
-
-
-
 const getAllBlogs = async (queryOptions: TQueryOptions, query: Record<string, unknown>) => {
   const {
     searchTerm = "",
@@ -114,11 +111,6 @@ const getAllBlogs = async (queryOptions: TQueryOptions, query: Record<string, un
     },
   };
 };
-
-
-
-
-
 
 const updateBlog = async (payload: TEditBlogInput, id: string) => {
   // Convert category string to Prisma enum if necessary
@@ -229,6 +221,7 @@ const getSingleBlog = async (id: string) => {
 
   return result;
 };
+
 
 
 export const BlogService = {
