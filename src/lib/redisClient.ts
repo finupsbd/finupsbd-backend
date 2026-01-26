@@ -1,7 +1,7 @@
 // src/lib/redisClient.ts
 import { createClient, RedisClientType } from 'redis';
 
-const client: RedisClientType = createClient({
+ const client: RedisClientType = createClient({
   username: 'default',
   password: process.env.REDIS_PASSWORD,               // ← move creds into env!
   socket: {

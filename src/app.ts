@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import passport from 'passport';
 import globalErrorHandler from './app/middleware/globalErrorHandler';
 import notFound from './app/middleware/notFound';
 import { RootRouter } from './app/rootRouter';
@@ -12,6 +11,7 @@ import rateLimit from 'express-rate-limit';
 import path from 'path';
 import swaggerUi from "swagger-ui-express";
 import { specs } from './lib/api-doc/api-doc';
+import { runCriticalChecks } from './lib/runCriticalChecks';
 
 
 
@@ -41,6 +41,7 @@ app.use(express.urlencoded({ limit: '30mb', extended: true }));
 
 // Note: Automatic seeding on every start is disabled.
 // import seedSuperAdmin from './app/DB';
+runCriticalChecks()
 seedSuperAdmin();
 
 
@@ -54,8 +55,6 @@ const limiter = rateLimit({
 app.use(limiter);
 
 
-
-app.use(passport.initialize());
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 
@@ -95,6 +94,7 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
+///api documention
 app.use("/api-docs",swaggerUi.serve, swaggerUi.setup(specs));
 
 
