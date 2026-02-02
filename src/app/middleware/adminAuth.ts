@@ -3,7 +3,7 @@ import catchAsync from "../utils/catchAsync"
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { ConfigFile } from "../../config";
 import { prisma } from "../../app";
-import { blacklistedTokens } from "../types/commonTypes";
+import { blacklistedTokens, TMiddlewareUser } from "../types/commonTypes";
 import AppError from "../error/AppError";
 import { StatusCodes } from "http-status-codes";
 
@@ -22,7 +22,7 @@ const adminAuth = (...requiredRoles: string[]) => {
             throw new AppError(StatusCodes.UNAUTHORIZED, "You are unauthorized")
         }
 
-        const decode = await jwt.verify(token, ConfigFile.JWT_REFRESH_SECRET as string) as JwtPayload
+        const decode = await jwt.verify(token, ConfigFile.JWT_REFRESH_SECRET as string) as TMiddlewareUser
 
         const user = await prisma.user.findUnique({ where: { email: decode.email } })
 
