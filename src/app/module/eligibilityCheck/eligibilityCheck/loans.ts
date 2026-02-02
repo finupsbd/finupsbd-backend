@@ -3,6 +3,7 @@ import { prisma } from "../../../../app";
 import { TEligibilityCheck } from "../eligibilityCheck.interface";
 import { calculateEMI } from "../utils/calculateEMI";
 import { suggestEligibleLoanAmount } from "../utils/suggestEligibleLoanAmount";
+import Mode from "../../../constand/constand";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const loans = async (payload: TEligibilityCheck, query: Record<string, any>, mode: string
@@ -10,7 +11,7 @@ export const loans = async (payload: TEligibilityCheck, query: Record<string, an
     try {
         // extract pagination info (with default values)
         const page = Number(query.page) || 1;
-        const limit = Number(query.limit) || 2; // items per page
+        const limit = Number(query.limit) || 5; // items per page
         const skip = (page - 1) * limit;
         /// query
         const amount = query.amount ? Number(query.amount) : 200000;
@@ -125,7 +126,7 @@ export const loans = async (payload: TEligibilityCheck, query: Record<string, an
 
 
         return {
-            data: mode === "GENERAL" ? [] : suggestedLoans,
+            data: mode === Mode.ISLAMIC ? [] : suggestedLoans,
             pagination: {
                 total: totalCount,
                 page,
