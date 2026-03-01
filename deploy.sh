@@ -14,12 +14,14 @@ cd /media/algorify-labs-ltd/Server/projects/finupsbd-backend || { echo "❌ Proj
 
 # Step 2: Pull the latest code from main
 echo "📥 Pulling latest code from $BRANCH..."
-git fetch origin $BRANCH
-git reset --hard origin/$BRANCH
+# git fetch origin $BRANCH
+# git reset --hard origin/$BRANCH
+
+git pull
 
 # Step 3: Install dependencies (production only)
 echo "📦 Installing dependencies..."
-npm install --production || { echo "❌ npm install failed!"; exit 1; }
+npm install  || { echo "❌ npm install failed!"; exit 1; }
 
 # Step 4: Build the project
 echo "🏗️ Building the project..."
