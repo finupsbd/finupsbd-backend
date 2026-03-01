@@ -1,32 +1,31 @@
 import { Server } from 'http';
 import app from './app';
 import { ConfigFile } from './config';
-import { logger } from './app/utils/error-logs/logger';
-
+import { logger } from './app/utils/logger/logger';
 
 let server: Server;
 
 function main() {
   server = app.listen(ConfigFile.PORT, () => {
-    console.log(`Server is running on port ${ConfigFile.PORT}`);
+    logger.info(`🚀 Server is running on port ${ConfigFile.PORT}`);
   });
 
   server.on('error', (error) => {
-    console.error('Server startup error:', error);
+    logger.error('Server startup error', error);
     process.exit(1);
   });
 }
 
-main();
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const shutdown = (reason: string, details: any) => {
-  console.log(`${reason}! Shutting down the server...`);
+  logger.warn(`${reason}! Shutting down the server...`);
   if (details) {
-    console.log(details);
+    logger.error('Details:', details);
   }
+
   if (server) {
     server.close(() => {
+      logger.info('Server closed. Exiting process.');
       process.exit(1);
     });
   } else {
@@ -34,6 +33,7 @@ const shutdown = (reason: string, details: any) => {
   }
 };
 
+main();
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason) => {
@@ -42,6 +42,6 @@ process.on('unhandledRejection', (reason) => {
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
-  logger.error("Uncaught Exception:", err);
+  logger.error('Uncaught Exception', err);
   shutdown('Uncaught Exception', err);
 });

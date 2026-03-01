@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import catchAsync from "../utils/catchAsync"
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { ConfigFile } from "../../config";
 import { prisma } from "../../app";
 import { blacklistedTokens, TMiddlewareUser } from "../types/commonTypes";
@@ -12,7 +12,6 @@ const adminAuth = (...requiredRoles: string[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
       const token = req.headers.authorization?.split(' ')[1];
 
-      console.log(token)
 
         if (!token) {
             throw new AppError(StatusCodes.UNAUTHORIZED, "You are unauthorized")

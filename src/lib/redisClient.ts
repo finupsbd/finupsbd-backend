@@ -1,5 +1,7 @@
 // src/lib/redisClient.ts
+
 import { createClient, RedisClientType } from 'redis';
+import { logger } from '../app/utils/logger/logger';
 
  const client: RedisClientType = createClient({
   username: 'default',
@@ -10,7 +12,7 @@ import { createClient, RedisClientType } from 'redis';
   },
 });
 
-client.on('error', (err) => console.error('Redis Client Error', err));
+client.on('error', (err) => logger.error('Redis Client Error', err));
 
 // Connect once, at app startup
 export async function initRedis(): Promise<void> {

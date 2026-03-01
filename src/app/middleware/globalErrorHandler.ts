@@ -10,7 +10,7 @@ import { Prisma } from '@prisma/client';
 import AppError from '../error/AppError';
 import { ZodError } from 'zod';
 import { TokenExpiredError } from 'jsonwebtoken';
-import { logger } from '../utils/error-logs/logger';
+import { logger } from '../utils/logger/logger';
 
 
 

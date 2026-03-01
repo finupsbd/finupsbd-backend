@@ -2,7 +2,7 @@
 export const blacklistedTokens: Set<string> = new Set();
 
 
-type UserRole = 'ADMIN' | 'USER' | 'SUPER_ADMIN';
+export type UserRole = 'ADMIN' | 'USER' | 'SUPER_ADMIN';
 
 
 export type TMiddlewareUser = {

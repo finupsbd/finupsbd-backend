@@ -3,14 +3,14 @@ import catchAsync from "../utils/catchAsync"
 import jwt from "jsonwebtoken";
 import { ConfigFile } from "../../config";
 import { prisma } from "../../app";
-import { blacklistedTokens, TMiddlewareUser } from "../types/commonTypes";
+import { blacklistedTokens, TMiddlewareUser, UserRole } from "../types/commonTypes";
 import AppError from "../error/AppError";
 import { StatusCodes } from "http-status-codes";
 
 
-const auth = (...requiredRoles: string[]) => {
+const auth = (...requiredRoles: UserRole[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const token = req.headers.authorization?.split(' ')[1];
+        const token = req.headers.authorization?.startsWith('Bearer ') ? req.headers.authorization.split(' ')[1] : req.cookies?.accessToken;
 
     
         if (!token) {
