@@ -1,24 +1,39 @@
-# Pull the latest code from the main branch
-git pull origin main
+#!/bin/bash
 
-# build for deployment	
-npm run build
+# ===============================
+# Production Deployment Script
+# ===============================
 
-# Install any new or updated dependencies
-npm install
+APP_NAME="finups-server"
+BRANCH="main"
 
-# Restart the application using PM2
-pm2 restart finups-server
+echo "🚀 Starting deployment for $APP_NAME ..."
 
-# Save the PM2 process list
+# Step 1: Navigate to project directory
+cd /path/to/your/project || { echo "❌ Project path not found!"; exit 1; }
+
+# Step 2: Pull the latest code from main
+echo "📥 Pulling latest code from $BRANCH..."
+git fetch origin $BRANCH
+git reset --hard origin/$BRANCH
+
+# Step 3: Install dependencies (production only)
+echo "📦 Installing dependencies..."
+npm install --production || { echo "❌ npm install failed!"; exit 1; }
+
+# Step 4: Build the project
+echo "🏗️ Building the project..."
+npm run build || { echo "❌ Build failed!"; exit 1; }
+
+# Step 5: Restart the app with PM2
+echo "🔄 Restarting $APP_NAME..."
+pm2 restart $APP_NAME || pm2 start npm --name "$APP_NAME" -- run start
+
+# Step 6: Save PM2 process list
+echo "💾 Saving PM2 process list..."
 pm2 save
 
-
-
-
-
-
-
+echo "✅ Deployment completed successfully!"
 
 
 
