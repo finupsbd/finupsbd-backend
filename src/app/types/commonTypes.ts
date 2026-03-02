@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 export const blacklistedTokens: Set<string> = new Set();
 
-
 export type UserRole = 'ADMIN' | 'USER' | 'SUPER_ADMIN';
-
 
 export type TMiddlewareUser = {
   userId: string; // Unique identifier for the user
@@ -12,8 +10,6 @@ export type TMiddlewareUser = {
   iat: number; // Issued at timestamp (UNIX)
   exp: number; // Expiry timestamp (UNIX)
 };
-
-
 
 export type TMulterFile = {
   fieldname: string;
@@ -24,8 +20,6 @@ export type TMulterFile = {
   buffer: Buffer;
 };
 
-
-
 export type TUploadedFile = {
   fieldname: string;
   originalname: string;
@@ -35,18 +29,15 @@ export type TUploadedFile = {
   size: number;
 };
 
-
-
-
 export interface TLoanRequest {
-  bankName: string
-  bankImage: string
-  loanType: LoanType
-  amount: string
-  eligibleLoan: string
-  interestRate: string
-  periodMonths: number
-  processingFee: string
+  bankName: string;
+  bankImage: string;
+  loanType: LoanType;
+  amount: string;
+  eligibleLoan: string;
+  interestRate: string;
+  periodMonths: number;
+  processingFee: string;
 }
 
 enum LoanType {
@@ -54,8 +45,5 @@ enum LoanType {
   HOME_LOAN = 'HOME_LOAN',
   CAR_LOAN = 'CAR_LOAN',
   SME_LOAN = 'SME_LOAN',
-  INSTANT_LOAN = 'INSTANT_LOAN'
+  INSTANT_LOAN = 'INSTANT_LOAN',
 }
-
-
-

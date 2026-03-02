@@ -1,18 +1,13 @@
 import { z } from 'zod';
 
-export const emailSchema = z
+export const emailSchema = z.string().email('Invalid email format').min(1, 'Email is required');
+
+export const passwordSchema = z.string().min(6, 'Password must be at least 6 characters long');
+
+export const phoneSchema = z
   .string()
-  .email('Invalid email format')
-  .min(1, 'Email is required');
-
-export const passwordSchema = z
-  .string()
-  .min(6, 'Password must be at least 6 characters long');
-
-export const phoneSchema = z.string().min(1, 'Phone is required').regex(/^01[3-9]\d{8}$/, 'Invalid phone number');
-
-
-
+  .min(1, 'Phone is required')
+  .regex(/^01[3-9]\d{8}$/, 'Invalid phone number');
 
 const createUserValidationSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -29,8 +24,8 @@ const verifyPinValidationSchema = z.object({
 });
 
 const loginValidationSchema = z.object({
-  identifier: z.string().min(1,'Email or phone is required'),
-  password: z.string().min(1,'Password is required'),
+  identifier: z.string().min(1, 'Email or phone is required'),
+  password: z.string().min(1, 'Password is required'),
 });
 
 const forgetPasswordValidationSchema = z.object({
@@ -38,17 +33,19 @@ const forgetPasswordValidationSchema = z.object({
   // phone: phoneSchema,
 });
 
-const resetPasswordValidationSchema = z.object({
-  phone: phoneSchema.optional(),
-  email: emailSchema.optional(),
-  newPassword: passwordSchema
-}).refine(data => data.phone || data.email, {
-  message: "Either phone or email is required",
-});;
+const resetPasswordValidationSchema = z
+  .object({
+    phone: phoneSchema.optional(),
+    email: emailSchema.optional(),
+    newPassword: passwordSchema,
+  })
+  .refine((data) => data.phone || data.email, {
+    message: 'Either phone or email is required',
+  });
 
 const changePasswordValidationSchema = z.object({
   oldPassword: passwordSchema,
-  newPassword: passwordSchema
+  newPassword: passwordSchema,
   // phone: phoneSchema,
 });
 
@@ -70,5 +67,5 @@ export const UserValidation = {
   loginValidationSchema,
   forgetPasswordValidationSchema,
   resetPasswordValidationSchema,
-  changePasswordValidationSchema
+  changePasswordValidationSchema,
 };

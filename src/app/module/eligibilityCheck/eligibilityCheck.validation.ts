@@ -112,7 +112,7 @@
 //       ;['numberOfCard','cardType','cardLimitBDT'].forEach((k) => {
 //         if (data[k as keyof typeof data] === undefined) {
 //           ctx.addIssue({ code: 'custom', message: `${k} is required if haveAnyCreditCard is true`, path: [k] });
-//         }  
+//         }
 //       });
 //     } else {
 //       ;['numberOfCard','cardType','cardLimitBDT'].forEach((k) => {
@@ -129,37 +129,36 @@
 //     //       message: 'expectedLoanTenure must be between 1 and 3 months for INSTANT_LOAN',
 //     // })}}
 
-
 //   });
-
-
 
 //  export const eligibilityValidationSchema = {
 //     eligibilitySchema
 //  }
 
-
-
-
-
-
-import { z } from 'zod'
+import { z } from 'zod';
 
 // ── ENUM DEFINITIONS ─────────────────────────────────────────────────────────
-const MainLoanType = z.enum(['PERSONAL_LOAN', 'HOME_LOAN', 'CAR_LOAN', 'SME_LOAN', 'INSTANT_LOAN'])
-const Gender = z.enum(['MALE', 'FEMALE', 'OTHER'])
-const Profession = z.enum(['BUSINESS_OWNER', 'SALARIED', 'SELF_EMPLOYED'])
-const BusinessOwnerType = z.enum(['PROPRIETORSHIP', 'PARTNERSHIP', 'PUBLIC_LIMITED_COMPANY'])
-const VehicleType = z.enum(['CAR_SEDAN', 'CAR_SUV', 'CAR_HATCHBACK', 'BIKE'])
-const ExistingLoanType = z.enum(['HOME_LOAN', 'PERSONAL_LOAN', 'CAR_LOAN', 'SME_LOAN', 'CREDIT_CARD', 'OTHER'])
-const CardType = z.enum(['CREDIT_CARD', 'DEBIT_CARD'])
+const MainLoanType = z.enum(['PERSONAL_LOAN', 'HOME_LOAN', 'CAR_LOAN', 'SME_LOAN', 'INSTANT_LOAN']);
+const Gender = z.enum(['MALE', 'FEMALE', 'OTHER']);
+const Profession = z.enum(['BUSINESS_OWNER', 'SALARIED', 'SELF_EMPLOYED']);
+const BusinessOwnerType = z.enum(['PROPRIETORSHIP', 'PARTNERSHIP', 'PUBLIC_LIMITED_COMPANY']);
+const VehicleType = z.enum(['CAR_SEDAN', 'CAR_SUV', 'CAR_HATCHBACK', 'BIKE']);
+const ExistingLoanType = z.enum([
+  'HOME_LOAN',
+  'PERSONAL_LOAN',
+  'CAR_LOAN',
+  'SME_LOAN',
+  'CREDIT_CARD',
+  'OTHER',
+]);
+const CardType = z.enum(['CREDIT_CARD', 'DEBIT_CARD']);
 
 // ── SHARED SUBSCHEMAS ────────────────────────────────────────────────────────
 const ExistingLoan = z.object({
   existingLoanType: ExistingLoanType,
   emiAmountBDT: z.number().int().nonnegative(),
   interestRate: z.number().nonnegative().max(100, 'Interest rate must be <= 100%'),
-})
+});
 
 // ── MAIN SCHEMA ───────────────────────────────────────────────────────────────
 export const eligibilitySchema = z
@@ -200,25 +199,25 @@ export const eligibilitySchema = z
   .superRefine((data, ctx) => {
     // BUSINESS fields only if BUSINESS_OWNER
     if (data.profession === 'BUSINESS_OWNER') {
-      ;['businessOwnerType', 'businessType', 'sharePortion', 'tradeLicenseAge'].forEach((k) => {
+      ['businessOwnerType', 'businessType', 'sharePortion', 'tradeLicenseAge'].forEach((k) => {
         if (data[k as keyof typeof data] === undefined) {
           ctx.addIssue({
             code: 'custom',
             message: `${k} is required when profession is BUSINESS_OWNER`,
             path: [k],
-          })
+          });
         }
-      })
+      });
     } else {
-      ;['businessOwnerType', 'businessType', 'sharePortion', 'tradeLicenseAge'].forEach((k) => {
+      ['businessOwnerType', 'businessType', 'sharePortion', 'tradeLicenseAge'].forEach((k) => {
         if (data[k as keyof typeof data] !== undefined) {
           ctx.addIssue({
             code: 'custom',
             message: `${k} must not be set when profession is not BUSINESS_OWNER`,
             path: [k],
-          })
+          });
         }
-      })
+      });
     }
 
     // RENTAL-INCOME fields
@@ -228,14 +227,14 @@ export const eligibilitySchema = z
           code: 'custom',
           message: 'selectArea is required if haveAnyRentalIncome is true',
           path: ['selectArea'],
-        })
+        });
       }
       if (data.rentalIncome === undefined) {
         ctx.addIssue({
           code: 'custom',
           message: 'rentalIncome is required if haveAnyRentalIncome is true',
           path: ['rentalIncome'],
-        })
+        });
       }
     } else {
       if (data.selectArea !== undefined) {
@@ -243,14 +242,14 @@ export const eligibilitySchema = z
           code: 'custom',
           message: 'selectArea must be omitted if haveAnyRentalIncome is false',
           path: ['selectArea'],
-        })
+        });
       }
       if (data.rentalIncome !== undefined) {
         ctx.addIssue({
           code: 'custom',
           message: 'rentalIncome must be omitted if haveAnyRentalIncome is false',
           path: ['rentalIncome'],
-        })
+        });
       }
     }
 
@@ -261,7 +260,7 @@ export const eligibilitySchema = z
           code: 'custom',
           message: 'existingLoans must be a non-empty array if haveAnyLoan is true',
           path: ['existingLoans'],
-        })
+        });
       }
     } else {
       if (data.existingLoans !== undefined) {
@@ -269,31 +268,31 @@ export const eligibilitySchema = z
           code: 'custom',
           message: 'existingLoans must be omitted if haveAnyLoan is false',
           path: ['existingLoans'],
-        })
+        });
       }
     }
 
     // CREDIT-CARD fields
     if (data.haveAnyCreditCard) {
-      ;['numberOfCard', 'cardType', 'cardLimitBDT'].forEach((k) => {
+      ['numberOfCard', 'cardType', 'cardLimitBDT'].forEach((k) => {
         if (data[k as keyof typeof data] === undefined) {
           ctx.addIssue({
             code: 'custom',
             message: `${k} is required if haveAnyCreditCard is true`,
             path: [k],
-          })
+          });
         }
-      })
+      });
     } else {
-      ;['numberOfCard', 'cardType', 'cardLimitBDT'].forEach((k) => {
+      ['numberOfCard', 'cardType', 'cardLimitBDT'].forEach((k) => {
         if (data[k as keyof typeof data] !== undefined) {
           ctx.addIssue({
             code: 'custom',
             message: `${k} must be omitted if haveAnyCreditCard is false`,
             path: [k],
-          })
+          });
         }
-      })
+      });
     }
 
     // INSTANT_LOAN: expectedLoanTenure restriction
@@ -303,11 +302,11 @@ export const eligibilitySchema = z
           code: 'custom',
           path: ['expectedLoanTenure'],
           message: 'expectedLoanTenure must be between 1 and 3 months for INSTANT_LOAN',
-        })
+        });
       }
     }
-  })
+  });
 
 export const EligibilityValidationSchema = {
   eligibilitySchema,
-}
+};

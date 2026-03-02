@@ -1,4 +1,4 @@
-import rateLimit from "express-rate-limit";
+import rateLimit from 'express-rate-limit';
 
 // Rate limiting: Allow 100 requests per 15 minutes from a single IP
 export const limiter = rateLimit({

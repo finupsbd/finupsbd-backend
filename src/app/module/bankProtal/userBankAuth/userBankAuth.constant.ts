@@ -1,10 +1,5 @@
-
-
 export const mailBodyText = async (bankLoginId: string, bankName: string, blockedAt: string) => {
-
-
-
-const bodyText = `
+  const bodyText = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -293,13 +288,7 @@ const bodyText = `
     </div>
   </div>
 </body>
-</html>`
+</html>`;
 
-    return bodyText
-}
-
-
-
-
-
-
+  return bodyText;
+};

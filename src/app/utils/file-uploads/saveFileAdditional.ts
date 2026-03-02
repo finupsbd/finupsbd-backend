@@ -8,11 +8,11 @@ const writeFile = util.promisify(fs.writeFile);
 
 export const saveFileAdditional = async (
   buffer: Buffer,
-  originalName: string, 
-  applicationId: string
+  originalName: string,
+  applicationId: string,
 ): Promise<string> => {
   // NEW: define the per-application folder
-  const appFolder = path.join(process.cwd(),'uploads/AdditionalFiles', applicationId);
+  const appFolder = path.join(process.cwd(), 'uploads/AdditionalFiles', applicationId);
 
   // Ensure application folder exists
   if (!fs.existsSync(appFolder)) {

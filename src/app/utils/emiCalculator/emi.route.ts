@@ -1,13 +1,14 @@
-import express from "express"
-import { PublicController } from "./emi.controller"
-import validateRequest from "../../middleware/validateRequest"
-import emiCalculateValidation from "./emi.validation"
+import express from 'express';
+import { PublicController } from './emi.controller';
+import validateRequest from '../../middleware/validateRequest';
+import emiCalculateValidation from './emi.validation';
 
-const router = express.Router()
+const router = express.Router();
 
+router.post(
+  '/emi-calculator',
+  validateRequest(emiCalculateValidation),
+  PublicController.emiCalculator,
+);
 
-
-router.post('/emi-calculator', validateRequest(emiCalculateValidation), PublicController.emiCalculator)
-
-
-export const PublicRouter = router
+export const PublicRouter = router;

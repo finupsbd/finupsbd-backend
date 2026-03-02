@@ -2,7 +2,10 @@ import * as jwt from 'jsonwebtoken';
 import { JwtPayload } from 'jsonwebtoken';
 import { ConfigFile } from '../../config';
 
-export const accessTokenGenerate = (payload: JwtPayload,expiresIn: jwt.SignOptions['expiresIn']): string => {
+export const accessTokenGenerate = (
+  payload: JwtPayload,
+  expiresIn: jwt.SignOptions['expiresIn'],
+): string => {
   return jwt.sign(
     payload as string | Buffer | object,
     ConfigFile.JWT_ACCESS_SECRET as jwt.Secret,

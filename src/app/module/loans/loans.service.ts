@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { prisma } from "../../../app";
-import { TMulterFile } from "../../types/commonTypes";
-import { saveSingleFile } from "../../utils/file-uploads/saveSingleFile";
-import { TLoanCreate, TLoanUpdate } from "./loans.validation";
-
+import { prisma } from '../../../app';
+import { TMulterFile } from '../../types/commonTypes';
+import { saveSingleFile } from '../../utils/file-uploads/saveSingleFile';
+import { TLoanCreate, TLoanUpdate } from './loans.validation';
 
 const createLoan = async (payload: TLoanCreate, file: TMulterFile) => {
-
   try {
-    const coverImage = file?.buffer ? await saveSingleFile(file.buffer, file.originalname, "loans") : undefined;
+    const coverImage = file?.buffer
+      ? await saveSingleFile(file.buffer, file.originalname, 'loans')
+      : undefined;
     // const coverImage = file ? await sendImageToCloud(file) : undefined;
     payload.coverImage = coverImage ?? undefined;
-
 
     const result = await prisma.loan.create({
       data: {
@@ -30,38 +29,37 @@ const createLoan = async (payload: TLoanCreate, file: TMulterFile) => {
       include: {
         features: true,
         eligibility: true,
-        feesCharges: true
-      }
-
+        feesCharges: true,
+      },
     });
     return result;
   } catch (error) {
-    console.log(error)
-    
+    console.log(error);
   }
-
 };
 
 const getAllLoans = async () => {
   const result = await prisma.loan.findMany({
     include: {
-      features: true,      // Correctly references Features model
-      eligibility: true,   // Correctly references Eligibility model
-      feesCharges: true,   // Correctly references FeesCharges model
+      features: true, // Correctly references Features model
+      eligibility: true, // Correctly references Eligibility model
+      feesCharges: true, // Correctly references FeesCharges model
     },
-  })
+  });
   return result;
 };
 
 const updateLoan = async (payload: TLoanUpdate, file: any, id: string) => {
-   const coverImage = file?.buffer ? await saveSingleFile(file.buffer, file.originalname, "loans") : undefined;
+  const coverImage = file?.buffer
+    ? await saveSingleFile(file.buffer, file.originalname, 'loans')
+    : undefined;
   // const coverImage = file ? await sendImageToCloud(file) : undefined;
-  payload.coverImage = coverImage?? undefined;
+  payload.coverImage = coverImage ?? undefined;
 
   // Handle the Bank record
   // const bankResult = await prisma.personalLoan.upsert({
   //   where: { id },
-  //   create: {  
+  //   create: {
   //     ...payload,
   //     features: {
   //       create: payload.features,
@@ -84,7 +82,7 @@ const updateLoan = async (payload: TLoanUpdate, file: any, id: string) => {
   //     feesCharges: {
   //       update: payload.feesCharges,
   //     },
-  //   }, 
+  //   },
   //   include: {
   //     features: true,
   //     eligibility: true,
@@ -92,32 +90,25 @@ const updateLoan = async (payload: TLoanUpdate, file: any, id: string) => {
   //   }
   // });
 
-
   // return bankResult;  // Return the updated or created bank record
 };
 
-
-
 const getSingleLoan = async (id: string) => {
-    const result = await prisma.loan.findUnique({
-        where: {id}, 
-        include: {
-            eligibility: true, 
-            features: true, 
-            feesCharges: true
-        }
-    }
+  const result = await prisma.loan.findUnique({
+    where: { id },
+    include: {
+      eligibility: true,
+      features: true,
+      feesCharges: true,
+    },
+  });
 
-)
-
-    return result
-}
-
-
+  return result;
+};
 
 export const LoanService = {
   createLoan,
   getAllLoans,
   updateLoan,
-  getSingleLoan
+  getSingleLoan,
 };

@@ -5,9 +5,7 @@ const createNewsLetter = async (payload: { name: string; email: string }) => {
   const { email } = payload;
   const isExist = await prisma.newsLetter.findUnique({ where: { email } });
   if (isExist) {
-    throw new Error(
-      'You’re already subscribed to our newsletter. Stay tuned for updates!'
-    );
+    throw new Error('You’re already subscribed to our newsletter. Stay tuned for updates!');
   }
   const result = await prisma.newsLetter.create({ data: payload });
 
@@ -50,14 +48,12 @@ const createNewsLetter = async (payload: { name: string; email: string }) => {
   return result;
 };
 
-
 const getAllEmail = async () => {
-  const result = await prisma.newsLetter.findMany(); 
-  return result
-}
-
+  const result = await prisma.newsLetter.findMany();
+  return result;
+};
 
 export const NewsLetterService = {
   createNewsLetter,
-  getAllEmail
+  getAllEmail,
 };

@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-
-
 /**
  * Save any file (image, pdf, etc.) to a dynamic folder and return relative path.
  * @param buffer - File buffer
@@ -11,9 +9,12 @@ import path from 'path';
  * @returns string - Relative path to store in database
  */
 
-
-export const saveSingleFile = async (buffer: Buffer, originalName: string, folder: string, id?: string)
-  : Promise<string> => {
+export const saveSingleFile = async (
+  buffer: Buffer,
+  originalName: string,
+  folder: string,
+  id?: string,
+): Promise<string> => {
   // (e.g., /uploads/folder/)
   const uploadsDir = path.join(process.cwd(), 'uploads', folder);
 
@@ -21,7 +22,7 @@ export const saveSingleFile = async (buffer: Buffer, originalName: string, folde
     fs.mkdirSync(uploadsDir, { recursive: true });
   }
 
-  let fileName = ''
+  let fileName = '';
 
   const ext = path.extname(originalName) || '';
   fileName = `${Date.now()}-${ext}`;

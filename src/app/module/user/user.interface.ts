@@ -1,12 +1,10 @@
 /* eslint-disable no-unused-vars */
 
 export enum UserRole {
-  USER = "USER",
-  ADMIN = "ADMIN",
-  SUPER_ADMIN = "SUPER_ADMIN",
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN',
 }
-
-
 
 export type TUser = {
   name: string;

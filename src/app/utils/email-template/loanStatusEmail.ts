@@ -1,10 +1,4 @@
-type LoanStatus =
-  | "SUBMITTED"
-  | "PENDING"
-  | "IN_PROGRESS"
-  | "APPROVED"
-  | "REJECTED"
-  | "COMPLETED";
+type LoanStatus = 'SUBMITTED' | 'PENDING' | 'IN_PROGRESS' | 'APPROVED' | 'REJECTED' | 'COMPLETED';
 
 interface LoanEmailOptions {
   name: string;
@@ -13,50 +7,40 @@ interface LoanEmailOptions {
   reason?: string; // Optional note
 }
 
-
- const statusConfig: Record<LoanStatus, { color: string; title: string; message: string }> = {
+const statusConfig: Record<LoanStatus, { color: string; title: string; message: string }> = {
   SUBMITTED: {
-    color: "#0d6efd",
-    title: "Application Submitted",
-    message: "We have received your loan application and will review it soon.",
+    color: '#0d6efd',
+    title: 'Application Submitted',
+    message: 'We have received your loan application and will review it soon.',
   },
   PENDING: {
-    color: "#ffc107",
-    title: "Application Pending",
-    message: "Your loan application is pending review.",
+    color: '#ffc107',
+    title: 'Application Pending',
+    message: 'Your loan application is pending review.',
   },
   IN_PROGRESS: {
-    color: "#17a2b8",
-    title: "Application In Progress",
-    message: "Your application is being reviewed.",
+    color: '#17a2b8',
+    title: 'Application In Progress',
+    message: 'Your application is being reviewed.',
   },
   APPROVED: {
-    color: "#28a745",
-    title: "Application Approved",
-    message: "Your application has been approved. We’ll contact you soon.",
+    color: '#28a745',
+    title: 'Application Approved',
+    message: 'Your application has been approved. We’ll contact you soon.',
   },
   REJECTED: {
-    color: "#dc3545",
-    title: "Application Rejected",
-    message: "We regret to inform you your application has been rejected.",
+    color: '#dc3545',
+    title: 'Application Rejected',
+    message: 'We regret to inform you your application has been rejected.',
   },
   COMPLETED: {
-    color: "#6f42c1",
-    title: "Loan Process Completed",
-    message: "Your loan process has been completed successfully.",
+    color: '#6f42c1',
+    title: 'Loan Process Completed',
+    message: 'Your loan process has been completed successfully.',
   },
 };
 
-export const loanStatusEmail = ({
-  name,
-  applicationID,
-  status,
-  reason,
-}: LoanEmailOptions) => {
-
-
- 
-
+export const loanStatusEmail = ({ name, applicationID, status, reason }: LoanEmailOptions) => {
   const { color, title, message } = statusConfig[status];
 
   return `
@@ -80,12 +64,13 @@ export const loanStatusEmail = ({
       </p>
 
       <!-- Optional reason -->
-      ${reason
-      ? `<p style="background-color: #f8f9fa; border-left: 4px solid ${color}; padding: 12px 16px; font-size: 14px; color: #555; line-height: 1.5; border-radius: 6px; margin-bottom: 16px;">
+      ${
+        reason
+          ? `<p style="background-color: #f8f9fa; border-left: 4px solid ${color}; padding: 12px 16px; font-size: 14px; color: #555; line-height: 1.5; border-radius: 6px; margin-bottom: 16px;">
               <strong>Note:</strong> ${reason}
             </p>`
-      : ""
-    }
+          : ''
+      }
 
       <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 24px;">
         Application ID: <strong>${applicationID}</strong>

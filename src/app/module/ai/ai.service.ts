@@ -1,7 +1,6 @@
-
 // import { PrismaClient } from '@prisma/client';
 
-import { chatWithGeminiAI } from "../../../lib/ai-config/gemini.config";
+import { chatWithGeminiAI } from '../../../lib/ai-config/gemini.config';
 
 // const prisma = new PrismaClient();
 
@@ -24,7 +23,6 @@ import { chatWithGeminiAI } from "../../../lib/ai-config/gemini.config";
 //       feesCharges: true,
 //     },
 //   });
-
 
 //   // Prepare loan details for the AI prompt
 //   const loanDetails = personalLoans
@@ -59,14 +57,12 @@ import { chatWithGeminiAI } from "../../../lib/ai-config/gemini.config";
 //   console.log(loanDetails);
 //   const prompt = `
 //     You are a professional financial advisor specializing in personal loans at FinupsBD and your name is Reza. Your goal is to provide expert guidance and tailored loan solutions to meet your clients' financial needs. For inquiries, clients can reach you directly at 01531297879. Below is the latest information about the most attractive and flexible personal loan options currently available through FinupsBD.
-//     ${loanDetails} 
+//     ${loanDetails}
 
 //     User Question: ${message}
 
-//     Provide a detailed and accurate response. Do not include any additional information make sure every responce should like human. 
+//     Provide a detailed and accurate response. Do not include any additional information make sure every responce should like human.
 //   `;
-
-
 
 // //   async function main() {
 // //     const stream = await openai.chat.completions.create({
@@ -82,12 +78,6 @@ import { chatWithGeminiAI } from "../../../lib/ai-config/gemini.config";
 
 // // const result = main()
 
-
-
-
-
-
-
 //   // Get a response from OpenAI
 //   const response = await openai.chat.completions.create({
 //     model: model,
@@ -98,23 +88,18 @@ import { chatWithGeminiAI } from "../../../lib/ai-config/gemini.config";
 
 // }
 
-
-
-
-
-async function mcp(prompt: string){
+async function mcp(prompt: string) {
   // Implementation for mcp function
 
-  console.log(prompt)
+  console.log(prompt);
 
-  const res = await chatWithGeminiAI(prompt)
+  const res = await chatWithGeminiAI(prompt);
 
-  console.log(res)
-  return res
-
+  console.log(res);
+  return res;
 }
 
 export const AiServices = {
   // interactWithAssistant,
-  mcp
+  mcp,
 };

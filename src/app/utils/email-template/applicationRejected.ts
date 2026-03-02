@@ -1,8 +1,4 @@
-export const applicationRejected = (
-  name: string,
-  applicationID: string,
-  reason?: string
-) => {
+export const applicationRejected = (name: string, applicationID: string, reason?: string) => {
   return `
   <div style="font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f6f8; padding: 40px;">
     <div style="max-width: 620px; margin: auto; background-color: #ffffff; padding: 32px; border-radius: 12px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06); border: 1px solid #e9ecef;">
@@ -30,7 +26,7 @@ export const applicationRejected = (
           ? `<p style="background-color: #fff4f4; border-left: 4px solid #dc3545; padding: 12px 16px; font-size: 14px; color: #555; line-height: 1.5; border-radius: 6px; margin-bottom: 16px;">
               <strong>Reason:</strong> ${reason}
             </p>`
-          : ""
+          : ''
       }
 
       <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 16px;">

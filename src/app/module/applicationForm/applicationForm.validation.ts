@@ -1,41 +1,81 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // ── ENUMS ─────────────────────────────────────────────
-export const Gender = z.enum(["MALE", "FEMALE", "OTHER"], { required_error: "Gender is required" })
-export const MaritalStatus = z.enum(["SINGLE", "MARRIED", "DIVORCED", "WIDOWED"], { required_error: "Marital status is required" });
-export const Religion = z.enum(["ISLAM", "HINDUISM", "CHRISTIANITY", "BUDDHISM", "OTHER"], { required_error: "Religion is required" });
-export const ResidentialStatus = z.enum(["RESIDENT", "NONRESIDENT", "TEMPORARYRESIDENT"], { required_error: "Residential status is required" });
-export const EduLavel = z.enum(["BELOW_SSC", "SSC", "HSC", "GRADUATE", "POST_GRADUATE", "PHD", "OTHER_EDUCATION"], { required_error: "Education level is required" });
-export const OwnershipStatus = z.enum(["OWNED", "RENTED", "FAMILY_OWNED", "COMPANY_PROVIDED"]);
-export const LoanStatus = z.enum(["SUBMITTED", "PENDING", "IN_PROGRESS", "APPROVED", "REJECTED", "COMPLETED"]);
-export const LoanType = z.enum(["PERSONAL_LOAN", "HOME_LOAN", "CAR_LOAN", "SME_LOAN", "INSTANT_LOAN"]);
-export const ProfessionType = z.enum(["DOCTOR", "ENGINEER", "ARCHITECT", "ACCOUNTANT", "ARTIST", "TEACHER", "FREELANCER", "OTHER"]);
-export const PropertyType = z.enum(["RESIDENTIAL", "COMMERCIAL", "LAND", "APARTMENT", "HOUSE", "OTHER"]);
-export const EmploymentStatus = z.enum(["SALARIED", "SELF_EMPLOYED", "BUSINESS_OWNER"]);
-export const EmploymentType = z.enum(["PERMANENT", "CONTRACTUAL", "PARTTIME", "PROBATION"]);
-
-
+export const Gender = z.enum(['MALE', 'FEMALE', 'OTHER'], {
+  required_error: 'Gender is required',
+});
+export const MaritalStatus = z.enum(['SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED'], {
+  required_error: 'Marital status is required',
+});
+export const Religion = z.enum(['ISLAM', 'HINDUISM', 'CHRISTIANITY', 'BUDDHISM', 'OTHER'], {
+  required_error: 'Religion is required',
+});
+export const ResidentialStatus = z.enum(['RESIDENT', 'NONRESIDENT', 'TEMPORARYRESIDENT'], {
+  required_error: 'Residential status is required',
+});
+export const EduLavel = z.enum(
+  ['BELOW_SSC', 'SSC', 'HSC', 'GRADUATE', 'POST_GRADUATE', 'PHD', 'OTHER_EDUCATION'],
+  { required_error: 'Education level is required' },
+);
+export const OwnershipStatus = z.enum(['OWNED', 'RENTED', 'FAMILY_OWNED', 'COMPANY_PROVIDED']);
+export const LoanStatus = z.enum([
+  'SUBMITTED',
+  'PENDING',
+  'IN_PROGRESS',
+  'APPROVED',
+  'REJECTED',
+  'COMPLETED',
+]);
+export const LoanType = z.enum([
+  'PERSONAL_LOAN',
+  'HOME_LOAN',
+  'CAR_LOAN',
+  'SME_LOAN',
+  'INSTANT_LOAN',
+]);
+export const ProfessionType = z.enum([
+  'DOCTOR',
+  'ENGINEER',
+  'ARCHITECT',
+  'ACCOUNTANT',
+  'ARTIST',
+  'TEACHER',
+  'FREELANCER',
+  'OTHER',
+]);
+export const PropertyType = z.enum([
+  'RESIDENTIAL',
+  'COMMERCIAL',
+  'LAND',
+  'APARTMENT',
+  'HOUSE',
+  'OTHER',
+]);
+export const EmploymentStatus = z.enum(['SALARIED', 'SELF_EMPLOYED', 'BUSINESS_OWNER']);
+export const EmploymentType = z.enum(['PERMANENT', 'CONTRACTUAL', 'PARTTIME', 'PROBATION']);
 
 // ── SUB-SCHEMAS ──────────────────────────────────────
 const BankAccount = z.object({
-  bankName: z.string().min(1, "Bank name is required"),
-  accountNumber: z.string().min(5, "Account number is too short"),
+  bankName: z.string().min(1, 'Bank name is required'),
+  accountNumber: z.string().min(5, 'Account number is too short'),
 });
 
 const CreditCardUser = z.object({
-  issuerName: z.string().min(1, "Issuer name is required"),
-  cardLimit: z.string().min(1, "Card limit is required"),
-  toBeClosedBeforeDisbursement: z.boolean({ invalid_type_error: "Must select an option" }),
+  issuerName: z.string().min(1, 'Issuer name is required'),
+  cardLimit: z.string().min(1, 'Card limit is required'),
+  toBeClosedBeforeDisbursement: z.boolean({
+    invalid_type_error: 'Must select an option',
+  }),
 });
 
 const ExistingLoanUser = z.object({
   loanType: LoanType,
-  adjustmentPlan: z.string().min(1, "Adjustment plan is required"),
-  disbursedAmount: z.string().min(1, "Disbursed amount is required"),
+  adjustmentPlan: z.string().min(1, 'Adjustment plan is required'),
+  disbursedAmount: z.string().min(1, 'Disbursed amount is required'),
   otherLoanType: z.string().optional(),
-  lenderName: z.string().min(1, "Lender name is required"),
-  outstanding: z.string().min(1, "Outstanding is required"),
-  emi: z.string().min(1, "EMI is required"),
+  lenderName: z.string().min(1, 'Lender name is required'),
+  outstanding: z.string().min(1, 'Outstanding is required'),
+  emi: z.string().min(1, 'EMI is required'),
 });
 
 const PropertyItem = z.object({
@@ -44,13 +84,13 @@ const PropertyItem = z.object({
 });
 
 const PersonalGuarantor = z.object({
-  mobileNumber: z.string().min(11, "Valid mobile number is required"),
-  emailAddress: z.string().email("Valid email required"),
+  mobileNumber: z.string().min(11, 'Valid mobile number is required'),
+  emailAddress: z.string().email('Valid email required'),
 });
 
 const BusinessGuarantor = z.object({
-  mobileNumber: z.string().min(11, "Valid mobile number is required"),
-  emailAddress: z.string().email("Valid email required"),
+  mobileNumber: z.string().min(11, 'Valid mobile number is required'),
+  emailAddress: z.string().email('Valid email required'),
 });
 
 const GuarantorInfo = z.object({
@@ -59,16 +99,18 @@ const GuarantorInfo = z.object({
 });
 
 const LoanRequest = z.object({
-  loanAmount: z.string().min(1, "Loan amount is required"),
-  loanTenure: z.number().min(1, "Loan tenure must be at least 1 month"),
-  loanPurpose: z.string().min(1, "Loan purpose is required"),
-  emiStartDate: z.number({ invalid_type_error: "Valid EMI start date required" }),
+  loanAmount: z.string().min(1, 'Loan amount is required'),
+  loanTenure: z.number().min(1, 'Loan tenure must be at least 1 month'),
+  loanPurpose: z.string().min(1, 'Loan purpose is required'),
+  emiStartDate: z.number({
+    invalid_type_error: 'Valid EMI start date required',
+  }),
 });
 
 const LoanInfo = z.object({
   hasCreditCard: z.boolean(),
   hasExistingLoan: z.boolean(),
-  bankAccounts: z.array(BankAccount).min(1, "At least one bank account required"),
+  bankAccounts: z.array(BankAccount).min(1, 'At least one bank account required'),
   creditCards: z.array(CreditCardUser),
   existingLoans: z.array(ExistingLoanUser),
 });
@@ -127,26 +169,17 @@ export const employmentInformationSchema = z.object({
 const ResidentialInformation = z.object({
   presentAddress: z
     .string()
-    .min(5, { message: "Present address must be at least 5 characters long." }),
+    .min(5, { message: 'Present address must be at least 5 characters long.' }),
 
-  presentDistrict: z
-    .string()
-    .min(2, { message: "Present district is required." }),
+  presentDistrict: z.string().min(2, { message: 'Present district is required.' }),
 
-  presentDivision: z
-    .string()
-    .min(2, { message: "Present division is required." }),
+  presentDivision: z.string().min(2, { message: 'Present division is required.' }),
 
-  presentLengthOfStay: z
-    .string()
-    .min(1, { message: "Length of stay must be specified." }),
+  presentLengthOfStay: z.string().min(1, { message: 'Length of stay must be specified.' }),
   presentOwnershipStatus: OwnershipStatus,
   presentPostalCode: z.string(),
 
-  presentThana: z
-    .string()
-    .min(2, { message: "Present thana is required." }),
-
+  presentThana: z.string().min(2, { message: 'Present thana is required.' }),
 
   isPermanentSameAsPresent: z.boolean(),
   permanentAddress: z.string().optional(),
@@ -159,11 +192,11 @@ const ResidentialInformation = z.object({
 });
 
 const PersonalInfo = z.object({
-  fullName: z.string().min(1, "Full name is required"),
-  fatherName: z.string().min(1, "Father or Husband name is required"),
-  motherName: z.string().min(1, "Mother name is required"),
+  fullName: z.string().min(1, 'Full name is required'),
+  fatherName: z.string().min(1, 'Father or Husband name is required'),
+  motherName: z.string().min(1, 'Mother name is required'),
   spouseName: z.string().optional(),
-  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  dateOfBirth: z.string().min(1, 'Date of birth is required'),
   placeOfBirth: z.string(),
   nationality: z.string(),
   gender: Gender,

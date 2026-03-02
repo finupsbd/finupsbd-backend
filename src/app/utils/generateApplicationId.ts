@@ -18,11 +18,10 @@ const lastApplication = async () => {
 export async function generateApplicationId() {
   const applicationId = await lastApplication();
 
-
   // Helper function to format the date prefix
   const getDatePrefix = () => {
     const currentDate = new Date();
-    const staticDigit = "3"; // Static starting digit
+    const staticDigit = '3'; // Static starting digit
     const year = currentDate.getFullYear().toString().slice(-2); // Last 2 digits of the year
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Two-digit month
     const day = currentDate.getDate().toString().padStart(2, '0'); // Two-digit day
@@ -33,7 +32,7 @@ export async function generateApplicationId() {
   if (!applicationId) {
     // Generate the first application ID
     const prefix = getDatePrefix();
-    const sequence = "00001"; // Start sequence at 00001
+    const sequence = '00001'; // Start sequence at 00001
     const newApplicationId = `${prefix}${sequence}`;
     return newApplicationId;
   }
@@ -48,5 +47,5 @@ export async function generateApplicationId() {
     return newApplicationId;
   }
 
-  throw new AppError(500,"Unable to generate a new application ID."); // Fallback error handling
+  throw new AppError(500, 'Unable to generate a new application ID.'); // Fallback error handling
 }

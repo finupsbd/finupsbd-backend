@@ -1,4 +1,3 @@
-
 function pad2(n: number): string {
   return String(n).padStart(2, '0');
 }
@@ -34,7 +33,7 @@ export interface FormatOptions {
 export function formatDate(
   date: Date | string | number | null,
   fmt: string = 'YYYY-MM-DD HH:mm:ss',
-  opts: FormatOptions = {}
+  opts: FormatOptions = {},
 ): string {
   if (date === null) {
     throw new Error('Invalid date: null');
@@ -48,16 +47,16 @@ export function formatDate(
   const baseFormatter = new Intl.DateTimeFormat(locale, {
     timeZone: tz,
     hour12: false,
-    year:   'numeric',
-    month:  '2-digit',
-    day:    '2-digit',
-    hour:   '2-digit',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-    weekday:'long',
+    weekday: 'long',
   });
   const parts = baseFormatter.formatToParts(dt);
-  const partMap: Record<string,string> = {};
+  const partMap: Record<string, string> = {};
   for (const p of parts) {
     if (p.type !== 'literal') {
       // types: year, month, day, hour, minute, second, weekday
@@ -66,42 +65,54 @@ export function formatDate(
   }
 
   // also get localized names
-  const longMonth    = new Intl.DateTimeFormat(locale, { timeZone: tz, month: 'long'  }).format(dt);
-  const shortMonth   = new Intl.DateTimeFormat(locale, { timeZone: tz, month: 'short' }).format(dt);
-  const longWeekday  = new Intl.DateTimeFormat(locale, { timeZone: tz, weekday: 'long'  }).format(dt);
-  const shortWeekday = new Intl.DateTimeFormat(locale, { timeZone: tz, weekday: 'short' }).format(dt);
+  const longMonth = new Intl.DateTimeFormat(locale, {
+    timeZone: tz,
+    month: 'long',
+  }).format(dt);
+  const shortMonth = new Intl.DateTimeFormat(locale, {
+    timeZone: tz,
+    month: 'short',
+  }).format(dt);
+  const longWeekday = new Intl.DateTimeFormat(locale, {
+    timeZone: tz,
+    weekday: 'long',
+  }).format(dt);
+  const shortWeekday = new Intl.DateTimeFormat(locale, {
+    timeZone: tz,
+    weekday: 'short',
+  }).format(dt);
 
   // numeric values as numbers
   const H = Number(partMap.hour);
   const m12 = H % 12 || 12;
-   
-  const tokens: Record<string,string> = {
+
+  const tokens: Record<string, string> = {
     YYYY: partMap.year,
-    YY:   partMap.year.slice(-2),
+    YY: partMap.year.slice(-2),
 
     MMMM: longMonth,
-    MMM:  shortMonth,
+    MMM: shortMonth,
 
     MM: partMap.month,
-    M:  String(Number(partMap.month)),
+    M: String(Number(partMap.month)),
 
     DD: partMap.day,
-    D:  String(Number(partMap.day)),
+    D: String(Number(partMap.day)),
 
     dddd: longWeekday,
-    ddd:  shortWeekday,
+    ddd: shortWeekday,
 
     HH: pad2(H),
-    H:  String(H),
+    H: String(H),
 
     hh: pad2(m12),
-    h:  String(m12),
+    h: String(m12),
 
     mm: partMap.minute,
-    m:  String(Number(partMap.minute)),
+    m: String(Number(partMap.minute)),
 
     ss: partMap.second,
-    s:  String(Number(partMap.second)),
+    s: String(Number(partMap.second)),
 
     A: H >= 12 ? 'PM' : 'AM',
     a: H >= 12 ? 'pm' : 'am',
@@ -111,9 +122,6 @@ export function formatDate(
   const pattern = new RegExp(Object.keys(tokens).join('|'), 'g');
   return fmt.replace(pattern, (match) => tokens[match]);
 }
-
-
-
 
 // // basic local
 // console.log(formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss'));
@@ -136,4 +144,3 @@ export function formatDate(
 //   formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss', { timeZone: 'Asia/Dhaka' })
 // );
 // // => Dhaka-local wall-clock time
-

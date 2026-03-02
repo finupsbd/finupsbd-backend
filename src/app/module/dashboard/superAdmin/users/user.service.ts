@@ -1,5 +1,4 @@
-import { prisma } from "../../../../../app"
-
+import { prisma } from '../../../../../app';
 
 export type TQueryUsers = {
   searchTerm?: string;
@@ -9,29 +8,20 @@ export type TQueryUsers = {
 };
 
 const getAllUsers = async (query: TQueryUsers) => {
-  const {
-    searchTerm = "",
-    isActive,
-    page = 1,
-    limit = 10,
-  } = query;
+  const { searchTerm = '', isActive, page = 1, limit = 10 } = query;
 
   const skip = (Number(page) - 1) * Number(limit);
 
-
-  console.log(query)
-
-
-
+  console.log(query);
 
   const [users, total] = await Promise.all([
     prisma.user.findMany({
       where: {
         OR: [
-          { name: { contains: searchTerm, mode: "insensitive" } },
-          { email: { contains: searchTerm, mode: "insensitive" } },
-          { phone: { contains: searchTerm, mode: "insensitive" } },
-          { userId: { contains: searchTerm, mode: "insensitive" } },
+          { name: { contains: searchTerm, mode: 'insensitive' } },
+          { email: { contains: searchTerm, mode: 'insensitive' } },
+          { phone: { contains: searchTerm, mode: 'insensitive' } },
+          { userId: { contains: searchTerm, mode: 'insensitive' } },
         ],
       },
       select: {
@@ -50,20 +40,20 @@ const getAllUsers = async (query: TQueryUsers) => {
       },
       skip,
       take: Number(limit),
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     }),
 
-    prisma.user.count({ where: {
+    prisma.user.count({
+      where: {
         OR: [
-          { name: { contains: searchTerm, mode: "insensitive" } },
-          { email: { contains: searchTerm, mode: "insensitive" } },
-          { phone: { contains: searchTerm, mode: "insensitive" } },
-          { userId: { contains: searchTerm, mode: "insensitive" } },
+          { name: { contains: searchTerm, mode: 'insensitive' } },
+          { email: { contains: searchTerm, mode: 'insensitive' } },
+          { phone: { contains: searchTerm, mode: 'insensitive' } },
+          { userId: { contains: searchTerm, mode: 'insensitive' } },
         ],
-      }, }),
+      },
+    }),
   ]);
-
-
 
   return {
     data: users,
@@ -76,31 +66,18 @@ const getAllUsers = async (query: TQueryUsers) => {
   };
 };
 
-
-
-
-
-
 const getSingleUser = async (id: string) => {
-  const result = await prisma.user.findUnique(
-    { where: { id }, 
+  const result = await prisma.user.findUnique({
+    where: { id },
     include: {
       profile: true,
-      
     },
-    
-  }
+  });
 
-)
-
-  return result
+  return result;
 };
 
-
-
 export const DashboardUserasServides = {
-
   getAllUsers,
-  getSingleUser
-}
-
+  getSingleUser,
+};

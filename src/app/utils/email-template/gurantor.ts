@@ -1,9 +1,9 @@
-
-
-
-export const gurantorEmailTemplate = (applicantNum: string, applicantName: string, link: string) => {
-
-    return `
+export const gurantorEmailTemplate = (
+  applicantNum: string,
+  applicantName: string,
+  link: string,
+) => {
+  return `
     <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -55,6 +55,5 @@ export const gurantorEmailTemplate = (applicantNum: string, applicantName: strin
   </body>
 </html>
 
-`
-
-}
+`;
+};

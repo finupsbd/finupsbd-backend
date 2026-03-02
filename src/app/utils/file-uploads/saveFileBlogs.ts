@@ -1,25 +1,26 @@
 import fs from 'fs';
 import path from 'path';
 
+export const saveFileBlogs = async (
+  buffer: Buffer,
+  originalName: string,
+  folder: string,
+  id?: string,
+): Promise<string> => {
+  // (e.g., /uploads/folder/)
+  const uploadsDir = path.join(process.cwd(), 'uploads', folder, `${id}`);
 
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
 
-export const saveFileBlogs = async (buffer: Buffer, originalName: string, folder: string, id?: string)
-    : Promise<string> => {
-    // (e.g., /uploads/folder/)
-    const uploadsDir = path.join(process.cwd(), 'uploads', folder, `${id}`);
+  let fileName = '';
 
-    if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-    }
+  const ext = path.extname(originalName) || '';
+  fileName = `${Date.now()}-${ext}`;
 
-    let fileName = ''
+  const filePath = path.join(uploadsDir, fileName);
+  await fs.promises.writeFile(filePath, buffer);
 
-    const ext = path.extname(originalName) || '';
-    fileName = `${Date.now()}-${ext}`;
-
-    const filePath = path.join(uploadsDir, fileName);
-    await fs.promises.writeFile(filePath, buffer);
-
-
-    return `/uploads/${folder}/${id}/${fileName}`;
+  return `/uploads/${folder}/${id}/${fileName}`;
 };

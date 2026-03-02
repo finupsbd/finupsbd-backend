@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-
-
 /**
  * Save any file (image, pdf, etc.) to a dynamic subfolder based on ID and return relative path.
  * @param buffer - File buffer
@@ -11,8 +9,6 @@ import path from 'path';
  * @param id - Unique identifier to create a subfolder (e.g., applicationId or userId)
  * @returns string - Relative path to store in database
  */
-
-
 
 export const saveFileGuarantor = async (
   buffer: Buffer,

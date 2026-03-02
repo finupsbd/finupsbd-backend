@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 import { ConfigFile } from '../../config';
 
-
 const algorithm = 'aes-256-cbc';
 
 if (!ConfigFile.SECRET_KEY) {
@@ -12,10 +11,8 @@ if (!ConfigFile.HMAC_KEY) {
   throw new Error('HMAC_KEY is missing in ConfigFile!');
 }
 
-const key = Buffer.from(ConfigFile.SECRET_KEY!, 'hex');     // 32-byte key (256-bit)
-const hmacKey = Buffer.from(ConfigFile.HMAC_KEY!, 'utf8');  // Any strong secret
-
-
+const key = Buffer.from(ConfigFile.SECRET_KEY!, 'hex'); // 32-byte key (256-bit)
+const hmacKey = Buffer.from(ConfigFile.HMAC_KEY!, 'utf8'); // Any strong secret
 
 export const encrypt = (text: string) => {
   const iv = crypto.randomBytes(16); // ✅ Must be 16 bytes
@@ -31,8 +28,6 @@ export const encrypt = (text: string) => {
 
   return `${ivHex}:${encryptedHex}:${authTag}`;
 };
-
-
 
 export const decrypt = (payload: string) => {
   const [ivHex, encryptedHex, authTag] = payload.split(':');

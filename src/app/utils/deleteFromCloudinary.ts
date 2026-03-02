@@ -1,7 +1,6 @@
 // src/utils/deleteFromCloudinary.ts
 
-import cloudinary from "./cloudinary";
-
+import cloudinary from './cloudinary';
 
 export const deleteFromCloudinary = async (publicId: string): Promise<boolean> => {
   try {
@@ -13,7 +12,6 @@ export const deleteFromCloudinary = async (publicId: string): Promise<boolean> =
       console.warn(`Cloudinary deletion not successful for publicId=${publicId}:`, result);
       return false;
     }
-
   } catch (error) {
     console.error(`Error deleting Cloudinary file [${publicId}]:`, error);
     return false;

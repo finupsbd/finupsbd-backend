@@ -37,8 +37,6 @@
 //   return uploadResult
 // };
 
-
-
 // /// delete when image upload in cloudinary
 // const deleteLocalFile = (filePath: string) => {
 //     fs.unlink(filePath, (err) => {
@@ -50,8 +48,6 @@
 //     });
 //   };
 
-
-
 // const storage = multer.diskStorage({
 //     destination: function (req, file, cb) {
 //       cb(null, process.cwd() + '/uploads/')
@@ -61,18 +57,16 @@
 //       cb(null, file.fieldname + '-' + uniqueSuffix)
 //     }
 //   })
-  
-//   export const upload = multer({ storage: storage })
 
+//   export const upload = multer({ storage: storage })
 
 import { v2 as cloudinary } from 'cloudinary';
 import { ConfigFile } from '../../config';
 import multer from 'multer';
 
-
 // 1️⃣ Configure Cloudinary
 cloudinary.config({
-  cloud_name: 'djr5gjijg', 
+  cloud_name: 'djr5gjijg',
   api_key: ConfigFile.CLOUDINARY_API_KEY,
   api_secret: ConfigFile.CLOUDINARY_API_SECRET,
 });
@@ -96,7 +90,7 @@ export const sendImageToCloud = async (fileBuffer: Buffer) => {
           } else {
             reject(new Error('Upload result is undefined'));
           }
-        }
+        },
       );
       // 🔹 Send the buffer to Cloudinary
       stream.end(fileBuffer);
@@ -126,10 +120,6 @@ export const sendImageToCloud = async (fileBuffer: Buffer) => {
     return null;
   }
 };
-
-
-
-
 
 // 3️⃣ Use Multer memory storage (no local file system)
 const storage = multer.memoryStorage();

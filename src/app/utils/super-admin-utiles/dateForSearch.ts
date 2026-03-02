@@ -10,12 +10,13 @@ const parseDateFromSearch = (raw?: string) => {
 
   let d: Date | null = null;
 
-  if (iso.test(term)) d = new Date(term); // YYYY-MM-DD
+  if (iso.test(term))
+    d = new Date(term); // YYYY-MM-DD
   else if (dmySlash.test(term)) {
-    const [dd, mm, yyyy] = term.split("/").map(Number);
+    const [dd, mm, yyyy] = term.split('/').map(Number);
     d = new Date(yyyy, mm - 1, dd);
   } else if (dmyDash.test(term)) {
-    const [dd, mm, yyyy] = term.split("-").map(Number);
+    const [dd, mm, yyyy] = term.split('-').map(Number);
     d = new Date(yyyy, mm - 1, dd);
   } else {
     // Try loose parse (works for many formats like "Aug 21 2025")

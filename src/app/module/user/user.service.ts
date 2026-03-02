@@ -1,18 +1,13 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../../../app';
 import AppError from '../../error/AppError';
 import { TMiddlewareUser, TUploadedFile } from '../../types/commonTypes';
 import { saveFileAdditional } from '../../utils/file-uploads/saveFileAdditional';
-import { toWords } from "number-to-words";
+import { toWords } from 'number-to-words';
 import dayjs from 'dayjs';
 import { numberToBanglaWords } from '../../utils/numberToBanglaWords';
 import { calculateEMI } from '../../utils/calculateEMI';
-
-
-
-
 
 type FilterParams = {
   searchTerm?: boolean;
@@ -21,7 +16,6 @@ type FilterParams = {
   skip?: number;
   take?: number;
 };
-
 
 const getAllUser = async (query: FilterParams) => {
   try {
@@ -40,7 +34,7 @@ const getAllUser = async (query: FilterParams) => {
     // Use searchTerm as a boolean flag.
     // For demonstration, if searchTerm is true, include users with a non-empty name.
     if (query.searchTerm) {
-      conditions.push({ name: { not: "" } });
+      conditions.push({ name: { not: '' } });
     }
 
     // Combine conditions if any filters are applied.
@@ -77,25 +71,23 @@ const getAllUser = async (query: FilterParams) => {
       },
     };
   } catch (error) {
-    console.error("Error fetching users:", error);
-    throw new Error("Could not fetch users");
+    console.error('Error fetching users:', error);
+    throw new Error('Could not fetch users');
   }
 };
 
 const getSingleUser = async (id: string) => {
-
   const result = await prisma.user.findUnique({
     where: { id },
     include: {
-      profile: true
-    }
+      profile: true,
+    },
   });
 
   return result;
 };
 
 const meProfile = async (user: any) => {
-
   const result = await prisma.user.findFirst({
     where: { email: user?.email as string },
     select: {
@@ -107,120 +99,106 @@ const meProfile = async (user: any) => {
       isActive: true,
       emailVerified: true,
     },
-
   });
 
-  console.log({ result })
-  if (!result) throw new Error("User not found");
+  console.log({ result });
+  if (!result) throw new Error('User not found');
   return result;
 };
 
 const getAllNewLoans = async (id: string) => {
-
   const result = await prisma.loanApplicationForm.findMany({
     where: {
       user: {
-        id: id
+        id: id,
       },
       status: {
-        in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING']
-      }
+        in: ['SUBMITTED', 'IN_PROGRESS', 'PENDING'],
+      },
     },
     include: {
       eligibleLoanOffer: true,
-      loanRequest: true
+      loanRequest: true,
     },
     orderBy: {
-      createdAt: "desc"
-    }
-  })
+      createdAt: 'desc',
+    },
+  });
 
-
-
-  return result
-
+  return result;
 };
 
 const getAllExistingLoans = async (id: string) => {
- console.log(id)
- const result = await prisma.loanApplicationForm.findMany({
+  console.log(id);
+  const result = await prisma.loanApplicationForm.findMany({
     where: {
       user: {
-        id: id
+        id: id,
       },
       status: {
-        in: ["COMPLETED"]
-      }
+        in: ['COMPLETED'],
+      },
     },
     include: {
       eligibleLoanOffer: true,
-      loanRequest: true
+      loanRequest: true,
     },
     orderBy: {
-      createdAt: "desc"
-    }
-  })
- 
+      createdAt: 'desc',
+    },
+  });
 
-  return result
-
+  return result;
 };
 
-
 const getAllRejectsLoans = async (id: string) => {
- console.log(id)
- const result = await prisma.loanApplicationForm.findMany({
+  console.log(id);
+  const result = await prisma.loanApplicationForm.findMany({
     where: {
       user: {
-        id: id
+        id: id,
       },
       status: {
-        in: ["REJECTED"]
-      }
+        in: ['REJECTED'],
+      },
     },
     include: {
       eligibleLoanOffer: true,
-      loanRequest: true
+      loanRequest: true,
     },
     orderBy: {
-      createdAt: "desc"
-    }
-  })
- 
+      createdAt: 'desc',
+    },
+  });
 
-  return result
-
+  return result;
 };
 
 const getApplication = async (id: string) => {
-
   const result = await prisma.loanApplicationForm.findUnique({
     where: { id },
     include: {
       eligibleLoanOffer: {
         select: {
           loanType: true,
-        }
+        },
       },
-    }
-  })
+    },
+  });
 
-  console.log(result)
+  console.log(result);
 
-  return result
-
+  return result;
 };
 
-
-
 const createAdiDoc = async (id: string, files: TUploadedFile[], user: TMiddlewareUser) => {
-
-  const isExistApplication = await prisma.loanApplicationForm.findUnique({ where: { id } })
+  const isExistApplication = await prisma.loanApplicationForm.findUnique({
+    where: { id },
+  });
 
   if (!isExistApplication) {
-    throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
+    throw new AppError(StatusCodes.NOT_FOUND, 'Application not found');
   }
-
 
   try {
     // Save files locally instead of uploading to Cloudinary
@@ -230,12 +208,15 @@ const createAdiDoc = async (id: string, files: TUploadedFile[], user: TMiddlewar
       mimeType: string;
     }[] = [];
 
-    const images: TUploadedFile[] = files
-
+    const images: TUploadedFile[] = files;
 
     for (const file of images) {
       try {
-        const savedPath = await saveFileAdditional(file.buffer, file.originalname, isExistApplication?.applicationId); // or file.originalname
+        const savedPath = await saveFileAdditional(
+          file.buffer,
+          file.originalname,
+          isExistApplication?.applicationId,
+        ); // or file.originalname
         savedDocuments.push({
           filePath: savedPath,
           originalName: file.originalname,
@@ -255,28 +236,22 @@ const createAdiDoc = async (id: string, files: TUploadedFile[], user: TMiddlewar
       })),
     });
 
-
-
     if (uploadFileIntoDb.count > 0) {
       await prisma.loanApplicationForm.update({
         where: { id },
         data: {
-          status: "PENDING",
-          adminNotes: "Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.",
+          status: 'PENDING',
+          adminNotes:
+            'Your document has been submitted successfully. Our review team will now carefully assess it before proceeding to the next steps.',
           additionalDocumentSubmit: true,
-          additionalDocuments: false
-        }
-      })
-
+          additionalDocuments: false,
+        },
+      });
     }
-
-
   } catch (err) {
     console.error(`Failed to save file :`, err);
   }
-}
-
-
+};
 
 // const createAdiDoc = async (
 //   id: string,                      // LoanApplicationForm.id
@@ -417,9 +392,7 @@ const createAdiDoc = async (id: string, files: TUploadedFile[], user: TMiddlewar
 //   });
 // };
 
-
 const getAgreementDoc = async (id: string) => {
-
   try {
     const result = await prisma.loanApplicationForm.findUnique({
       where: { id },
@@ -428,23 +401,29 @@ const getAgreementDoc = async (id: string) => {
         personalInfo: true,
         loanRequest: true,
         residentialInformation: true,
-        eligibleLoanOffer: true
-      }
+        eligibleLoanOffer: true,
+      },
     });
 
     if (!result) {
-      throw new AppError(StatusCodes.NOT_FOUND, "Application not found")
+      throw new AppError(StatusCodes.NOT_FOUND, 'Application not found');
     }
 
-
-    const loanAmountInWord = toWords(Number(result?.loanRequest?.loanAmount) || 0) + " taka only";
+    const loanAmountInWord = toWords(Number(result?.loanRequest?.loanAmount) || 0) + ' taka only';
     const loanAmountInBangla = numberToBanglaWords(Number(result?.loanRequest?.loanAmount));
-    const dueDate = dayjs(result?.updatedAt || "").add(result?.eligibleLoanOffer?.periodMonths || 0, "month").format("YYYY-MM-DD");
-    const presentAddress = `${result?.residentialInformation?.presentAddress || ""}, ${result?.residentialInformation?.presentThana || ""}, ${result?.residentialInformation?.presentDistrict || ""}\n ${result?.residentialInformation?.presentDivision || ""} - ${result?.residentialInformation?.presentPostalCode || ""}`
-    const calculateEMIValue = Math.round(calculateEMI(Number(result?.loanRequest?.loanAmount), Number(result?.eligibleLoanOffer?.interestRate) || 0, Number(result?.loanRequest?.loanTenure)))
+    const dueDate = dayjs(result?.updatedAt || '')
+      .add(result?.eligibleLoanOffer?.periodMonths || 0, 'month')
+      .format('YYYY-MM-DD');
+    const presentAddress = `${result?.residentialInformation?.presentAddress || ''}, ${result?.residentialInformation?.presentThana || ''}, ${result?.residentialInformation?.presentDistrict || ''}\n ${result?.residentialInformation?.presentDivision || ''} - ${result?.residentialInformation?.presentPostalCode || ''}`;
+    const calculateEMIValue = Math.round(
+      calculateEMI(
+        Number(result?.loanRequest?.loanAmount),
+        Number(result?.eligibleLoanOffer?.interestRate) || 0,
+        Number(result?.loanRequest?.loanTenure),
+      ),
+    );
 
-    console.log(presentAddress)
-
+    console.log(presentAddress);
 
     const data = {
       id: result?.id,
@@ -465,23 +444,13 @@ const getAgreementDoc = async (id: string) => {
       loanTenure: result?.eligibleLoanOffer?.periodMonths,
       emiStartDate: result?.loanRequest?.emiStartDate,
       applicationDate: result?.updatedAt,
-      dueDate: dueDate
-    }
+      dueDate: dueDate,
+    };
     return data;
-
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
-
-
-
-
-
-
-
-
-
 
 export const UserServices = {
   getAllUser,
@@ -492,5 +461,5 @@ export const UserServices = {
   getAllRejectsLoans,
   getApplication,
   createAdiDoc,
-  getAgreementDoc
+  getAgreementDoc,
 };

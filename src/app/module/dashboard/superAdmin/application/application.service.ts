@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { StatusCodes } from "http-status-codes";
-import { prisma } from "../../../../../app"
-import AppError from "../../../../error/AppError";
-import { decrypt } from "../../../../utils/encryption";
-import { safeUserSelect } from "../../../../utils/prisma/selects";
-import { LoanStatus } from "../../../applicationForm/application.interface";
-import sendEmail from "../../../../utils/sendEmail";
-import { applicationRejected } from "../../../../utils/email-template/applicationRejected";
-import { loanStatusEmail } from "../../../../utils/email-template/loanStatusEmail";
-import { TModules } from "../dashboard/dashboard.constand";
+import { StatusCodes } from 'http-status-codes';
+import { prisma } from '../../../../../app';
+import AppError from '../../../../error/AppError';
+import { decrypt } from '../../../../utils/encryption';
+import { safeUserSelect } from '../../../../utils/prisma/selects';
+import { LoanStatus } from '../../../applicationForm/application.interface';
+import sendEmail from '../../../../utils/sendEmail';
+import { applicationRejected } from '../../../../utils/email-template/applicationRejected';
+import { loanStatusEmail } from '../../../../utils/email-template/loanStatusEmail';
+import { TModules } from '../dashboard/dashboard.constand';
 
 type TLoanStatus =
-  | "SUBMITTED"
-  | "PENDING"
-  | "IN_PROGRESS"
-  | "APPROVED"
-  | "REJECTED"
-  | "COMPLETED"
-  | "ALL";
+  | 'SUBMITTED'
+  | 'PENDING'
+  | 'IN_PROGRESS'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'COMPLETED'
+  | 'ALL';
 
 type TApplicationQuery = {
   searchTerm?: string;
@@ -27,19 +27,8 @@ type TApplicationQuery = {
   limit?: number;
 };
 
-
-
-
-
-
 const getAllApplication = async (query: TApplicationQuery) => {
-  const {
-    searchTerm = "",
-    module,
-    status,
-    page = 1,
-    limit = 10,
-  } = query;
+  const { searchTerm = '', module, status, page = 1, limit = 10 } = query;
 
   const skip = (page - 1) * limit;
 
@@ -54,21 +43,21 @@ const getAllApplication = async (query: TApplicationQuery) => {
         user: {
           name: {
             contains: searchTerm,
-            mode: "insensitive",
+            mode: 'insensitive',
           },
         },
       },
       {
         applicationId: {
           contains: searchTerm,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
       {
         eligibleLoanOffer: {
           bankName: {
             contains: searchTerm,
-            mode: "insensitive",
+            mode: 'insensitive',
           },
         },
       },
@@ -78,7 +67,7 @@ const getAllApplication = async (query: TApplicationQuery) => {
   // ============================
   // 📌 Module Filter (loanInfo.existingLoans = module)
   // ============================
-  if (module && module !== "ALL") {
+  if (module && module !== 'ALL') {
     whereCondition.eligibleLoanOffer = {
       loanType: module,
     };
@@ -87,14 +76,9 @@ const getAllApplication = async (query: TApplicationQuery) => {
   // ============================
   // ⚡ Status Filter
   // ============================
-  if (status && status !== "ALL") {
+  if (status && status !== 'ALL') {
     whereCondition.status = status;
   }
-
-
-
-
-
 
   const [applications, total] = await Promise.all([
     prisma.loanApplicationForm.findMany({
@@ -121,13 +105,10 @@ const getAllApplication = async (query: TApplicationQuery) => {
       skip,
       take: Number(limit),
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     }),
 
-
-
-    
     prisma.loanApplicationForm.count({
       where: whereCondition,
     }),
@@ -144,12 +125,7 @@ const getAllApplication = async (query: TApplicationQuery) => {
   };
 };
 
-
-
-
 const getSingleApplication = async (id: string) => {
-
-
   const result = await prisma.loanApplicationForm.findUnique({
     where: { id },
     include: {
@@ -161,13 +137,13 @@ const getSingleApplication = async (id: string) => {
           bankAccounts: true,
           creditCards: true,
           existingLoans: true,
-        }
+        },
       },
       eligibleLoanOffer: true,
       employmentInformation: {
         include: {
-          properties: true
-        }
+          properties: true,
+        },
       },
       loanRequest: true,
       document: true,
@@ -175,29 +151,32 @@ const getSingleApplication = async (id: string) => {
       additionalDocument: true,
       personalGuarantor: {
         include: {
-          document: true
-        }
+          document: true,
+        },
       },
       businessGuarantor: {
         include: {
-          document: true
-        }
+          document: true,
+        },
       },
     },
-  })
+  });
 
-  result?.loanInfo?.bankAccounts.map(bank => {
-    return bank.accountNumber = decrypt(bank.accountNumber)
-  })
+  result?.loanInfo?.bankAccounts.map((bank) => {
+    return (bank.accountNumber = decrypt(bank.accountNumber));
+  });
 
-
-  return result
+  return result;
 };
 
 const applicationFeedback = async (
   id: string,
-  payload: { status: LoanStatus; adminNote: string; additionalDocuments: boolean },
-  adminId?: string // pass the admin user id (or role)
+  payload: {
+    status: LoanStatus;
+    adminNote: string;
+    additionalDocuments: boolean;
+  },
+  adminId?: string, // pass the admin user id (or role)
 ) => {
   console.log(id, payload);
 
@@ -205,53 +184,53 @@ const applicationFeedback = async (
     where: { id },
     include: {
       user: {
-        select: { email: true, name: true, userId: true }
-      }
-    }
+        select: { email: true, name: true, userId: true },
+      },
+    },
   });
 
   if (!result) {
-    throw new AppError(StatusCodes.NOT_FOUND, "Application not found");
+    throw new AppError(StatusCodes.NOT_FOUND, 'Application not found');
   }
 
   // Store old status before update
   const previousStatus = result.status;
 
   let updated;
-  if (payload.status === "REJECTED") {
+  if (payload.status === 'REJECTED') {
     updated = await prisma.loanApplicationForm.update({
       where: { id },
       data: {
         status: payload.status,
         adminNotes: payload.adminNote,
         additionalDocuments: payload.additionalDocuments,
-        isActive: false
-      }
+        isActive: false,
+      },
     });
 
     // Log to ApplicationEvent
     await prisma.applicationEvent.create({
       data: {
         applicationId: id,
-        eventType: "STATUS_CHANGED",
+        eventType: 'STATUS_CHANGED',
         stateBefore: previousStatus,
         stateAfter: payload.status,
         feedback: payload.adminNote,
-        severity: "ERROR",
-        createdRole: "SUPER_ADMIN"
-      }
+        severity: 'ERROR',
+        createdRole: 'SUPER_ADMIN',
+      },
     });
 
     // Email
-    const emailSubject = "Loan Application Status: REJECTED";
+    const emailSubject = 'Loan Application Status: REJECTED';
     const bodyText = applicationRejected(
-      result?.user?.name ?? "",
-      result?.applicationId ?? "",
-      payload?.adminNote ?? ""
+      result?.user?.name ?? '',
+      result?.applicationId ?? '',
+      payload?.adminNote ?? '',
     );
     await sendEmail(result?.user?.email, emailSubject, bodyText);
 
-    return "Email Sent Successfully";
+    return 'Email Sent Successfully';
   } else {
     updated = await prisma.loanApplicationForm.update({
       where: { id },
@@ -259,67 +238,61 @@ const applicationFeedback = async (
         status: payload.status,
         additionalDocuments: payload.additionalDocuments,
         adminNotes: payload.adminNote,
-        isActive: true
+        isActive: true,
       },
       include: {
         user: {
-          select: { email: true, name: true }
-        }
-      }
+          select: { email: true, name: true },
+        },
+      },
     });
 
     // Log to ApplicationEvent
     await prisma.applicationEvent.create({
       data: {
         applicationId: id,
-        eventType: "STATUS_CHANGED",
+        eventType: 'STATUS_CHANGED',
         stateBefore: previousStatus,
         stateAfter: payload.status,
         feedback: payload.adminNote,
-        severity: "INFO",
-        createdRole: "SUPER_ADMIN"
-      }
+        severity: 'INFO',
+        createdRole: 'SUPER_ADMIN',
+      },
     });
 
     // Email
-    const emailSubject = "Loan Application Status Update";
+    const emailSubject = 'Loan Application Status Update';
     const templatePayload = {
-      name: updated?.user?.name ?? "",
-      applicationID: updated?.applicationId ?? "",
-      status: updated?.status ?? "",
-      reason: payload?.adminNote ?? ""
+      name: updated?.user?.name ?? '',
+      applicationID: updated?.applicationId ?? '',
+      status: updated?.status ?? '',
+      reason: payload?.adminNote ?? '',
     };
     const bodyText = loanStatusEmail(templatePayload);
     await sendEmail(updated?.user?.email, emailSubject, bodyText);
 
-    return "Email Sent Successfully";
+    return 'Email Sent Successfully';
   }
 };
 
 const getStatusEvents = async (id: string) => {
-
   const result = await prisma.applicationEvent.findMany({
     where: {
       applicationId: id,
-      eventType: "STATUS_CHANGED"
+      eventType: 'STATUS_CHANGED',
     },
 
     orderBy: {
-      createdAt: "desc"
+      createdAt: 'desc',
     },
-  })
+  });
 
-  return result
-}
-
-
-
-
-
+  return result;
+};
 
 export const ApplicationServides = {
   getAllApplication,
   getSingleApplication,
   applicationFeedback,
-  getStatusEvents
-}
+  getStatusEvents,
+};

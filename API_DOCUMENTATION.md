@@ -3,11 +3,13 @@
 This document provides documentation for all the API endpoints in the FinupsBD backend.
 
 ---
+
 <br>
 
 ## Auth Module (`/api/v1/auth`)
 
 ### POST /signUp
+
 - **Description:** Register a new user.
 - **Request Body:** `application/json`
   ```json
@@ -28,6 +30,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /validate-pin
+
 - **Description:** Validate user's PIN for verification.
 - **Request Body:** `application/json`
   ```json
@@ -46,6 +49,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /login
+
 - **Description:** Login for an existing user.
 - **Request Body:** `application/json`
   ```json
@@ -66,6 +70,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /forget-password
+
 - **Description:** Initiate password reset via email.
 - **Request Body:** `application/json`
   ```json
@@ -83,6 +88,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /forget-password-phone
+
 - **Description:** Initiate password reset via phone.
 - **Response (200 OK):**
   ```json
@@ -94,6 +100,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /reset-password
+
 - **Description:** Reset user password.
 - **Request Body:** `application/json`
   ```json
@@ -113,6 +120,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /change-password
+
 - **Description:** Change password for an authenticated user.
 - **Authentication:** Required (USER, ADMIN, SUPER_ADMIN).
 - **Request Body:** `application/json`
@@ -132,6 +140,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /refresh-token
+
 - **Description:** Refresh the access token using the refresh token from cookies.
 - **Response (200 OK):**
   ```json
@@ -145,6 +154,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /logout
+
 - **Description:** Logout an authenticated user.
 - **Response (200 OK):**
   ```json
@@ -154,12 +164,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": {}
   }
   ```
+
 ---
+
 <br>
 
 ## Application Module (`/api/v1/application`)
 
 ### POST /create-application
+
 - **Description:** Create a new loan application.
 - **Authentication:** Required (USER, SUPER_ADMIN, ADMIN).
 - **Request Body:** `multipart/form-data`
@@ -176,6 +189,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /applicant-guarator-info-personal
+
 - **Description:** Add guarantor personal information to an application.
 - **Request Body:** `multipart/form-data`
   - `files`: array of files
@@ -189,6 +203,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /applicant-guarator-info-business
+
 - **Description:** Add guarantor business information to an application.
 - **Request Body:** `multipart/form-data`
   - `files`: array of files
@@ -202,6 +217,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /my-loan-application
+
 - **Description:** Get the loan applications for the authenticated user.
 - **Authentication:** Required (USER, SUPER_ADMIN, ADMIN).
 - **Response (200 OK):**
@@ -214,6 +230,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /
+
 - **Description:** Get all loan applications.
 - **Response (200 OK):**
   ```json
@@ -225,6 +242,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /application-tracking
+
 - **Description:** Track a loan application.
 - **Response (200 OK):**
   ```json
@@ -236,6 +254,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /application-forget
+
 - **Description:** Handle forgotten application details.
 - **Response (200 OK):**
   ```json
@@ -247,6 +266,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /:id
+
 - **Description:** Get a single application by ID.
 - **Authentication:** Required (USER, SUPER_ADMIN, ADMIN).
 - **Response (200 OK):**
@@ -257,12 +277,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": { ... }
   }
   ```
+
 ---
+
 <br>
 
 ## Blog Module (`/api/v1/blogs`)
 
 ### POST /create-blog
+
 - **Description:** Create a new blog post.
 - **Authentication:** Required (USER, ADMIN, SUPER_ADMIN).
 - **Request Body:** `multipart/form-data`
@@ -278,6 +301,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /comment
+
 - **Description:** Add a comment to a blog post.
 - **Authentication:** Required (USER, ADMIN, SUPER_ADMIN).
 - **Request Body:** `application/json`
@@ -297,6 +321,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### PATCH /:id
+
 - **Description:** Update a blog post.
 - **Request Body:** `application/json`
 - **Response (200 OK):**
@@ -309,6 +334,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /single-blog/:id
+
 - **Description:** Get a single blog post by ID.
 - **Response (200 OK):**
   ```json
@@ -320,6 +346,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### DELETE /:id
+
 - **Description:** Delete a blog post by ID.
 - **Response (200 OK):**
   ```json
@@ -331,6 +358,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /all-blogs
+
 - **Description:** Get all blog posts.
 - **Response (200 OK):**
   ```json
@@ -340,12 +368,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": [ ... ]
   }
   ```
+
 ---
+
 <br>
 
 ## Eligibility Check Module (`/api/v1/eligibility-check`)
 
 ### POST /
+
 - **Description:** Check eligibility for loans/cards.
 - **Response (200 OK):**
   ```json
@@ -357,6 +388,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /cards
+
 - **Description:** Get all cards for eligibility check.
 - **Response (200 OK):**
   ```json
@@ -366,7 +398,9 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": [ ... ]
   }
   ```
+
 ---
+
 <br>
 
 ## Super Admin Module (`/api/v1/super-admin`)
@@ -374,6 +408,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
 ### Cards (`/cards`)
 
 #### POST /
+
 - **Description:** Create a new card.
 - **Request Body:** `multipart/form-data`
   - `file`: image file
@@ -387,6 +422,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### GET /
+
 - **Description:** Get all cards.
 - **Response (200 OK):**
   ```json
@@ -398,6 +434,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### PATCH /:id
+
 - **Description:** Update a card by ID.
 - **Request Body:** `multipart/form-data`
   - `file`: image file
@@ -411,6 +448,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### GET /:id
+
 - **Description:** Get a single card by ID.
 - **Response (200 OK):**
   ```json
@@ -424,6 +462,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
 ### Dashboard (`/dashboard`)
 
 #### GET /dashboard-home
+
 - **Description:** Get dashboard home data.
 - **Response (200 OK):**
   ```json
@@ -435,6 +474,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### GET /modules
+
 - **Description:** Get all modules.
 - **Response (200 OK):**
   ```json
@@ -446,6 +486,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### PATCH /modules-status/:id
+
 - **Description:** Change a module's status.
 - **Response (200 OK):**
   ```json
@@ -459,6 +500,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
 ### Application (`/application`)
 
 #### GET /get-all-application
+
 - **Description:** Get all applications.
 - **Response (200 OK):**
   ```json
@@ -470,6 +512,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### GET /get-single-application/:id
+
 - **Description:** Get a single application by ID.
 - **Response (200 OK):**
   ```json
@@ -481,6 +524,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### PATCH /application-feedback/:id
+
 - **Description:** Provide feedback for an application.
 - **Request Body:** `application/json`
 - **Response (200 OK):**
@@ -493,6 +537,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### GET /status-events/:id
+
 - **Description:** Get status events for an application.
 - **Response (200 OK):**
   ```json
@@ -506,6 +551,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
 ### Users (`/users`)
 
 #### GET /get-all-users
+
 - **Description:** Get all users.
 - **Response (200 OK):**
   ```json
@@ -517,6 +563,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 #### GET /get-single-user/:id
+
 - **Description:** Get a single user by ID.
 - **Response (200 OK):**
   ```json
@@ -526,12 +573,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": { ... }
   }
   ```
+
 ---
+
 <br>
 
 ## NewsLetter Module (`/api/v1/news-letter`)
 
 ### POST /
+
 - **Description:** Subscribe to the newsletter.
 - **Request Body:** `application/json`
 - **Response (200 OK):**
@@ -544,6 +594,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /
+
 - **Description:** Get all newsletter subscribers.
 - **Response (200 OK):**
   ```json
@@ -553,12 +604,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": [ ... ]
   }
   ```
+
 ---
+
 <br>
 
 ## Bank Portal Module (`/api/v1/bank-portal/auth`)
 
 ### POST /regiater
+
 - **Description:** Register a new bank user.
 - **Request Body:** `application/json`
 - **Response (200 OK):**
@@ -571,6 +625,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /login
+
 - **Description:** Login for a bank user.
 - **Request Body:** `application/json`
 - **Response (200 OK):**
@@ -583,6 +638,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /me
+
 - **Description:** Get the profile of the authenticated bank user.
 - **Authentication:** Required (BANK_USER).
 - **Response (200 OK):**
@@ -593,12 +649,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": { ... }
   }
   ```
+
 ---
+
 <br>
 
 ## User Module (`/api/v1/users`)
 
 ### GET /get-all-new-loans/:id
+
 - **Description:** Get all new loans for a user.
 - **Authentication:** Required (USER).
 - **Response (200 OK):**
@@ -611,6 +670,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /get-all-existing-loan/:id
+
 - **Description:** Get all existing loans for a user.
 - **Authentication:** Required (USER).
 - **Response (200 OK):**
@@ -623,6 +683,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /get-all-rejects-loan/:id
+
 - **Description:** Get all rejected loans for a user.
 - **Authentication:** Required (USER).
 - **Response (200 OK):**
@@ -635,6 +696,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /
+
 - **Description:** Get all users.
 - **Authentication:** Required (USER, ADMIN, SUPER_ADMIN).
 - **Response (200 OK):**
@@ -647,6 +709,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /my-profile
+
 - **Description:** Get the profile of the authenticated user.
 - **Authentication:** Required (USER, ADMIN, SUPER_ADMIN).
 - **Response (200 OK):**
@@ -659,6 +722,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /:id
+
 - **Description:** Get a single user by ID.
 - **Authentication:** Required (USER, ADMIN, SUPER_ADMIN).
 - **Response (200 OK):**
@@ -671,6 +735,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /get-application/:id
+
 - **Description:** Get an application by ID.
 - **Authentication:** Required (USER).
 - **Response (200 OK):**
@@ -683,6 +748,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### POST /create-addi-doc/:id
+
 - **Description:** Create additional documents for an application.
 - **Authentication:** Required (USER).
 - **Request Body:** `multipart/form-data`
@@ -697,6 +763,7 @@ This document provides documentation for all the API endpoints in the FinupsBD b
   ```
 
 ### GET /agreement-doc/:id
+
 - **Description:** Get the agreement document for an application.
 - **Response (200 OK):**
   ```json
@@ -706,12 +773,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": { ... }
   }
   ```
+
 ---
+
 <br>
 
 ## Profile Module (`/api/v1/profiles`)
 
 ### POST /
+
 - **Description:** Create a user profile.
 - **Authentication:** Required (USER, ADMIN, SUPER_ADMIN).
 - **Request Body:** `multipart/form-data`
@@ -724,12 +794,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": { ... }
   }
   ```
+
 ---
+
 <br>
 
 ## OpenAI Module (`/api/v1/openai`)
 
 ### POST /assistant/:id/message
+
 - **Description:** Interact with the AI assistant.
 - **Response (200 OK):**
   ```json
@@ -739,12 +812,15 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": { ... }
   }
   ```
+
 ---
+
 <br>
 
 ## Public Module (`/api/v1/public`)
 
 ### POST /emi-calculator
+
 - **Description:** Calculate EMI.
 - **Request Body:** `application/json`
 - **Response (200 OK):**
@@ -755,5 +831,3 @@ This document provides documentation for all the API endpoints in the FinupsBD b
     "data": { ... }
   }
   ```
-
-  

@@ -12,22 +12,10 @@ import { ZodError } from 'zod';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { logger } from '../utils/logger/logger';
 
-
-
-
-const globalErrorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-
+const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   const newMessage = "Something went's wrong";
   const error = {};
   const statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-
-
-
 
   ///---------------------------Error Logs--------------------------------------------------------------------------------------------
   const logPayload = {
@@ -40,7 +28,7 @@ const globalErrorHandler = (
     stack: err?.stack,
   };
 
-  /// genarate error log for better find error 
+  /// genarate error log for better find error
   logger.error(err.message, logPayload);
 
   ///-----------------------------------------------------------------------------------------------------------------------
@@ -57,15 +45,13 @@ const globalErrorHandler = (
     res.status(500).json({
       success: false,
       message: `SyntaxError: ${err.message}`,
-      stack: err.stack
+      stack: err.stack,
     });
   }
-
 
   if (res.headersSent) {
     return;
   }
-
 
   //generics error handle
   if (err instanceof AppError) {
@@ -76,7 +62,6 @@ const globalErrorHandler = (
       error: err,
     });
   }
-
 
   //Zod Validation Error handle
   if (err instanceof ZodError) {
@@ -96,8 +81,6 @@ const globalErrorHandler = (
   ///-----------------------------------------------------------------------------------------------------------------------
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
-
-
     if (err.code === 'P2002') {
       // Unique constraint failed
       res.status(400).json({
@@ -110,8 +93,7 @@ const globalErrorHandler = (
       // Record not found
       res.status(404).json({
         success: false,
-        message:
-          'The record you are trying to update or delete does not exist.',
+        message: 'The record you are trying to update or delete does not exist.',
         error: err,
       });
     } else if (err.code === 'P2003') {
@@ -136,7 +118,6 @@ const globalErrorHandler = (
         error: err,
       });
     }
-
   }
 
   // Handle Prisma Unknown Errors
@@ -181,8 +162,6 @@ const globalErrorHandler = (
   }
 
   ///-----------------------------------------------------------------------------------------------------------------------
-
-
 
   res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     success: false,

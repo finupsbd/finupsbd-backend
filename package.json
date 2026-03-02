@@ -8,7 +8,7 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
     "build": "prisma generate && tsc",
-    "format": "prettier . --write",
+    "format": "npx prettier . --write",
     "postinstall": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:deploy": "prisma db push"

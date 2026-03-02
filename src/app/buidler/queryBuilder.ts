@@ -15,10 +15,6 @@ class QueryBuilder {
     this.query = query;
   }
 
-
-
-
-
   filter(customFilter?: Prisma.PersonalLoanWhereInput) {
     const filters = { ...this.query };
     const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
@@ -85,7 +81,7 @@ class QueryBuilder {
   }
 
   build(): Prisma.PersonalLoanFindManyArgs {
-    const queryObject: Prisma.PersonalLoanFindManyArgs =   {
+    const queryObject: Prisma.PersonalLoanFindManyArgs = {
       where: this.whereClause,
       orderBy: this.orderClause,
       skip: this.skipValue,

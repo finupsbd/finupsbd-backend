@@ -1,12 +1,9 @@
-import { BankName } from "@prisma/client";
-
-
-
+import { BankName } from '@prisma/client';
 
 export type TUserBank = {
   bankName: BankName;
   loginId: string;
-  role: "BANK_USER";
+  role: 'BANK_USER';
   email: string;
   password: string;
   isBlocked: boolean;
@@ -16,5 +13,3 @@ export type TUserBank = {
   isMEOSingnedIn: boolean;
   isActive: boolean;
 };
-
-

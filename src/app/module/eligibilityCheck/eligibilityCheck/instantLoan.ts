@@ -1,34 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TEligibilityCheck } from "../eligibilityCheck.interface";
-import { calculateEMI } from "../utils/calculateEMI";
-import { prisma } from "../../../../app";
-import AppError from "../../../error/AppError";
+import { TEligibilityCheck } from '../eligibilityCheck.interface';
+import { calculateEMI } from '../utils/calculateEMI';
+import { prisma } from '../../../../app';
+import AppError from '../../../error/AppError';
 
 export const instantLoan = async (payload: TEligibilityCheck, query: Record<string, unknown>) => {
   const { tenure = Number(payload.expectedLoanTenure) } = query;
 
-
-  const eligibleLoan = 15000
-
+  const eligibleLoan = 15000;
 
   try {
     const [loans] = await prisma.$transaction([
       prisma.loan.findMany({
         where: {
-          loanType: payload.loanType
+          loanType: payload.loanType,
         },
-       include: {
-        eligibility: true, 
-        features: true, 
-        feesCharges: true
-       }
+        include: {
+          eligibility: true,
+          features: true,
+          feesCharges: true,
+        },
       }),
     ]);
 
-
-
     if (!loans.length) {
-      throw new AppError(404, "No loans found for the given criteria!.");
+      throw new AppError(404, 'No loans found for the given criteria!.');
     }
 
     let adjustedMonthlyIncome = Math.min(payload.monthlyIncome || 0, 50000);
@@ -38,10 +34,12 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
     }
 
     if (payload.haveAnyLoan && payload.existingLoans?.length) {
-      const totalEMI = payload.existingLoans.reduce((sum, loan) => sum + (loan.emiAmountBDT || 0), 0);
+      const totalEMI = payload.existingLoans.reduce(
+        (sum, loan) => sum + (loan.emiAmountBDT || 0),
+        0,
+      );
       adjustedMonthlyIncome -= totalEMI;
     }
-
 
     if (payload.haveAnyCreditCard && payload.numberOfCreditCards) {
       adjustedMonthlyIncome -= payload.numberOfCreditCards * 2000;
@@ -73,10 +71,9 @@ export const instantLoan = async (payload: TEligibilityCheck, query: Record<stri
       };
     });
 
-
     return suggestedLoans;
   } catch (error) {
-    console.error("Error in instantLoan function:", error);
+    console.error('Error in instantLoan function:', error);
     throw error;
   }
 };

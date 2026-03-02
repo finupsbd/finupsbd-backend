@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { prisma } from "../../../../app";
-import { TMiddlewareUser, TMulterFile } from "../../../types/commonTypes";
-import { saveSingleFile } from "../../../utils/file-uploads/saveSingleFile";
-import { TUserProfile } from "./profile.interface";
+import { prisma } from '../../../../app';
+import { TMiddlewareUser, TMulterFile } from '../../../types/commonTypes';
+import { saveSingleFile } from '../../../utils/file-uploads/saveSingleFile';
+import { TUserProfile } from './profile.interface';
 
 const createProfile = async (
   payload: TUserProfile,
   user: TMiddlewareUser,
-  file?: TMulterFile
+  file?: TMulterFile,
 ): Promise<void> => {
   try {
     if (!user?.userId) {
-      throw new Error("Invalid user ID.");
+      throw new Error('Invalid user ID.');
     }
 
-    console.log(file)
+    console.log(file);
 
     // if (file) {
     //   const profileImage = await sendImageToCloud(image);
@@ -22,8 +22,13 @@ const createProfile = async (
     //     payload.avatar = profileImage;
     //   }
     // }
- if (file) {
-      const profileImage = await saveSingleFile(file?.buffer, file?.originalname, "profileImages", user.email);
+    if (file) {
+      const profileImage = await saveSingleFile(
+        file?.buffer,
+        file?.originalname,
+        'profileImages',
+        user.email,
+      );
       if (profileImage) {
         payload.avatar = profileImage;
       }
@@ -42,7 +47,7 @@ const createProfile = async (
       include: { profile: true },
     });
   } catch (error) {
-    console.error("Failed to create or update profile:", error);
+    console.error('Failed to create or update profile:', error);
     throw error; // rethrow for better error tracking
   }
 };

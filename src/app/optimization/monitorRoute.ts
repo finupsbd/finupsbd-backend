@@ -8,7 +8,7 @@ const perMinuteCounts: Record<string, number> = {};
 export function monitorAndCount(req: Request, res: Response, next: NextFunction) {
   const now = new Date();
   // YYYY-MM-DDTHH:MM  (drops seconds)
-  const minuteKey = now.toISOString().slice(0,16);
+  const minuteKey = now.toISOString().slice(0, 16);
   perMinuteCounts[minuteKey] = (perMinuteCounts[minuteKey] || 0) + 1;
   next();
 }
@@ -17,10 +17,9 @@ export function monitorAndCount(req: Request, res: Response, next: NextFunction)
 setInterval(() => {
   // figure out last full minute
   const last = new Date(Date.now() - 60_000);
-  const key = last.toISOString().slice(0,16);
+  const key = last.toISOString().slice(0, 16);
   const count = perMinuteCounts[key] || 0;
   console.log(`Requests to /eligiblityCheck in ${key}:00 → ${count}`);
   // optional: free memory
   delete perMinuteCounts[key];
 }, 60_000);
-

@@ -1,21 +1,14 @@
-
-
-import catchAsync from "../../utils/catchAsync";
-import { AiServices } from "./ai.service";
-
-
-
+import catchAsync from '../../utils/catchAsync';
+import { AiServices } from './ai.service';
 
 // const aiAssistant = catchAsync(async (req, res) => {
-//   const assistant = await OpenaiServices.createAssistant() 
+//   const assistant = await OpenaiServices.createAssistant()
 //   res.status(200).json({
 //     success: true,
 //     message: "Assistant created successfully",
 //     assistantId: assistant.id,
 //   });
 // });
-
-
 
 // const interactWithAssistant = catchAsync(async (req, res)=> {
 //   const { id } = req.params;
@@ -29,9 +22,7 @@ import { AiServices } from "./ai.service";
 //   });
 // });
 
-
-
-const mcp = catchAsync(async (req, res)=> {
+const mcp = catchAsync(async (req, res) => {
   const { prompt } = req.body;
 
   const response = await AiServices.mcp(prompt);
@@ -42,8 +33,7 @@ const mcp = catchAsync(async (req, res)=> {
   });
 });
 
-
 export const AiController = {
   // interactWithAssistant,
-  mcp
+  mcp,
 };

@@ -44,7 +44,6 @@ const createPersonalLoanValidateSchema = z.object({
   feesCharges: feesChargesSchema.optional(),
 });
 
-
 const updatePersonalLoanValidateSchema = z.object({
   bankName: z.string().min(1, 'Bank name is required').optional(),
   amount: z.string().min(1, 'Amount is required').optional(),
@@ -60,9 +59,7 @@ const updatePersonalLoanValidateSchema = z.object({
   feesCharges: feesChargesSchema.optional(),
 });
 
-
-
 export const PersonalLoanValidationSchema = {
   createPersonalLoanValidateSchema,
-  updatePersonalLoanValidateSchema
+  updatePersonalLoanValidateSchema,
 };

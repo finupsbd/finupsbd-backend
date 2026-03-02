@@ -1,4 +1,4 @@
-import { TMiddlewareUser } from "./commonTypes";
+import { TMiddlewareUser } from './commonTypes';
 
 declare global {
   namespace Express {

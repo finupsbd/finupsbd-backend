@@ -1,7 +1,4 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { passwordHash } from '../../../utils/passwordHash';
 import { prisma } from '../../../../app';
 import sendEmail from '../../../utils/sendEmail';
 import AppError from '../../../error/AppError';
@@ -14,29 +11,25 @@ import { mailBodyText } from './userBankAuth.constant';
 import { formatBankName } from '../../../utils/formateBankName';
 import { formatDate } from '../../../utils/formatDate';
 
-
-
 //Sign up User
 
-
 const userBankRegister = async (payload: TUserBank) => {
+  const loginId = generateLoginId(); //genarate 9 digit login id fir login perpose
+  payload.loginId = loginId;
 
-  const loginId = generateLoginId()     //genarate 9 digit login id fir login perpose
-  payload.loginId = loginId
-
-  console.log(payload)
+  console.log(payload);
 
   const isExistingBank = await prisma.userBank.findFirst({
     where: {
       OR: [
         { email: payload.email },
-        { bankName: payload.bankName } // Cast to 'any' or use the correct enum type if imported
-      ]
-    }
-  })
+        { bankName: payload.bankName }, // Cast to 'any' or use the correct enum type if imported
+      ],
+    },
+  });
 
   if (isExistingBank) {
-    throw new AppError(StatusCodes.CONFLICT, "User already exist please login, Thank you")
+    throw new AppError(StatusCodes.CONFLICT, 'User already exist please login, Thank you');
   }
 
   // Import the BankName enum from Prisma client
@@ -44,44 +37,38 @@ const userBankRegister = async (payload: TUserBank) => {
   // Ensure payload matches the expected type for Prisma
   const result = await prisma.userBank.create({
     data: {
-      ...payload
+      ...payload,
     },
     select: {
-      loginId: true
-    }
-  })
+      loginId: true,
+    },
+  });
 
-  return result
-
+  return result;
 };
 
-
-const login = async (payload: { bankName: BankName, loginId: string, password: string }) => {
-
+const login = async (payload: { bankName: BankName; loginId: string; password: string }) => {
   const { bankName, loginId, password } = payload;
   const userBank = await prisma.userBank.findFirst({
     where: {
-      AND: [{ bankName }, { loginId }]
-    }
-  })
+      AND: [{ bankName }, { loginId }],
+    },
+  });
 
   if (!userBank) {
     throw new AppError(StatusCodes.NOT_FOUND, 'User not found Check your login id');
   }
 
   if (!userBank.isActive) {
-    throw new AppError(500,
-      'Your account is not active now call finupsbd team thank you.'
-    );
+    throw new AppError(500, 'Your account is not active now call finupsbd team thank you.');
   }
 
   if (userBank.isBlocked) {
     throw new AppError(
       StatusCodes.FORBIDDEN,
-      'Your account is blocked after too many failed login attempts. Please contact support.'
+      'Your account is blocked after too many failed login attempts. Please contact support.',
     );
   }
-
 
   if (userBank.password !== password) {
     // increment failure count
@@ -99,52 +86,45 @@ const login = async (payload: { bankName: BankName, loginId: string, password: s
 
     await prisma.userBank.update({
       where: { loginId },
-      data: updateData
+      data: updateData,
     });
 
-
-
-    const mailSubject = "🔒 Security Alert: Your FinupsBD Account Has Been Locked"
-    const bodyText = await mailBodyText(userBank.loginId, formatBankName(userBank.bankName), formatDate(userBank.blockedAt, 'ddd, MMM D, YYYY h:mm A', { locale: 'en-GB' }))
-
+    const mailSubject = '🔒 Security Alert: Your FinupsBD Account Has Been Locked';
+    const bodyText = await mailBodyText(
+      userBank.loginId,
+      formatBankName(userBank.bankName),
+      formatDate(userBank.blockedAt, 'ddd, MMM D, YYYY h:mm A', {
+        locale: 'en-GB',
+      }),
+    );
 
     if (attempts >= 3) {
-      await sendEmail(userBank.email, mailSubject, bodyText)
+      await sendEmail(userBank.email, mailSubject, bodyText);
     }
 
     const triesLeft = Math.max(0, 3 - attempts);
     throw new AppError(
       StatusCodes.UNAUTHORIZED,
-      `Invalid credentials. ${triesLeft} attempt(s) remaining before your account is blocked.`
+      `Invalid credentials. ${triesLeft} attempt(s) remaining before your account is blocked.`,
     );
   }
-
-
-
 
   const jwtPayload = {
     bankName: userBank.bankName,
     bankCode: userBank.bankCode,
     role: userBank.role,
     email: userBank.email,
-    loginId: userBank.loginId
+    loginId: userBank.loginId,
   };
 
   const userBankAccessToken = accessTokenGenerate(jwtPayload, '1d');
   const userBankRefreshToken = refreshTokenGenerate(jwtPayload, '365d');
-
 
   return {
     userBankAccessToken,
     userBankRefreshToken,
   };
 };
-
-
-
-
-
-
 
 // const validatePin = async (payload: { email: string; pin: string }) => {
 //   const { email, pin } = payload;
@@ -280,8 +260,6 @@ const login = async (payload: { bankName: BankName, loginId: string, password: s
 // `;
 //   await sendEmail(email, emailSubject, bodyText);
 
-
-
 //   return {};
 // };
 
@@ -340,12 +318,6 @@ const login = async (payload: { bankName: BankName, loginId: string, password: s
 //     },
 //   }); // last login tracking
 
-
-
-
-
-
-
 //   return {
 //     accessToken,
 //     refreshToken,
@@ -379,9 +351,6 @@ const login = async (payload: { bankName: BankName, loginId: string, password: s
 //       password: newPassword
 //     },
 //   });
-
-
-
 
 //   // const pin = Math.floor(100000 + Math.random() * 900000).toString();
 //   // const pinExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
@@ -554,12 +523,9 @@ const login = async (payload: { bankName: BankName, loginId: string, password: s
 //   newPassword: string;
 // }, user: any) => {
 
-
 //   const { email } = user
 
-
 //   const userData = await prisma.user.findUnique({ where: { email } });
-
 
 //   if (!user) {
 //     throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
@@ -590,7 +556,6 @@ const login = async (payload: { bankName: BankName, loginId: string, password: s
 //     where: { email },
 //     data: { password: passwordHashing },
 //   });
-
 
 //   const emailSubject = 'Password Changed';
 //   const bodyText = `
@@ -628,7 +593,6 @@ const login = async (payload: { bankName: BankName, loginId: string, password: s
 //   return {};
 // };
 
-
 export const UserBankAuthServices = {
   userBankRegister,
   // validatePin,
@@ -638,4 +602,3 @@ export const UserBankAuthServices = {
   // refreshToken,
   // changePassword
 };
-

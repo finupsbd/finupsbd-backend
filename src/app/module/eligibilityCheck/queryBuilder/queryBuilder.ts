@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Filters } from "./queryBuilderTypes";
-
-
-
+import { Filters } from './queryBuilderTypes';
 
 export const buildFilters = (
   // searchTerm: string,
@@ -12,8 +9,7 @@ export const buildFilters = (
   ageRequirement?: number,
   minimumExperience?: number,
 ): Filters => {
-  const filters: Filters = {}
-
+  const filters: Filters = {};
 
   // if (typeof searchTerm === 'string' && searchTerm.trim()) {
   //   const terms = searchTerm
@@ -35,21 +31,21 @@ export const buildFilters = (
   // }
 
   // 3) nested eligibility filters
-  const elig: Filters['eligibility'] = {}
+  const elig: Filters['eligibility'] = {};
   if (typeof minimumIncome === 'number') {
     // only loans whose required minimumIncome ≤ applicant's income
-    elig.minimumIncome = { gte: minimumIncome }
+    elig.minimumIncome = { gte: minimumIncome };
   }
   if (typeof minimumExperience === 'number') {
-    elig.minimumExperience = { gte: minimumExperience }
+    elig.minimumExperience = { gte: minimumExperience };
   }
   if (typeof ageRequirement === 'number') {
-    elig.ageRequirement = { gte: ageRequirement }
+    elig.ageRequirement = { gte: ageRequirement };
   }
   // only attach eligibility if at least one sub-filter was set
   if (Object.keys(elig).length > 0) {
-    filters.eligibility = elig
+    filters.eligibility = elig;
   }
 
-  return filters
-}
+  return filters;
+};

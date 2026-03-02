@@ -18,10 +18,7 @@
 // import { TMiddlewareUser } from '../../types/commonTypes';
 // import phoneOtpSend from '../../utils/phoneOtpSend';
 
-
-
 // //Sign up User
-
 
 // // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // const signUp = async (payload: TUser, userSessionInfo: { ip: string, device: string, browser: string, location: string }) => {
@@ -32,11 +29,9 @@
 //     },
 //   });
 
-
 //   if (isAlreadySignUpRequest) {
 //     throw new AppError(StatusCodes.CONFLICT, 'You have already an account please login');
 //   }
-
 
 //   const { email } = payload;
 //   payload.password = await passwordHash(payload.password);
@@ -48,13 +43,11 @@
 //   payload.pinExpiry = pinExpiry;
 //   payload.userId = await generateUserId();
 
-
 //   const userIsExist = await prisma.user.findUnique({
 //     where: {
 //       email,
 //     },
 //   });
-
 
 //   if (userIsExist) {
 //     if (userIsExist && userIsExist.emailVerified === false) {
@@ -106,7 +99,6 @@
 
 //   // const phoneOtpSuccess = await phoneOtpSend(payload?.phone, `Your OTP is ${result?.pin}. Never share this code with anyone.`)
 //    await sendEmail(payload?.email, MailSubject, MailText);
-  
 
 //   console.log("massage send successfully")
 
@@ -169,7 +161,6 @@
 //     },
 //   }); // last login tracking
 
-
 //   return {
 //     accessToken,
 //     refreshToken,
@@ -180,7 +171,6 @@
 //   const { email, pin } = payload;
 
 //   console.log(email, pin)
-
 
 //   const user = await prisma.user.findUnique({ where: { email } });
 //   if (!user) {
@@ -201,7 +191,6 @@
 //     where: { email },
 //     data: { emailVerified: true },
 //   });
-
 
 //   const emailSubject = 'Your PIN for Verification';
 //   const bodyText = verificationPINEmailTemplate(user?.name ?? "", user?.userId ?? "")
@@ -234,7 +223,6 @@
 //   const token = accessTokenGenerate(jwtPayload, '1h');
 
 //   const passwordresetLink = `${ConfigFile.CLIENT_URL}/auth/reset-password?token=${token}&email=${user?.email}`;
-
 
 //   const emailSubject = 'Your Reset Password Link';
 //   const bodyHtml = `
@@ -287,7 +275,6 @@
 // `;
 //   await sendEmail(email, emailSubject, bodyHtml);
 
-
 //   return {};
 // };
 
@@ -296,7 +283,6 @@
 //   email: string;
 // }) => {
 //   const { email, newPassword } = payload;
-
 
 //   const user = await prisma.user.findUnique({ where: { email } });
 
@@ -372,10 +358,7 @@
 //   newPassword: string;
 // }, user: TMiddlewareUser) => {
 
-
 //   const { email } = user
-
-
 
 //   const userData = await prisma.user.findUnique({ where: { email } });
 
@@ -406,13 +389,7 @@
 //     throw new AppError(StatusCodes.NOT_FOUND, 'You old password and new password are same. Please provide different password');
 //   }
 
-
-
-
-
-
 //   const passwordCompare = await bcrypt.compare( payload?.oldPassword, userData?.password);
-
 
 //   if (!passwordCompare) {
 //     throw new AppError(StatusCodes.NOT_FOUND, 'Please Provide valid password');
@@ -422,7 +399,6 @@
 //     where: { email },
 //     data: { password: passwordHashing },
 //   });
-
 
 //   const emailSubject = 'Password Changed';
 //   const bodyText = `
@@ -460,9 +436,6 @@
 //   return {};
 // };
 
-
-
-
 // export const AuthServices = {
 //   signUp,
 //   validatePin,
@@ -472,4 +445,3 @@
 //   refreshToken,
 //   changePassword
 // };
-

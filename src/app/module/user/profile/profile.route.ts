@@ -5,6 +5,11 @@ import { upload } from '../../../utils/sendImageToCloud';
 
 const router = express.Router();
 
-router.post('/', upload.single('file'), auth("USER", "ADMIN", "SUPER_ADMIN"), ProfileController.createProfile);
+router.post(
+  '/',
+  upload.single('file'),
+  auth('USER', 'ADMIN', 'SUPER_ADMIN'),
+  ProfileController.createProfile,
+);
 
 export const ProfileRouter = router;

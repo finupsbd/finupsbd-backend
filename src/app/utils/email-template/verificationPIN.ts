@@ -1,9 +1,5 @@
-
-
-
 export const verificationPINEmailTemplate = (name: string, userId: string) => {
-
-    return `
+  return `
    <head>
     <style>
       @keyframes fadeIn {
@@ -130,5 +126,4 @@ export const verificationPINEmailTemplate = (name: string, userId: string) => {
     </table>
   </body>
 `;
-
-}
+};

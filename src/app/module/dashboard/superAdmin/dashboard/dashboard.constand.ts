@@ -1,4 +1,3 @@
-
 export const ModulesLoans = {
   PERSONAL_LOAN: 'PERSONAL_LOAN',
   HOME_LOAN: 'HOME_LOAN',
@@ -14,12 +13,8 @@ export const ModulesCards = {
   DEBIT_CARD: 'DEBIT_CARD',
   CREDIT_CARD: 'CREDIT_CARD',
   TRAVEL_CARD: 'TRAVEL_CARD',
-
 } as const;
 
 export type TModulesCards = (typeof ModulesCards)[keyof typeof ModulesCards];
 
-
-export type TModules = TModulesLoans | TModulesCards | "ALL";
-
-
+export type TModules = TModulesLoans | TModulesCards | 'ALL';

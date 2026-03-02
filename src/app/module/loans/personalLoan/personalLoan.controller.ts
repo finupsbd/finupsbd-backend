@@ -5,21 +5,15 @@ import { PersonalLoanService } from './personalLoan.service';
 import { TPersonalLoan } from './personalLoan.interface';
 import { PersonalLoanValidationSchema } from './personalLoan.validation';
 
-
-
 const createPersonalLoan = catchAsync(async (req, res) => {
-  const payload =
-    PersonalLoanValidationSchema.createPersonalLoanValidateSchema.parse(
-      JSON.parse(req.body.data)
-    );
+  const payload = PersonalLoanValidationSchema.createPersonalLoanValidateSchema.parse(
+    JSON.parse(req.body.data),
+  );
   const file = req.file;
   if (!file) {
     throw new Error('Please upload a file');
   }
-  const result = await PersonalLoanService.createPersonalLoan(
-    payload as TPersonalLoan,
-    file
-  );
+  const result = await PersonalLoanService.createPersonalLoan(payload as TPersonalLoan, file);
 
   sendResponses(res, {
     success: true,
@@ -28,7 +22,6 @@ const createPersonalLoan = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
 
 const getAllPersonalLoan = catchAsync(async (req, res) => {
   const result = await PersonalLoanService.getAllPersonalLoan();
@@ -41,16 +34,15 @@ const getAllPersonalLoan = catchAsync(async (req, res) => {
   });
 });
 
-
 const updatePersonalLoan = catchAsync(async (req, res) => {
   const payload = PersonalLoanValidationSchema.updatePersonalLoanValidateSchema.parse(
-    JSON.parse(req.body.data)
+    JSON.parse(req.body.data),
   );
   const file = req.file?.buffer;
   const result = await PersonalLoanService.updatePersonalLoan(
     payload as TPersonalLoan,
     file,
-    req.params.id
+    req.params.id,
   );
 
   sendResponses(res, {
@@ -60,8 +52,6 @@ const updatePersonalLoan = catchAsync(async (req, res) => {
     data: result,
   });
 });
-
-
 
 export const PersonalLoanController = {
   createPersonalLoan,

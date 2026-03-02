@@ -2,52 +2,51 @@
 /* eslint-disable no-unused-vars */
 // Enums
 export enum MainLoanType {
-  PERSONAL_LOAN = "PERSONAL_LOAN",
-  HOME_LOAN = "HOME_LOAN",
-  CAR_LOAN = "CAR_LOAN",
-  SME_LOAN = "SME_LOAN",
-  INSTANT_LOAN = "INSTANT_LOAN",
+  PERSONAL_LOAN = 'PERSONAL_LOAN',
+  HOME_LOAN = 'HOME_LOAN',
+  CAR_LOAN = 'CAR_LOAN',
+  SME_LOAN = 'SME_LOAN',
+  INSTANT_LOAN = 'INSTANT_LOAN',
 }
 
 export enum EGender {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  OTHER = "OTHER",
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  OTHER = 'OTHER',
 }
 
 export enum Profession {
-  BUSINESS_OWNER = "BUSINESS_OWNER",
-  SALARIED = "SALARIED",
-  SELF_EMPLOYED = "SELF_EMPLOYED",
+  BUSINESS_OWNER = 'BUSINESS_OWNER',
+  SALARIED = 'SALARIED',
+  SELF_EMPLOYED = 'SELF_EMPLOYED',
 }
 
 export enum BusinessOwnerType {
-  PROPRIETORSHIP = "PROPRIETORSHIP",
-  PARTNERSHIP = "PARTNERSHIP",
-  PUBLIC_LIMITED_COMPANY = "PUBLIC_LIMITED_COMPANY",
+  PROPRIETORSHIP = 'PROPRIETORSHIP',
+  PARTNERSHIP = 'PARTNERSHIP',
+  PUBLIC_LIMITED_COMPANY = 'PUBLIC_LIMITED_COMPANY',
 }
 
 export enum VehicleType {
-  CAR_SEDAN = "CAR_SEDAN",
-  CAR_SUV = "CAR_SUV",
-  CAR_HATCHBACK = "CAR_HATCHBACK",
-  BIKE = "BIKE",
+  CAR_SEDAN = 'CAR_SEDAN',
+  CAR_SUV = 'CAR_SUV',
+  CAR_HATCHBACK = 'CAR_HATCHBACK',
+  BIKE = 'BIKE',
 }
 
 export enum ExistingLoanType {
-  HOME_LOAN = "HOME_LOAN",
-  PERSONAL_LOAN = "PERSONAL_LOAN",
-  CAR_LOAN = "CAR_LOAN",
-  SME_LOAN = "SME_LOAN",
-  CREDIT_CARD = "CREDIT_CARD",
-  OTHER = "OTHER",
+  HOME_LOAN = 'HOME_LOAN',
+  PERSONAL_LOAN = 'PERSONAL_LOAN',
+  CAR_LOAN = 'CAR_LOAN',
+  SME_LOAN = 'SME_LOAN',
+  CREDIT_CARD = 'CREDIT_CARD',
+  OTHER = 'OTHER',
 }
 
 export enum CardType {
-  CREDIT_CARD = "CREDIT_CARD",
-  DEBIT_CARD = "DEBIT_CARD",
+  CREDIT_CARD = 'CREDIT_CARD',
+  DEBIT_CARD = 'DEBIT_CARD',
 }
-
 
 // ExistingLoan type
 export interface ExistingLoan {
@@ -59,7 +58,6 @@ export interface ExistingLoan {
   createdAt: Date;
   updatedAt: Date;
 }
-
 
 // EligibilityCheck type
 export interface TEligibilityCheck {
@@ -106,8 +104,6 @@ export interface TEligibilityCheck {
 }
 
 export type TEligiblityCheckData = {
-  queryDataBody: any
-  payload: TEligibilityCheck
-}
-
-
+  queryDataBody: any;
+  payload: TEligibilityCheck;
+};

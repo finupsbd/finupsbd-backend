@@ -6,10 +6,6 @@
 // import { getRequestContext } from '../../utils/super-admin-utiles/context';
 // import { TMiddlewareUser } from '../../types/commonTypes';
 
-
-
-
-
 // const signUp = catchAsync(async (req, res) => {
 //   const userSessionInfo = await getRequestContext(req)
 //   const result = await AuthServices.signUp(req.body, userSessionInfo);
@@ -47,13 +43,12 @@
 //     secure: ConfigFile.NODE_ENV === 'production',
 //     sameSite: 'none',
 //   });
-  
+
 //   res.cookie('accessToken', accessToken, {
 //     httpOnly: true,
 //     secure: ConfigFile.NODE_ENV === 'production',
 //     sameSite: 'none',
 //   });
-
 
 //   sendResponce(res, {
 //     success: true,
@@ -65,7 +60,6 @@
 
 // const forgetPassword = catchAsync(async (req, res) => {
 //   const result = await AuthServices.forgetPassword(req.body);
-
 
 //   sendResponce(res, {
 //     success: true,
@@ -93,7 +87,6 @@
 
 //   const result = await AuthServices.refreshToken(refreshToken);
 
-
 //   sendResponce(res, {
 //     success: true,
 //     message: 'Access Token is retrieve',
@@ -108,7 +101,6 @@
 //   if (token) {
 //     res.clearCookie(refreshToken);
 //     // blacklistedTokens.add(token)
-
 
 //     sendResponce(res, {
 //       success: true,
@@ -129,7 +121,6 @@
 //     data: result
 //   })
 // });
-
 
 // export const AuthController = {
 //   signUp,

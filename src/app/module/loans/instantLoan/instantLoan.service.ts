@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { prisma } from "../../../../app";
-import { TMulterFile } from "../../../types/commonTypes";
-import { saveSingleFile } from "../../../utils/file-uploads/saveSingleFile";
-import { sendImageToCloud } from "../../../utils/sendImageToCloud";
-import { TInstantLoan } from "./instantLoan.interface";
-
-
+import { prisma } from '../../../../app';
+import { TMulterFile } from '../../../types/commonTypes';
+import { saveSingleFile } from '../../../utils/file-uploads/saveSingleFile';
+import { sendImageToCloud } from '../../../utils/sendImageToCloud';
+import { TInstantLoan } from './instantLoan.interface';
 
 const createInstantLoan = async (payload: TInstantLoan, file: TMulterFile) => {
-
-  const coverImage = file?.buffer ? await saveSingleFile(file.buffer, file.originalname, "CreateLoans") : undefined;
+  const coverImage = file?.buffer
+    ? await saveSingleFile(file.buffer, file.originalname, 'CreateLoans')
+    : undefined;
   // const coverImage = file ? await sendImageToCloud(file) : undefined;
   payload.coverImage = coverImage ?? undefined;
-  
+
   const result = await prisma.instantLoan.create({
     data: {
-      bankName: payload.bankName ,
+      bankName: payload.bankName,
       amount: payload.amount,
       coverImage: payload.coverImage,
       periodMonths: payload.periodMonths,
@@ -48,22 +47,22 @@ const createInstantLoan = async (payload: TInstantLoan, file: TMulterFile) => {
 const getAllInstantLoan = async () => {
   const result = await prisma.instantLoan.findMany({
     include: {
-      FeaturesInstantLoan: true,      // Correctly references Features model
-      EligibilityInstantLoan: true,   // Correctly references Eligibility model
-      FeesChargesInstantLoan: true,   // Correctly references FeesCharges model
+      FeaturesInstantLoan: true, // Correctly references Features model
+      EligibilityInstantLoan: true, // Correctly references Eligibility model
+      FeesChargesInstantLoan: true, // Correctly references FeesCharges model
     },
-  })
+  });
   return result;
 };
 
 const updateInstantLoan = async (payload: TInstantLoan, file: any, id: string) => {
   const coverImage = file ? await sendImageToCloud(file) : undefined;
-  payload.coverImage = coverImage?? undefined;
+  payload.coverImage = coverImage ?? undefined;
 
   // Handle the Bank record
   const bankResult = await prisma.instantLoan.upsert({
     where: { id },
-    create: {  
+    create: {
       bankName: payload.bankName,
       amount: payload.amount,
       coverImage: payload.coverImage,
@@ -98,22 +97,20 @@ const updateInstantLoan = async (payload: TInstantLoan, file: any, id: string) =
       },
       EligibilityInstantLoan: {
         update: payload.eligibilityInstantLoan,
-      }, 
+      },
       FeesChargesInstantLoan: {
         update: payload.feesChargesInstantLoan,
       },
-    }, 
+    },
     include: {
       FeaturesInstantLoan: true,
       EligibilityInstantLoan: true,
       FeesChargesInstantLoan: true,
-    }
+    },
   });
 
-
-  return bankResult;  // Return the updated or created bank record
+  return bankResult; // Return the updated or created bank record
 };
-
 
 export const InstantLoanService = {
   createInstantLoan,

@@ -11,19 +11,12 @@ import sendEmail from '../../utils/sendEmail';
 import { LoanApplicationFormSchema, TLoanApplicationForm } from './applicationForm.validation';
 import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanApplication';
 
-
-
-
 ///// old after terjaction
-
-
 
 // const createApplicationForm = async (payload: TLoanApplicationForm, user: TMiddlewareUser, files: TUploadedFile[], loanRequest: TLoanRequest) => {
 //   const cloudinaryResults: { url: any; originalName: string; mimeType: string; }[] = [];
 //   const filesObj = files as unknown as { [fieldname: string]: Express.Multer.File[] };
 //   const filesArray: Express.Multer.File[] = Object.values(filesObj).flat();
-
-
 
 //   for (const file of filesArray) {
 //     const uploaded = await uploadBufferToCloudinary(file.buffer, file.originalname, file.mimetype);
@@ -42,7 +35,6 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 //     personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
 //     personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? ''
 //   }
-
 
 //   // Begin Transaction
 //   const result = await prisma.$transaction(async (tx) => {
@@ -86,25 +78,24 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 //             originalName: doc.originalName,
 //             mimeType: doc.mimeType,
 //           })),
-//         }, 
+//         },
 //         EligibleLoanOffer: {
 //           create: loanRequest
 //         }
 
-//       }, 
+//       },
 
 //       include: {
-//         GuarantorInfo: true, 
+//         GuarantorInfo: true,
 //         user: {
 //           select: {
-//             name: true, 
-//             phone: true, 
+//             name: true,
+//             phone: true,
 //             email: true
 //           }
 //         }
 //       }
 //     });
-
 
 //     return createdApplication;
 //   }, {
@@ -113,8 +104,6 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 //   });
 
 //   console.log("result",result)
-
-
 
 //   if (result) {
 //     const personaGurantor = result?.GuarantorInfo?.personalGurantorEmail
@@ -125,9 +114,8 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 //     const linkPersonalGurantor = `${ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${result?.applicationId}&id=${result?.id}`
 //     const linkBusinessGurantor = `${ConfigFile.CLIENT_URL}/guarantor-info/business-guarantor?applicationId=${result?.applicationId}&id=${result?.id}`
 
-
-//     const personaGurantorTemplate = gurantorEmailTemplate(result?.user?.phone ?? '', result?.user?.name ?? '', linkPersonalGurantor)  
-//     const businessGurantorTemplate = gurantorEmailTemplate(result?.user?.phone ?? '', result?.user?.name ?? '', linkBusinessGurantor)  
+//     const personaGurantorTemplate = gurantorEmailTemplate(result?.user?.phone ?? '', result?.user?.name ?? '', linkPersonalGurantor)
+//     const businessGurantorTemplate = gurantorEmailTemplate(result?.user?.phone ?? '', result?.user?.name ?? '', linkBusinessGurantor)
 
 //     await sendEmail(personaGurantor ?? '', "Gurantor Info Request", personaGurantorTemplate)
 //     await sendEmail(businessGurantor ?? '', "Gurantor Info Request", businessGurantorTemplate)
@@ -135,10 +123,8 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 //     console.log("email send")
 //   }
 
-
 //   return result;
 // };
-
 
 // const createApplicationForm = async (
 //   data: TLoanApplicationForm,
@@ -146,7 +132,6 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 //   files: TUploadedFile[],
 //   loanRequest: TLoanRequest
 // ) => {
-
 
 //   const payload = LoanApplicationFormSchema.parse(data)
 
@@ -170,14 +155,11 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 //       }
 //     }
 
-
 //     const applicationId = await generateApplicationId();
 
 //     payload?.loanInfo?.bankAccounts.map(bank => {
 //       return bank.accountNumber = encrypt(bank.accountNumber)
 //     })
-
-
 
 //     const guarantorInfoData = {
 //       businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
@@ -185,8 +167,6 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 //       personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
 //       personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? '',
 //     };
-
-
 
 //     // Begin DB Transaction
 //     const createdApplication = await prisma.$transaction(async (tx) => {
@@ -251,7 +231,6 @@ import { saveFileLoanApplication } from '../../utils/file-uploads/saveFileLoanAp
 
 //     const emailTasks: Promise<any>[] = [];
 
-
 //     if (guarantorInfo?.personalGurantorEmail) {
 //       const personalGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
 //       const personalTemplate = gurantorEmailTemplate(applicant.phone ?? '', applicant.name ?? '', personalGuarantorLink);
@@ -285,11 +264,11 @@ const createApplicationForm = async (
   data: TLoanApplicationForm,
   user: TMiddlewareUser,
   files: any,
-  loanRequest: TLoanRequest
+  loanRequest: TLoanRequest,
 ) => {
   const payload = LoanApplicationFormSchema.parse(data);
 
- const applicationId = await generateApplicationId();
+  const applicationId = await generateApplicationId();
   try {
     // Save files locally instead of uploading to Cloudinary
     const savedDocuments: {
@@ -298,13 +277,15 @@ const createApplicationForm = async (
       mimeType: string;
     }[] = [];
 
-    const images: TUploadedFile[] = files.files
-
+    const images: TUploadedFile[] = files.files;
 
     for (const file of images) {
-
       try {
-        const savedPath = await saveFileLoanApplication(file.buffer, file.originalname, applicationId); // or file.originalname
+        const savedPath = await saveFileLoanApplication(
+          file.buffer,
+          file.originalname,
+          applicationId,
+        ); // or file.originalname
         savedDocuments.push({
           filePath: savedPath,
           originalName: file.originalname,
@@ -315,23 +296,17 @@ const createApplicationForm = async (
       }
     }
 
-    console.log(savedDocuments)
-     
-
+    console.log(savedDocuments);
 
     payload?.loanInfo?.bankAccounts?.forEach((bank) => {
       bank.accountNumber = encrypt(bank.accountNumber);
     });
 
     const guarantorInfoData = {
-      businessGurantorEmail:
-        payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? "",
-      businessGurantorPhone:
-        payload?.guarantorInfo?.businessGuarantor?.mobileNumber ?? "",
-      personalGurantorEmail:
-        payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? "",
-      personalGurantorphone:
-        payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? "",
+      businessGurantorEmail: payload?.guarantorInfo?.businessGuarantor?.emailAddress ?? '',
+      businessGurantorPhone: payload?.guarantorInfo?.businessGuarantor?.mobileNumber ?? '',
+      personalGurantorEmail: payload?.guarantorInfo?.personalGuarantor?.emailAddress ?? '',
+      personalGurantorphone: payload?.guarantorInfo?.personalGuarantor?.mobileNumber ?? '',
     };
 
     // DB Transaction
@@ -357,7 +332,9 @@ const createApplicationForm = async (
                 hasExistingLoan: payload.loanInfo?.hasExistingLoan ?? false,
                 bankAccounts: { create: payload.loanInfo?.bankAccounts ?? [] },
                 creditCards: { create: payload.loanInfo?.creditCards ?? [] },
-                existingLoans: { create: payload.loanInfo?.existingLoans ?? [] },
+                existingLoans: {
+                  create: payload.loanInfo?.existingLoans ?? [],
+                },
               },
             },
             loanRequest: { create: payload.loanRequest },
@@ -391,7 +368,7 @@ const createApplicationForm = async (
       {
         maxWait: 10000,
         timeout: 15000,
-      }
+      },
     );
 
     // Notify Guarantors via Email
@@ -402,51 +379,51 @@ const createApplicationForm = async (
     if (guarantorInfo?.personalGurantorEmail) {
       const personalGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/personal-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
       const personalTemplate = gurantorEmailTemplate(
-        applicant.phone ?? "",
-        applicant.name ?? "",
-        personalGuarantorLink
+        applicant.phone ?? '',
+        applicant.name ?? '',
+        personalGuarantorLink,
       );
       emailTasks.push(
         sendEmail(
           guarantorInfo.personalGurantorEmail,
-          "Personal Guarantor Info Request",
-          personalTemplate
-        )
+          'Personal Guarantor Info Request',
+          personalTemplate,
+        ),
       );
     }
 
     if (guarantorInfo?.businessGurantorEmail) {
       const businessGuarantorLink = `${ConfigFile.CLIENT_URL}/guarantor-info/business-guarantor?applicationId=${createdApplication.applicationId}&id=${createdApplication.id}`;
       const businessTemplate = gurantorEmailTemplate(
-        applicant.phone ?? "",
-        applicant.name ?? "",
-        businessGuarantorLink
+        applicant.phone ?? '',
+        applicant.name ?? '',
+        businessGuarantorLink,
       );
       emailTasks.push(
         sendEmail(
           guarantorInfo.businessGurantorEmail,
-          "Business Guarantor Info Request",
-          businessTemplate
-        )
+          'Business Guarantor Info Request',
+          businessTemplate,
+        ),
       );
     }
 
     try {
       await Promise.all(emailTasks);
     } catch (emailErr) {
-      console.error("Email sending failed:", emailErr);
+      console.error('Email sending failed:', emailErr);
     }
 
-    console.log("All emails sent successfully.");
+    console.log('All emails sent successfully.');
     return createdApplication;
   } catch (error) {
-    console.error("Error while creating loan application form:", error);
-    let message = "Failed to process loan application. Please try again.";
+    console.error('Error while creating loan application form:', error);
+    let message = 'Failed to process loan application. Please try again.';
     if (
       error &&
-      typeof error === "object" &&
-      "message" in error &&
-      typeof (error as any).message === "string"
+      typeof error === 'object' &&
+      'message' in error &&
+      typeof (error as any).message === 'string'
     ) {
       message = (error as any).message;
     }
@@ -454,13 +431,12 @@ const createApplicationForm = async (
   }
 };
 
-
 const myLoanApplication = async (user: TMiddlewareUser) => {
-  const { userId } = user
+  const { userId } = user;
 
   const result = await prisma.user.findUnique({
     where: {
-      id: userId
+      id: userId,
     },
     include: {
       LoanApplicationForm: {
@@ -472,18 +448,16 @@ const myLoanApplication = async (user: TMiddlewareUser) => {
           employmentInformation: true,
           eligibleLoanOffer: true,
           guarantorInfo: true,
-          residentialInformation: true
-        }
-      }
-    }
-  })
+          residentialInformation: true,
+        },
+      },
+    },
+  });
 
-  console.log(result)
+  console.log(result);
 
-  return result
-
-}
-
+  return result;
+};
 
 const getAllApplicationForm = async () => {
   const result = await prisma.loanApplicationForm.findMany({
@@ -496,40 +470,39 @@ const getAllApplicationForm = async () => {
           bankAccounts: true,
           creditCards: true,
           existingLoans: true,
-        }
+        },
       },
       eligibleLoanOffer: true,
       employmentInformation: {
         include: {
-          properties: true
-        }
+          properties: true,
+        },
       },
       loanRequest: true,
       document: true,
       residentialInformation: true,
       personalGuarantor: {
         include: {
-          document: true
-        }
+          document: true,
+        },
       },
       businessGuarantor: {
         include: {
-          document: true
-        }
+          document: true,
+        },
       },
-    }
-  })
+    },
+  });
 
   return result;
 };
 
-
 // const updateStatus = async (id: string, payload: {status: LoanStatus, adminNotes: string}) => {
 // console.log(payload)
 //   const result = await prisma.loanApplicationForm.update({
-//     where: {id}, 
+//     where: {id},
 //     data: {
-//       status: payload.status, 
+//       status: payload.status,
 //       adminNotes: payload.adminNotes,
 //     },
 //     include: {
@@ -541,22 +514,17 @@ const getAllApplicationForm = async () => {
 //   return result;
 // }
 const getSingleApplication = async (id: string) => {
-
   const result = await prisma.loanApplicationForm.findFirst({
     where: { id },
     include: {
-      residentialInformation: true
-    }
-
-  })
+      residentialInformation: true,
+    },
+  });
 
   return result;
-}
+};
 
-const applicationTracking = async (payload: {
-  applicationId: string;
-  phone: string;
-}) => {
+const applicationTracking = async (payload: { applicationId: string; phone: string }) => {
   console.log(payload);
   const result = await prisma.loanApplicationForm.findFirst({
     where: {
@@ -582,8 +550,7 @@ const applicationTracking = async (payload: {
   });
 
   if (!result) {
-    throw new AppError(404, 'Application not found please enter valid Phone and Application ID'
-    );
+    throw new AppError(404, 'Application not found please enter valid Phone and Application ID');
   }
 
   return result;
@@ -592,22 +559,19 @@ const applicationTracking = async (payload: {
 const applicationForget = async (payload: { email: string; phone: string }) => {
   const result = await prisma.user.findFirst({
     where: {
-      OR: [
-        { email: payload.email },
-        { phone: payload.phone }
-      ],
+      OR: [{ email: payload.email }, { phone: payload.phone }],
     },
     include: {
       LoanApplicationForm: {
         select: {
           applicationId: true,
-          eligibleLoanOffer: true
-        }
+          eligibleLoanOffer: true,
+        },
       },
     },
   });
 
-  console.log(result)
+  console.log(result);
 
   if (!result || !result.LoanApplicationForm || result.LoanApplicationForm.length === 0) {
     throw new AppError(404, 'No Loan application found!');
@@ -622,7 +586,7 @@ const applicationForget = async (payload: { email: string; phone: string }) => {
   const applicationDetails = applications
     .map(
       (app) =>
-        `<li><strong>Application ID:</strong> ${app.applicationId}, <strong>Loan Type:</strong> ${app.loanType}</li>`
+        `<li><strong>Application ID:</strong> ${app.applicationId}, <strong>Loan Type:</strong> ${app.loanType}</li>`,
     )
     .join('');
   console.log(applicationDetails);
@@ -656,30 +620,25 @@ const applicationForget = async (payload: { email: string; phone: string }) => {
   </div>
 `;
 
-
   await sendEmail(result.email, subject, html);
 
-  const maskedPhoneNumber = maskMobileNumber(result.phone)
-  const userEmail = result.email
-  const maskedEmailAddress = maskMobileNumber(result.email)
-
+  const maskedPhoneNumber = maskMobileNumber(result.phone);
+  const userEmail = result.email;
+  const maskedEmailAddress = maskMobileNumber(result.email);
 
   return {
     maskedPhoneNumber,
     userEmail,
-    maskedEmailAddress
+    maskedEmailAddress,
   };
 };
-
-
-
 
 export const ApplicationFromService = {
   createApplicationForm,
   getAllApplicationForm,
-  // updateStatus, 
+  // updateStatus,
   getSingleApplication,
   applicationTracking,
   applicationForget,
-  myLoanApplication
+  myLoanApplication,
 };

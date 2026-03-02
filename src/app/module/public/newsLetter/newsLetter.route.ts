@@ -8,7 +8,7 @@ const router = express.Router();
 router.post(
   '/',
   validateRequest(NewsLetterValidation.createNewsLetterValidationSchema),
-  NewsLetterController.createNewsLetter
+  NewsLetterController.createNewsLetter,
 );
 router.get('/', NewsLetterController.getAllEmail);
 

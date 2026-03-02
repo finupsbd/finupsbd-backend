@@ -1,9 +1,9 @@
-export function calculateEMI(principal:number, annualRate: number, months: number): number {
+export function calculateEMI(principal: number, annualRate: number, months: number): number {
   const monthlyRate = annualRate / (12 * 100); // Convert annual % to monthly decimal
   const n = months;
 
-  const emi = (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) /
-              (Math.pow(1 + monthlyRate, n) - 1);
+  const emi =
+    (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
 
   return Math.round(emi); // Rounded to nearest integer
 }
@@ -19,6 +19,3 @@ export function calculateEMI(principal:number, annualRate: number, months: numbe
 // console.log(`Interest Rate: ${interestRate}%`);
 // console.log(`Tenure: ${periodMonths} months`);
 // console.log(`Monthly EMI: ${emi} Taka`);
-
-
-

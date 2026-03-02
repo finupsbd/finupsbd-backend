@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 
-
 export type TLoanApplicationForm = {
   status: LoanStatus;
   isActive: boolean;
@@ -29,8 +28,8 @@ export type PersonalInfo = {
   gender: Gender;
   maritalStatus: MaritalStatus;
   educationalLevel: EduLavel;
-  NIDNumber: string
-  passportNumber?: string
+  NIDNumber: string;
+  passportNumber?: string;
   religion: Religion;
   residentialStatus: ResidentialStatus;
   mobileNumber: string;
@@ -105,7 +104,7 @@ export type EmploymentInformation = {
   // Property
   properties: Properties[];
   // Income
-  
+
   grossMonthlyIncome: string;
   rentIncome?: string;
   otherIncome?: string;
@@ -113,27 +112,23 @@ export type EmploymentInformation = {
   totalIncome: string;
 };
 
-
 export type LoanInfo = {
   hasCreditCard: boolean;
   hasExistingLoan: boolean;
   bankAccounts: BankAccount[];
   creditCards: CreditCardUser[];
   existingLoans: ExistingLoanUser[];
-
 };
 
 export type BankAccount = {
   bankName: string;
   accountNumber: string;
-
 };
 
 export type CreditCardUser = {
   issuerName: string;
   cardLimit: string;
   toBeClosedBeforeDisbursement: boolean;
-
 };
 
 export type ExistingLoanUser = {
@@ -152,11 +147,7 @@ export type LoanRequest = {
   loanTenure: number;
   loanPurpose: string;
   emiStartDate: number;
-
 };
-
-
-
 
 export type GuarantorInfo = {
   personalGuarantor: PersonalGuarantor;
@@ -175,101 +166,94 @@ export type PersonalGuarantor = {
 
 export type Properties = {
   propertyType: PropertyType;
-  propertyValue: string
-}
-
-
+  propertyValue: string;
+};
 
 export enum PropertyType {
-  RESIDENTIAL = "RESIDENTIAL",
-  COMMERCIAL = "COMMERCIAL",
-  LAND = "LAND",
-  APARTMENT = "APARTMENT",
-  HOUSE = "HOUSE",
-  OTHER = "OTHER"
+  RESIDENTIAL = 'RESIDENTIAL',
+  COMMERCIAL = 'COMMERCIAL',
+  LAND = 'LAND',
+  APARTMENT = 'APARTMENT',
+  HOUSE = 'HOUSE',
+  OTHER = 'OTHER',
 }
-
 
 enum EmploymentStatus {
-  SALARIED =  "SALARIED",
-  SELF_EMPLOYED = "SELF_EMPLOYED",
-  BUSINESS_OWNER =  "BUSINESS_OWNER"
+  SALARIED = 'SALARIED',
+  SELF_EMPLOYED = 'SELF_EMPLOYED',
+  BUSINESS_OWNER = 'BUSINESS_OWNER',
 }
-
 
 enum BOwnerType {
-  PROPRIETORSHIP = "PROPRIETORSHIP",
-  PARTNERSHIP = "PARTNERSHIP",
-  PUBLIC_LIMITED_COMPANY = "PUBLIC_LIMITED_COMPANY",
+  PROPRIETORSHIP = 'PROPRIETORSHIP',
+  PARTNERSHIP = 'PARTNERSHIP',
+  PUBLIC_LIMITED_COMPANY = 'PUBLIC_LIMITED_COMPANY',
 }
-
 
 enum BusinessType {
-  WHOLESALE = "WHOLESALE",
-  RETAIL = "RETAIL", 
-  SERVICES =  "SERVICES",
-  MANUFACTURING = "MANUFACTURING",
-  OTHER = "OTHER"
+  WHOLESALE = 'WHOLESALE',
+  RETAIL = 'RETAIL',
+  SERVICES = 'SERVICES',
+  MANUFACTURING = 'MANUFACTURING',
+  OTHER = 'OTHER',
 }
 
-
 export enum Gender {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  OTHER = "OTHER"
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  OTHER = 'OTHER',
 }
 
 export enum MaritalStatus {
-  SINGLE = "SINGLE",
-  MARRIED = "MARRIED",
-  DIVORCED = "DIVORCED",
-  WIDOWED = "WIDOWED"
+  SINGLE = 'SINGLE',
+  MARRIED = 'MARRIED',
+  DIVORCED = 'DIVORCED',
+  WIDOWED = 'WIDOWED',
 }
 
 export enum EduLavel {
-  BELOW_SSC = "BELOW_SSC",
-  SSC = "SSC",
-  HSC = "HSC",
-  GRADUATE = "GRADUATE",
-  POST_GRADUATE = "POST_GRADUATE",
-  PHD = "PHD",
-  OTHER_EDUCATION = "OTHER_EDUCATION",
+  BELOW_SSC = 'BELOW_SSC',
+  SSC = 'SSC',
+  HSC = 'HSC',
+  GRADUATE = 'GRADUATE',
+  POST_GRADUATE = 'POST_GRADUATE',
+  PHD = 'PHD',
+  OTHER_EDUCATION = 'OTHER_EDUCATION',
 }
 
 export enum Religion {
-  ISLAM = "ISLAM",
-  HINDUISM = "HINDUISM",
-  CHRISTIANITY = "CHRISTIANITY",
-  BUDDHISM = "BUDDHISM",
-  OTHER = "OTHER"
+  ISLAM = 'ISLAM',
+  HINDUISM = 'HINDUISM',
+  CHRISTIANITY = 'CHRISTIANITY',
+  BUDDHISM = 'BUDDHISM',
+  OTHER = 'OTHER',
 }
 
 export enum ResidentialStatus {
-  RESIDENT = "RESIDENT",
-  NONRESIDENT = "NONRESIDENT",
-  TEMPORARYRESIDENT = "TEMPORARYRESIDENT"
+  RESIDENT = 'RESIDENT',
+  NONRESIDENT = 'NONRESIDENT',
+  TEMPORARYRESIDENT = 'TEMPORARYRESIDENT',
 }
 
 export enum OwnershipStatus {
-  RENTED = "RENTED",
-  FAMILY_OWNED = "FAMILY_OWNED",
-  COMPANY_PROVIDED = "COMPANY_PROVIDED"
-
+  RENTED = 'RENTED',
+  FAMILY_OWNED = 'FAMILY_OWNED',
+  COMPANY_PROVIDED = 'COMPANY_PROVIDED',
 }
 
 export enum LoanStatus {
-  SUBMITTED = "SUBMITTED",
-  PENDING = "PENDING",
-  IN_PROGRESS = "IN_PROGRESS",
-  APPROVED = "APPROVED",
-  REJECTED = "REJECTED",
-  COMPLETED = "COMPLETED"
+  SUBMITTED = 'SUBMITTED',
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  COMPLETED = 'COMPLETED',
 }
 
 export enum LoanType {
-  PERSONAL_LOAN = "PERSONAL_LOAN",
-  HOME_LOAN = "HOME_LOAN",
-  CAR_LOAN = "CAR_LOAN",
-  SME_LOAN = "SME_LOAN",
-  INSTANT_LOAN = "INSTANT_LOAN"
+  PERSONAL_LOAN = 'PERSONAL_LOAN',
+  HOME_LOAN = 'HOME_LOAN',
+  CAR_LOAN = 'CAR_LOAN',
+  SME_LOAN = 'SME_LOAN',
+  INSTANT_LOAN = 'INSTANT_LOAN',
 }

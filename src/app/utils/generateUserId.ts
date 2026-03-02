@@ -29,31 +29,23 @@
 //   return newUserId;
 // }
 
-
-
-
 export function generateUserIdToday(sequenceNumber: number) {
   const now = new Date();
-  
+
   // Get the last two digits of the year
   const year = now.getFullYear().toString().slice(-2);
-  
+
   // Month is 0-indexed, so add 1 and pad to two digits
-  const month = ("0" + (now.getMonth() + 1)).slice(-2);
-  
+  const month = ('0' + (now.getMonth() + 1)).slice(-2);
+
   // Get day of month and pad to two digits
-  const day = ("0" + now.getDate()).slice(-2);
-  
+  const day = ('0' + now.getDate()).slice(-2);
+
   // Pad the sequence number to 3 digits
-  const sequence = ("00" + sequenceNumber).slice(-3);
-  
+  const sequence = ('00' + sequenceNumber).slice(-3);
+
   return year + month + day + sequence;
 }
-
-
-
-
-
 
 import { prisma } from '../../app';
 
@@ -74,8 +66,8 @@ const lastUser = async () => {
 export function generatePrefix() {
   const now = new Date();
   const year = now.getFullYear().toString().slice(-2);
-  const month = ("0" + (now.getMonth() + 1)).slice(-2);
-  const day = ("0" + now.getDate()).slice(-2);
+  const month = ('0' + (now.getMonth() + 1)).slice(-2);
+  const day = ('0' + now.getDate()).slice(-2);
   return year + month + day;
 }
 
@@ -84,10 +76,10 @@ export async function generateUserId() {
   const todayPrefix = generatePrefix();
   let newUserId;
   const user = await lastUser();
-  
+
   if (user?.userId) {
     const lastUserPrefix = user.userId.slice(0, 6); // Extract the prefix from the last userId.
-    
+
     if (lastUserPrefix === todayPrefix) {
       // If the last user was created today, increment the sequence.
       const sequence = parseInt(user.userId.slice(6), 10);
@@ -101,6 +93,6 @@ export async function generateUserId() {
     // No users exist yet; start with sequence 001.
     newUserId = `${todayPrefix}001`;
   }
-  
+
   return newUserId;
 }

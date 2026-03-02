@@ -8,15 +8,16 @@ const router = express.Router();
 
 router.post(
   '/',
-  upload.single('file'), 
+  upload.single('file'),
   // auth("ADMIN", "SUPER_ADMIN"),
-  InstantLoanController.createInstantLoan
+  InstantLoanController.createInstantLoan,
 );
 router.get('/', InstantLoanController.getAllInstantLoan);
 router.patch(
   '/:id',
-  upload.single('file'), auth("ADMIN", "SUPER_ADMIN"),
-  InstantLoanController.updateInstantLoan
+  upload.single('file'),
+  auth('ADMIN', 'SUPER_ADMIN'),
+  InstantLoanController.updateInstantLoan,
 );
 
 export const InstantLoanRouter = router;

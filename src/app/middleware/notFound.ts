@@ -1,13 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-const notFound = (req: Request, res: Response, next: NextFunction) => {
-
+const notFound = (req: Request, res: Response) => {
   res.status(StatusCodes.NOT_FOUND).json({
     success: false,
-    message: "API Route not found please input valid route!",
+    message: 'Route not found',
+    path: req.originalUrl,
   });
 };
 

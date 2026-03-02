@@ -1,9 +1,9 @@
-
-
-
-export const applicationStatusUpdate = (applicantNum: string, applicantName: string, link: string) => {
-
-    return `
+export const applicationStatusUpdate = (
+  applicantNum: string,
+  applicantName: string,
+  link: string,
+) => {
+  return `
     <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -55,6 +55,5 @@ export const applicationStatusUpdate = (applicantNum: string, applicantName: str
   </body>
 </html>
 
-`
-
-}
+`;
+};

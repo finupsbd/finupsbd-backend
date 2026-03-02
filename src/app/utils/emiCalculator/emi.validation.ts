@@ -3,11 +3,10 @@ import { z } from 'zod';
 const emiCalculateValidation = z.object({
   disbursementDate: z
     .string({
-        required_error: "Date is require"
+      required_error: 'Date is require',
     })
     .refine((date) => !isNaN(Date.parse(date)), {
-      message:
-        'Disbursement Date must be a valid date in the format YYYY-MM-DD',
+      message: 'Disbursement Date must be a valid date in the format YYYY-MM-DD',
     })
     .transform((date) => new Date(date)), // Automatically convert to Date object
   loanAmount: z
