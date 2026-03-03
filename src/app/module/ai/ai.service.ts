@@ -1,6 +1,6 @@
 // import { PrismaClient } from '@prisma/client';
 
-import { chatWithGeminiAI } from '../../../lib/ai-config/gemini.config';
+import { chatWithGeminiAI } from '../../../config/gemini.config';
 
 // const prisma = new PrismaClient();
 

@@ -1,6 +1,4 @@
-import { GoogleGenerativeAI, Tool } from '@google/generative-ai';
-import axios from 'axios';
-
+import { GoogleGenerativeAI} from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function chatWithGeminiAI(userMessage: string) {

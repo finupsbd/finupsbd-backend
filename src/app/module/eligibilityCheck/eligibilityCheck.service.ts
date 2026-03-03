@@ -1,4 +1,5 @@
 import { prisma } from '../../../app';
+import { logger } from '../../utils/logger/logger';
 import { TCardTypeEnum } from '../cards/cards.validation';
 import { TEligibilityCheck } from './eligibilityCheck.interface';
 import { cards } from './eligibilityCheck/cards';
@@ -75,7 +76,7 @@ const eligibilityCheck = async (
       return await cards(eligibilityCheckEntry as unknown as TEligibilityCheck, query);
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 };
 
@@ -112,7 +113,7 @@ const getAllcards = async (query: Record<string, unknown>) => {
       },
     };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 };
 

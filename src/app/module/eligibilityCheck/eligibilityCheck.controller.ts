@@ -7,6 +7,8 @@ const eligibilityCheck = catchAsync(async (req, res) => {
   const query = req.query;
   const mode = req.headers['x-finups-mode'] as string;
 
+
+
   const result = await EligibilityCheckService.eligibilityCheck(req.body, query, mode);
 
   sendResponses(res, {
