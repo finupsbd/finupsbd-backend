@@ -1,7 +1,16 @@
 /* eslint-disable no-unused-vars */
 export const blacklistedTokens: Set<string> = new Set();
 
-export type UserRole = 'ADMIN' | 'USER' | 'SUPER_ADMIN';
+
+
+export const AuthGurd = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+  SUPER_ADMIN: 'SUPER_ADMIN',
+} as const;
+
+export type UserRole = typeof AuthGurd[keyof typeof AuthGurd];
+
 
 export type TMiddlewareUser = {
   userId: string; // Unique identifier for the user

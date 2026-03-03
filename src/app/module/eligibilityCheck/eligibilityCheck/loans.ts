@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BankName } from '@prisma/client';
 import { prisma } from '../../../../app';
 import { TEligibilityCheck } from '../eligibilityCheck.interface';
 import { calculateEMI } from '../utils/calculateEMI';
 import { suggestEligibleLoanAmount } from '../utils/suggestEligibleLoanAmount';
-import Mode from '../../../constand/constand';
+import { Mode } from '../../../constand/constand';
+import { logger } from '../../../utils/logger/logger';
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const loans = async (
@@ -138,7 +141,7 @@ export const loans = async (
       },
     };
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     throw new Error('Error fetching cards');
   }
 };
