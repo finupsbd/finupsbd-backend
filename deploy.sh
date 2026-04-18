@@ -10,7 +10,7 @@ BRANCH="main"
 echo "🚀 Starting deployment for $APP_NAME ..."
 
 # Step 1: Navigate to project directory
-cd /media/algorify-labs-ltd/Server/projects/finupsbd-backend || { echo "❌ Project path not found!"; exit 1; }
+cd /media/algorify/Server/projects/finupsbd-backend || { echo "❌ Project path not found!"; exit 1; }
 
 # Step 2: Pull the latest code from main
 echo "📥 Pulling latest code from $BRANCH..."
